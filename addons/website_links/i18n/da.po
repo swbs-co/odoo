@@ -3,7 +3,7 @@
 # * website_links
 # 
 # Translators:
-# Martin Trigaux <mat@odoo.com>, 2017
+# Martin Trigaux, 2017
 # Ejner Sønniksen <ejner@vkdata.dk>, 2017
 # Sanne Kristensen <sanne@vkdata.dk>, 2017
 # Jarnhold Nattestad <nattestads@gmail.com>, 2017
@@ -52,17 +52,17 @@ msgstr "<span title=\"Track this page to count clicks\">Spor denne Side</span>"
 #. module: website_links
 #: model:ir.ui.view,arch_db:website_links.graphs
 msgid "<strong>Campaign</strong>"
-msgstr ""
+msgstr "<strong>Kampagne</strong>"
 
 #. module: website_links
 #: model:ir.ui.view,arch_db:website_links.graphs
 msgid "<strong>Medium</strong>"
-msgstr ""
+msgstr "<strong>Medium</strong>"
 
 #. module: website_links
 #: model:ir.ui.view,arch_db:website_links.graphs
 msgid "<strong>Original URL</strong>"
-msgstr ""
+msgstr "<strong>Oprindelig URL</strong>"
 
 #. module: website_links
 #: model:ir.ui.view,arch_db:website_links.graphs
@@ -274,7 +274,7 @@ msgstr "fx Søgemaskine, Side på Hjemmeside, .."
 #. module: website_links
 #: model:ir.ui.view,arch_db:website_links.create_shorten_url
 msgid "e.g. https://www.odoo.com/page/contactus"
-msgstr ""
+msgstr "fx https://www.odoo.com/page/contactus"
 
 #. module: website_links
 #. openerp-web

@@ -562,12 +562,13 @@ var FieldMonetary = InputField.extend({
             this.tagName = 'div';
             this.className += ' o_input';
 
-            // use the formatFloat function in edit
-            this.formatType = 'float';
+            // do not display currency symbol in edit
+            this.formatOptions.noSymbol = true;
         }
 
         this.formatOptions.currency = this.currency;
         this.formatOptions.digits = [16, 2];
+        this.formatOptions.field_digits = this.nodeOptions.field_digits;
     },
 
     //--------------------------------------------------------------------------
@@ -1067,6 +1068,7 @@ var UrlWidget = InputField.extend({
     _renderReadonly: function () {
         this.$el.text(this.attrs.text || this.value)
             .addClass('o_form_uri o_text_overflow')
+            .attr('target', '_blank')
             .attr('href', this.value);
     }
 });

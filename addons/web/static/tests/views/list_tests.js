@@ -5,6 +5,7 @@ var config = require('web.config');
 var basicFields = require('web.basic_fields');
 var FormView = require('web.FormView');
 var ListView = require('web.ListView');
+var mixins = require('web.mixins');
 var testUtils = require('web.test_utils');
 var widgetRegistry = require('web.widget_registry');
 var Widget = require('web.Widget');
@@ -989,7 +990,7 @@ QUnit.module('Views', {
     });
 
     QUnit.test('use default_order on editable tree: sort on demand', function (assert) {
-        assert.expect(8);
+        assert.expect(11);
 
         this.data.foo.records[0].o2m = [1, 3];
         this.data.bar.fields = {name: {string: "Name", type: "char", sortable: true}};
@@ -1029,12 +1030,21 @@ QUnit.module('Views', {
             "Value 2 should be third (shouldn't be sorted)");
 
         form.$('.o_form_sheet_bg').click(); // validate the row before sorting
-        $o2m.find('.o_column_sortable').click();
-        assert.ok(form.$('tbody tr:first td:contains(Value 3)').length,
-            "Value 3 should be first");
-        assert.ok(form.$('tbody tr:eq(1) td:contains(Value 2)').length,
+
+        $o2m.find('.o_column_sortable').click(); // resort list after edition
+        assert.strictEqual(form.$('tbody tr:first').text(), 'Value 1',
+            "Value 1 should be first");
+        assert.strictEqual(form.$('tbody tr:eq(1)').text(), 'Value 2',
             "Value 2 should be second (should be sorted after saving)");
-        assert.ok(form.$('tbody tr:eq(2) td:contains(Value 1)').length,
+        assert.strictEqual(form.$('tbody tr:eq(2)').text(), 'Value 3',
+            "Value 3 should be third");
+
+        $o2m.find('.o_column_sortable').click();
+        assert.strictEqual(form.$('tbody tr:first').text(), 'Value 3',
+            "Value 3 should be first");
+        assert.strictEqual(form.$('tbody tr:eq(1)').text(), 'Value 2',
+            "Value 2 should be second (should be sorted after saving)");
+        assert.strictEqual(form.$('tbody tr:eq(2)').text(), 'Value 1',
             "Value 1 should be third");
 
         form.destroy();
@@ -1051,7 +1061,7 @@ QUnit.module('Views', {
             ids.push(id);
             this.data.bar.records.push({
                 id: id,
-                name: "Value " + id,
+                name: "Value " + (id < 10 ? '0' : '') + id,
             });
         }
         this.data.foo.records[0].o2m = ids;
@@ -1074,15 +1084,15 @@ QUnit.module('Views', {
 
         // Change page
         form.$('.o_pager_next').click();
-        assert.ok(form.$('tbody tr:first td:contains(Value 44)').length,
+        assert.strictEqual(form.$('tbody tr:first').text(), 'Value 44',
             "record 44 should be first");
-        assert.ok(form.$('tbody tr:eq(4) td:contains(Value 48)').length,
+        assert.strictEqual(form.$('tbody tr:eq(4)').text(), 'Value 48',
             "record 48 should be last");
 
         form.$('.o_column_sortable').click();
-        assert.ok(form.$('tbody tr:first td:contains(Value 48)').length,
+        assert.strictEqual(form.$('tbody tr:first').text(), 'Value 08',
             "record 48 should be first");
-        assert.ok(form.$('tbody tr:eq(4) td:contains(Value 44)').length,
+        assert.strictEqual(form.$('tbody tr:eq(4)').text(), 'Value 04',
             "record 44 should be first");
 
         form.destroy();
@@ -2763,6 +2773,28 @@ QUnit.module('Views', {
         list.destroy();
     });
 
+    QUnit.test('pressing ESC discard the current line changes (with required)', function (assert) {
+        assert.expect(3);
+
+        var list = createView({
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree editable="top"><field name="foo" required="1"/></tree>',
+        });
+
+        list.$buttons.find('.o_list_button_add').click();
+
+        list.$('input[name="foo"]').trigger({type: 'keydown', which: $.ui.keyCode.ESCAPE});
+        assert.strictEqual(list.$('tr.o_data_row').length, 4,
+            "should have 4 data row in list");
+        assert.strictEqual(list.$('tr.o_data_row.o_selected_row').length, 0,
+            "no rows should be selected");
+        assert.ok(!list.$buttons.find('.o_list_button_save').is(':visible'),
+            "should not have a visible save button");
+        list.destroy();
+    });
+
     QUnit.test('field with password attribute', function (assert) {
         assert.expect(2);
 
@@ -3213,6 +3245,61 @@ QUnit.module('Views', {
         assert.strictEqual(list.$('.o_data_row').length, 2,
             'should display 2 data rows');
         list.destroy();
+    });
+
+    QUnit.test('check if the view destroys all widgets and instances', function (assert) {
+        assert.expect(1);
+
+        var instanceNumber = 0;
+        testUtils.patch(mixins.ParentedMixin, {
+            init: function () {
+                instanceNumber++;
+                return this._super.apply(this, arguments);
+            },
+            destroy: function () {
+                if (!this.isDestroyed()) {
+                    instanceNumber--;
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        var params = {
+            View: ListView,
+            model: 'foo',
+            data: this.data,
+            arch: '<tree string="Partners">' +
+                    '<field name="foo"/>' +
+                    '<field name="bar"/>' +
+                    '<field name="date"/>' +
+                    '<field name="int_field"/>' +
+                    '<field name="qux"/>' +
+                    '<field name="m2o"/>' +
+                    '<field name="o2m"/>' +
+                    '<field name="m2m"/>' +
+                    '<field name="amount"/>' +
+                    '<field name="currency_id"/>' +
+                    '<field name="datetime"/>' +
+                    '<field name="reference"/>' +
+                '</tree>',
+        };
+
+        var list = createView(params);
+        list.destroy();
+
+        var initialInstanceNumber = instanceNumber;
+        instanceNumber = 0;
+
+        list = createView(params);
+
+        // call destroy function of controller to ensure that it correctly destroys everything
+        list.__destroy();
+
+        assert.strictEqual(instanceNumber, initialInstanceNumber+1, "every widget must be destroyed exept the parent");
+
+        list.destroy();
+
+        testUtils.unpatch(mixins.ParentedMixin);
     });
 
 });

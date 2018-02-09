@@ -3,7 +3,7 @@
 # * project
 # 
 # Translators:
-# Martin Trigaux <mat@odoo.com>, 2017
+# Martin Trigaux, 2017
 # Sanne Kristensen <sanne@vkdata.dk>, 2017
 # Pernille Kristensen <pernillekristensen1994@gmail.com>, 2017
 # Ejner Sønniksen <ejner@vkdata.dk>, 2017
@@ -142,7 +142,7 @@ msgstr ""
 "                            <img src=\"web/static/src/img/logo.png\"/>\n"
 "                        </td>\n"
 "                        <td style=\"vertical-align: top; padding: 8px 10px;text-align: left;font-size: 14px;\">\n"
-"                            <a href=\"web/login\" style=\"float:right ;margin:15px auto;background: #875A7B;border-radius: 5px;color: #ffffff;font-size: 16px;padding: 10px 20px 10px 20px;text-decoration: none;\">Automatisk Login</a>\n"
+"                            <a href=\"web/login\" style=\"float:right ;margin:15px auto;background: #875A7B;border-radius: 5px;color: #ffffff;font-size: 16px;padding: 10px 20px 10px 20px;text-decoration: none;\">Automatisk login</a>\n"
 "                        </td>\n"
 "                    </tr>\n"
 "                </tbody>\n"
@@ -152,14 +152,14 @@ msgstr ""
 "                    <tr>\n"
 "                        <td style=\"padding:15px 10px;font-size:20px\">\n"
 "                            <p dir=\"ltr\" style=\"font-size:15px;margin-top:0pt;margin-bottom:0pt;\">\n"
-"                                <span>Odoo Projekt modulet kører nu</span></p><br>\n"
+"                                <span>Odoo Projekt modulet er nu installeret</span></p><br>\n"
 "                            <p dir=\"ltr\" style=\"margin-top:0pt;margin-bottom:8pt;\">\n"
 "                                <span style=\"font-size:13px;font-weight:bold;\">Hvad er næste skridt?</span></p>\n"
 "                            <ul style=\"margin-top:0pt;margin-bottom:0pt;font-size:13px;list-style-type:disc;\">\n"
 "                                % if last_created_project:\n"
 "                                    <li dir=\"ltr\">\n"
 "                                        <p dir=\"ltr\" style=\"margin-top:0pt;margin-bottom:0pt;\">\n"
-"                                            <span>Prøv at oprette en opgave ved at sende en email til </span>\n"
+"                                            <span>Prøv at oprette en opgave ved at sende en e-mail til </span>\n"
 "                                            <a href=\"mailto:${last_created_project.alias_id.name_get()[0][1] if last_created_project.alias_id.alias_domain else user.company_id.email}\">\n"
 "                                                <span style=\"font-weight:bold; text-decoration:underline;\">${last_created_project.alias_id.name_get()[0][1] if last_created_project.alias_id.alias_domain else user.company_id.email}</span>\n"
 "                                            </a>\n"
@@ -189,7 +189,7 @@ msgstr ""
 "                                </li>\n"
 "                                <li dir=\"ltr\">\n"
 "                                    <p dir=\"ltr\" style=\"margin-top:0pt;margin-bottom:0pt;\">\n"
-"                                        <span>Planlæg opgaver og ressourcer med prognoser,</span>\n"
+"                                        <span>Planlæg opgaver og ressourcer med forecasts ,</span>\n"
 "                                    </p>\n"
 "                                </li>\n"
 "                                <li dir=\"ltr\">\n"
@@ -454,6 +454,10 @@ msgid ""
 "                                            <strong> Via Chrome extension</strong>\n"
 "                                        </span>"
 msgstr ""
+"<span class=\"panel-title\">\n"
+"                                            <span class=\"fa fa-puzzle-piece\"/>\n"
+"                                            <strong> Via Chrome udvidelse</strong>\n"
+"                                        </span>"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -1196,6 +1200,9 @@ msgid ""
 "                                You can define here labels that will be displayed for the state instead\n"
 "                                of the default labels."
 msgstr ""
+"På hvert fase kan medarbejdere blokere eller gøre opgave / problem klar til næste fase.\n"
+"                                Du kan definere overskrifter der vil blive vist for stadiet i stedet\n"
+"                                for standard overskrifter."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.portal_my_task
@@ -1354,7 +1361,7 @@ msgstr ""
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_project_view_form_simplified
 msgid "Choose a Project Email"
-msgstr "Vælg en Projekt Email"
+msgstr "Vælg en projektmail"
 
 #. module: project
 #: model:ir.model.fields,help:project.field_project_project_subtask_project_id
@@ -1528,7 +1535,7 @@ msgstr "Opret et Gantt kort med dine projektopgaver og deadlines"
 #. module: project
 #: model:ir.actions.act_window,name:project.open_create_project
 msgid "Create a Project"
-msgstr "Opret et Projekt"
+msgstr "Opret et projekt"
 
 #. module: project
 #: model:ir.actions.act_window,help:project.open_view_project_all_config
@@ -1560,7 +1567,7 @@ msgstr ""
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
 msgid "Create the Projects"
-msgstr "Opret Projekterne"
+msgstr "Opret projekterne"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project_create_uid
@@ -1684,7 +1691,7 @@ msgstr ""
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
 msgid "Customization"
-msgstr ""
+msgstr "Brugertilpasning"
 
 #. module: project
 #: model:ir.ui.menu,name:project.menu_projects
@@ -1982,7 +1989,7 @@ msgstr ""
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_task_type_fold
 msgid "Folded in Kanban"
-msgstr "Sammenfoldet i Kanban"
+msgstr "Foldet i Kanban"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.edit_project
@@ -2031,7 +2038,7 @@ msgstr ""
 #. module: project
 #: model:ir.model.fields,field_description:project.field_res_config_settings_module_project_forecast
 msgid "Forecasts"
-msgstr "Prognoser"
+msgstr "Forecasts"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.view_task_search_form
@@ -2056,7 +2063,7 @@ msgstr "Få fuld synkronisering med Odoo"
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
 msgid "Get it on Google Play"
-msgstr ""
+msgstr "Få den hos Google Play"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -2160,6 +2167,12 @@ msgid ""
 "   if website is activated, portal users may see project, tasks or issues followed by\n"
 "   them or by someone of their company\n"
 msgstr ""
+"Giver synlighed på de opgaver eller problemer, der hører til det aktuelle projekt:\n"
+"- Kun ved invitation: Medarbejdere må kun se det fulgte projekt, opgaver eller spørgsmål\n"
+"- Synligt for alle medarbejdere: Medarbejdere må se hele projektet, opgaver eller spørgsmål\n"
+"- Synligt for følgende kunder: medarbejdere kan se alt\n"
+"  Hvis websitet er aktiveret, kan portalbrugere se projekt, opgaver eller problemer fulgt af\n"
+"   dem eller af nogen fra deres virksomhed\n"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.view_task_form2
@@ -2245,6 +2258,8 @@ msgid ""
 "If you don't want to receive email notifications, you can uncheck the option"
 " in your"
 msgstr ""
+"Ønsker du ikke at modtage email notifikationer, kan du fjerne fluebenet i "
+"din"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -2374,14 +2389,14 @@ msgstr "Sags-version"
 #: code:addons/project/static/src/js/web_planner_project.js:73
 #, python-format
 msgid "Issue is being worked on"
-msgstr ""
+msgstr "Der arbejdes på sagen"
 
 #. module: project
 #. openerp-web
 #: code:addons/project/static/src/js/web_planner_project.js:76
 #, python-format
 msgid "Issue is resolved"
-msgstr ""
+msgstr "Sagen er løst"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -2456,7 +2471,7 @@ msgstr ""
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
 msgid "Keep track of messages and conversations"
-msgstr ""
+msgstr "Hold styr på beskeder og samtaler"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -2556,7 +2571,7 @@ msgstr "Lav"
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_task_attachment_ids
 msgid "Main Attachments"
-msgstr "Primære Vedhæftninger"
+msgstr "Primære vedhæftninger"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.res_config_settings_view_form
@@ -2943,7 +2958,7 @@ msgstr "Prioritet"
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project_privacy_visibility
 msgid "Privacy"
-msgstr "Privatliv"
+msgstr "Adgang"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -3031,7 +3046,7 @@ msgstr "Projekt opgaver"
 #. module: project
 #: model:ir.actions.server,name:project.ir_actions_server_project_sample
 msgid "Project: Activate Sample Project"
-msgstr ""
+msgstr "Projekt: Aktivér et testprojekt"
 
 #. module: project
 #: model:ir.actions.act_window,name:project.open_view_project_all
@@ -3346,7 +3361,7 @@ msgstr ""
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
 msgid "Share files and manage versions"
-msgstr ""
+msgstr "Del filer og administrer versioner"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project_is_favorite
@@ -3422,7 +3437,7 @@ msgstr "Fase ændret"
 #. module: project
 #: model:ir.ui.view,arch_db:project.task_type_edit
 msgid "Stage Description and Tooltips"
-msgstr ""
+msgstr "Fasebeskrivelse og værktøjstips"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_task_type_name
@@ -3448,7 +3463,7 @@ msgstr "Stjernemarkeret"
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_task_type_legend_priority
 msgid "Starred Explanation"
-msgstr ""
+msgstr "Stjernemarkeret forklaring"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -3576,7 +3591,7 @@ msgstr "Opgave Titel"
 #. module: project
 #: model:ir.ui.view,arch_db:project.view_task_form2
 msgid "Task Title..."
-msgstr "Opgave Titel..."
+msgstr "Opgave overskrift..."
 
 #. module: project
 #: model:mail.message.subtype,description:project.mt_task_blocked
@@ -3662,7 +3677,7 @@ msgstr "Opgaveanalyse"
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
 msgid "Tasks are the main mechanism in Odoo and are activated by default."
-msgstr ""
+msgstr "Opgaver er hovedfunktionen i Odoo og aktiveres som standard."
 
 #. module: project
 #: model:ir.model,name:project.model_report_project_task_user
@@ -3868,7 +3883,7 @@ msgstr ""
 #. module: project
 #: model:ir.ui.view,arch_db:project.edit_project
 msgid "Time Scheduling"
-msgstr ""
+msgstr "Tidsplanlægning"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_res_config_settings_module_hr_timesheet
@@ -3993,6 +4008,8 @@ msgid ""
 "Use the <b>implementation guide</b> to setup Project Management in your "
 "company."
 msgstr ""
+"Anvend <b>implementeringsvejledningen</b> til at opsætte Projektledelse i "
+"den virksomhed."
 
 #. module: project
 #. openerp-web
@@ -4110,6 +4127,8 @@ msgid ""
 "We hope this process helped you implement our project management "
 "application."
 msgstr ""
+"Vi håber at denne proces hjalp dig med at implementere dit "
+"projektledelsesapp."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -4366,12 +4385,12 @@ msgstr "at beskrive<br/> din oplevelse eller anbefal forbedringer !"
 #. module: project
 #: model:ir.actions.act_window,help:project.open_view_project_all
 msgid "to play with."
-msgstr ""
+msgstr "til at lege med."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
 msgid "using the above recommendations"
-msgstr ""
+msgstr "ved hjælp af ovenstående anbefalinger"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner

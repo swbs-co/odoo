@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from datetime import datetime
+from datetime import datetime, timedelta
 from hashlib import sha256
 from json import dumps
 import pytz
@@ -43,7 +43,7 @@ class pos_session(models.Model):
         self.ensure_one()
         date_today = datetime.utcnow()
         session_start = Datetime.from_string(self.start_at)
-        if not date_today - datetime.timedelta(hours=24) <= session_start:
+        if not date_today - timedelta(hours=24) <= session_start:
             raise UserError(_("This session has been opened another day. To comply with the French law, you should close sessions on a daily basis. Please close session %s and open a new one.") % self.name)
         return True
 
@@ -79,13 +79,13 @@ class pos_order(models.Model):
                _('An error occured when computing the inalterability. Impossible to get the unique previous posted point of sale order.'))
 
         #build and return the hash
-        return self._compute_hash(prev_order.l10n_fr_hash if prev_order else '')
+        return self._compute_hash(prev_order.l10n_fr_hash if prev_order else u'')
 
     def _compute_hash(self, previous_hash):
         """ Computes the hash of the browse_record given as self, based on the hash
         of the previous record in the company's securisation sequence given as parameter"""
         self.ensure_one()
-        hash_string = sha256(previous_hash + self.l10n_fr_string_to_hash)
+        hash_string = sha256((previous_hash + self.l10n_fr_string_to_hash).encode('utf-8'))
         return hash_string.hexdigest()
 
     def _compute_string_to_hash(self):
@@ -108,7 +108,7 @@ class pos_order(models.Model):
                     values[k] = _getattrstring(line, field)
             #make the json serialization canonical
             #  (https://tools.ietf.org/html/draft-staykov-hu-json-canonical-form-00)
-            order.l10n_fr_string_to_hash = dumps(values, sort_keys=True, encoding="utf-8",
+            order.l10n_fr_string_to_hash = dumps(values, sort_keys=True,
                                                 ensure_ascii=True, indent=None,
                                                 separators=(',',':'))
 
@@ -155,7 +155,7 @@ class pos_order(models.Model):
 
         if not orders:
             raise UserError(_('There isn\'t any order flagged for data inalterability yet for the company %s. This mechanism only runs for point of sale orders generated after the installation of the module France - Certification CGI 286 I-3 bis. - POS') % self.env.user.company_id.name)
-        previous_hash = ''
+        previous_hash = u''
         start_order_info = []
         for order in orders:
             if order.l10n_fr_hash != order._compute_hash(previous_hash=previous_hash):
