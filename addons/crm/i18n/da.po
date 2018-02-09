@@ -6,7 +6,7 @@
 # Pernille Kristensen <pernillekristensen1994@gmail.com>, 2017
 # Sanne Kristensen <sanne@vkdata.dk>, 2017
 # Ejner Sønniksen <ejner@vkdata.dk>, 2017
-# Martin Trigaux <mat@odoo.com>, 2017
+# Martin Trigaux, 2017
 # Morten Schou <ms@msteknik.dk>, 2017
 # peso <peer.sommerlund@gmail.com>, 2017
 # Jesper Carstensen <jc@danodoo.dk>, 2017
@@ -499,6 +499,11 @@ msgid ""
 "                                        <span class=\"small\">Recommended if &gt;50 items</span>\n"
 "                                    </span>"
 msgstr ""
+"<span class=\"panel-title\">\n"
+"                                        <span class=\"fa\" data-icon=\"\"/>\n"
+"                                        <strong>Importér en fil</strong><br/>\n"
+"                                        <span class=\"small\">Anbefalet hvis &gt;50 poster</span>\n"
+"                                    </span>"
 
 #. module: crm
 #: model:ir.ui.view,arch_db:crm.crm_planner
@@ -509,6 +514,11 @@ msgid ""
 "                                        <span class=\"small\">&gt; 200 contacts</span>\n"
 "                                    </span>"
 msgstr ""
+"<span class=\"panel-title\">\n"
+"                                        <span class=\"fa\" data-icon=\"\"/>\n"
+"                                        <strong>Importér</strong><br/>\n"
+"                                        <span class=\"small\">&gt; 200 kontakter</span>\n"
+"                                    </span>"
 
 #. module: crm
 #: model:ir.ui.view,arch_db:crm.crm_planner
@@ -549,6 +559,11 @@ msgid ""
 "                                        <span class=\"small\">Recommended if &lt;50 items</span>\n"
 "                                    </span>"
 msgstr ""
+"<span class=\"panel-title\">\n"
+"                                        <span class=\"fa\" data-icon=\"\"/>\n"
+"                                        <strong> Opret manuelt</strong><br/>\n"
+"                                        <span class=\"small\">Anbefalet hvis &lt;50 poster</span>\n"
+"                                    </span>"
 
 #. module: crm
 #: model:ir.ui.view,arch_db:crm.crm_planner
@@ -1066,7 +1081,7 @@ msgid ""
 " to identify sales inefficiencies or pick up on the best practices."
 msgstr ""
 "Analysering af pipeline efter forventet slutdato, vil hjælpe dit team med at"
-" lave en effektiv prognose over deres fremtidige indtægter. "
+" lave en effektiv forecast over deres fremtidige indtægter. "
 "Pipelineoversigten giver dig mulighed for at identificere salgs-"
 "ineffektivitet eller opsamle de bedste metoder."
 
@@ -1364,7 +1379,7 @@ msgstr "Lukket dato"
 #: code:addons/crm/wizard/crm_lead_to_opportunity.py:87
 #, python-format
 msgid "Closed/Dead leads cannot be converted into opportunities."
-msgstr "Lukkede/afsluttede kundeemner kan ikke ændres til prognose"
+msgstr "Lukkede/afsluttede kundeemner kan ikke ændres til salgsmuligheder "
 
 #. module: crm
 #: model:ir.model.fields,field_description:crm.field_crm_lead_color
@@ -1701,7 +1716,7 @@ msgstr "Kunde"
 #. module: crm
 #: model:ir.model.fields,field_description:crm.field_res_config_settings_module_web_clearbit
 msgid "Customer Autocomplete"
-msgstr "Kunde Autoudfyldning"
+msgstr "Kunde autoudfyldning"
 
 #. module: crm
 #: code:addons/crm/models/crm_lead.py:1126
@@ -2251,7 +2266,7 @@ msgstr "Held og lykke med salg!<br/>- Odoo teamet"
 #. module: crm
 #: model:ir.ui.view,arch_db:crm.crm_planner
 msgid "Have clear forecasts on sales"
-msgstr "Hav tydelige prognoser om salg"
+msgstr "Hav tydelige forecasts vedr. salg"
 
 #. module: crm
 #: model:ir.ui.view,arch_db:crm.crm_planner
@@ -4577,7 +4592,7 @@ msgstr "Website"
 #. module: crm
 #: model:ir.model.fields,help:crm.field_crm_lead_website
 msgid "Website of the contact"
-msgstr ""
+msgstr "Kontaktens hjemmeside"
 
 #. module: crm
 #: model:ir.ui.view,arch_db:crm.crm_planner

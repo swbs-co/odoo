@@ -34,7 +34,7 @@ def to_naive_utc(datetime, record):
 
 
 def to_tz(datetime, tz_name):
-    tz = pytz.timezone(tz_name)
+    tz = pytz.timezone(tz_name) if tz_name else pytz.UTC
     return pytz.UTC.localize(datetime.replace(tzinfo=None), is_dst=False).astimezone(tz).replace(tzinfo=None)
 
 
@@ -128,6 +128,8 @@ class ResourceCalendar(models.Model):
         )
 
     def _interval_and(self, interval, interval_dst):
+        if interval.start_datetime > interval_dst.end_datetime or interval.end_datetime < interval_dst.start_datetime:
+            return None
         return self._interval_obj(
             interval.start_datetime > interval_dst.start_datetime and interval.start_datetime or interval_dst.start_datetime,
             interval.end_datetime < interval_dst.end_datetime and interval.end_datetime or interval_dst.end_datetime,
@@ -392,10 +394,10 @@ class ResourceCalendar(models.Model):
             start_datetime=datetime.datetime.combine(day_date, start_time),
             end_datetime=datetime.datetime.combine(day_date, end_time))
 
-        final_intervals = [
-            self._interval_and(leave_interval, work_interval)
-            for leave_interval in leaves_intervals
-            for work_interval in working_intervals]
+        final_intervals = [i for i in
+                           [self._interval_and(leave_interval, work_interval)
+                            for leave_interval in leaves_intervals
+                            for work_interval in working_intervals] if i]
 
         # adapt tz
         return [self._interval_new(
@@ -722,7 +724,7 @@ class ResourceCalendarLeaves(models.Model):
     date_to = fields.Datetime('End Date', required=True)
     tz = fields.Selection(
         _tz_get, string='Timezone', default=lambda self: self._context.get('tz', self.env.user.tz or 'UTC'),
-        help="Timezone used when encoding the leave. It is used to correctly"
+        help="Timezone used when encoding the leave. It is used to correctly "
              "localize leave hours when computing time intervals.")
     resource_id = fields.Many2one(
         "resource.resource", 'Resource',

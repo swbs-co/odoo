@@ -6,6 +6,7 @@ var config = require('web.config');
 var core = require('web.core');
 var fieldRegistry = require('web.field_registry');
 var FormView = require('web.FormView');
+var mixins = require('web.mixins');
 var pyeval = require('web.pyeval');
 var RainbowMan = require('web.rainbow_man');
 var testUtils = require('web.test_utils');
@@ -477,6 +478,37 @@ QUnit.module('Views', {
 
         assert.notOk(form.$('.o_notebook .nav li:first()').is(':visible'),
             'first tab should be invisible');
+        assert.ok(form.$('.o_notebook .nav li:nth(1)').hasClass('active'),
+            'second tab should be active');
+
+        form.destroy();
+    });
+
+    QUnit.test('autofocus on second notebook page', function (assert) {
+        assert.expect(2);
+
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form string="Partners">' +
+                    '<sheet>' +
+                        '<field name="product_id"/>' +
+                        '<notebook>' +
+                            '<page string="Choucroute">' +
+                                '<field name="foo"/>' +
+                            '</page>' +
+                            '<page string="Cassoulet" autofocus="autofocus">' +
+                                '<field name="bar"/>' +
+                            '</page>' +
+                        '</notebook>' +
+                    '</sheet>' +
+                '</form>',
+            res_id: 1,
+        });
+
+        assert.notOk(form.$('.o_notebook .nav li:first()').hasClass('active'),
+            'first tab should not active');
         assert.ok(form.$('.o_notebook .nav li:nth(1)').hasClass('active'),
             'second tab should be active');
 
@@ -6304,6 +6336,84 @@ QUnit.module('Views', {
         assert.ok(height > 80, "textarea should have an height of at least 80px");
 
         form.destroy();
+    });
+
+    QUnit.test('check if the view destroys all widgets and instances', function (assert) {
+        assert.expect(1);
+
+        var instanceNumber = 0;
+        testUtils.patch(mixins.ParentedMixin, {
+            init: function () {
+                instanceNumber++;
+                return this._super.apply(this, arguments);
+            },
+            destroy: function () {
+                if (!this.isDestroyed()) {
+                    instanceNumber--;
+                }
+                return this._super.apply(this, arguments);
+            }
+        });
+
+        var params = {
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form string="Partners">' +
+                    '<sheet>' +
+                        '<field name="display_name"/>' +
+                        '<field name="foo"/>' +
+                        '<field name="bar"/>' +
+                        '<field name="int_field"/>' +
+                        '<field name="qux"/>' +
+                        '<field name="trululu"/>' +
+                        '<field name="timmy"/>' +
+                        '<field name="product_id"/>' +
+                        '<field name="priority"/>' +
+                        '<field name="state"/>' +
+                        '<field name="date"/>' +
+                        '<field name="datetime"/>' +
+                        '<field name="product_ids"/>' +
+                        '<field name="p">' +
+                            '<tree default_order="foo desc">' +
+                                '<field name="display_name"/>' +
+                                '<field name="foo"/>' +
+                            '</tree>' +
+                        '</field>' +
+                    '</sheet>' +
+                '</form>',
+            archs: {
+                'partner,false,form':
+                    '<form string="Partner">' +
+                        '<sheet>' +
+                            '<group>' +
+                                '<field name="foo"/>' +
+                            '</group>' +
+                        '</sheet>' +
+                    '</form>',
+                "partner_type,false,list": '<tree><field name="name"/></tree>',
+                'product,false,list': '<tree><field name="display_name"/></tree>',
+
+            },
+            res_id: 1,
+        };
+
+        var form = createView(params);
+        form.destroy();
+
+        var initialInstanceNumber = instanceNumber;
+        instanceNumber = 0;
+
+        form = createView(params);
+
+        // call destroy function of controller to ensure that it correctly destroys everything
+        form.__destroy();
+
+        assert.strictEqual(instanceNumber, initialInstanceNumber+1, "every widget must be destroyed exept the parent");
+
+        form.destroy();
+
+        testUtils.unpatch(mixins.ParentedMixin);
     });
 
 });
