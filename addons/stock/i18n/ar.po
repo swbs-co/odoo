@@ -14,7 +14,7 @@
 # Osama Ahmaro <osamaahmaro@gmail.com>, 2017
 # Mustafa Rawi <mustafa@cubexco.com>, 2017
 # Ghaith Gammar <g.gammar@saharaifs.net>, 2017
-# mohammed rabea <moh.rabea@gmail.com>, 2017
+# Osoul <baruni@osoul.ly>, 2017
 # Yihya Hugirat <hugirat@gmail.com>, 2017
 # Waleed Mohsen <mohsen.waleed@gmail.com>, 2017
 # Mohammed Albasha <m.albasha.ma@gmail.com>, 2017
@@ -561,7 +561,7 @@ msgstr "<strong>كمية</strong>"
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.report_picking
 msgid "<strong>Scheduled Date</strong>"
-msgstr ""
+msgstr "‏<strong>التاريخ المخطط له</strong>"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.inventory_planner
@@ -1252,7 +1252,7 @@ msgstr ""
 #. module: stock
 #: model:ir.actions.act_window,help:stock.product_template_action_product
 msgid "Click to define a new product."
-msgstr ""
+msgstr "أنقر هنا لإضافة منتج جديد."
 
 #. module: stock
 #: model:ir.actions.act_window,help:stock.action_picking_type_list
@@ -1748,7 +1748,7 @@ msgstr "العمليات اليومية"
 #: model:ir.ui.menu,name:stock.stock_picking_type_menu
 #: model:ir.ui.view,arch_db:stock.inventory_planner
 msgid "Dashboard"
-msgstr "لوحات المعلومات"
+msgstr "لوحة المعلومات"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_report_stock_forecast_date
@@ -2135,12 +2135,12 @@ msgstr "منتهي"
 #. module: stock
 #: model:ir.actions.act_window,name:stock.action_picking_tree_done
 msgid "Done Transfers"
-msgstr "التحويلات المنتهية"
+msgstr "التحركات المنتهية"
 
 #. module: stock
 #: model:ir.actions.act_window,name:stock.action_picking_tree_done_grouped
 msgid "Done Transfers by Date"
-msgstr "التحويلات المنتهية بالتاريخ"
+msgstr "التحركات المنتهية بالتاريخ"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -2945,7 +2945,7 @@ msgstr "مرجع داخلي"
 #: model:stock.picking.type,name:stock.picking_type_internal
 #, python-format
 msgid "Internal Transfers"
-msgstr "التحويلات الداخلية"
+msgstr "التحركات الداخلية"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_res_company_internal_transit_location_id
@@ -3046,7 +3046,7 @@ msgstr "تعديل الجرد"
 #: model:ir.ui.menu,name:stock.menu_action_inventory_form
 #: model:ir.ui.view,arch_db:stock.view_inventory_form
 msgid "Inventory Adjustments"
-msgstr "تعديلات الجرد"
+msgstr "تسويات الجرد"
 
 #. module: stock
 #: model:web.planner,tooltip_planner:stock.planner_inventory
@@ -3132,7 +3132,7 @@ msgstr ""
 msgid ""
 "Inventory adjustments will be made by comparing the theoretical and the "
 "checked quantities."
-msgstr "تعديلات الجرد سوفت تنشأ بمقارنة بين الكمية النظرية والكمية الفعلية"
+msgstr "تسويات الجرد سوفت تنشأ بمقارنة بين الكمية النظرية والكمية الفعلية"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_quantity_history_date
@@ -3503,7 +3503,7 @@ msgstr "الأماكن"
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_picking_form
 msgid "Lock"
-msgstr ""
+msgstr "اغلاق"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.product_category_form_view_inherit
@@ -3701,7 +3701,7 @@ msgstr "تحديد كمنتظر التنفيذ"
 #. module: stock
 #: model:ir.ui.menu,name:stock.menu_stock_inventory_control
 msgid "Master Data"
-msgstr "بيانات الاستاذ"
+msgstr "دليل المنتجات"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint_product_max_qty
@@ -4103,7 +4103,7 @@ msgstr "اسم العملية"
 #: model:ir.ui.view,arch_db:stock.view_picking_internal_search
 #: model:ir.ui.view,arch_db:stock.view_pickingtype_filter
 msgid "Operation Type"
-msgstr ""
+msgstr "نوع العملية"
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_procurement_rule_picking_type_id
@@ -4115,7 +4115,7 @@ msgstr ""
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_picking_type_return_picking_type_id
 msgid "Operation Type for Returns"
-msgstr ""
+msgstr "نوع عملية الترجيع"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_picking_type_form
@@ -4123,12 +4123,12 @@ msgstr ""
 #: model:ir.ui.view,arch_db:stock.view_picking_type_tree
 #: model:ir.ui.view,arch_db:stock.view_warehouse
 msgid "Operation Types"
-msgstr ""
+msgstr "أنواع العمليات"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_picking_type_name
 msgid "Operation Types Name"
-msgstr ""
+msgstr "اسم نوع العملية"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_picking_move_line_ids
@@ -4142,7 +4142,7 @@ msgstr "العمليات"
 #. module: stock
 #: model:ir.ui.menu,name:stock.menu_pickingtype
 msgid "Operations Types"
-msgstr ""
+msgstr "أنواع العمليات"
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_move_partner_id
@@ -5186,7 +5186,7 @@ msgstr "الكمية المستلمة"
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.stock_move_line_view_search
 msgid "Receptions"
-msgstr ""
+msgstr "الاستلامات"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_procurement_group_name
@@ -6614,7 +6614,7 @@ msgstr "اليوم"
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_picking_internal_search
 msgid "Today Activities"
-msgstr ""
+msgstr "نشاطات اليوم"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_inventory_total_qty
@@ -6688,7 +6688,7 @@ msgstr ""
 #: model:ir.ui.menu,name:stock.all_picking
 #: model:ir.ui.view,arch_db:stock.stock_picking_type_kanban
 msgid "Transfers"
-msgstr "تحويلات"
+msgstr "الشحنات"
 
 #. module: stock
 #: selection:stock.location,usage:0
@@ -6801,7 +6801,7 @@ msgstr ""
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_picking_form
 msgid "Unlock"
-msgstr ""
+msgstr "إعادة الفتح"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_quant_package_form
@@ -6903,7 +6903,7 @@ msgstr "تم الإعتماد"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_change_product_qty_product_variant_count
 msgid "Variant Count"
-msgstr ""
+msgstr "عدد التنوعات"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_location_search

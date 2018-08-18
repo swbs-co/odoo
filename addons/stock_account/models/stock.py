@@ -151,7 +151,7 @@ class StockMove(models.Model):
 
     def _get_price_unit(self):
         """ Returns the unit price to store on the quant """
-        return self.price_unit or self.product_id.standard_price
+        return not self.company_id.currency_id.is_zero(self.price_unit) and self.price_unit or self.product_id.standard_price
 
     @api.model
     def _get_in_base_domain(self, company_id=False):
@@ -578,10 +578,16 @@ class StockMove(models.Model):
             res.append((0, 0, price_diff_line))
         return res
 
+    def _prepare_move_split_vals(self, uom_qty):
+        vals = super(StockMove, self)._prepare_move_split_vals(uom_qty)
+        vals['to_refund'] = self.to_refund
+        return vals
+
     def _create_account_move_line(self, credit_account_id, debit_account_id, journal_id):
         self.ensure_one()
         AccountMove = self.env['account.move']
-        quantity = self.env.context.get('forced_quantity', self.product_qty if self._is_in() else -1 * self.product_qty)
+        quantity = self.env.context.get('forced_quantity', self.product_qty)
+        quantity = quantity if self._is_in() else -1 * quantity
 
         # Make an informative `ref` on the created account move to differentiate between classic
         # movements, vacuum and edition of past moves.

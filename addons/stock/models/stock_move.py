@@ -554,6 +554,10 @@ class StockMove(models.Model):
             move.product_uom.id, move.restrict_partner_id.id, move.scrapped, move.origin_returned_move_id.id
         ]
 
+    def _clean_merged(self):
+        """Cleanup hook used when merging moves"""
+        self.write({'propagate': False})
+
     def _merge_moves(self, merge_into=False):
         """ This method will, for each move in `self`, go up in their linked picking and try to
         find in their existing moves a candidate into which we can merge the move.
@@ -591,7 +595,7 @@ class StockMove(models.Model):
 
         if moves_to_unlink:
             # We are using propagate to False in order to not cancel destination moves merged in moves[0]
-            moves_to_unlink.write({'propagate': False})
+            moves_to_unlink._clean_merged()
             moves_to_unlink._action_cancel()
             moves_to_unlink.sudo().unlink()
         return (self | self.env['stock.move'].concat(*moves_to_merge)) - moves_to_unlink
@@ -654,7 +658,7 @@ class StockMove(models.Model):
         self.product_uom = product.uom_id.id
         return {'domain': {'product_uom': [('category_id', '=', product.uom_id.category_id.id)]}}
 
-    @api.onchange('date')
+    @api.onchange('date_expected')
     def onchange_date(self):
         if self.date_expected:
             self.date = self.date_expected
@@ -700,7 +704,7 @@ class StockMove(models.Model):
                 recompute = True
                 picking = Picking.create(move._get_new_picking_values())
             move.write({'picking_id': picking.id})
-
+            move._assign_picking_post_process(new=recompute)
             # If this method is called in batch by a write on a one2many and
             # at some point had to create a picking, some next iterations could
             # try to find back the created picking. As we look for it by searching
@@ -709,6 +713,9 @@ class StockMove(models.Model):
             if recompute:
                 move.recompute()
         return True
+
+    def _assign_picking_post_process(self, new=False):
+        pass
 
     def _get_new_picking_values(self):
         """ Prepares a new picking for this move as it could not be assigned to
@@ -780,7 +787,7 @@ class StockMove(models.Model):
                 group_id = False
         return {
             'company_id': self.company_id,
-            'date_planned': self.date,
+            'date_planned': self.date_expected,
             'move_dest_ids': self,
             'group_id': group_id,
             'route_ids': self.route_ids,
@@ -865,11 +872,6 @@ class StockMove(models.Model):
                     package_id=package_id, owner_id=owner_id, strict=strict
                 )
         except UserError:
-            # If it raises here, it means that the `available_quantity` brought by a done move line
-            # is not available on the quants itself. This could be the result of an inventory
-            # adjustment that removed totally of partially `available_quantity`. When this happens, we
-            # chose to do nothing. This situation could not happen on MTS move, because in this case
-            # `available_quantity` is directly the quantity on the quants themselves.
             taken_quantity = 0
 
         # Find a candidate move line to update or create a new one.
@@ -918,11 +920,15 @@ class StockMove(models.Model):
                 if not move.move_orig_ids:
                     if move.procure_method == 'make_to_order':
                         continue
+                    # If we don't need any quantity, consider the move assigned.
+                    need = move.product_qty - move.reserved_availability
+                    if float_is_zero(need, precision_rounding=move.product_id.uom_id.rounding):
+                        assigned_moves |= move
+                        continue
                     # Reserve new quants and create move lines accordingly.
                     available_quantity = self.env['stock.quant']._get_available_quantity(move.product_id, move.location_id)
                     if available_quantity <= 0:
                         continue
-                    need = move.product_qty - move.reserved_availability
                     taken_quantity = move._update_reserved_quantity(need, available_quantity, move.location_id, strict=False)
                     if float_is_zero(taken_quantity, precision_rounding=move.product_id.uom_id.rounding):
                         continue
@@ -981,7 +987,17 @@ class StockMove(models.Model):
                             available_move_lines[(move_line.location_id, move_line.lot_id, move_line.result_package_id, move_line.owner_id)] -= move_line.product_qty
                     for (location_id, lot_id, package_id, owner_id), quantity in available_move_lines.items():
                         need = move.product_qty - sum(move.move_line_ids.mapped('product_qty'))
-                        taken_quantity = move._update_reserved_quantity(need, quantity, location_id, lot_id, package_id, owner_id)
+                        # `quantity` is what is brought by chained done move lines. We double check
+                        # here this quantity is available on the quants themselves. If not, this
+                        # could be the result of an inventory adjustment that removed totally of
+                        # partially `quantity`. When this happens, we chose to reserve the maximum
+                        # still available. This situation could not happen on MTS move, because in
+                        # this case `quantity` is directly the quantity on the quants themselves.
+                        available_quantity = self.env['stock.quant']._get_available_quantity(
+                            move.product_id, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=True)
+                        if float_is_zero(available_quantity, precision_rounding=move.product_id.uom_id.rounding):
+                            continue
+                        taken_quantity = move._update_reserved_quantity(need, min(quantity, available_quantity), location_id, lot_id, package_id, owner_id)
                         if float_is_zero(taken_quantity, precision_rounding=move.product_id.uom_id.rounding):
                             continue
                         if need - taken_quantity == 0.0:
@@ -1063,6 +1079,9 @@ class StockMove(models.Model):
                         break
         return extra_move
 
+    def _unreserve_initial_demand(self, new_move):
+        pass
+
     def _action_done(self):
         self.filtered(lambda move: move.state == 'draft')._action_confirm()  # MRP allows scrapping draft moves
 
@@ -1103,9 +1122,7 @@ class StockMove(models.Model):
                             move_line.write({'product_uom_qty': move_line.qty_done})
                         except UserError:
                             pass
-
-                # If you were already putting stock.move.lots on the next one in the work order, transfer those to the new move
-                move.move_line_ids.filtered(lambda x: x.qty_done == 0.0).write({'move_id': new_move, 'product_uom_qty': 0})
+                move._unreserve_initial_demand(new_move)
             move.move_line_ids._action_done()
         # Check the consistency of the result packages; there should be an unique location across
         # the contained quants.

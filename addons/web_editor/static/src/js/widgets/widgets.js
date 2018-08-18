@@ -190,8 +190,7 @@ var ImageDialog = Widget.extend({
 
         var img = this.images[0];
         if (!img) {
-            var id = this.$(".existing-attachments [data-src]:first").data('id');
-            img = _.find(this.images, function (img) { return img.id === id;});
+            return this.media;
         }
 
         var def = $.when();
@@ -821,6 +820,9 @@ var VideoDialog = Widget.extend({
             return {errorCode: 1};
         }
 
+        if (ytMatch) {
+            $video.attr('src', $video.attr('src') + '&rel=0');
+        }
         if (options.loop && (ytMatch || vimMatch)) {
             $video.attr('src', $video.attr('src') + '&loop=1');
         }
@@ -1196,6 +1198,8 @@ var LinkDialog = Dialog.extend({
                     if (dom.ancestor(nodes[i], dom.isImg)) {
                         this.data.images.push(dom.ancestor(nodes[i], dom.isImg));
                         text += '[IMG]';
+                    } else if (!is_link && nodes[i].nodeType === 1) {
+                        // just use text nodes from listBetween
                     } else if (!is_link && i===0) {
                         text += nodes[i].textContent.slice(so, Infinity);
                     } else if (!is_link && i===nodes.length-1) {

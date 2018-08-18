@@ -236,6 +236,8 @@ class Lead(models.Model):
     @api.model
     def _onchange_user_values(self, user_id):
         """ returns new values when user_id has changed """
+        if not user_id:
+            return {}
         if user_id and self._context.get('team_id'):
             team = self.env['crm.team'].browse(self._context['team_id'])
             if user_id in team.member_ids.ids:
@@ -440,7 +442,8 @@ class Lead(models.Model):
             'res_id': self.id,
             'views': [(form_view.id, 'form'),],
             'type': 'ir.actions.act_window',
-            'target': 'inline'
+            'target': 'inline',
+            'context': {'default_type': 'opportunity'}
         }
 
     # ----------------------------------------
@@ -542,7 +545,8 @@ class Lead(models.Model):
         for field in fields:
             value = getattr(self, field.name, False)
             if field.ttype == 'selection':
-                value = dict(field.get_values(self.env)).get(value, value)
+                selections = self.fields_get()[field.name]['selection']
+                value = next((v[1] for v in selections if v[0] == value), value)
             elif field.ttype == 'many2one':
                 if value:
                     value = value.sudo().name_get()[0][1]
@@ -695,6 +699,8 @@ class Lead(models.Model):
     @api.model
     def _get_duplicated_leads_by_emails(self, partner_id, email, include_lost=False):
         """ Search for opportunities that have the same partner and that arent done or cancelled """
+        if not email:
+            return []
         partner_match_domain = []
         for email in set(email_split(email) + [email]):
             partner_match_domain.append(('email_from', '=ilike', email))
