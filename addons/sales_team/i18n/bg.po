@@ -177,6 +177,8 @@ msgid ""
 "Follow this salesteam to automatically track the events associated to users "
 "of this team."
 msgstr ""
+"Следвайте този търговски отдел, за да проследявате автоматично събитията, "
+"свързани с потребителите на този отдел."
 
 #. module: sales_team
 #: model:ir.ui.view,arch_db:sales_team.crm_team_view_form
@@ -282,7 +284,7 @@ msgstr "Не дефинирани"
 #. module: sales_team
 #: selection:crm.team,dashboard_graph_model:0
 msgid "Pipeline"
-msgstr ""
+msgstr "Фуния зя продажби"
 
 #. module: sales_team
 #: selection:crm.team,team_type:0

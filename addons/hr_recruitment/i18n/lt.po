@@ -1468,6 +1468,9 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
+"Tėvinis modelis, turintis pseudonimą. Modelis turintis pseudonimo nurodą "
+"nebūtinai yra modelis, suteiktas alias_model_id (pvz.: projektas "
+"(parent_model) ir užduotis (model))"
 
 #. module: hr_recruitment
 #: model:ir.model.fields,help:hr_recruitment.field_hr_job_hr_responsible_id
@@ -1940,7 +1943,7 @@ msgid ""
 "                can easily find all the information you need for each person;\n"
 "                contact data, job position, availability, etc."
 msgstr ""
-"Vos užmetę akį į Odoo darbuotojų vaizdą jūs\n"
+"Vos užmetę akį į \"Odoo\" darbuotojų vaizdą jūs\n"
 "                galėsite rasti visą reikiamą informaciją apie kiekvieną žmogų;\n"
 "                kontaktinius duomenis, poziciją, pasiekiamumą ir kt."
 

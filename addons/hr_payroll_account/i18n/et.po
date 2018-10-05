@@ -54,7 +54,7 @@ msgstr "Kreeditkonto"
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip_date
 msgid "Date Account"
-msgstr "Konto kuupäev"
+msgstr "Kuupäev"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip_line_account_debit
@@ -86,7 +86,7 @@ msgstr "Palgaleht"
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_payslip_run
 msgid "Payslip Batches"
-msgstr "Palgalehe kogumikud"
+msgstr "Igakuised palgalehed"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_payslip_line

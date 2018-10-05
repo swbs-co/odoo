@@ -484,7 +484,7 @@ msgstr ""
 #. module: website
 #: model:ir.ui.view,arch_db:website.user_navbar
 msgid "<span class=\"fa fa-plus\"/>New"
-msgstr ""
+msgstr "<span class=\"fa fa-plus\"/>Naujas"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_image_gallery
@@ -1888,7 +1888,7 @@ msgstr ""
 #: code:addons/website/static/src/xml/website.backend.xml:22
 #, python-format
 msgid "Go to Website"
-msgstr ""
+msgstr "Eiti į svetainę"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -3965,7 +3965,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:website.action_website_menu
 #: model:ir.model,name:website.model_website_menu
 msgid "Website Menu"
-msgstr ""
+msgstr "Svetainės meniu"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings_website_name
@@ -4055,7 +4055,7 @@ msgstr ""
 #. module: website
 #: model:ir.ui.view,arch_db:website.menu_tree
 msgid "Website menu"
-msgstr ""
+msgstr "Svetainės meniu"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_blog_blog_website_meta_description
