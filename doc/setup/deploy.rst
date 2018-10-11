@@ -165,6 +165,18 @@ in ``/etc/odoo.conf`` set:
   db_password = pwd
   dbfilter = ^mycompany.*$
 
+.. _postgresql_ssl_connect:
+
+SSL Between Odoo and PostgreSQL
+-------------------------------
+
+Since Odoo 11.0, you can enforce ssl connection between Odoo and PostgreSQL.
+in Odoo the db_sslmode control the ssl security of the connection 
+with value choosed out of 'disable', 'allow', 'prefer', 'require', 'verify-ca'
+or 'verify-full'
+
+`PostgreSQL Doc <https://www.postgresql.org/docs/current/static/libpq-ssl.html>`_
+
 .. _builtin_server:
 
 Builtin server
@@ -213,6 +225,13 @@ the client will not connect to it.
 Instead you must have a proxy redirecting requests whose URL starts with
 ``/longpolling/`` to the longpolling port. Other request should be proxied to
 the :option:`normal HTTP port <odoo-bin --http-port>`
+
+To achieve such a thing, you'll need to deploy a reverse proxy in front of Odoo,
+like nginx or apache. When doing so, you'll need to forward some more http Headers
+to Odoo, and activate the proxy_mode in Odoo configuration to have Odoo read those
+headers.
+
+
 
 Configuration sample
 --------------------
@@ -316,16 +335,18 @@ in ``/etc/nginx/sites-enabled/odoo.conf`` set:
    # log
    access_log /var/log/nginx/odoo.access.log;
    error_log /var/log/nginx/odoo.error.log;
-   
+
+   # Redirect longpoll requests to odoo longpolling port
+   location /longpolling {
+   proxy_pass http://odoochat;
+   }
+
    # Redirect requests to odoo backend server
    location / {
      proxy_redirect off;
      proxy_pass http://odoo;
    }
-   location /longpolling {
-       proxy_pass http://odoochat;
-   }
- 
+
    # common gzip
    gzip_types text/css text/less text/plain text/xml application/xml application/json application/javascript;
    gzip on;
@@ -421,6 +442,10 @@ security-related topics:
   only for controlling/managing the installation.
   *Never* use any default passwords like admin/admin, even for test/staging databases.
 
+- Do **not** install demo data on internet-facing servers. Databases with demo data contain
+  default logins and passwords that can be used to get into your systems and cause significant
+  trouble, even on staging/dev systems.
+
 - Use appropriate database filters ( :option:`--db-filter <odoo-bin --db-filter>`)
   to restrict the visibility of your databases according to the hostname.
   See :ref:`db_filter`.
@@ -453,6 +478,20 @@ security-related topics:
   and then enable the :option:`proxy mode <odoo-bin --proxy-mode>` option.
   See also :ref:`https_proxy`.
 
+- If you need to allow remote SSH access to your servers, make sure to set a strong password
+  for **all** accounts, not just `root`. It is strongly recommended to entirely disable
+  password-based authentication, and only allow public key authentication. Also consider
+  restricting access via a VPN, allowing only trusted IPs in the firewall, and/or
+  running a brute-force detection system such as `fail2ban` or equivalent.
+
+- Consider installing appropriate rate-limiting on your proxy or firewall, to prevent
+  brute-force attacks and denial of service attacks. See also :ref:`login_brute_force`
+  for specific measures.
+
+  Many network providers provide automatic mitigation for Distributed Denial of
+  Service attacks (DDOS), but this is often an optional service, so you should consult
+  with them.
+
 - Whenever possible, host your public-facing demo/test/staging instances on different
   machines than the production ones. And apply the same security precautions as for
   production.
@@ -462,6 +501,50 @@ security-related topics:
 
 - Setup daily backups of your databases and filestore data, and copy them to a remote
   archiving server that is not accessible from the server itself.
+
+
+.. _login_brute_force:
+
+Blocking Brute Force Attacks
+----------------------------
+For internet-facing deployments, brute force attacks on user passwords are very common, and this
+threat should not be neglected for Odoo servers. Odoo emits a log entry whenever a login attempt
+is performed, and reports the result: success or failure, along with the target login and source IP.
+
+The log entries will have the following form.
+
+Failed login::
+
+      2018-07-05 14:56:31,506 24849 INFO db_name odoo.addons.base.res.res_users: Login failed for db:db_name login:admin from 127.0.0.1
+
+Successful login::
+
+      2018-07-05 14:56:31,506 24849 INFO db_name odoo.addons.base.res.res_users: Login successful for db:db_name login:admin from 127.0.0.1
+
+
+These logs can be easily analyzed by an intrusion prevention system such as `fail2ban`.
+
+For example, the following fail2ban filter definition should match a
+failed login::
+
+    [Definition]
+    failregex = ^ \d+ INFO \S+ \S+ Login failed for db:\S+ login:\S+ from <HOST>
+    ignoreregex =
+
+This could be used with a jail definition to block the attacking IP on HTTP(S).
+
+Here is what it could look like for blocking the IP for 15 minutes when
+10 failed login attempts are detected from the same IP within 1 minute::
+
+    [odoo-login]
+    enabled = true
+    port = http,https
+    bantime = 900  ; 15 min ban
+    maxretry = 10  ; if 10 attempts
+    findtime = 60  ; within 1 min  /!\ Should be adjusted with the TZ offset
+    logpath = /var/log/odoo.log  ;  set the actual odoo log path here
+
+
 
 
 .. _db_manager_security:
@@ -476,7 +559,20 @@ dump or restore databases).
 
 If the management screens must not be accessible at all, you should set ``list_db``
 configuration option to ``False``, to block access to all the database selection and
-management screens. But be sure to setup an appropriate ``db_name`` parameter
+management screens.
+
+.. warning::
+
+  It is strongly recommended to disable the Database Manager for any internet-facing
+  system! It is meant as a development/demo tool, to make it easy to quickly create
+  and manage databases. It is not designed for use in production, and may even expose
+  dangerous features to attackers. It is also not designed to handle large databases,
+  and may trigger memory limits.
+
+  On production systems, database management operations should always be performed by
+  the system administrator, including provisioning of new databases and automated backups.
+
+Be sure to setup an appropriate ``db_name`` parameter
 (and optionally, ``db_filter`` too) so that the system can determine the target database
 for each request, otherwise users will be blocked as they won't be allowed to choose the
 database themselves.
@@ -503,10 +599,14 @@ Supported Browsers
 Odoo is supported by multiple browsers for each of its versions. No 
 distinction is made according to the browser version in order to be
 up-to-date. Odoo is supported on the current browser version. The list 
-of the supported browsers by Odoo version is the following:
+of the supported browsers is the following:
 
-- **Odoo 9:** IE11, Mozilla Firefox, Google Chrome, Safari, Microsoft Edge
-- **Odoo 10+:** Mozilla Firefox, Google Chrome, Safari, Microsoft Edge
+- IE11,
+- Mozilla Firefox,
+- Google Chrome,
+- Safari,
+- Microsoft Edge
+
 
 .. [#different-machines]
     to have multiple Odoo installations use the same PostgreSQL database,
@@ -532,8 +632,8 @@ of the supported browsers by Odoo version is the following:
 .. _socat: http://www.dest-unreach.org/socat/
 .. _PostgreSQL connection settings:
 .. _listen to network interfaces:
-    http://www.postgresql.org/docs/9.3/static/runtime-config-connection.html
+    http://www.postgresql.org/docs/9.6/static/runtime-config-connection.html
 .. _use an SSH tunnel:
-    http://www.postgresql.org/docs/9.3/static/ssh-tunnels.html
+    http://www.postgresql.org/docs/9.6/static/ssh-tunnels.html
 .. _WSGI: http://wsgi.readthedocs.org/
 .. _POSBox: https://www.odoo.com/page/point-of-sale-hardware#part_2

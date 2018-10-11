@@ -6,7 +6,7 @@
 Installing Odoo
 ===============
 
-There are mutliple ways to install Odoo, or not install it at all, depending
+There are multiple ways to install Odoo, or not install it at all, depending
 on the intended use case.
 
 This documents attempts to describe most of the installation options.
@@ -406,7 +406,7 @@ Source installation requires manually installing dependencies:
 
         $ sudo npm install -g less
 
-  - on Windows, `install nodejs <http://nodejs.org/download/>`_, reboot (to
+  - on Windows, `install nodejs <https://nodejs.org/en/download/>`_, reboot (to
     update the :envvar:`PATH`) and install less:
 
     .. code-block:: doscon
@@ -588,7 +588,7 @@ Docker
 ======
 
 The full documentation on how to use Odoo with Docker can be found on the
-offcial Odoo `docker image <https://registry.hub.docker.com/_/odoo/>`_ page.
+official Odoo `docker image <https://registry.hub.docker.com/_/odoo/>`_ page.
 
 .. _demo: https://demo.odoo.com
 .. _docker: https://www.docker.com

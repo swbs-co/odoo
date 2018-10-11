@@ -4,6 +4,7 @@ odoo.define('web_editor.widget', function (require) {
 var core = require('web.core');
 var Dialog = require('web.Dialog');
 var Widget = require('web.Widget');
+var utils = require('web.utils');
 var weContext = require("web_editor.context");
 
 var QWeb = core.qweb;
@@ -110,7 +111,8 @@ var ImageDialog = Widget.extend({
         'change input.url': "change_input",
         'keyup input.url': "change_input",
         'click .existing-attachments [data-src]': 'select_existing',
-        'dblclick .existing-attachments [data-src]': function () {
+        'dblclick .existing-attachments [data-src]': function (e) {
+            this.select_existing(e, true);
             this.getParent().save();
         },
         'click .o_existing_attachment_remove': 'try_remove',
@@ -120,9 +122,11 @@ var ImageDialog = Widget.extend({
         this._super.apply(this, arguments);
         this.options = options || {};
         this.accept = this.options.accept || this.options.document ? "*/*" : "image/*";
-        if (this.options.res_id) {
+        if (options.domain) {
+            this.domain = typeof options.domain === 'function' ? options.domain() : options.domain;
+        } else if (options.res_id) {
             this.domain = ['|',
-                '&', ['res_model', '=', this.options.res_model], ['res_id', '=', this.options.res_id],
+                '&', ['res_model', '=', options.res_model], ['res_id', '=', options.res_id],
                 ['res_model', '=', 'ir.ui.view']];
         } else {
             this.domain = [['res_model', '=', 'ir.ui.view']];
@@ -164,11 +168,13 @@ var ImageDialog = Widget.extend({
         });
         return res;
     },
-    push: function (attachment) {
+    push: function (attachment, force_select) {
         if (this.options.select_images) {
             var img = _.select(this.images, function (v) { return v.id === attachment.id; });
             if (img.length) {
-                this.images.splice(this.images.indexOf(img[0]),1);
+                if (!force_select) {
+                  this.images.splice(this.images.indexOf(img[0]),1);
+                }
             } else {
                 this.images.push(attachment);
             }
@@ -184,8 +190,7 @@ var ImageDialog = Widget.extend({
 
         var img = this.images[0];
         if (!img) {
-            var id = this.$(".existing-attachments [data-src]:first").data('id');
-            img = _.find(this.images, function (img) { return img.id === id;});
+            return this.media;
         }
 
         var def = $.when();
@@ -235,6 +240,11 @@ var ImageDialog = Widget.extend({
             var style = self.style;
             if (style) { $(self.media).css(style); }
 
+            if (self.options.onUpload) {
+                // We consider that when selecting an image it is as if we upload it in the html content.
+                self.options.onUpload([img]);
+            }
+
             return self.media;
         });
     },
@@ -276,7 +286,7 @@ var ImageDialog = Widget.extend({
             $form.find('.well > span').remove();
             $form.find('.well > div').show();
             _.each(attachments, function (record) {
-                record.src = record.url || '/web/image/' + record.id;
+                record.src = record.url || _.str.sprintf('/web/image/%s/%s', record.id, encodeURI(record.name)); // Name is added for SEO purposes
                 record.is_document = !(/gif|jpe|jpg|png/.test(record.mimetype));
             });
             if (error || !attachments.length) {
@@ -285,6 +295,10 @@ var ImageDialog = Widget.extend({
             self.images = attachments;
             for (var i=0; i<attachments.length; i++) {
                 self.file_selected(attachments[i], error);
+            }
+
+            if (self.options.onUpload) {
+                self.options.onUpload(attachments);
             }
         };
     },
@@ -367,10 +381,10 @@ var ImageDialog = Widget.extend({
         });
         this.selected_existing();
     },
-    select_existing: function (e) {
+    select_existing: function (e, force_select) {
         var $img = $(e.currentTarget);
         var attachment = _.find(this.records, function (record) { return record.id === $img.data('id'); });
-        this.push(attachment);
+        this.push(attachment, force_select);
         this.selected_existing();
     },
     selected_existing: function () {
@@ -435,16 +449,12 @@ var getCssSelectors = function (filter) {
     var sheets = document.styleSheets;
     for (var i = 0; i < sheets.length; i++) {
         var rules;
-        if (sheets[i].rules) {
-            rules = sheets[i].rules;
-        } else {
-            //try...catch because Firefox not able to enumerate document.styleSheets[].cssRules[] for cross-domain stylesheets.
-            try {
-                rules = sheets[i].cssRules;
-            } catch (e) {
-                console.warn("Can't read the css rules of: " + sheets[i].href, e);
-                continue;
-            }
+        // try...catch because browser may not able to enumerate rules for cross-domain stylesheets
+        try {
+            rules = sheets[i].rules || sheets[i].cssRules;
+        } catch(e) {
+            console.warn("Can't read the css rules of: " + sheets[i].href, e);
+            continue;
         }
         if (rules) {
             for (var r = 0; r < rules.length; r++) {
@@ -810,6 +820,9 @@ var VideoDialog = Widget.extend({
             return {errorCode: 1};
         }
 
+        if (ytMatch) {
+            $video.attr('src', $video.attr('src') + '&rel=0');
+        }
         if (options.loop && (ytMatch || vimMatch)) {
             $video.attr('src', $video.attr('src') + '&loop=1');
         }
@@ -1185,6 +1198,8 @@ var LinkDialog = Dialog.extend({
                     if (dom.ancestor(nodes[i], dom.isImg)) {
                         this.data.images.push(dom.ancestor(nodes[i], dom.isImg));
                         text += '[IMG]';
+                    } else if (!is_link && nodes[i].nodeType === 1) {
+                        // just use text nodes from listBetween
                     } else if (!is_link && i===0) {
                         text += nodes[i].textContent.slice(so, Infinity);
                     } else if (!is_link && i===nodes.length-1) {
@@ -1212,6 +1227,7 @@ var LinkDialog = Dialog.extend({
         if (!$e.length) {
             $e = this.$('input.url-source:first');
         }
+        $e.closest('.form-group').removeClass('has-error');
         var val = $e.val();
         var label = this.$('#o_link_dialog_label_input').val() || val;
 
@@ -1232,8 +1248,7 @@ var LinkDialog = Dialog.extend({
         var size = this.$("select.link-style").val() || '';
         var classes = (this.data.className || "") + (style && style.length ? " btn " : "") + style + " " + size;
         var isNewWindow = this.$('input.window-new').prop('checked');
-
-        if ($e.hasClass('email-address') && $e.val().indexOf("@") !== -1) {
+        if ($e.hasClass('email-address') && (_.str.startsWith(val, 'mailto:') || (val.indexOf("@") !== -1 && !_.str.startsWith(val, 'http') && !_.str.startsWith(val, 'www')))) {
             self.get_data_buy_mail(def, $e, isNewWindow, label, classes, test);
         } else {
             self.get_data_buy_url(def, $e, isNewWindow, label, classes, test);
@@ -1242,7 +1257,13 @@ var LinkDialog = Dialog.extend({
     },
     get_data_buy_mail: function (def, $e, isNewWindow, label, classes, test) {
         var val = $e.val();
-        def.resolve(val.indexOf("mailto:") === 0 ? val : 'mailto:' + val, isNewWindow, label, classes);
+        if (utils.is_email(val, true)) {
+            def.resolve(val.indexOf("mailto:") === 0 ? val : 'mailto:' + val, isNewWindow, label, classes);
+        } else {
+            $e.closest('.form-group').addClass('has-error');
+            $e.focus();
+            def.reject();
+        }
     },
     get_data_buy_url: function (def, $e, isNewWindow, label, classes, test) {
         def.resolve($e.val(), isNewWindow, label, classes);
@@ -1290,6 +1311,7 @@ var LinkDialog = Dialog.extend({
                 this.$('input.email-address').val(match = /mailto:(.+)/.exec(href) ? match[1] : '');
             } else {
                 this.$('input.url').val(href);
+                this.$('input.window-new').closest("div").show();
             }
         }
         this.preview();
@@ -1326,5 +1348,9 @@ return {
     getCssSelectors: getCssSelectors,
     fontIcons: fontIcons,
     computeFonts: computeFonts,
+    click_event: click_event,
+    fontIconsDialog: fontIconsDialog,
+    ImageDialog: ImageDialog,
+    VideoDialog: VideoDialog,
 };
 });
