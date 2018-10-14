@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models
+from odoo import api, models, fields
 
 import logging
 
@@ -44,6 +44,8 @@ class AccountInvoiceLine(models.Model):
 
     def _get_anglo_saxon_price_unit(self):
         self.ensure_one()
+        if not self.product_id:
+            return self.price_unit
         return self.product_id._get_anglo_saxon_price_unit(uom=self.uom_id)
 
     def _get_price(self, company_currency, price_unit):

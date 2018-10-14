@@ -93,7 +93,7 @@ odoo.define('payment_stripe.stripe', function(require) {
         }
 
         var access_token = $("input[name='access_token']").val() || $("input[name='token']").val() || '';
-        var so_id = $("input[name='return_url']").val().match(/quote\/([0-9]+)/) || undefined;
+        var so_id = $("input[name='return_url']").val().match(/[quote|order]s?\/([0-9]+)/) || undefined;
         if (so_id) {
             so_id = parseInt(so_id[1]);
         }
@@ -109,8 +109,8 @@ odoo.define('payment_stripe.stripe', function(require) {
 
         if ($('.o_website_payment').length !== 0) {
             var invoice_num = $("input[name='invoice_num']").val();
-            var url = _.str.sprintf("/website_payment/transaction/%s/%f/%s",
-                invoice_num, amount, currency_id);
+            var url = _.str.sprintf("/website_payment/transaction/v2/%f/%s/%s",
+                amount, currency_id, invoice_num);
 
             var create_tx = ajax.jsonRpc(url, 'call', {
                     acquirer_id: acquirer_id
@@ -147,7 +147,10 @@ odoo.define('payment_stripe.stripe', function(require) {
                     access_token: access_token,
                     acquirer_id: acquirer_id
             }).then(function (data) {
+                var $pay_stripe = $('#pay_stripe').detach();
                 try { provider_form.innerHTML = data; } catch (e) {};
+                // Restore 'Pay Now' button HTML since data might have changed it.
+                $(provider_form).find('#pay_stripe').replaceWith($pay_stripe);
             });
         }
         create_tx.done(function () {

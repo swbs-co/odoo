@@ -12,7 +12,7 @@
 # Wolfgang Taferner, 2017
 # Thorsten Vocks <thorsten.vocks@openbig.org>, 2017
 # Niki Waibel, 2017
-# Malte Jansen <work@maltejansen.de>, 2017
+# brokemeister <work@maltejansen.de>, 2017
 # Henry Mineehen <info@mineehen.de>, 2017
 # Martin K <martinkuenz@gmail.com>, 2017
 # Philipp Hug <philipp@hug.cx>, 2017
@@ -26,7 +26,7 @@
 # Thomas Neu <t.neu@runbox.com>, 2017
 # Ralf Hilgenstock <rh@dialoge.info>, 2017
 # jonas <jonas.hillebrecht@bklynsoap.com>, 2017
-# Krakataua Katarajtu <shlok@hotmail.de>, 2017
+# dd5cd5bab88c61e9dedf84f5ea59b147, 2017
 # Rudolf Schnapka <rs@techno-flex.de>, 2017
 # Mathias Neef <mn@copado.de>, 2017
 # Dejan Dinic, 2017
@@ -41,8 +41,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-19 13:43+0000\n"
-"PO-Revision-Date: 2018-02-19 13:43+0000\n"
+"POT-Creation-Date: 2018-07-27 11:55+0000\n"
+"PO-Revision-Date: 2018-07-27 11:55+0000\n"
 "Last-Translator: e2f <projects@e2f.com>, 2018\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
@@ -316,7 +316,7 @@ msgstr "<span class=\"fa fa-long-arrow-left\"/> Zurück"
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.extra_info
 msgid "<span class=\"fa fa-long-arrow-left\"/> Previous"
-msgstr "<span class=\"fa fa-long-arrow-left\"/>Vorherige"
+msgstr "<span class=\"fa fa-long-arrow-left\"/>Zurück"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.checkout
@@ -508,7 +508,7 @@ msgid ""
 "                            <span class=\"small\">Advised if your packs vary in size/weight and/or if you ship worldwide</span>\n"
 "                            </span>"
 msgstr ""
-"<span class=\"panel-title\"><span class=\"fa fa-shopping-cart\"/><strong>Zum Kostenpreis</strong> (Kunde zahlt das, was Sie zahlen) <br/>\n"
+"<span class=\"panel-title\"><span class=\"fa fa-shopping-cart\"/><strong>Zum Herstellungskostenpreis</strong> (Kunde zahlt das, was Sie zahlen) <br/>\n"
 " <span class=\"small\">Empfohlen, wenn Ihre Pakete nach Größe oder Gewicht schwanken bzw. wenn Sie weltweit versenden.</span>\n"
 "</span>"
 
@@ -1233,7 +1233,7 @@ msgstr ""
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
 msgid "Change"
-msgstr "Wechselgeld"
+msgstr "Ändern"
 
 #. module: website_sale
 #: model:ir.model.fields,help:website_sale.field_sale_order_can_directly_mark_as_paid
@@ -1943,7 +1943,7 @@ msgid ""
 "telecommunications, and services that are electronically supplied instead of"
 " shipped. Gift cards sent online are not included in the definition."
 msgstr ""
-"Wenn Sie digitale Waren an Kunden in der EU verkaufen, müssen Sie die MwSt. "
+"Wenn Sie digitale Waren an Kunden in der EU verkaufen, müssen Sie die USt. "
 "auf der Grundlage Ihrer Kunden-Standorte berechnen. Diese Regel gilt "
 "unabhängig davon, wo Ihr Standort ist. Digitale Waren werden in den "
 "Rechtsvorschriften definiert als Rundfunk, Telekommunikation und "
@@ -2035,7 +2035,7 @@ msgid "Installs *e-Commerce Inventory*"
 msgstr "Installiert *E-Commerce-Bestand*"
 
 #. module: website_sale
-#: code:addons/website_sale/controllers/main.py:502
+#: code:addons/website_sale/controllers/main.py:518
 #, python-format
 msgid "Invalid Email! Please enter a valid email address."
 msgstr ""
@@ -2063,7 +2063,7 @@ msgid "Issue invoices to customers"
 msgstr "Rechnungen an Kunden senden"
 
 #. module: website_sale
-#: code:addons/website_sale/models/sale_order.py:146
+#: code:addons/website_sale/models/sale_order.py:157
 #, python-format
 msgid "It is forbidden to modify a sales order which is not in draft status"
 msgstr ""
@@ -2182,7 +2182,7 @@ msgstr ""
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
 msgid "List displaying"
-msgstr "Liste mit"
+msgstr "Listenansicht"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.address
@@ -2219,11 +2219,6 @@ msgstr "Verfügbarkeit von Produkten verwalten"
 #: model:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
 msgid "Manage promotion &amp; coupon programs"
 msgstr "Werbe- und Gutscheinkampagnen verwalten"
-
-#. module: website_sale
-#: model:ir.ui.view,arch_db:website_sale.sale_order_view_form
-msgid "Mark as Paid"
-msgstr "Als bezahlt markieren"
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_public_category_image_medium
@@ -2305,7 +2300,7 @@ msgstr "Netzwerk"
 
 #. module: website_sale
 #. openerp-web
-#: code:addons/website_sale/controllers/main.py:968
+#: code:addons/website_sale/controllers/main.py:988
 #: code:addons/website_sale/static/src/js/website_sale.editor.js:32
 #: model:ir.ui.view,arch_db:website_sale.content_new_product
 #, python-format
@@ -2340,7 +2335,7 @@ msgstr "Keine Website"
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.confirmation
 msgid "Now to Follow Your Order"
-msgstr "Jetzt zum Befolgen Ihres Auftrags"
+msgstr "und Auftrag verfolgen"
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_crm_team_abandoned_carts_count
@@ -2459,7 +2454,7 @@ msgid "Parent Category"
 msgstr "Oberkategorie"
 
 #. module: website_sale
-#: code:addons/website_sale/controllers/main.py:756
+#: code:addons/website_sale/controllers/main.py:774
 #: model:ir.ui.view,arch_db:website_sale.payment
 #, python-format
 msgid "Pay Now"
@@ -2941,7 +2936,7 @@ msgstr "Verkaufsbericht"
 #: code:addons/website_sale/static/src/xml/website_sale_dashboard.xml:47
 #, python-format
 msgid "Sales Since Last"
-msgstr "Verkäufe seit letztem"
+msgstr "Verkäufe seit letztem/r"
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_res_config_settings_salesperson_id
@@ -3232,7 +3227,7 @@ msgstr ""
 "Gateways bei Ihrer eigenen Zahlungsverarbeitung verwendet werden."
 
 #. module: website_sale
-#: code:addons/website_sale/controllers/main.py:520
+#: code:addons/website_sale/controllers/main.py:536
 #, python-format
 msgid "Some required fields are empty."
 msgstr "Einige benötigte Felder sind leer."
@@ -3343,7 +3338,7 @@ msgstr "Synchronisieren Sie sich mit Ihrem Herzen."
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.address
 msgid "TIN / VAT"
-msgstr "TIN bzw. MwSt."
+msgstr "USt-IdNr."
 
 #. module: website_sale
 #: model:sale.order.line,website_description:website_sale.website_sale_order_line_11
@@ -3445,6 +3440,14 @@ msgstr ""
 "mit der Tastatur vor Ihrem iPad oder auf Ihrem Schoß."
 
 #. module: website_sale
+#: model:ir.model.fields,help:website_sale.field_res_config_settings_automatic_invoice
+msgid ""
+"The invoice is generated automatically and available in the customer portal when the transaction is confirmed by the payment acquirer.\n"
+"The invoice is marked as paid and the payment is registered in the payment journal defined in the configuration of the payment acquirer.\n"
+"This mode is advised if you issue the final invoice at the order and not after the delivery."
+msgstr ""
+
+#. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
 msgid ""
 "The mode selected here applies as invoicing policy of any new product "
@@ -3454,7 +3457,7 @@ msgstr ""
 "alle neu erstellten Produkte, jedoch nicht für bestehende Produkte."
 
 #. module: website_sale
-#: code:addons/website_sale/models/sale_order.py:247
+#: code:addons/website_sale/models/sale_order.py:258
 #, python-format
 msgid ""
 "The quote should be sent and the payment acquirer type should be manual or "
@@ -3800,7 +3803,7 @@ msgstr ""
 #. module: website_sale
 #: model:ir.actions.act_window,help:website_sale.action_abandoned_orders_ecommerce
 msgid "You should send an email to revive them!"
-msgstr "Senden Sie eine E-Mail, um sich in Erinnerung zu rufen!"
+msgstr "Senden Sie eine E-Mail, um sie an sie zu erinnern!"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.address
@@ -3965,4 +3968,4 @@ msgstr "Website"
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
 msgid "what do the customers think of the product"
-msgstr "was denken Kunden über das Produkt"
+msgstr "Was denken Kunden über das Produkt"

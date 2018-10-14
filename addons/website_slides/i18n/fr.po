@@ -26,10 +26,10 @@
 # e2f <projects@e2f.com>, 2018
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-02 11:27+0000\n"
-"PO-Revision-Date: 2017-10-02 11:27+0000\n"
+"POT-Creation-Date: 2018-01-10 07:40+0000\n"
+"PO-Revision-Date: 2018-01-10 07:40+0000\n"
 "Last-Translator: e2f <projects@e2f.com>, 2018\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -95,7 +95,7 @@ msgstr ""
 "\n"
 "<p>Bonjour,</p>\n"
 "<p>\n"
-"    Un nouveau ${object.slide_type} <strong>${object.name}</strong> a été publié sur  ${object.channel_id.name} à ${format_tz(object.write_date, tz=user.tz)}\n"
+"    Un nouveau/une nouvelle ${object.slide_type} intitulé(e) <strong>${object.name}</strong> a été publié(e) sur  ${object.channel_id.name} le ${format_tz(object.write_date, tz=user.tz)}\n"
 "</p>\n"
 "<p style=\"text-align: center; margin-top: 10px;\">\n"
 "    <a href=\"${object.website_url}\">\n"
@@ -269,6 +269,15 @@ msgstr "<i class=\"fa fa-thumbs-down\"/> N'aime pas"
 #: model:ir.ui.view,arch_db:website_slides.slide_detail_view
 msgid "<i class=\"fa fa-thumbs-up\"/> Likes"
 msgstr "<i class=\"fa fa-thumbs-up\"/> Aime"
+
+#. module: website_slides
+#: code:addons/website_slides/models/slides.py:105
+#, python-format
+msgid ""
+"<p>This channel is private and its content is restricted to some users.</p>"
+msgstr ""
+"<p>Ce canal est privé et son contenu est visible seulement par certains "
+"utilisateurs.</p>"
 
 #. module: website_slides
 #: model:ir.ui.view,arch_db:website_slides.slide_detail_view
@@ -982,7 +991,7 @@ msgstr "Journées Odoo"
 #. module: website_slides
 #: model:slide.slide,name:website_slides.slide_7
 msgid "Odoo Inventory"
-msgstr "Odoo Inventory"
+msgstr "Odoo Inventaire"
 
 #. module: website_slides
 #: model:slide.slide,name:website_slides.slide_0
@@ -997,12 +1006,12 @@ msgstr "Odoo Marketing"
 #. module: website_slides
 #: model:slide.slide,name:website_slides.slide_8
 msgid "Odoo Sales"
-msgstr "Odoo Sales"
+msgstr "Odoo Ventes"
 
 #. module: website_slides
 #: model:slide.slide,name:website_slides.slide_3
 msgid "Odoo Sign Demonstration"
-msgstr "Démonstration d'Odoo Sign"
+msgstr "Démonstration d'Odoo Signature"
 
 #. module: website_slides
 #: model:slide.slide,name:website_slides.slide_9
@@ -1240,7 +1249,7 @@ msgid ""
 "\n"
 "Discover more at https://www.odoo.com/page/sign"
 msgstr ""
-"Plus besoin d'imprimer les documents, les signer puis les numériser. Passez à la signature électronique avec Odoo Sign ! \n"
+"Plus besoin d'imprimer les documents, les signer puis les numériser. Passez à la signature électronique avec Odoo Signature ! \n"
 "\n"
 "En savoir plus sur https://www.odoo.com/page/sign"
 
@@ -1447,7 +1456,7 @@ msgid ""
 msgstr ""
 "Logiciel de gestion d'entrepôt pour le XXIe siècle.\n"
 "\n"
-"Découvrez Odoo Inventory : https://www.odoo.com/page/warehouse"
+"Découvrez Odoo Inventaire : https://www.odoo.com/page/warehouse"
 
 #. module: website_slides
 #: model:ir.ui.view,arch_db:website_slides.view_slide_slide_form

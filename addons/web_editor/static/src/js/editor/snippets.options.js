@@ -813,6 +813,7 @@ registry.colorpicker = SnippetOption.extend({
      */
     _onColorResetButtonClick: function () {
         this.$target.removeClass(this.classes);
+        self.$target.trigger('content_changed');
         this.$el.find('.colorpicker button.selected').removeClass('selected');
     },
 });
@@ -1291,7 +1292,7 @@ registry.many2one = SnippetOption.extend({
             method: 'search_read',
             args: [domain, this.Model === 'res.partner' ? ['name', 'display_name', 'city', 'country_id'] : ['name', 'display_name']],
             kwargs: {
-                order: 'name DESC',
+                order: [{name: 'name', asc: false}],
                 limit: 5,
                 context: weContext.get(),
             },

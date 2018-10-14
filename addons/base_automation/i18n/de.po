@@ -168,7 +168,7 @@ msgstr "Abgrenzung vor Aktualisierung"
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation_binding_model_id
 msgid "Binding Model"
-msgstr "Verbindliches Modell"
+msgstr "Modell verbinden"
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation_binding_type
@@ -467,6 +467,8 @@ msgid ""
 "Provide the field used to link the newly created record on the record on "
 "used by the server action."
 msgstr ""
+"Geben Sie das Feld an, das verwendet wird, um den neu erstellten Datensatz "
+"mit dem Datensatz zu verknüpfen, der von der Serveraktion verwendet wird."
 
 #. module: base_automation
 #: model:ir.model.fields,field_description:base_automation.field_base_automation_code
@@ -608,7 +610,7 @@ msgid ""
 "                                  If present, will be checked by the scheduler. If empty, will be checked at creation and update."
 msgstr ""
 "Wann die Bedingung ausgelöst werden sollte.\n"
-"Falls vorhanden, wird der Zeitplaner dieses Feld markieren. Falls leer, wird dieses Feld bei der Erstellung und Aktualisierung eine Überprüfung markiert."
+"Falls vorhanden, wird der Zeitplaner die Überprüfung vornehmen. Falls leer, wird bei der Erstellung und Aktualisierung eine Überprüfung vorgenommen."
 
 #. module: base_automation
 #: model:ir.model.fields,help:base_automation.field_base_automation_active

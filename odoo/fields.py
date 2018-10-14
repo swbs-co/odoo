@@ -277,6 +277,7 @@ class Field(MetaField('DummyField', (object,), {})):
 
         'automatic': False,             # whether the field is automatically created ("magic" field)
         'inherited': False,             # whether the field is inherited (_inherits)
+        'inherited_field': None,        # the corresponding inherited field
 
         'name': None,                   # name of the field
         'model_name': None,             # name of the model of this field
@@ -552,7 +553,7 @@ class Field(MetaField('DummyField', (object,), {})):
         # when related_sudo, bypass access rights checks when reading values
         others = records.sudo() if self.related_sudo else records
         # copy the cache of draft records into others' cache
-        if records.env != others.env:
+        if records.env.in_onchange and records.env != others.env:
             copy_cache(records - records.filtered('id'), others.env)
         #
         # Traverse fields one by one for all records, in order to take advantage
@@ -611,7 +612,7 @@ class Field(MetaField('DummyField', (object,), {})):
     @property
     def base_field(self):
         """ Return the base field of an inherited field, or ``self``. """
-        return self.related_field.base_field if self.inherited else self
+        return self.inherited_field.base_field if self.inherited_field else self
 
     #
     # Company-dependent fields
@@ -1527,6 +1528,9 @@ class Date(Field):
         """ Convert a :class:`date` value into the format expected by the ORM. """
         return value.strftime(DATE_FORMAT) if value else False
 
+    def convert_to_column(self, value, record, values=None):
+        return super(Date, self).convert_to_column(value or None, record, values)
+
     def convert_to_cache(self, value, record, validate=True):
         if not value:
             return False
@@ -1597,6 +1601,9 @@ class Datetime(Field):
         """ Convert a :class:`datetime` value into the format expected by the ORM. """
         return value.strftime(DATETIME_FORMAT) if value else False
 
+    def convert_to_column(self, value, record, values=None):
+        return super(Datetime, self).convert_to_column(value or None, record, values)
+
     def convert_to_cache(self, value, record, validate=True):
         if not value:
             return False
@@ -1623,7 +1630,8 @@ class Datetime(Field):
 # Received data is returned as buffer (in Python 2) or memoryview (in Python 3).
 _BINARY = memoryview
 if pycompat.PY2:
-    _BINARY = buffer #pylint: disable=buffer-builtin
+    #pylint: disable=buffer-builtin,undefined-variable
+    _BINARY = buffer
 
 class Binary(Field):
     type = 'binary'
@@ -1791,6 +1799,8 @@ class Selection(Field):
     def convert_to_cache(self, value, record, validate=True):
         if not validate:
             return value or False
+        if value and self.column_type[0] == 'int4':
+            value = int(value)
         if value in self.get_values(record.env):
             return value
         elif not value:
@@ -2502,6 +2512,7 @@ class Id(Field):
         'string': 'ID',
         'store': True,
         'readonly': True,
+        'prefetch': False,
     }
 
     def update_db(self, model, columns):

@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2017
-# Arma Gedonsky <armagedonsky@hot.ee>, 2017
+# Marek Pontus, 2017
 # Rivo Zängov <eraser@eraser.ee>, 2017
 # Hedi Hunt <Hedi.Hunt@gmail.com>, 2017
 # Eneli Õigus <enelioigus@gmail.com>, 2017
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-19 13:43+0000\n"
-"PO-Revision-Date: 2018-02-19 13:43+0000\n"
+"POT-Creation-Date: 2018-07-27 11:55+0000\n"
+"PO-Revision-Date: 2018-07-27 11:55+0000\n"
 "Last-Translator: Eneli Õigus <enelioigus@gmail.com>, 2017\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: account_payment
+#: model:ir.ui.view,arch_db:account_payment.payment_confirmation_status
+msgid "&amp;times;"
+msgstr "&amp;korda;"
 
 #. module: account_payment
 #: code:addons/account_payment/models/payment.py:61
@@ -65,6 +70,13 @@ msgid "<i class=\"fa fa-check-circle\"/> Pending"
 msgstr "<i class=\"fa fa-check-circle\"/> Ootel"
 
 #. module: account_payment
+#: model:ir.ui.view,arch_db:account_payment.portal_invoice_page_inherit_payment
+msgid ""
+"<i class=\"fa fa-info\"/> You have credits card registered, you can log-in "
+"to be able to use them."
+msgstr ""
+
+#. module: account_payment
 #: model:ir.ui.view,arch_db:account_payment.portal_invoice_report
 msgid ""
 "<span class=\"label label-info orders_label_text_align\"><i class=\"fa fa-fw"
@@ -91,10 +103,10 @@ msgstr "<strong>Tehingud</strong>"
 #: code:addons/account_payment/models/payment.py:80
 #, python-format
 msgid "Amount Mismatch (%s)"
-msgstr ""
+msgstr "Summa erinevus (%s)"
 
 #. module: account_payment
-#: code:addons/account_payment/controllers/payment.py:52
+#: code:addons/account_payment/controllers/payment.py:50
 #, python-format
 msgid ""
 "If we store your payment information on our server, subscription payments "
@@ -117,16 +129,16 @@ msgstr "Viimane tehing"
 #. module: account_payment
 #: model:ir.model.fields,field_description:account_payment.field_account_invoice_payment_tx_count
 msgid "Number of payment transactions"
-msgstr "Maksetehingute arv"
+msgstr "Maksete arv"
 
 #. module: account_payment
-#: code:addons/account_payment/controllers/payment.py:50
+#: code:addons/account_payment/controllers/payment.py:47
 #, python-format
 msgid "Pay & Confirm"
 msgstr "Maksa ja kinnita"
 
 #. module: account_payment
-#: code:addons/account_payment/models/payment.py:119
+#: code:addons/account_payment/models/payment.py:131
 #: model:ir.ui.view,arch_db:account_payment.portal_my_invoices_payment
 #, python-format
 msgid "Pay Now"
@@ -145,7 +157,7 @@ msgstr "Makse saaja"
 #. module: account_payment
 #: model:ir.model,name:account_payment.model_payment_transaction
 msgid "Payment Transaction"
-msgstr "Makse ülekanne"
+msgstr "Maksetehing"
 
 #. module: account_payment
 #: code:addons/account_payment/models/account_invoice.py:28
@@ -165,6 +177,8 @@ msgid ""
 "The invoice was not confirmed despite response from the acquirer (%s): "
 "invoice amount is %r but acquirer replied with %r."
 msgstr ""
+"Teie arvet ei kinnitatud vaatamata arve saaja vastusele (%s): arve summa on "
+"%r kuid saaja vastas %r."
 
 #. module: account_payment
 #: model:ir.ui.view,arch_db:account_payment.portal_invoice_error
@@ -175,7 +189,7 @@ msgstr "Teie makse töötlemisel tekkis viga: arvet ei ole võimalik kinnitada."
 #. module: account_payment
 #: model:ir.ui.view,arch_db:account_payment.portal_invoice_error
 msgid "There was an error processing your payment: invalid invoice state."
-msgstr "Teie makse töötlemisel tekkis viga: kehtete arve olek."
+msgstr "Teie makse töötlemisel tekkis viga: kehtetu arve olek."
 
 #. module: account_payment
 #: model:ir.ui.view,arch_db:account_payment.portal_invoice_error
@@ -204,7 +218,7 @@ msgstr "Teie makse töötlemisel tekkis viga: tehing nurjus.<br/>"
 #. module: account_payment
 #: model:ir.ui.view,arch_db:account_payment.portal_invoice_error
 msgid "There was an error processing your payment: transaction issue.<br/>"
-msgstr "Teie makse töötlemisel tekkis viga: tehingu küsimus.<br/>"
+msgstr "Teie makse töötlemisel tekkis viga: tehingu probleem.<br/>"
 
 #. module: account_payment
 #: model:ir.ui.view,arch_db:account_payment.portal_invoice_error
@@ -220,4 +234,4 @@ msgstr "Tehingud"
 #. module: account_payment
 #: model:ir.ui.view,arch_db:account_payment.payment_confirmation_status
 msgid "Your payment has been authorized."
-msgstr ""
+msgstr "Teie makse on autoriseeritud"
