@@ -274,7 +274,9 @@ msgstr "<strong>驗證於:</strong>"
 msgid ""
 "A payment of %s %s with the reference <a href='/mail/view?%s'>%s</a> related"
 " to your expense %s has been made."
-msgstr "已完成含有與費用 % 相關的參考 <a href=\"/mail/view?%s\">% 的</a> %s %s 支付 。"
+msgstr ""
+"費用支付通知，付款金額 %s %s 已完成支付，支付費用申請報告 <a href='/mail/view?%s'>%s</a> 對應以下請款單據 %s "
+"，感謝您為本公司的協助."
 
 #. module: hr_expense
 #: model:ir.model.fields,field_description:hr_expense.field_hr_expense_account_id

@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-16 15:45+0000\n"
-"PO-Revision-Date: 2018-03-16 15:45+0000\n"
+"POT-Creation-Date: 2018-06-27 15:42+0000\n"
+"PO-Revision-Date: 2018-06-27 15:42+0000\n"
 "Last-Translator: Linkup <link-up@naver.com>, 2018\n"
 "Language-Team: Korean (https://www.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -620,6 +620,18 @@ msgid "Error ! You cannot create a recursive Salary Structure."
 msgstr "오류! 월급 구조를 재귀적으로 만들 수 없습니다."
 
 #. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_salary_rule.py:91
+#, python-format
+msgid "Error! You cannot create recursive hierarchy of Salary Rule Category."
+msgstr ""
+
+#. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_salary_rule.py:176
+#, python-format
+msgid "Error! You cannot create recursive hierarchy of Salary Rules."
+msgstr ""
+
+#. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_line_register_id
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_rule_register_id
 msgid "Eventual third party involved in the salary payment of the employees."
@@ -643,7 +655,7 @@ msgstr "예를 들면 50%의 비율을 적용하려면 50.0을 입력합니다"
 #: code:addons/hr_payroll/report/report_contribution_register.py:34
 #, python-format
 msgid "Form content is missing, this report cannot be printed."
-msgstr ""
+msgstr "양식 내용이 누락되어서 이 보고서를 인쇄할 수 없습니다."
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_res_config_settings_module_l10n_fr_hr_payroll
@@ -901,7 +913,7 @@ msgstr "이름"
 #. module: hr_payroll
 #: model:hr.salary.rule.category,name:hr_payroll.NET
 msgid "Net"
-msgstr ""
+msgstr "순"
 
 #. module: hr_payroll
 #: model:hr.salary.rule,name:hr_payroll.hr_rule_net

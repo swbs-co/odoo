@@ -814,7 +814,8 @@ var BasicModel = AbstractModel.extend({
         return this.mutex.exec(this._applyChange.bind(this, record_id, changes, options));
     },
     /**
-     * Reload all data for a given resource
+     * Reload all data for a given resource. At any time there is at most one
+     * reload operation active.
      *
      * @param {string} id local id for a resource
      * @param {Object} [options]
@@ -823,64 +824,7 @@ var BasicModel = AbstractModel.extend({
      * @returns {Deferred<string>} resolves to the id of the resource
      */
     reload: function (id, options) {
-        options = options || {};
-        var element = this.localData[id];
-
-        if (element.type === 'record') {
-            if (!options.currentId && (('currentId' in options) || this.isNew(id))) {
-                var params = {
-                    context: element.context,
-                    fieldsInfo: element.fieldsInfo,
-                    fields: element.fields,
-                    viewType: element.viewType,
-                };
-                return this._makeDefaultRecord(element.model, params);
-            }
-            if (!options.keepChanges) {
-                this.discardChanges(id, {rollback: false});
-            }
-        } else if (element._changes) {
-            delete element.tempLimitIncrement;
-            _.each(element._changes, function (change) {
-                delete change.isNew;
-            });
-        }
-
-        if (options.context !== undefined) {
-            element.context = options.context;
-        }
-        if (options.domain !== undefined) {
-            element.domain = options.domain;
-        }
-        if (options.groupBy !== undefined) {
-            element.groupedBy = options.groupBy;
-        }
-        if (options.limit !== undefined) {
-            element.limit = options.limit;
-        }
-        if (options.offset !== undefined) {
-            this._setOffset(element.id, options.offset);
-        }
-        if (options.loadMoreOffset !== undefined) {
-            element.loadMoreOffset = options.loadMoreOffset;
-        } else {
-            // reset if not specified
-            element.loadMoreOffset = 0;
-        }
-        if (options.currentId !== undefined) {
-            element.res_id = options.currentId;
-        }
-        if (options.ids !== undefined) {
-            element.res_ids = options.ids;
-            element.count = element.res_ids.length;
-        }
-        if (element.type === 'record') {
-            element.offset = _.indexOf(element.res_ids, element.res_id);
-        }
-        var loadOptions = _.pick(options, 'fieldNames', 'viewType');
-        return this._load(element, loadOptions).then(function (result) {
-            return result.id;
-        });
+        return this.mutex.exec(this._reload.bind(this, id, options));
     },
     /**
      * In some case, we may need to remove an element from a list, without going
@@ -949,21 +893,51 @@ var BasicModel = AbstractModel.extend({
                 route: '/web/dataset/resequence',
                 params: params,
             })
-            .then(function () {
-                data.data = _.sortBy(data.data, function (d) {
-                    return _.indexOf(resIDs, self.localData[d].res_id);
-                });
-                data.res_ids = [];
-                _.each(data.data, function (d) {
-                    var dataPoint = self.localData[d];
-                    if (dataPoint.type === 'record') {
-                        data.res_ids.push(dataPoint.res_id);
-                    } else {
-                        data.res_ids = data.res_ids.concat(dataPoint.res_ids);
+            .then(function (wasResequenced) {
+                if (!wasResequenced) {
+                    // the field on which the resequence was triggered does not
+                    // exist, so no resequence happened server-side
+                    return $.when();
+                }
+                var field = params.field ? params.field : 'sequence';
+
+                return self._rpc({
+                    model: modelName,
+                    method: 'read',
+                    args: [resIDs, [field]],
+                }).then(function (records) {
+                    if (data.data.length) {
+                        var dataType = self.localData[data.data[0]].type;
+                        if (dataType === 'record') {
+                            _.each(data.data, function (dataPoint) {
+                                var recordData = self.localData[dataPoint].data;
+                                var inRecords = _.findWhere(records, {id: recordData.id});
+                                if (inRecords) {
+                                    recordData[field] = inRecords[field];
+                                }
+                            });
+                            data.data = _.sortBy(data.data, function (d) {
+                                return self.localData[d].data[field];
+                            });
+                        }
+                        if (dataType === 'list') {
+                            data.data = _.sortBy(data.data, function (d) {
+                                return _.indexOf(resIDs, self.localData[d].res_id)
+                            });
+                        }
                     }
-                });
-                self._updateParentResIDs(data);
-                return parentID;
+                    data.res_ids = [];
+                    _.each(data.data, function (d) {
+                        var dataPoint = self.localData[d];
+                        if (dataPoint.type === 'record') {
+                            data.res_ids.push(dataPoint.res_id);
+                        } else {
+                            data.res_ids = data.res_ids.concat(dataPoint.res_ids);
+                        }
+                    });
+                    self._updateParentResIDs(data);
+                    return parentID;
+                })
             });
     },
     /**
@@ -2033,7 +2007,7 @@ var BasicModel = AbstractModel.extend({
      * @param {Object} [options]
      * @param {string[]} [options.fieldNames] the list of fields to fetch. If
      *   not given, fetch all the fields in record.fieldNames (+ display_name)
-     * @param {string} [optinos.viewType] the type of view for which the record
+     * @param {string} [options.viewType] the type of view for which the record
      *   is fetched (usefull to load the adequate fields), by defaults, uses
      *   record.viewType
      * @returns {Deferred<Object>} resolves to the record or is rejected in
@@ -2479,11 +2453,11 @@ var BasicModel = AbstractModel.extend({
         }
 
         var def = $.Deferred();
-
+        var evalContext = this._getEvalContext(record);
         this._rpc({
                 model: domainModel,
                 method: 'search_count',
-                args: [Domain.prototype.stringToArray(domainValue)],
+                args: [Domain.prototype.stringToArray(domainValue, evalContext)],
                 context: context
             })
             .then(_.identity, function (error, e) {
@@ -2916,13 +2890,10 @@ var BasicModel = AbstractModel.extend({
                                 continue;
                             }
                             changes = this._generateChanges(relRecord, options);
-                            if (changes.id) {
+                            if (!this.isNew(relRecord.id)) {
                                 // the subrecord already exists in db
+                                commands[fieldName].push(x2ManyCommands.link_to(relRecord.res_id));
                                 delete changes.id;
-                                if (this.isNew(record.id)) {
-                                    // if the main record is new, link the subrecord to it
-                                    commands[fieldName].push(x2ManyCommands.link_to(relRecord.res_id));
-                                }
                                 if (!_.isEmpty(changes)) {
                                     commands[fieldName].push(x2ManyCommands.update(relRecord.res_id, changes));
                                 }
@@ -3602,11 +3573,12 @@ var BasicModel = AbstractModel.extend({
      */
     _postprocess: function (record, options) {
         var self = this;
+        var viewType = options && options.viewType || record.viewType;
         var defs = [];
 
         _.each(record.getFieldNames(options), function (name) {
             var field = record.fields[name];
-            var fieldInfo = record.fieldsInfo[record.viewType][name] || {};
+            var fieldInfo = record.fieldsInfo[viewType][name] || {};
             var options = fieldInfo.options || {};
             if (options.always_reload) {
                 if (record.fields[name].type === 'many2one' && record.data[name]) {
@@ -3615,7 +3587,7 @@ var BasicModel = AbstractModel.extend({
                             model: field.relation,
                             method: 'name_get',
                             args: [element.data.id],
-                            context: self._getContext(record, {fieldName: name}),
+                            context: self._getContext(record, {fieldName: name, viewType: viewType}),
                         })
                         .then(function (result) {
                             element.data.display_name = result[0][1];
@@ -4006,6 +3978,76 @@ var BasicModel = AbstractModel.extend({
                 }
                 return list;
             });
+        });
+    },
+    /**
+     * Reload all data for a given resource
+     *
+     * @private
+     * @param {string} id local id for a resource
+     * @param {Object} [options]
+     * @param {boolean} [options.keepChanges=false] if true, doesn't discard the
+     *   changes on the record before reloading it
+     * @returns {Deferred<string>} resolves to the id of the resource
+     */
+    _reload: function (id, options) {
+        options = options || {};
+        var element = this.localData[id];
+
+        if (element.type === 'record') {
+            if (!options.currentId && (('currentId' in options) || this.isNew(id))) {
+                var params = {
+                    context: element.context,
+                    fieldsInfo: element.fieldsInfo,
+                    fields: element.fields,
+                    viewType: element.viewType,
+                };
+                return this._makeDefaultRecord(element.model, params);
+            }
+            if (!options.keepChanges) {
+                this.discardChanges(id, {rollback: false});
+            }
+        } else if (element._changes) {
+            delete element.tempLimitIncrement;
+            _.each(element._changes, function (change) {
+                delete change.isNew;
+            });
+        }
+
+        if (options.context !== undefined) {
+            element.context = options.context;
+        }
+        if (options.domain !== undefined) {
+            element.domain = options.domain;
+        }
+        if (options.groupBy !== undefined) {
+            element.groupedBy = options.groupBy;
+        }
+        if (options.limit !== undefined) {
+            element.limit = options.limit;
+        }
+        if (options.offset !== undefined) {
+            this._setOffset(element.id, options.offset);
+        }
+        if (options.loadMoreOffset !== undefined) {
+            element.loadMoreOffset = options.loadMoreOffset;
+        } else {
+            // reset if not specified
+            element.loadMoreOffset = 0;
+        }
+        if (options.currentId !== undefined) {
+            element.res_id = options.currentId;
+        }
+        if (options.ids !== undefined) {
+            element.res_ids = options.ids;
+            element.count = element.res_ids.length;
+        }
+        if (element.type === 'record') {
+            element.offset = _.indexOf(element.res_ids, element.res_id);
+        }
+        var loadOptions = _.pick(options, 'fieldNames', 'viewType');
+        return this._load(element, loadOptions).then(function (result) {
+            return result.id;
         });
     },
     /**

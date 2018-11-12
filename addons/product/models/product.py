@@ -125,6 +125,7 @@ class ProductProduct(models.Model):
     image_medium = fields.Binary(
         "Medium-sized image", compute='_compute_images', inverse='_set_image_medium',
         help="Image of the product variant (Medium-sized image of product template if false).")
+    is_product_variant = fields.Boolean(compute='_compute_is_product_variant')
 
     standard_price = fields.Float(
         'Cost', company_dependent=True,
@@ -151,6 +152,10 @@ class ProductProduct(models.Model):
 
     def _get_invoice_policy(self):
         return False
+
+    def _compute_is_product_variant(self):
+        for product in self:
+            product.is_product_variant = True
 
     def _compute_product_price(self):
         prices = {}
@@ -230,7 +235,7 @@ class ProductProduct(models.Model):
     def _compute_partner_ref(self):
         for supplier_info in self.seller_ids:
             if supplier_info.name.id == self._context.get('partner_id'):
-                product_name = supplier_info.product_name or self.default_code
+                product_name = supplier_info.product_name or self.default_code or self.name
                 self.partner_ref = '%s%s' % (self.code and '[%s] ' % self.code or '', product_name)
                 break
         else:

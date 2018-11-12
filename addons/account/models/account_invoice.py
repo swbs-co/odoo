@@ -70,7 +70,7 @@ class AccountInvoice(models.Model):
     @api.onchange('amount_total')
     def _onchange_amount_total(self):
         for inv in self:
-            if inv.amount_total < 0:
+            if float_compare(inv.amount_total, 0.0, precision_rounding=inv.currency_id.rounding) == -1:
                 raise Warning(_('You cannot validate an invoice with a negative total amount. You should create a credit note instead.'))
 
     @api.model
@@ -223,7 +223,7 @@ class AccountInvoice(models.Model):
         for line in self.move_id.line_ids.filtered(lambda l: l.account_id.id == self.account_id.id):
             payment_lines.update(line.mapped('matched_credit_ids.credit_move_id.id'))
             payment_lines.update(line.mapped('matched_debit_ids.debit_move_id.id'))
-        self.payment_move_line_ids = self.env['account.move.line'].browse(list(payment_lines))
+        self.payment_move_line_ids = self.env['account.move.line'].browse(list(payment_lines)).sorted()
 
     name = fields.Char(string='Reference/Description', index=True,
         readonly=True, states={'draft': [('readonly', False)]}, copy=False, help='The name that will be used on account move lines')
@@ -773,7 +773,7 @@ class AccountInvoice(models.Model):
         to_open_invoices = self.filtered(lambda inv: inv.state != 'open')
         if to_open_invoices.filtered(lambda inv: inv.state != 'draft'):
             raise UserError(_("Invoice must be in draft state in order to validate it."))
-        if to_open_invoices.filtered(lambda inv: inv.amount_total < 0):
+        if to_open_invoices.filtered(lambda inv: float_compare(inv.amount_total, 0.0, precision_rounding=inv.currency_id.rounding) == -1):
             raise UserError(_("You cannot validate an invoice with a negative total amount. You should create a credit note instead."))
         to_open_invoices.action_date_assign()
         to_open_invoices.action_move_create()
@@ -1250,6 +1250,8 @@ class AccountInvoice(models.Model):
                     values[name] = line[name]
                 elif name == 'invoice_line_tax_ids':
                     values[name] = [(6, 0, line[name].ids)]
+                elif name == 'analytic_tag_ids':
+                    values[name] = [(6, 0, line[name].ids)]
             result.append((0, 0, values))
         return result
 
@@ -1339,18 +1341,7 @@ class AccountInvoice(models.Model):
             new_invoices += refund_invoice
         return new_invoices
 
-    @api.multi
-    def pay_and_reconcile(self, pay_journal, pay_amount=None, date=None, writeoff_acc=None):
-        """ Create and post an account.payment for the invoice self, which creates a journal entry that reconciles the invoice.
-
-            :param pay_journal: journal in which the payment entry will be created
-            :param pay_amount: amount of the payment to register, defaults to the residual of the invoice
-            :param date: payment date, defaults to fields.Date.context_today(self)
-            :param writeoff_acc: account in which to create a writeoff if pay_amount < self.residual, so that the invoice is fully paid
-        """
-        if isinstance(pay_journal, pycompat.integer_types):
-            pay_journal = self.env['account.journal'].browse([pay_journal])
-        assert len(self) == 1, "Can only pay one invoice at a time."
+    def _prepare_payment_vals(self, pay_journal, pay_amount=None, date=None, writeoff_acc=None, communication=None):
         payment_type = self.type in ('out_invoice', 'in_refund') and 'inbound' or 'outbound'
         if payment_type == 'inbound':
             payment_method = self.env.ref('account.account_payment_method_manual_in')
@@ -1359,9 +1350,10 @@ class AccountInvoice(models.Model):
             payment_method = self.env.ref('account.account_payment_method_manual_out')
             journal_payment_methods = pay_journal.outbound_payment_method_ids
 
-        communication = self.type in ('in_invoice', 'in_refund') and self.reference or self.number
-        if self.origin:
-            communication = '%s (%s)' % (communication, self.origin)
+        if not communication:
+            communication = self.type in ('in_invoice', 'in_refund') and self.reference or self.number
+            if self.origin:
+                communication = '%s (%s)' % (communication, self.origin)
 
         payment_vals = {
             'invoice_ids': [(6, 0, self.ids)],
@@ -1376,7 +1368,22 @@ class AccountInvoice(models.Model):
             'payment_difference_handling': writeoff_acc and 'reconcile' or 'open',
             'writeoff_account_id': writeoff_acc and writeoff_acc.id or False,
         }
+        return payment_vals
 
+    @api.multi
+    def pay_and_reconcile(self, pay_journal, pay_amount=None, date=None, writeoff_acc=None):
+        """ Create and post an account.payment for the invoice self, which creates a journal entry that reconciles the invoice.
+
+            :param pay_journal: journal in which the payment entry will be created
+            :param pay_amount: amount of the payment to register, defaults to the residual of the invoice
+            :param date: payment date, defaults to fields.Date.context_today(self)
+            :param writeoff_acc: account in which to create a writeoff if pay_amount < self.residual, so that the invoice is fully paid
+        """
+        if isinstance(pay_journal, pycompat.integer_types):
+            pay_journal = self.env['account.journal'].browse([pay_journal])
+        assert len(self) == 1, "Can only pay one invoice at a time."
+
+        payment_vals = self._prepare_payment_vals(pay_journal, pay_amount=pay_amount, date=date, writeoff_acc=writeoff_acc)
         payment = self.env['account.payment'].create(payment_vals)
         payment.post()
 
@@ -1452,7 +1459,7 @@ class AccountInvoiceLine(models.Model):
         ondelete='set null', index=True, oldname='uos_id')
     product_id = fields.Many2one('product.product', string='Product',
         ondelete='restrict', index=True)
-    product_image = fields.Binary('Product Image', related="product_id.image", store=False)
+    product_image = fields.Binary('Product Image', related="product_id.image", store=False, readonly=True)
     account_id = fields.Many2one('account.account', string='Account',
         required=True, domain=[('deprecated', '=', False)],
         default=_default_account,
