@@ -3,29 +3,29 @@
 # * website_sale
 # 
 # Translators:
-# digitouch UAB <digitouchagencyeur@gmail.com>, 2017
 # Monika Raciunaite <monika.raciunaite@gmail.com>, 2017
-# Martin Trigaux, 2017
-# Antanas Muliuolis <an.muliuolis@gmail.com>, 2017
-# UAB "Draugiški sprendimai" <transifex@draugiskisprendimai.lt>, 2017
-# Audrius Palenskis <audrius.palenskis@gmail.com>, 2017
-# Linas Versada <paulius.sladkevicius@gmail.com>, 2017
 # Rolandas <info@paninfo.lt>, 2017
 # Arminas Grigonis <arminas@versada.lt>, 2017
+# UAB "Draugiški sprendimai" <transifex@draugiskisprendimai.lt>, 2017
+# Audrius Palenskis <audrius.palenskis@gmail.com>, 2017
 # Anatolij, 2017
-# Aleksandr Jadov <a.jadov@tata.lt>, 2017
+# digitouch UAB <digitouchagencyeur@gmail.com>, 2017
+# Martin Trigaux, 2017
 # Paulius Stundžia <paulius@focusate.eu>, 2018
 # Naglis Jonaitis, 2018
-# Silvija Butko <silvija.butko@gmail.com>, 2018
-# Eimantas <eimantas@focusate.eu>, 2018
+# Antanas Muliuolis <an.muliuolis@gmail.com>, 2018
 # Paulius Sladkevičius <paulius@versada.eu>, 2018
+# Eimantas <eimantas@focusate.eu>, 2018
+# Silvija Butko <silvija.butko@gmail.com>, 2018
+# Linas Versada <paulius.sladkevicius@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-19 13:43+0000\n"
-"PO-Revision-Date: 2018-02-19 13:43+0000\n"
-"Last-Translator: Paulius Sladkevičius <paulius@versada.eu>, 2018\n"
+"POT-Creation-Date: 2018-07-27 11:55+0000\n"
+"PO-Revision-Date: 2017-09-20 10:27+0000\n"
+"Last-Translator: Linas Versada <paulius.sladkevicius@gmail.com>, 2018\n"
 "Language-Team: Lithuanian (https://www.transifex.com/odoo/teams/41243/lt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -413,7 +413,7 @@ msgid ""
 "Authorize.net, Ingenico, etc.</strong></span>"
 msgstr ""
 "<span class=\"panel-title\"><span class=\"fa fa-credit-card\"/><strong> "
-"Authorize.net, Ingenico, etc.</strong></span>"
+"Authorize.net, Ingenico ir pan.</strong></span>"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
@@ -572,7 +572,7 @@ msgstr "<strong>Užsakymo detalės:</strong>"
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.report_shop_saleorder_document
 msgid "<strong>Payment Acquirer:</strong>"
-msgstr ""
+msgstr "<strong>Mokėjimo surinkėjas:</strong>"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.confirmation
@@ -885,7 +885,8 @@ msgstr "Taikyti kelias valiutas"
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
 msgid "Apply right VAT rates for digital products sold in EU"
-msgstr "Taikyti teisingus PVM tarifus skaitmeniniems produktams"
+msgstr ""
+"Taikyti teisingus PVM tarifus skaitmeniniams produktams, parduodamiems ES"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
@@ -1166,7 +1167,7 @@ msgstr "Spalva"
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
 msgid "Community &amp; Enterprise users:"
-msgstr "Community &amp; Enterprise vartotojai"
+msgstr "Community ir Enterprise vartotojai"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
@@ -1340,12 +1341,12 @@ msgstr "Kliento patirtis"
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
 msgid "Customer Segments"
-msgstr "Kliento segmentai"
+msgstr "Klientų segmentai"
 
 #. module: website_sale
 #: model:ir.ui.menu,name:website_sale.menu_orders_customers
 msgid "Customers"
-msgstr "Pirkėjai"
+msgstr "Klientai"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
@@ -1422,7 +1423,7 @@ msgstr ""
 #. module: website_sale
 #: model:product.public.category,name:website_sale.devices
 msgid "Devices"
-msgstr "Devices"
+msgstr "Įrenginiai"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
@@ -1830,7 +1831,7 @@ msgid "Installs *e-Commerce Inventory*"
 msgstr ""
 
 #. module: website_sale
-#: code:addons/website_sale/controllers/main.py:502
+#: code:addons/website_sale/controllers/main.py:518
 #, python-format
 msgid "Invalid Email! Please enter a valid email address."
 msgstr ""
@@ -1858,7 +1859,7 @@ msgid "Issue invoices to customers"
 msgstr "Išduoti sąskaitas klientams"
 
 #. module: website_sale
-#: code:addons/website_sale/models/sale_order.py:146
+#: code:addons/website_sale/models/sale_order.py:157
 #, python-format
 msgid "It is forbidden to modify a sales order which is not in draft status"
 msgstr ""
@@ -1934,7 +1935,7 @@ msgstr "Paskutiniai metai"
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
 msgid "Legal Name"
-msgstr "Įstatyminis pavadinimas"
+msgstr "Teisinis pavadinimas"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
@@ -2006,14 +2007,9 @@ msgid "Manage promotion &amp; coupon programs"
 msgstr "Valdyti akcijų ir kuponų programas"
 
 #. module: website_sale
-#: model:ir.ui.view,arch_db:website_sale.sale_order_view_form
-msgid "Mark as Paid"
-msgstr ""
-
-#. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_public_category_image_medium
 msgid "Medium-sized image"
-msgstr "Vidutinio dydžio paveiksliukas"
+msgstr "Vidutinio dydžio paveikslėlis"
 
 #. module: website_sale
 #: model:ir.model.fields,help:website_sale.field_product_public_category_image_medium
@@ -2087,7 +2083,7 @@ msgstr "Network"
 
 #. module: website_sale
 #. openerp-web
-#: code:addons/website_sale/controllers/main.py:968
+#: code:addons/website_sale/controllers/main.py:988
 #: code:addons/website_sale/static/src/js/website_sale.editor.js:32
 #: model:ir.ui.view,arch_db:website_sale.content_new_product
 #, python-format
@@ -2134,7 +2130,7 @@ msgstr "Paliktų krepšelių skaičius"
 #: code:addons/website_sale/static/src/xml/website_sale.xml:12
 #, python-format
 msgid "OK"
-msgstr "Gerai"
+msgstr "OK"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
@@ -2159,7 +2155,7 @@ msgstr ""
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
 msgid "Online users: we do it for you!"
-msgstr "Interneto vartotojai: mes tai darome jums!"
+msgstr "Interneto vartotojai: mes tai darome dėl jūsų!"
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_sale_order_only_services
@@ -2236,7 +2232,7 @@ msgid "Parent Category"
 msgstr "Tėvinė kategorija"
 
 #. module: website_sale
-#: code:addons/website_sale/controllers/main.py:756
+#: code:addons/website_sale/controllers/main.py:774
 #: model:ir.ui.view,arch_db:website_sale.payment
 #, python-format
 msgid "Pay Now"
@@ -2289,7 +2285,7 @@ msgstr ""
 #: code:addons/website_sale/static/src/xml/website_sale_dashboard.xml:14
 #, python-format
 msgid "Payments to Capture"
-msgstr ""
+msgstr "Mokėjimai fiksavimui"
 
 #. module: website_sale
 #: model:product.public.category,name:website_sale.Pen_Drive
@@ -2469,7 +2465,7 @@ msgstr "Produktų aprašymai"
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.product_price
 msgid "Product not available"
-msgstr ""
+msgstr "Produktas nepasiekiamas"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.404
@@ -2492,7 +2488,7 @@ msgstr "Produktai"
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_sale
 msgid "Promote"
-msgstr ""
+msgstr "Reklamuoti"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
@@ -2578,12 +2574,12 @@ msgstr "Vertinimas"
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_product_rating_last_feedback
 msgid "Rating Last Feedback"
-msgstr ""
+msgstr "Paskutinio įvertinimo atsiliepimas "
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_product_rating_last_image
 msgid "Rating Last Image"
-msgstr ""
+msgstr "Paskutinio įvertinimo paveikslėlis"
 
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_product_rating_last_value
@@ -2598,7 +2594,7 @@ msgstr "Vertinimų kiekis"
 #. module: website_sale
 #: model:ir.model.fields,help:website_sale.field_product_product_rating_last_feedback
 msgid "Reason of the rating"
-msgstr ""
+msgstr "Įvertinimo priežastis"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.view_sales_order_filter_ecommerce
@@ -2979,7 +2975,7 @@ msgid ""
 msgstr ""
 
 #. module: website_sale
-#: code:addons/website_sale/controllers/main.py:520
+#: code:addons/website_sale/controllers/main.py:536
 #, python-format
 msgid "Some required fields are empty."
 msgstr "Kaikurie privalomi laukai nėra užpildyti."
@@ -3177,6 +3173,14 @@ msgid ""
 msgstr ""
 
 #. module: website_sale
+#: model:ir.model.fields,help:website_sale.field_res_config_settings_automatic_invoice
+msgid ""
+"The invoice is generated automatically and available in the customer portal when the transaction is confirmed by the payment acquirer.\n"
+"The invoice is marked as paid and the payment is registered in the payment journal defined in the configuration of the payment acquirer.\n"
+"This mode is advised if you issue the final invoice at the order and not after the delivery."
+msgstr ""
+
+#. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
 msgid ""
 "The mode selected here applies as invoicing policy of any new product "
@@ -3184,7 +3188,7 @@ msgid ""
 msgstr ""
 
 #. module: website_sale
-#: code:addons/website_sale/models/sale_order.py:247
+#: code:addons/website_sale/models/sale_order.py:258
 #, python-format
 msgid ""
 "The quote should be sent and the payment acquirer type should be manual or "
@@ -3313,7 +3317,7 @@ msgstr ""
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.confirmation
 msgid "Unit Price"
-msgstr "Kaina"
+msgstr "Vieneto kaina"
 
 #. module: website_sale
 #. openerp-web
@@ -3359,7 +3363,7 @@ msgstr "Prieinama tinklalapyje"
 #: model:ir.model,name:website_sale.model_website
 #: model:ir.ui.view,arch_db:website_sale.product_template_form_view
 msgid "Website"
-msgstr "Tinklalapis"
+msgstr "Svetainė"
 
 #. module: website_sale
 #: model:ir.model,name:website_sale.model_product_public_category
@@ -3665,7 +3669,7 @@ msgstr "naudoti Odoo API importuavimui per skriptus"
 #. module: website_sale
 #: model:ir.model.fields,field_description:website_sale.field_product_pricelist_website_id
 msgid "website"
-msgstr "tinklalapis"
+msgstr "svetainė"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner

@@ -3,25 +3,26 @@
 # * account
 # 
 # Translators:
-# Martin Trigaux, 2017
-# trendspotter, 2017
 # Jan Horzinka <jan.horzinka@centrum.cz>, 2018
-# milda dvorak <milda.dvorak@optimal4.cz>, 2018
-# Michal Veselý <michal@veselyberanek.net>, 2018
-# Chris <krystof.reklamy13@gmail.com>, 2018
-# Ondřej Skuhravý <ondra.sk@volny.cz>, 2018
-# Ondřej Janovský <ondrej.janovsky@alarex.cz>, 2018
-# xlu <xlu@seznam.cz>, 2018
 # Jaroslav Helemik Nemec <nemec@helemik.cz>, 2018
 # Ladislav Tomm <tomm@helemik.cz>, 2018
 # Martin N <nedbalm@gmail.com>, 2018
+# Ondřej Skuhravý <ondra.sk@volny.cz>, 2018
+# Ondřej Janovský <ondrej.janovsky@alarex.cz>, 2018
+# Chris <krystof.reklamy13@gmail.com>, 2018
+# xlu <xlu@seznam.cz>, 2018
+# Martin Trigaux, 2018
+# Michal Veselý <michal@veselyberanek.net>, 2018
+# milda dvorak <milda.dvorak@optimal4.cz>, 2018
+# J. Podhorecky <j.podhorecky@volny.cz>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-27 11:55+0000\n"
-"PO-Revision-Date: 2018-07-27 11:55+0000\n"
-"Last-Translator: Martin N <nedbalm@gmail.com>, 2018\n"
+"PO-Revision-Date: 2017-09-20 10:13+0000\n"
+"Last-Translator: J. Podhorecky <j.podhorecky@volny.cz>, 2018\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1714,7 +1715,7 @@ msgstr "Účty"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal_account_control_ids
 msgid "Accounts Allowed"
-msgstr ""
+msgstr "Povolené účty"
 
 #. module: account
 #: model:ir.model,name:account.model_account_fiscal_position_account
@@ -2589,7 +2590,7 @@ msgstr "Základní částka"
 #: selection:account.tax,tax_exigibility:0
 #: selection:account.tax.template,tax_exigibility:0
 msgid "Based on Invoice"
-msgstr ""
+msgstr "Na základě faktury"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_tax_tax_exigibility
@@ -2685,7 +2686,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings_module_account_budget
 msgid "Budget Management"
-msgstr ""
+msgstr "Řízení rozpočtu"
 
 #. module: account
 #: model:ir.ui.menu,name:account.account_reports_business_intelligence_menu
@@ -3520,7 +3521,7 @@ msgstr ""
 #. module: account
 #: model:account.account.type,name:account.data_account_type_direct_costs
 msgid "Cost of Revenue"
-msgstr ""
+msgstr "Náklady na Příjmy"
 
 #. module: account
 #: code:addons/account/models/chart_template.py:873
@@ -4739,7 +4740,7 @@ msgstr "Únor"
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position_state_ids
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position_template_state_ids
 msgid "Federal States"
-msgstr ""
+msgstr "Federální státy"
 
 #. module: account
 #: selection:account.journal,bank_statements_source:0
@@ -5172,7 +5173,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_payment_hide_payment_method
 #: model:ir.model.fields,field_description:account.field_account_register_payments_hide_payment_method
 msgid "Hide Payment Method"
-msgstr ""
+msgstr "Skrýt způsob platby"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings_account_hide_setup_bar
@@ -5419,6 +5420,9 @@ msgid ""
 " It is automatically resized as a 1024x1024px image, with aspect ratio "
 "preserved."
 msgstr ""
+"Obrázek varianty produktu (obrázek šablony produktu ve velké velikosti, "
+"pokud je nepravdivý). Automaticky se změní velikost obrázku o velikosti "
+"1024x1024px a zachová se poměr stran."
 
 #. module: account
 #: model:account.payment.term,name:account.account_payment_term_immediate
@@ -6151,12 +6155,12 @@ msgstr "Červenec"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_tax_adjustments_wizard_reason
 msgid "Justification"
-msgstr ""
+msgstr "Zarovnání"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal_kanban_dashboard
 msgid "Kanban Dashboard"
-msgstr ""
+msgstr "Kanban Nástěnka"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal_kanban_dashboard_graph
@@ -6601,7 +6605,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,help:account.field_res_config_settings_currency_id
 msgid "Main currency of the company."
-msgstr ""
+msgstr "Hlavní měna společnosti."
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -6739,7 +6743,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:account.view_full_reconcile_form
 #: model:ir.ui.view,arch_db:account.view_move_line_form
 msgid "Matching"
-msgstr ""
+msgstr "Odpovídající"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line_full_reconcile_id
@@ -6779,7 +6783,7 @@ msgstr "Zpráva pro fakturu"
 #. module: account
 #: model:ir.ui.view,arch_db:account.view_account_form
 msgid "Minus Cost of Revenue"
-msgstr ""
+msgstr "Mínus náklady na výnos"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.view_account_form
@@ -7457,7 +7461,7 @@ msgstr ""
 #. module: account
 #: model:ir.ui.view,arch_db:account.view_account_invoice_filter
 msgid "Overdue"
-msgstr ""
+msgstr "Zpožděný"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company_overdue_msg
@@ -7747,7 +7751,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_payment_payment_type
 #: model:ir.model.fields,field_description:account.field_account_register_payments_payment_type
 msgid "Payment Type"
-msgstr ""
+msgstr "Způsob platby"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.view_payment_term_form
@@ -9871,6 +9875,7 @@ msgstr ""
 #: model:ir.model.fields,help:account.field_account_journal_code
 msgid "The journal entries of this journal will be named using this prefix."
 msgstr ""
+"Položky tohoto účetního deníku budou pojmenovány pomocí této předpony."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_opening_opening_move_id
@@ -10227,6 +10232,8 @@ msgid ""
 "This field is used for payable and receivable journal entries. You can put "
 "the limit date for the payment of this line."
 msgstr ""
+"Toto pole se používá pro zapsání dlužných a pohledávek. Můžete umístit "
+"termín pro platbu tohoto řádku."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_line_partner_name
@@ -10338,6 +10345,8 @@ msgid ""
 "This payment term will be used instead of the default one for sales orders "
 "and customer invoices"
 msgstr ""
+"Tento platební termín se použije namísto výchozího pro objednávky a faktury "
+"zákazníků"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
@@ -10539,7 +10548,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_amount_total_signed
 msgid "Total in Invoice Currency"
-msgstr ""
+msgstr "Celkem v měně faktury"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_bank_statement_total_entry_encoding
@@ -11846,4 +11855,12 @@ msgstr "wizard.multi.charts.accounts"
 #. module: account
 #: model:ir.ui.view,arch_db:account.view_bank_statement_form
 msgid "→ Count"
+msgstr ""
+
+#. module: account
+#: code:addons/account/models/account.py:309
+#, python-format
+msgid ""
+"Currency field should only be set if the journal's currency is different "
+"from the company's. Leave the field blank to use company currency."
 msgstr ""

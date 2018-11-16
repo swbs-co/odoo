@@ -99,14 +99,15 @@ class SaleOrderLine(models.Model):
 
     @api.multi
     def write(self, values):
-        lines = False
+        lines = self.env['sale.order.line']
         if 'product_uom_qty' in values:
             precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
             lines = self.filtered(
                 lambda r: r.state == 'sale' and float_compare(r.product_uom_qty, values['product_uom_qty'], precision_digits=precision) == -1)
+        previous_product_uom_qty = {line.id: line.product_uom_qty for line in lines}
         res = super(SaleOrderLine, self).write(values)
         if lines:
-            lines._action_launch_procurement_rule()
+            lines.with_context(previous_product_uom_qty=previous_product_uom_qty)._action_launch_procurement_rule()
         return res
     
 
@@ -224,7 +225,10 @@ class SaleOrderLine(models.Model):
         self.ensure_one()
         qty = 0.0
         for move in self.move_ids.filtered(lambda r: r.state != 'cancel'):
-            qty += move.product_uom._compute_quantity(move.product_uom_qty, self.product_uom, rounding_method='HALF-UP')
+            if move.picking_code == 'outgoing':
+                qty += move.product_uom._compute_quantity(move.product_uom_qty, self.product_uom, rounding_method='HALF-UP')
+            elif move.picking_code == 'incoming':
+                qty -= move.product_uom._compute_quantity(move.product_uom_qty, self.product_uom, rounding_method='HALF-UP')
         return qty
 
     @api.multi
@@ -287,7 +291,7 @@ class SaleOrderLine(models.Model):
         qty = 0.0
         for move in self.move_ids.filtered(lambda r: r.state == 'done' and not r.scrapped):
             if move.location_dest_id.usage == "customer":
-                if not move.origin_returned_move_id:
+                if not move.origin_returned_move_id or (move.origin_returned_move_id and move.to_refund):
                     qty += move.product_uom._compute_quantity(move.product_uom_qty, self.product_uom)
             elif move.location_dest_id.usage != "customer" and move.to_refund:
                 qty -= move.product_uom._compute_quantity(move.product_uom_qty, self.product_uom)
@@ -343,7 +347,8 @@ class SaleOrderLine(models.Model):
         return is_available
 
     def _update_line_quantity(self, values):
-        if self.mapped('qty_delivered') and values['product_uom_qty'] < max(self.mapped('qty_delivered')):
+        precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+        if self.mapped('qty_delivered') and float_compare(values['product_uom_qty'], max(self.mapped('qty_delivered')), precision_digits=precision) == -1:
             raise UserError('You cannot decrease the ordered quantity below the delivered quantity.\n'
                             'Create a return first.')
         for line in self:
