@@ -950,6 +950,27 @@ class StockMove(TransactionCase):
         move_partial._action_assign()
         self.assertEqual(move_partial.state, 'assigned')
 
+    def test_availability_9(self):
+        """ Test the assignment mechanism when the product quantity is increase
+        on a receipt move.
+        """
+        move_receipt = self.env['stock.move'].create({
+            'name': 'test_receipt_edit',
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_dozen.id,
+            'product_uom_qty': 1.0,
+        })
+
+        move_receipt._action_confirm()
+        move_receipt._action_assign()
+        self.assertEqual(move_receipt.state, 'assigned')
+        move_receipt.product_uom_qty = 3.0
+        move_receipt._action_assign()
+        self.assertEqual(move_receipt.state, 'assigned')
+        self.assertEqual(move_receipt.move_line_ids.product_uom_qty, 3)
+
     def test_unreserve_1(self):
         """ Check that unreserving a stock move sets the products reserved as available and
         set the state back to confirmed.
@@ -1832,6 +1853,48 @@ class StockMove(TransactionCase):
 
         self.assertAlmostEqual(move_pack_cust.reserved_availability, 1.0)
         self.assertEqual(move_pack_cust.state, 'partially_available')
+
+    def test_use_reserved_move_line_1(self):
+        """ Test that _free_reservation work when quantity is only available on
+        reserved move lines.
+        """
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 10.0)
+        move1 = self.env['stock.move'].create({
+            'name': 'test_use_unreserved_move_line_1_1',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 5.0,
+        })
+        move2 = self.env['stock.move'].create({
+            'name': 'test_use_unreserved_move_line_1_1',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 5.0,
+        })
+        move1._action_confirm()
+        move1._action_assign()
+        move2._action_confirm()
+        move2._action_assign()
+        move3 = self.env['stock.move'].create({
+            'name': 'test_use_unreserved_move_line_1_1',
+            'location_id': self.stock_location.id,
+            'location_dest_id': self.customer_location.id,
+            'product_id': self.product1.id,
+            'product_uom': self.uom_unit.id,
+            'product_uom_qty': 0.0,
+            'quantity_done': 1.0,
+        })
+        move3._action_confirm()
+        move3._action_assign()
+        move3._action_done()
+        self.assertEqual(move3.state, 'done')
+        quant = self.env['stock.quant']._gather(self.product1, self.stock_location)
+        self.assertEqual(quant.quantity, 9.0)
+        self.assertEqual(quant.reserved_quantity, 9.0)
 
     def test_use_unreserved_move_line_1(self):
         """ Test that validating a stock move linked to an untracked product reserved by another one

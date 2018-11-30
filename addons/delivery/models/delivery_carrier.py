@@ -199,8 +199,14 @@ class DeliveryCarrier(models.Model):
             carrier.product_id.list_price = carrier.fixed_price
 
     def fixed_rate_shipment(self, order):
+        carrier = self._match_address(order.partner_shipping_id)
+        if not carrier:
+            return {'success': False,
+                    'price': 0.0,
+                    'error_message': _('Error: this delivery method is not available for this address.'),
+                    'warning_message': False}
         price = self.fixed_price
-        if self.company_id.currency_id.id != order.currency_id.id:
+        if self.company_id and self.company_id.currency_id.id != order.currency_id.id:
             price = self.env['res.currency']._compute(self.company_id.currency_id, order.currency_id, price)
         return {'success': True,
                 'price': price,

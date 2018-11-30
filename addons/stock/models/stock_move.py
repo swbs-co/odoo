@@ -578,6 +578,7 @@ class StockMove(models.Model):
         moves_to_merge = []
         for candidate_moves in candidate_moves_list:
             # First step find move to merge.
+            candidate_moves = candidate_moves.with_context(prefetch_fields=False)
             for k, g in groupby(sorted(candidate_moves, key=self._prepare_merge_move_sort_method), key=itemgetter(*distinct_fields)):
                 moves = self.env['stock.move'].concat(*g).filtered(lambda m: m.state not in ('done', 'cancel', 'draft'))
                 # If we have multiple records we will merge then in a single one.
@@ -897,11 +898,13 @@ class StockMove(models.Model):
         assigned_moves = self.env['stock.move']
         partially_available_moves = self.env['stock.move']
         for move in self.filtered(lambda m: m.state in ['confirmed', 'waiting', 'partially_available']):
+            missing_reserved_uom_quantity = move.product_uom_qty - move.reserved_availability
+            missing_reserved_quantity = move.product_uom._compute_quantity(missing_reserved_uom_quantity, move.product_id.uom_id, rounding_method='HALF-UP')
             if move.location_id.should_bypass_reservation()\
                     or move.product_id.type == 'consu':
                 # create the move line(s) but do not impact quants
                 if move.product_id.tracking == 'serial' and (move.picking_type_id.use_create_lots or move.picking_type_id.use_existing_lots):
-                    for i in range(0, int(move.product_qty - move.reserved_availability)):
+                    for i in range(0, int(missing_reserved_quantity)):
                         self.env['stock.move.line'].create(move._prepare_move_line_vals(quantity=1))
                 else:
                     to_update = move.move_line_ids.filtered(lambda ml: ml.product_uom_id == move.product_uom and
@@ -912,16 +915,16 @@ class StockMove(models.Model):
                                                             not ml.package_id and
                                                             not ml.owner_id)
                     if to_update:
-                        to_update[0].product_uom_qty += move.product_qty - move.reserved_availability
+                        to_update[0].product_uom_qty += missing_reserved_uom_quantity
                     else:
-                        self.env['stock.move.line'].create(move._prepare_move_line_vals(quantity=move.product_qty - move.reserved_availability))
+                        self.env['stock.move.line'].create(move._prepare_move_line_vals(quantity=missing_reserved_quantity))
                 assigned_moves |= move
             else:
                 if not move.move_orig_ids:
                     if move.procure_method == 'make_to_order':
                         continue
                     # If we don't need any quantity, consider the move assigned.
-                    need = move.product_qty - move.reserved_availability
+                    need = missing_reserved_quantity
                     if float_is_zero(need, precision_rounding=move.product_id.uom_id.rounding):
                         assigned_moves |= move
                         continue
@@ -1019,7 +1022,7 @@ class StockMove(models.Model):
             if move.propagate:
                 # only cancel the next move if all my siblings are also cancelled
                 if all(state == 'cancel' for state in siblings_states):
-                    move.move_dest_ids._action_cancel()
+                    move.move_dest_ids.filtered(lambda m: m.state != 'done')._action_cancel()
             else:
                 if all(state in ('done', 'cancel') for state in siblings_states):
                     move.move_dest_ids.write({'procure_method': 'make_to_stock'})
@@ -1029,6 +1032,7 @@ class StockMove(models.Model):
 
     def _prepare_extra_move_vals(self, qty):
         vals = {
+            'origin_returned_move_id': self.origin_returned_move_id.id,
             'product_uom_qty': qty,
             'picking_id': self.picking_id.id,
             'price_unit': self.price_unit,
@@ -1084,8 +1088,7 @@ class StockMove(models.Model):
 
     def _action_done(self):
         self.filtered(lambda move: move.state == 'draft')._action_confirm()  # MRP allows scrapping draft moves
-
-        moves = self.filtered(lambda x: x.state not in ('done', 'cancel'))
+        moves = self.exists().filtered(lambda x: x.state not in ('done', 'cancel'))
         moves_todo = self.env['stock.move']
 
         # Cancel moves where necessary ; we should do it before creating the extra moves because
@@ -1224,3 +1227,36 @@ class StockMove(models.Model):
                     move.state = 'waiting'
                 else:
                     move.state = 'confirmed'
+
+    def _set_quantity_done(self, qty):
+        """
+        Set the given quantity as quantity done on the move through the move lines. The method is
+        able to handle move lines with a different UoM than the move (but honestly, this would be
+        looking for trouble...).
+        @param qty: quantity in the UoM of move.product_uom
+        """
+        for ml in self.move_line_ids:
+            # Convert move line qty into move uom
+            ml_qty = ml.product_uom_qty - ml.qty_done
+            if ml.product_uom_id != self.product_uom:
+                ml_qty = ml.product_uom_id._compute_quantity(ml_qty, self.product_uom, round=False)
+
+            taken_qty = min(qty, ml_qty)
+            # Convert taken qty into move line uom
+            if ml.product_uom_id != self.product_uom:
+                taken_qty = self.product_uom._compute_quantity(ml_qty, ml.product_uom_id, round=False)
+
+            # Assign qty_done and explicitly round to make sure there is no inconsistency between
+            # ml.qty_done and qty.
+            taken_qty = float_round(taken_qty, precision_rounding=ml.product_uom_id.rounding)
+            ml.qty_done += taken_qty
+            if ml.product_uom_id != self.product_uom:
+                taken_qty = ml.product_uom_id._compute_quantity(ml_qty, self.product_uom, round=False)
+            qty -= taken_qty
+
+            if float_compare(qty, 0.0,  precision_rounding=self.product_uom.rounding) <= 0:
+                break
+        if float_compare(qty, 0.0,  precision_rounding=self.product_uom.rounding) > 0:
+            vals = self._prepare_move_line_vals(quantity=0)
+            vals['qty_done'] = qty
+            ml = self.env['stock.move.line'].create(vals)

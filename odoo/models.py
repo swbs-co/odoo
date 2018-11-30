@@ -2655,7 +2655,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                 record._cache.update(record._convert_to_cache(values, validate=False))
             if not self.env.cache.contains(self, field):
                 exc = AccessError("No value found for %s.%s" % (self, field.name))
-                self.env.cache.set_failed(self, field, exc)
+                self.env.cache.set_failed(self, [field], exc)
 
     @api.multi
     def _read_from_database(self, field_names, inherited_field_names=[]):
@@ -2922,9 +2922,8 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
 
         # Delete the records' properties.
         with self.env.norecompute():
-            self.env['ir.property'].search([('res_id', 'in', refs)]).unlink()
-
             self.check_access_rule('unlink')
+            self.env['ir.property'].search([('res_id', 'in', refs)]).sudo().unlink()
 
             cr = self._cr
             Data = self.env['ir.model.data'].sudo().with_context({})
