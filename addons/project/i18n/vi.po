@@ -3,22 +3,23 @@
 # * project
 # 
 # Translators:
-# Martin Trigaux, 2017
-# fanha99 <fanha99@hotmail.com>, 2017
 # Thang Duong Bao <nothingctrl@gmail.com>, 2017
-# Duy BQ <duybq86@gmail.com>, 2017
-# Phạm Lân <phamquanglan@gmail.com>, 2017
 # Thong Dong <thongdong7@gmail.com>, 2017
 # sao sang <saosangmo@yahoo.com>, 2017
+# Phạm Lân <phamquanglan@gmail.com>, 2017
+# Martin Trigaux, 2017
 # son dang <son.dang@doda100.com>, 2017
+# fanha99 <fanha99@hotmail.com>, 2018
 # thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018
+# Duy BQ <duybq86@gmail.com>, 2018
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-27 11:55+0000\n"
-"PO-Revision-Date: 2018-07-27 11:55+0000\n"
-"Last-Translator: thanh nguyen <thanhnguyen.icsc@gmail.com>, 2018\n"
+"PO-Revision-Date: 2017-09-20 10:22+0000\n"
+"Last-Translator: Duy BQ <duybq86@gmail.com>, 2018\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -197,7 +198,7 @@ msgstr "- Đội kỹ thuật Hệ thống"
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
 msgid "1. Learn about Tasks and Timesheets."
-msgstr "1. Học về Nhiệm vụ và Bảng theo dõi Thời gian"
+msgstr "1. Học về Nhiệm vụ và Bảng theo dõi Thời gian."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -239,7 +240,7 @@ msgstr ""
 #, python-format
 msgid ""
 "<b>Invite coworkers</b> via email.<br/><i>Enter one email per line.</i>"
-msgstr "<b>Mời cộng sự</b> qua email.<br/><i>Nhập mỗi dòng một email</i>."
+msgstr "<b>Mời cộng sự</b> qua email.<br/><i>Nhập mỗi dòng một email.</i>"
 
 #. module: project
 #. openerp-web
@@ -294,8 +295,7 @@ msgstr "<span class=\"fa fa-comment-o\"/> Website Live Chat bật"
 #: model:ir.ui.view,arch_db:project.project_planner
 msgid "<span class=\"fa fa-envelope-o\"/> Email Our Project Expert"
 msgstr ""
-"<span class=\"fa fa-envelope-o\"/> Gửi email cho Chuyên gia dự án của chúng "
-"tôi"
+"<span class=\"fa fa-envelope-o\"/> Gửi email cho Quản lý dự án của chúng tôi"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -913,7 +913,7 @@ msgid ""
 "                                    The Status indicator helps you manage Tasks by giving them one of 3 different colour: Grey, Green or Red. The meaning of these Statuses can be freely configured, for example:"
 msgstr ""
 "<strong>Sử dụng chỉ báo trạng thái</strong><br/>\n"
-"                                     Chỉ báo Trạng thái giúp bạn quản lý Công việc bằng cách cho chúng một trong 3 màu khác nhau: Xám, Xanh lục hoặc Đỏ. Ý nghĩa của các trạng thái này có thể được cấu hình tự do, ví dụ"
+"                                     Chỉ báo Trạng thái giúp bạn quản lý Công việc bằng cách cho chúng một trong 3 màu khác nhau: Xám, Xanh lục hoặc Đỏ. Ý nghĩa của các trạng thái này có thể được cấu hình tự do, ví dụ:"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -1038,7 +1038,7 @@ msgstr "Kiểu Hoạt động"
 #. module: project
 #: model:ir.ui.view,arch_db:project.task_type_edit
 msgid "Add a description..."
-msgstr "Thêm mô tả"
+msgstr "Thêm mô tả..."
 
 #. module: project
 #. openerp-web
@@ -1153,7 +1153,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:project.view_project_project_filter
 #: model:ir.ui.view,arch_db:project.view_task_search_form
 msgid "Archived"
-msgstr "Đã lưu "
+msgstr "Đã lưu"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.view_task_form2
@@ -1414,7 +1414,7 @@ msgstr "Bấm vào nút này để chỉnh sửa nhiệm vụ."
 #. module: project
 #: model:ir.actions.act_window,help:project.project_tags_action
 msgid "Click to add a new tag."
-msgstr "Bấm để tạo mới một tag"
+msgstr "Bấm để tạo mới một tag."
 
 #. module: project
 #: model:ir.actions.act_window,help:project.open_task_type_form
@@ -1756,9 +1756,9 @@ msgid ""
 "ways to work with Odoo. First, decide if you want to think in terms of "
 "tasks. Then, activate the Timesheets app if you need it."
 msgstr ""
-"ùy thuộc vào những gì bạn cần và cách bạn muốn hoạt động, có một số cách để "
-"làm việc với Hệ thống. Đầu tiên, hãy quyết định xem bạn có muốn suy nghĩ về "
-"nhiệm vụ không. Sau đó, kích hoạt ứng dụng Bảng chấm công nếu bạn cần."
+"Tùy thuộc vào những gì bạn cần và cách bạn muốn hoạt động, có một số cách để"
+" làm việc với Hệ thống. Đầu tiên, hãy quyết định xem bạn có muốn suy nghĩ về"
+" nhiệm vụ không. Sau đó, kích hoạt ứng dụng Bảng chấm công nếu bạn cần."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -1933,7 +1933,7 @@ msgstr "Ngày kết thúc"
 #: code:addons/project/models/project.py:556
 #, python-format
 msgid "Error! You cannot create recursive hierarchy of task(s)."
-msgstr ""
+msgstr "Lỗi! Bạn không thể tạo cấu trúc phân cấp đệ quy cho nhiệm vụ."
 
 #. module: project
 #: sql_constraint:project.project:0
@@ -1996,7 +1996,7 @@ msgstr ""
 #. module: project
 #: model:ir.ui.view,arch_db:project.view_task_project_user_search
 msgid "Extended Filters"
-msgstr "Bộ lọc mở rộng..."
+msgstr "Bộ lọc mở rộng"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.view_task_form2
@@ -2431,7 +2431,7 @@ msgid ""
 "notified in Odoo's Inbox."
 msgstr ""
 "Các ghi chú nội bộ và thông điệp sẽ xuất hiện trong Chatter nhưng sẽ không "
-"được thông báo trong Hộp thư đến"
+"được thông báo trong Hộp thư đến."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_tags_search_view
@@ -2599,7 +2599,7 @@ msgid ""
 "Timesheets."
 msgstr ""
 "Tìm hiểu cách tổ chức tốt hơn công ty của bạn bằng cách sử dụng Dự án, Tác "
-"vụ và Bảng chấm công"
+"vụ và Bảng chấm công."
 
 #. module: project
 #. openerp-web
@@ -3209,7 +3209,7 @@ msgstr "Xếp hạng nhiệm vụ"
 #: model:project.task.type,legend_done:project.project_stage_data_2
 #, python-format
 msgid "Ready for Next Stage"
-msgstr "Sẵn sàng cho Trạng thái kế tiếp"
+msgstr "Sẵn sàng giai đoạn kế tiếp"
 
 #. module: project
 #. openerp-web
@@ -3422,7 +3422,7 @@ msgstr "Chọn"
 msgid "Send an alert when a task is stuck in red for more than a few days"
 msgstr ""
 "Gửi một cảnh báo khi một nhiệm vụ bị bế tắc (màu đỏ) trong thời hạn nhiều "
-"hơn xx ngày nào đó."
+"hơn xx ngày nào đó"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -3650,7 +3650,7 @@ msgstr "Nhiệm vụ"
 #. module: project
 #: model:ir.ui.view,arch_db:project.portal_my_task
 msgid "Task -"
-msgstr "Tác vụ"
+msgstr "Tác vụ -"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project_tasks
@@ -3897,12 +3897,12 @@ msgstr ""
 #. module: project
 #: model:ir.ui.view,arch_db:project.portal_my_projects
 msgid "There are no projects."
-msgstr "Ở đây không có dự án"
+msgstr "Ở đây không có dự án."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.portal_my_tasks
 msgid "There are no tasks."
-msgstr "Ở đây không có tác vụ"
+msgstr "Ở đây không có tác vụ."
 
 #. module: project
 #. openerp-web
@@ -4261,7 +4261,7 @@ msgstr ""
 msgid "We can automate steps in your workflow, for example:"
 msgstr ""
 "Chúng tôi có thể tự động hoá các bước trong quy trình (workflow) của bạn, ví"
-" dụ"
+" dụ:"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -4411,7 +4411,7 @@ msgid ""
 "kanban and form views."
 msgstr ""
 "Bạn cũng có thể thêm một tooltip về việc sử dụng các sao có ở trong giao "
-"diện kanban và giao diện form"
+"diện kanban và giao diện form."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -4524,7 +4524,7 @@ msgstr "v.v."
 #. module: project
 #: model:ir.ui.view,arch_db:project.portal_my_tasks
 msgid "for project:"
-msgstr ""
+msgstr "cho dự án:"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.view_task_kanban
