@@ -1247,10 +1247,7 @@ QUnit.module('basic_fields', {
         form.destroy();
     });
 
-    QUnit.skip('input field: change password value', function (assert) {
-        // password policy needs an RPC call to initialize &
-        // presents somewhat differently (custom widget), need way
-        // to augment/override tests
+    QUnit.test('input field: change password value', function (assert) {
         assert.expect(4);
 
         var form = createView({
@@ -1278,7 +1275,7 @@ QUnit.module('basic_fields', {
         form.destroy();
     });
 
-    QUnit.skip('input field: empty password', function (assert) {
+    QUnit.test('input field: empty password', function (assert) {
         assert.expect(3);
 
         this.data.partner.records[0].foo = false;
@@ -2324,15 +2321,15 @@ QUnit.module('basic_fields', {
             concurrency.delay(0).then(function () {
                 return concurrency.delay(0);
             }).then(function () {
-                assert.strictEqual(kanban.$('.o_kanban_record:first() .o_graph_barchart').length, 1,
+                assert.strictEqual(kanban.$('.o_kanban_record:first() .o_graph_barchart svg').length, 1,
                     "graph of first record should be a barchart");
-                assert.strictEqual(kanban.$('.o_kanban_record:nth(1) .o_graph_linechart').length, 1,
+                assert.strictEqual(kanban.$('.o_kanban_record:nth(1) .o_graph_linechart svg').length, 1,
                     "graph of second record should be a linechart");
 
                 var evt = document.createEvent("MouseEvents"); //taken ref from https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/initMouseEvent
                 evt.initMouseEvent("mouseover", true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null);
                 $('.discreteBar')[0].dispatchEvent(evt);
-                var tooltip = $('.nvtooltip').find('table').find('.key')[0].innerText;
+                var tooltip = $('.nvtooltip').find('table').find('.key')[0].innerText.trim();
                 assert.equal(tooltip, graph_key, "graph tooltip should be generated ");
                 $('.nvtooltip').remove();
 
@@ -2357,14 +2354,15 @@ QUnit.module('basic_fields', {
         // when being destroyed before nv has been loaded
         assert.expect(2);
 
-        var destroy = basicFields.JournalDashboardGraph.prototype.destroy;
-        basicFields.JournalDashboardGraph.prototype.destroy = function () {
-            assert.step('destroy');
-            var nv = window.nv;
-            delete window.nv;
-            destroy.apply(this, arguments);
-            window.nv = nv;
-        };
+        testUtils.patch(basicFields.JournalDashboardGraph, {
+            destroy: function () {
+                assert.step('destroy');
+                var nv = window.nv;
+                delete window.nv;
+                this._super.apply(this, arguments);
+                window.nv = nv;
+            }
+        });
 
         var kanban = createView({
             View: KanbanView,
@@ -2382,9 +2380,12 @@ QUnit.module('basic_fields', {
         });
 
         kanban.destroy();
-        basicFields.JournalDashboardGraph.prototype.destroy = destroy;
+        testUtils.unpatch(basicFields.JournalDashboardGraph);
 
         assert.verifySteps(['destroy']);
+
+        // Wait nvd3 to fully render the graph. If ommited, may slow down following tests.
+        return concurrency.delay(0);
     });
 
     QUnit.test('graph dashboard widget can be destroyed when nv is partially loaded', function (assert) {
@@ -2424,6 +2425,79 @@ QUnit.module('basic_fields', {
         testUtils.unpatch(basicFields.JournalDashboardGraph);
 
         assert.verifySteps(['destroy']);
+
+        // Wait nvd3 to fully render the graph. If ommited, may slow down following tests.
+        return concurrency.delay(0);
+    });
+
+    QUnit.test('rendering of a field with dashboard_graph widget in an updated kanban view (ungrouped)', function (assert) {
+
+        var done = assert.async();
+        assert.expect(2);
+
+        createAsyncView({
+            View: KanbanView,
+            model: 'partner',
+            data: this.data,
+            arch: '<kanban class="o_kanban_test">' +
+                    '<field name="graph_type"/>' +
+                    '<templates><t t-name="kanban-box">' +
+                        '<div>' +
+                        '<field name="graph_data" t-att-graph_type="record.graph_type.raw_value" widget="dashboard_graph"/>' +
+                        '</div>' +
+                    '</t>' +
+                '</templates></kanban>',
+            domain: [['id', 'in', [1, 2]]],
+        }).then(function (kanban) {
+            concurrency.delay(0).then(function () {
+                return concurrency.delay(0);
+            }).then(function () {
+                assert.strictEqual(kanban.$('.o_dashboard_graph svg').length, 2, "there should be two graph rendered");
+                return kanban.update({});
+            }).then(function () {
+                return concurrency.delay(0); // one graph is re-rendered
+            }).then(function () {
+                return concurrency.delay(0); // one graph is re-rendered
+            }).then(function () {
+                assert.strictEqual(kanban.$('.o_dashboard_graph svg').length, 2, "there should be one graph rendered");
+                kanban.destroy();
+                done();
+            });
+        });
+    });
+
+    QUnit.test('rendering of a field with dashboard_graph widget in an updated kanban view (grouped)', function (assert) {
+
+        var done = assert.async();
+        assert.expect(2);
+
+        createAsyncView({
+            View: KanbanView,
+            model: 'partner',
+            data: this.data,
+            arch: '<kanban class="o_kanban_test">' +
+                    '<field name="graph_type"/>' +
+                    '<templates><t t-name="kanban-box">' +
+                        '<div>' +
+                        '<field name="graph_data" t-att-graph_type="record.graph_type.raw_value" widget="dashboard_graph"/>' +
+                        '</div>' +
+                    '</t>' +
+                '</templates></kanban>',
+            domain: [['id', 'in', [1, 2]]],
+        }).then(function (kanban) {
+            concurrency.delay(0).then(function () {
+                return concurrency.delay(0);
+            }).then(function () {
+                assert.strictEqual(kanban.$('.o_dashboard_graph svg').length, 2, "there should be two graph rendered");
+                return kanban.update({groupBy: ['selection'], domain: [['int_field', '=', 10]]});
+            }).then(function () {
+                return concurrency.delay(0);
+            }).then(function () {
+                assert.strictEqual(kanban.$('.o_dashboard_graph svg').length, 1, "there should be one graph rendered");
+                kanban.destroy();
+                done();
+            });
+        });
     });
 
     QUnit.module('AceEditor');
@@ -2702,6 +2776,42 @@ QUnit.module('basic_fields', {
         form.destroy();
     });
 
+    QUnit.test('date field with warn_future option: do not overwrite datepicker option', function (assert) {
+        assert.expect(2);
+
+        // Making sure we don't have a legit default value
+        // or any onchange that would set the value
+        this.data.partner.fields.date.default = undefined;
+        this.data.partner.onchanges = {};
+
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch:'<form string="Partners">' +
+                    '<field name="foo" />' + // Do not let the date field get the focus in the first place
+                    '<field name="date" options="{\'datepicker\': {\'warn_future\': true}}"/>' +
+                 '</form>',
+            res_id: 1,
+        });
+
+        // switch to edit mode
+        form.$buttons.find('.o_form_button_edit').click();
+        assert.strictEqual(form.$('input[name="date"]').val(), '02/03/2017',
+            'The existing record should have a value for the date field');
+
+        // save with no changes
+        form.$buttons.find('.o_form_button_save').click();
+
+        //Create a new record
+        form.$buttons.find('.o_form_button_create').click();
+
+        assert.notOk(form.$('input[name="date"]').val(),
+            'The new record should not have a value that the framework would have set');
+
+        form.destroy();
+    });
+
     QUnit.test('date field in editable list view', function (assert) {
         assert.expect(8);
 
@@ -2823,6 +2933,38 @@ QUnit.module('basic_fields', {
         form.$buttons.find('.o_form_button_save').click();
 
         assert.verifySteps(['read']); // should not have save as nothing changed
+
+        form.destroy();
+    });
+
+    QUnit.test('field date should select its content onclick when there is one', function (assert) {
+        assert.expect(2);
+        var done = assert.async();
+
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch:'<form string="Partners">' +
+                    '<field name="display_name" /> ' + // Do not focus on the date field right away
+                    '<field name="date" />' +
+                '</form>',
+            res_id: 1,
+            viewOptions: {
+                mode: 'edit',
+            },
+        });
+
+        form.$el.on({
+            'show.datetimepicker': function () {
+                assert.ok($('.bootstrap-datetimepicker-widget').is(':visible'),
+                    'bootstrap-datetimepicker is visible');
+                assert.strictEqual(window.getSelection().toString(), "02/03/2017",
+                    'The whole input of the date field should have been selected');
+                done();
+            }
+        });
+        form.$('.o_input[name="date"]').mouseenter().trigger('focus');
 
         form.destroy();
     });
@@ -5266,6 +5408,48 @@ QUnit.module('basic_fields', {
         // we don't actually check that it doesn't open the record because even
         // if it tries to, it will crash as we don't define an arch in this test
         $('.modal .o_list_view .o_data_row:first .o_data_cell').click();
+
+        form.destroy();
+    });
+
+    QUnit.module('FieldProgressBar');
+
+    QUnit.test('Field ProgressBar: max_value should update', function (assert) {
+        assert.expect(2);
+
+        this.data.partner.records = this.data.partner.records.slice(0,1);
+        this.data.partner.records[0].qux = 2;
+
+        this.data.partner.onchanges = {
+            display_name: function (obj) {
+                obj.int_field = 999;
+                obj.qux = 5;
+            }
+        };
+
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form>' +
+                    '<field name="display_name" />' +
+                    '<field name="qux" invisible="1" />' +
+                    '<field name="int_field" widget="progressbar" options="{\'current_value\': \'int_field\', \'max_value\': \'qux\'}" />' +
+                '</form>',
+            res_id: 1,
+            viewOptions: {
+                mode: 'edit',
+            },
+        });
+
+        assert.strictEqual(form.$('.o_progressbar_value').text(), '10 / 2',
+            'The initial value of the progress bar should be correct');
+
+        // trigger the onchange
+        form.$('.o_input[name=display_name]').val('new name').trigger('input');
+
+        assert.strictEqual(form.$('.o_progressbar_value').text(), '999 / 5',
+            'The value of the progress bar should be correct after the update');
 
         form.destroy();
     });

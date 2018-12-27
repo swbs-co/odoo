@@ -1596,6 +1596,11 @@ var BasicModel = AbstractModel.extend({
                 record._rawChanges[name] = val;
                 return;
             }
+            if (record._rawChanges[name]) {
+                // if previous _rawChanges exists, clear them since the field is now knwon
+                // and restoring outdated onchange over posterious change is wrong
+                delete record._rawChanges[name];
+            }
             var oldValue = name in record._changes ? record._changes[name] : record.data[name];
             var id;
             if (field.type === 'many2one') {
@@ -1932,7 +1937,7 @@ var BasicModel = AbstractModel.extend({
                     addDef = this._applyX2ManyChange(record, fieldName, {
                         operation: 'ADD_M2M',
                         ids: values
-                    });
+                    }, viewType);
                 }
                 if (removedIds.length) {
                     var listData = _.map(list.data, function (localId) {
@@ -1946,7 +1951,7 @@ var BasicModel = AbstractModel.extend({
                             }
                             return _.findWhere(listData, {res_id: resID}).id;
                         }),
-                    });
+                    }, viewType);
                 }
                 return $.when(addDef, removedDef);
         }
@@ -2188,7 +2193,7 @@ var BasicModel = AbstractModel.extend({
      * @param {Object} [options]
      * @param {string[]} [options.fieldNames] the list of fields to fetch. If
      *   not given, fetch all the fields in record.fieldNames (+ display_name)
-     * @param {string} [optinos.viewType] the type of view for which the record
+     * @param {string} [options.viewType] the type of view for which the record
      *   is fetched (usefull to load the adequate fields), by defaults, uses
      *   record.viewType
      * @returns {Deferred<Object>} resolves to the record or is rejected in
@@ -2733,11 +2738,6 @@ var BasicModel = AbstractModel.extend({
                     relationField: field.relation_field,
                     viewType: view ? view.type : fieldInfo.viewType,
                 });
-                // set existing changes to the list
-                if (record._changes && record._changes[fieldName]) {
-                    list._changes = self.localData[record._changes[fieldName]]._changes;
-                    record._changes[fieldName] = list.id;
-                }
                 record.data[fieldName] = list.id;
                 if (!fieldInfo.__no_fetch) {
                     var def = self._readUngroupedList(list).then(function () {
@@ -3404,6 +3404,7 @@ var BasicModel = AbstractModel.extend({
         _.each(element._changes, function (command) {
             if (command.operation === 'DELETE' ||
                     command.operation === 'FORGET' ||
+                    (command.operation === 'ADD' &&  !command.isNew)||
                     command.operation === 'REMOVE_ALL') {
                 return;
             }
@@ -3587,27 +3588,21 @@ var BasicModel = AbstractModel.extend({
     _makeDefaultRecord: function (modelName, params) {
         var self = this;
 
-        var determineExtraFields = function () {
-            // Fields that are present in the originating view, that need to be initialized
-            // Hence preventing their value to crash when getting back to the originating view
-            var parentRecord = self.localData[params.parentID];
-
-            var originView =  parentRecord && parentRecord.fieldsInfo;
-            if (!originView || !originView[parentRecord.viewType])
-                return [];
-
-            var fieldsFromOrigin = _.filter(Object.keys(originView[parentRecord.viewType]),
-                function (fieldname) {
-                    return params.fields[fieldname] !== undefined;
-                });
-
-            return fieldsFromOrigin;
-        };
-
-        var fieldNames = Object.keys(params.fieldsInfo[params.viewType]);
+        var targetView = params.viewType;
+        var fields = params.fields;
+        var fieldsInfo = params.fieldsInfo;
+        var fieldNames = Object.keys(fieldsInfo[targetView]);
         var fields_key = _.without(fieldNames, '__last_update');
 
-        var extraFields = determineExtraFields();
+        // Fields that are present in the originating view, that need to be initialized
+        // Hence preventing their value to crash when getting back to the originating view
+        var parentRecord = self.localData[params.parentID];
+        if (parentRecord) {
+            var originView = parentRecord.viewType;
+            fieldNames = _.union(fieldNames, Object.keys(parentRecord.fieldsInfo[originView]));
+            fieldsInfo[targetView] = _.defaults({}, fieldsInfo[targetView], parentRecord.fieldsInfo[originView]);
+            fields = _.defaults({}, fields, parentRecord.fields);
+        }
 
         return this._rpc({
                 model: modelName,
@@ -3616,15 +3611,14 @@ var BasicModel = AbstractModel.extend({
                 context: params.context,
             })
             .then(function (result) {
-
                 var record = self._makeDataPoint({
                     modelName: modelName,
-                    fields: params.fields,
-                    fieldsInfo: params.fieldsInfo,
+                    fields: fields,
+                    fieldsInfo: fieldsInfo,
                     context: params.context,
                     parentID: params.parentID,
                     res_ids: params.res_ids,
-                    viewType: params.viewType,
+                    viewType: targetView,
                 });
 
                 // We want to overwrite the default value of the handle field (if any),
@@ -3641,7 +3635,7 @@ var BasicModel = AbstractModel.extend({
                     result[overrideDefaultFields.field] = overrideDefaultFields.value;
                 }
 
-                return self.applyDefaultValues(record.id, result, {fieldNames: _.union(fieldNames, extraFields)})
+                return self.applyDefaultValues(record.id, result, {fieldNames: fieldNames})
                     .then(function () {
                         var def = $.Deferred();
                         self._performOnChange(record, fields_key).always(function () {
@@ -3785,11 +3779,12 @@ var BasicModel = AbstractModel.extend({
      */
     _postprocess: function (record, options) {
         var self = this;
+        var viewType = options && options.viewType || record.viewType;
         var defs = [];
 
         _.each(record.getFieldNames(options), function (name) {
             var field = record.fields[name];
-            var fieldInfo = record.fieldsInfo[record.viewType][name] || {};
+            var fieldInfo = record.fieldsInfo[viewType][name] || {};
             var options = fieldInfo.options || {};
             if (options.always_reload) {
                 if (record.fields[name].type === 'many2one' && record.data[name]) {
@@ -3798,7 +3793,7 @@ var BasicModel = AbstractModel.extend({
                             model: field.relation,
                             method: 'name_get',
                             args: [element.data.id],
-                            context: self._getContext(record, {fieldName: name}),
+                            context: self._getContext(record, {fieldName: name, viewType: viewType}),
                         })
                         .then(function (result) {
                             element.data.display_name = result[0][1];
@@ -4236,6 +4231,7 @@ var BasicModel = AbstractModel.extend({
 
         if (options.context !== undefined) {
             element.context = options.context;
+            element.orderedBy =  options.context.orderedBy || element.orderedBy;
         }
         if (options.domain !== undefined) {
             element.domain = options.domain;
@@ -4461,7 +4457,7 @@ var BasicModel = AbstractModel.extend({
                 if (orderData1 > orderData2) {
                     return order.asc ? 1 : -1;
                 }
-                return compareRecords(record1ID, record2ID, level + 1);
+                return compareRecords(resId1, resId2, level + 1);
             };
             utils.stableSort(list.res_ids, compareRecords);
         }

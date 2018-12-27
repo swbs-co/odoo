@@ -338,7 +338,7 @@
                         <i t-if="options.displayStars and !message.isSystemNotification() and !message.needsModeration()"
                             t-att-class="'fa fa-lg o_thread_icon o_thread_message_star ' + (message.isStarred() ? 'fa-star' : 'fa-star-o')"
                             t-att-data-message-id="message.getID()" title="Mark as Todo" role="img" aria-label="Mark as Todo"/>
-                       <i t-if="message.originatesFromChannel() and options.displayReplyIcons"
+                       <i t-if="message.isLinkedToDocumentThread() and options.displayReplyIcons"
                            class="fa fa-reply o_thread_icon o_thread_message_reply"
                            t-att-data-message-id="message.getID()" title="Reply" role="img" aria-label="Reply"/>
                         <i t-if="message.isNeedaction() and options.displayMarkAsRead"
@@ -351,6 +351,7 @@
                     </span>
                 </p>
                 <div class="o_thread_message_content">
+                    <t t-raw="message.getBody()"/>
                     <t t-if="message.hasTrackingValues()">
                         <t t-if="message.hasSubtypeDescription()">
                             <p><t t-esc="message.getSubtypeDescription()"/></p>
@@ -358,9 +359,6 @@
                         <t t-call="mail.widget.Thread.MessageTracking"/>
                     </t>
                     <p t-if="options.displaySubjectOnMessages and message.shouldDisplaySubject()" class="o_mail_subject">Subject: <t t-esc="message.getSubject()"/></p>
-                    <t t-if="!(message.hasTrackingValues())">
-                        <t t-raw="message.getBody()"/>
-                    </t>
                     <t t-if="message.hasAttachments()">
                         <div t-if="message.hasImageAttachments()" class="o_attachments_previews">
                             <t t-foreach="message.getImageAttachments()" t-as="attachment">

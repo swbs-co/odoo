@@ -564,6 +564,7 @@ var FieldMany2One = AbstractField.extend({
             initial_ids: ids ? _.map(ids, function (x) { return x[0]; }) : undefined,
             initial_view: view,
             disable_multiple_selection: true,
+            no_create: !self.can_create,
             on_selected: function (records) {
                 self.reinitialize(records[0]);
                 self.activate();
@@ -1106,6 +1107,13 @@ var FieldX2Many = AbstractField.extend({
         }
         return def.then(function () {
             self.pager.updateState({ size: self.value.count });
+            var newEval = self._evalColumnInvisibleFields();
+            if (!_.isEqual(self.currentColInvisibleFields, newEval)) {
+                self.currentColInvisibleFields = newEval;
+                self.renderer.updateState(self.value, {
+                    columnInvisibleFields: self.currentColInvisibleFields,
+                });
+            }
         });
     },
     /**
