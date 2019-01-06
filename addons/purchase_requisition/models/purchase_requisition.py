@@ -257,8 +257,8 @@ class PurchaseOrder(models.Model):
         self.order_line = order_lines
 
     @api.multi
-    def button_confirm(self):
-        res = super(PurchaseOrder, self).button_confirm()
+    def button_approve(self, force=False):
+        res = super(PurchaseOrder, self).button_approve(force=force)
         for po in self:
             if not po.requisition_id:
                 continue
@@ -337,3 +337,14 @@ class ProcurementRule(models.Model):
         values['picking_type_id'] = self.picking_type_id.id
         self.env['purchase.requisition'].create(values)
         return True
+
+class Orderpoint(models.Model):
+    _inherit = "stock.warehouse.orderpoint"
+
+    def _quantity_in_progress(self):
+        res = super(Orderpoint, self)._quantity_in_progress()
+        for op in self:
+            for pr in self.env['purchase.requisition'].search([('state','=','draft'),('origin','=',op.name)]):
+                for prline in pr.line_ids.filtered(lambda l: l.product_id.id == op.product_id.id):
+                    res[op.id] += prline.product_uom_id._compute_quantity(prline.product_qty, op.product_uom, round=False)
+        return res
