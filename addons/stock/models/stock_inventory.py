@@ -267,7 +267,7 @@ class Inventory(models.Model):
             args += (self.package_id.id,)
         #case 5: Filter on One product category + Exahausted Products
         if self.category_id:
-            categ_products = Product.search([('categ_id', '=', self.category_id.id)])
+            categ_products = Product.search([('categ_id', 'child_of', self.category_id.id)])
             domain += ' AND product_id = ANY (%s)'
             args += (categ_products.ids,)
             products_to_filter |= categ_products
@@ -425,7 +425,7 @@ class InventoryLine(models.Model):
         """
         for line in self:
             if line.product_id.type != 'product':
-                raise UserError(_("You can only adjust storable products."))
+                raise UserError(_("You can only adjust storable products.") + '\n\n%s -> %s' % (line.product_id.display_name, line.product_id.type))
 
     def _get_move_values(self, qty, location_id, location_dest_id, out):
         self.ensure_one()
