@@ -4,17 +4,18 @@
 # 
 # Translators:
 # matjaz k <matjaz@mentis.si>, 2018
-# Martin Trigaux, 2018
-# Matjaž Mozetič <m.mozetic@matmoz.si>, 2018
 # Vida Potočnik <vida.potocnik@mentis.si>, 2018
+# Martin Trigaux, 2018
 # jl2035 <jaka.luthar@gmail.com>, 2018
+# Matjaž Mozetič <m.mozetic@matmoz.si>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-27 11:55+0000\n"
-"PO-Revision-Date: 2018-07-27 11:55+0000\n"
-"Last-Translator: jl2035 <jaka.luthar@gmail.com>, 2018\n"
+"PO-Revision-Date: 2017-09-20 10:27+0000\n"
+"Last-Translator: Matjaž Mozetič <m.mozetic@matmoz.si>, 2019\n"
 "Language-Team: Slovenian (https://www.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -117,7 +118,7 @@ msgstr ""
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
 msgid "<i class=\"fa fa-envelope-o\"/> Ask Our Experts"
-msgstr ""
+msgstr "<i class=\"fa fa-envelope-o\"/> Vprašajte naše strokovnjake"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.checkout
@@ -495,7 +496,7 @@ msgstr ""
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
 msgid "<strong>Next actions:</strong>"
-msgstr ""
+msgstr "<strong>Naslednji ukrepi:</strong>"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.confirmation
@@ -2282,7 +2283,7 @@ msgstr "Določanje cen"
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.website_planner
 msgid "Pricing &amp; Discounts"
-msgstr ""
+msgstr "Cene &amp; popusti"
 
 #. module: website_sale
 #: model:product.public.category,name:website_sale.printer
@@ -2463,7 +2464,7 @@ msgstr ""
 #. module: website_sale
 #: model:ir.model,name:website_sale.model_sale_order
 msgid "Quotation"
-msgstr "Ponudba"
+msgstr "Predračun"
 
 #. module: website_sale
 #: selection:product.attribute,type:0
@@ -2588,7 +2589,7 @@ msgstr "Prodaja"
 #: model:ir.model.fields,field_description:website_sale.field_website_salesteam_id
 #: model:ir.ui.view,arch_db:website_sale.res_config_settings_view_form
 msgid "Sales Channel"
-msgstr ""
+msgstr "Prodajni kanal"
 
 #. module: website_sale
 #: model:ir.ui.view,arch_db:website_sale.sale_report_view_pivot_website

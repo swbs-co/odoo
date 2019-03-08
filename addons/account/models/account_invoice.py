@@ -125,7 +125,12 @@ class AccountInvoice(models.Model):
     def _get_outstanding_info_JSON(self):
         self.outstanding_credits_debits_widget = json.dumps(False)
         if self.state == 'open':
-            domain = [('account_id', '=', self.account_id.id), ('partner_id', '=', self.env['res.partner']._find_accounting_partner(self.partner_id).id), ('reconciled', '=', False), '|', ('amount_residual', '!=', 0.0), ('amount_residual_currency', '!=', 0.0)]
+            domain = [('account_id', '=', self.account_id.id),
+                      ('partner_id', '=', self.env['res.partner']._find_accounting_partner(self.partner_id).id),
+                      ('reconciled', '=', False),
+                      '|',
+                        '&', ('amount_residual_currency', '!=', 0.0), ('currency_id','!=', None),
+                        '&', ('amount_residual_currency', '=', 0.0), '&', ('currency_id','=', None), ('amount_residual', '!=', 0.0)]
             if self.type in ('out_invoice', 'in_refund'):
                 domain.extend([('credit', '>', 0), ('debit', '=', 0)])
                 type_payment = _('Outstanding credits')
@@ -649,12 +654,12 @@ class AccountInvoice(models.Model):
                 msg = _('Cannot find a chart of accounts for this company, You should configure it. \nPlease go to Account Configuration.')
                 raise RedirectWarning(msg, action.id, _('Go to the configuration panel'))
 
-            if type in ('out_invoice', 'out_refund'):
-                account_id = rec_account.id
-                payment_term_id = p.property_payment_term_id.id
-            else:
+            if type in ('in_invoice', 'in_refund'):
                 account_id = pay_account.id
                 payment_term_id = p.property_supplier_payment_term_id.id
+            else:
+                account_id = rec_account.id
+                payment_term_id = p.property_payment_term_id.id
 
             delivery_partner_id = self.get_delivery_partner_id()
             fiscal_position = self.env['account.fiscal.position'].get_fiscal_position(self.partner_id.id, delivery_id=delivery_partner_id)
@@ -1829,5 +1834,5 @@ class MailComposeMessage(models.TransientModel):
             invoice = self.env['account.invoice'].browse(context['default_res_id'])
             if not invoice.sent:
                 invoice.sent = True
-            self = self.with_context(mail_post_autofollow=True)
+            self = self.with_context(mail_post_autofollow=True, lang=invoice.partner_id.lang)
         return super(MailComposeMessage, self).send_mail(auto_commit=auto_commit)
