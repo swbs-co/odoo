@@ -796,6 +796,8 @@ msgid ""
 "    Gantt view for Leaves Dashboard\n"
 "    "
 msgstr ""
+"\n"
+"    Ganttův graf pro volno na Nástěnce"
 
 #. module: base
 #: model:ir.module.module,description:base.module_account_lock
@@ -13596,7 +13598,7 @@ msgstr "Různé"
 #: model:ir.ui.view,arch_db:base.view_model_fields_form
 #: model:ir.ui.view,arch_db:base.view_model_form
 msgid "Miscellaneous"
-msgstr "Smíšený"
+msgstr "Různé"
 
 #. module: base
 #: model:res.partner.title,name:base.res_partner_title_miss
@@ -13823,6 +13825,8 @@ msgid ""
 "Module loading %s failed: file %s could not be processed:\n"
 " %s"
 msgstr ""
+"Vložení modulu %s se nezdařilo: soubor %s nelze zpracovat: \n"
+"%s"
 
 #. module: base
 #: model:ir.model.fields,help:base.field_ir_translation_module
@@ -16302,7 +16306,7 @@ msgstr "Pitcairn ostrovy"
 #: selection:ir.actions.act_window.view,view_mode:0
 #: selection:ir.ui.view,type:0
 msgid "Pivot"
-msgstr ""
+msgstr "Pivot"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_web_planner

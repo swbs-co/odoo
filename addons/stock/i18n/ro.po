@@ -894,6 +894,18 @@ msgid "Assign Owner"
 msgstr "Alocare proprietar"
 
 #. module: stock
+#: model:ir.ui.view,arch_db:stock.view_picking_form
+msgid "Assign Partner"
+msgstr ""
+
+#. module: stock
+#: model:ir.ui.view,arch_db:stock.view_picking_form
+msgid ""
+"Assign the partner to the Operations. Use only if the partner is manually "
+"changed!"
+msgstr ""
+
+#. module: stock
 #: model:ir.ui.view,arch_db:stock.view_picking_internal_search
 msgid "Assigned Moves"
 msgstr "Mișcări asignate"
@@ -7534,6 +7546,8 @@ msgid ""
 "You cannot validate a transfer if you have not processed any quantity. You "
 "should rather cancel the transfer."
 msgstr ""
+"Nu puteți valida un transfer dacă nu ați procesat nicio cantitate. Ar trebui"
+" mai degrabă să anulați transferul."
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.report_picking

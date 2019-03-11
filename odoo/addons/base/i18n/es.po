@@ -7,6 +7,7 @@
 # Jesus Zapata <jesus@vauxoo.com>, 2017
 # Alejandro Die Sanchis <marketing@domatix.com>, 2017
 # Gelo Joga Landoo <gj@landoo.es>, 2017
+# Katherine Zaoral <katherine.zaoral@gmail.com>, 2017
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2017
 # Leonardo Chianea <noamixcontenidos@gmail.com>, 2017
 # Wilcar José Angulo <wilcarjose@gmail.com>, 2017
@@ -45,11 +46,11 @@
 # Julián Andrés Osorio López <mcjulian1107@gmail.com>, 2017
 # Christopher Ormaza <chris.ormaza@gmail.com>, 2017
 # Nacho Hermoso <nacho@domatix.com>, 2017
-# Pedro M. Baeza <pedro.baeza@gmail.com>, 2017
 # Raquel Iciarte <ric@odoo.com>, 2017
 # Ana Juaristi <ajuaristio@gmail.com>, 2017
 # Gustavo Valverde, 2018
 # JOSE ALEJANDRO ECHEVERRI VALENCIA <josealejandroeche@gmail.com>, 2018
+# Pedro M. Baeza <pedro.baeza@gmail.com>, 2018
 # e2f <projects@e2f.com>, 2018
 # Martin Trigaux, 2018
 # ES R1 <e2fes@hotmail.com>, 2018
@@ -58,6 +59,7 @@
 # Fernando San Martín Woerner <fsnmartin@gmail.com>, 2018
 # Nicolás Broggi <rnbroggi@gmail.com>, 2018
 # Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2019
+# Gabriel Umana <gabriel.umana@delfixcr.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -65,7 +67,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-03 15:05+0000\n"
 "PO-Revision-Date: 2017-09-20 10:13+0000\n"
-"Last-Translator: Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2019\n"
+"Last-Translator: Gabriel Umana <gabriel.umana@delfixcr.com>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -8267,7 +8269,7 @@ msgstr "Añada un enlace para editar una traducción en Transifex"
 #. module: base
 #: model:ir.module.module,summary:base.module_base_address_city
 msgid "Add a many2one field city on addresses"
-msgstr "Añadir un campo en dirección many2one a ciudad"
+msgstr "Añade un campo many2one ciudad en las direcciones"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_delivery_barcode
@@ -14755,7 +14757,7 @@ msgstr "Irlanda"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_account_lock
 msgid "Irreversible Lock Date"
-msgstr ""
+msgstr "Fecha de bloqueo irreversible"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_partner_is_company
@@ -23263,7 +23265,7 @@ msgstr "Traducible"
 #. module: base
 #: model:ir.ui.view,arch_db:base.view_model_fields_search
 msgid "Translate"
-msgstr "Traducir"
+msgstr "Traducible"
 
 #. module: base
 #: selection:ir.translation,state:0
@@ -25331,12 +25333,12 @@ msgstr "ir.ui.view.custom"
 #. module: base
 #: selection:ir.model.fields,ttype:0
 msgid "many2many"
-msgstr "Muchos A Muchos"
+msgstr "many2many"
 
 #. module: base
 #: selection:ir.model.fields,ttype:0
 msgid "many2one"
-msgstr "MuchosAUno"
+msgstr "many2one"
 
 #. module: base
 #: selection:ir.model.fields,ttype:0
@@ -25369,7 +25371,7 @@ msgstr "en"
 #. module: base
 #: selection:ir.model.fields,ttype:0
 msgid "one2many"
-msgstr "UnoAMuchos"
+msgstr "one2many"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_pos_cache

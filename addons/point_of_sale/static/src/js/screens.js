@@ -1307,7 +1307,7 @@ var ClientListScreenWidget = ScreenWidget.extend({
     // what happens when we've just pushed modifications for a partner of id partner_id
     saved_client_details: function(partner_id){
         var self = this;
-        this.reload_partners().then(function(){
+        return this.reload_partners().then(function(){
             var partner = self.pos.db.get_partner_by_id(partner_id);
             if (partner) {
                 self.new_client = partner;
@@ -2076,6 +2076,17 @@ var PaymentScreenWidget = ScreenWidget.extend({
                         'body': _t('You need to select the customer before you can invoice an order.'),
                         confirm: function(){
                             self.gui.show_screen('clientlist');
+                        },
+                    });
+                } else if (error.message === 'Backend Invoice') {
+                    self.gui.show_popup('confirm',{
+                        'title': _t('Please print the invoice from the backend'),
+                        'body': _t('The order has been synchronized earlier. Please make the invoice from the backend for the order: ') + error.data.order.name,
+                        confirm: function () {
+                            this.gui.show_screen('receipt');
+                        },
+                        cancel: function () {
+                            this.gui.show_screen('receipt');
                         },
                     });
                 } else if (error.code < 0) {        // XmlHttpRequest Errors
