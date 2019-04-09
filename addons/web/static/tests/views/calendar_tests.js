@@ -6,6 +6,7 @@ var CalendarRenderer = require('web.CalendarRenderer');
 var fieldUtils = require('web.field_utils');
 var mixins = require('web.mixins');
 var testUtils = require('web.test_utils');
+var time = require('web.time');
 var session = require('web.session');
 
 
@@ -621,14 +622,14 @@ QUnit.module('Views', {
             "should display the datetime from the date with the timezone");
 
         // use datepicker to enter a date: 12/13/2016 08:00:00
-        $('.o_field_widget[name="start"] input').trigger('click');
+        $('.o_field_widget[name="start"] input').trigger('focus');
         $('.bootstrap-datetimepicker-widget .picker-switch a[data-action="togglePicker"]').trigger('click');
         $('.bootstrap-datetimepicker-widget .timepicker .timepicker-hour').trigger('click');
         $('.bootstrap-datetimepicker-widget .timepicker-hours td.hour:contains(08)').trigger('click');
         $('.bootstrap-datetimepicker-widget .picker-switch a[data-action="close"]').trigger('click');
 
         // use datepicker to enter a date: 12/13/2016 10:00:00
-        $('.o_field_widget[name="stop"] input').trigger('click');
+        $('.o_field_widget[name="stop"] input').trigger('focus');
         $('.bootstrap-datetimepicker-widget .picker-switch a[data-action="togglePicker"]').trigger('click');
         $('.bootstrap-datetimepicker-widget .timepicker .timepicker-hour').trigger('click');
         $('.bootstrap-datetimepicker-widget .timepicker-hours td.hour:contains(10)').trigger('click');
@@ -870,14 +871,14 @@ QUnit.module('Views', {
             "should display the datetime from the date with the timezone");
 
         // use datepicker to enter a date: 12/13/2016 08:00:00
-        $('.o_field_widget[name="start"] input').trigger('click');
+        $('.o_field_widget[name="start"] input').trigger('focus');
         $('.bootstrap-datetimepicker-widget .picker-switch a[data-action="togglePicker"]').trigger('click');
         $('.bootstrap-datetimepicker-widget .timepicker .timepicker-hour').trigger('click');
         $('.bootstrap-datetimepicker-widget .timepicker-hours td.hour:contains(08)').trigger('click');
         $('.bootstrap-datetimepicker-widget .picker-switch a[data-action="close"]').trigger('click');
 
         // use datepicker to enter a date: 12/13/2016 10:00:00
-        $('.o_field_widget[name="stop"] input').trigger('click');
+        $('.o_field_widget[name="stop"] input').trigger('focus');
         $('.bootstrap-datetimepicker-widget .picker-switch a[data-action="togglePicker"]').trigger('click');
         $('.bootstrap-datetimepicker-widget .timepicker .timepicker-hour').trigger('click');
         $('.bootstrap-datetimepicker-widget .timepicker-hours td.hour:contains(10)').trigger('click');
@@ -2052,6 +2053,60 @@ QUnit.module('Views', {
         calendar.destroy();
     });
 
+    QUnit.test('timezone does not affect drag and drop', function (assert) {
+        assert.expect(6);
+
+        var calendar = createView({
+            View: CalendarView,
+            model: 'event',
+            data: this.data,
+            arch:
+            '<calendar date_start="start" mode="month">'+
+                '<field name="name"/>'+
+                '<field name="start"/>'+
+            '</calendar>',
+            archs: archs,
+            viewOptions: {
+                initialDate: initialDate,
+            },
+            mockRPC: function (route, args) {
+                if (args.method === "write") {
+                    assert.deepEqual(args.args[0], [6], "event 6 is moved")
+                    assert.deepEqual(args.args[1].start, "2016-11-29 08:00:00",
+                        "event moved to 27th nov 16h00 +40 hours timezone")
+                }
+                return this._super(route, args);
+            },
+            session: {
+                getTZOffset: function () {
+                    return -2400; // 40 hours timezone
+                },
+            },
+        });
+
+        var events = calendar.$('.fc-event').map(function () {
+            return $(this).text().trim().replace(/\s+/g, '|');
+        });
+
+        assert.strictEqual(events[0], "event|1|12/09/2016|08:00:00");
+        assert.strictEqual(events[5], "event|6|12/16/2016|16:00:00");
+
+        // Move event 6 as on first day of month view (27th november 2016)
+        testUtils.dragAndDrop(
+            calendar.$('.fc-event').eq(5),
+            calendar.$('.fc-day-top').first()
+        );
+
+        var events = calendar.$('.fc-event').map(function () {
+            return $(this).text().trim().replace(/\s+/g, '|');
+        });
+
+        assert.strictEqual(events[0], "event|6|11/27/2016|16:00:00");
+        assert.strictEqual(events[1], "event|1|12/09/2016|08:00:00");
+
+        calendar.destroy();
+    });
+
     QUnit.test('form_view_id attribute works (for creating events)', function (assert) {
         assert.expect(1);
 
@@ -2142,6 +2197,53 @@ QUnit.module('Views', {
         var $input = $('.modal-body input:first');
         $input.val("It's just a fleshwound").trigger('input');
         $('.modal button.btn:contains(Create)').trigger('click');
+
+        calendar.destroy();
+    });
+
+    QUnit.test('fullcalendar initializes with right locale', function (assert) {
+        assert.expect(1);
+
+        // Do not forward port this part in versions >= saas11.3
+        testUtils.patch(time, {
+            getLangDateFormat: function () {
+                return 'DD/MM';
+            },
+        });
+
+        var initialLocale = moment.locale();
+        // This will set the locale to zz
+        moment.defineLocale('zz', {
+            longDateFormat: {
+                L: 'DD/MM/YYYY'
+            },
+            weekdaysShort: ["zz1.", "zz2.", "zz3.", "zz4.", "zz5.", "zz6.", "zz7."],
+        });
+
+        var calendar = createView({
+            View: CalendarView,
+            model: 'event',
+            data: this.data,
+            arch: '<calendar class="o_calendar_test" '+
+                'date_start="start" '+
+                'date_stop="stop" '+
+                'mode="week"> '+
+                    '<field name="name"/>'+
+            '</calendar>',
+            archs: archs,
+            viewOptions: {
+                initialDate: initialDate,
+                action: {views: [{viewID: 1, type: 'kanban'}, {viewID: 43, type: 'form'}]}
+            },
+
+        });
+
+        assert.strictEqual(calendar.$('.fc-day-header:first').text(), "zz1. 11/12",
+            'The day should be in the given locale specific format');
+
+        moment.locale(initialLocale);
+        // Do not forward port this part in versions >= saas11.3
+        testUtils.unpatch(time);
 
         calendar.destroy();
     });

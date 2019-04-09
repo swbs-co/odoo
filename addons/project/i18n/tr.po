@@ -3,11 +3,6 @@
 # * project
 # 
 # Translators:
-# Ediz Duman <neps1192@gmail.com>, 2017
-# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2017
-# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
-# Murat Kaplan <muratk@projetgrup.com>, 2017
-# Martin Trigaux, 2017
 # gezgin biri <gezginbiri@hotmail.com>, 2017
 # UNIBRAVO SOFTWARE <unibravo@gmail.com>, 2017
 # Emre Akayoğlu <emre.akayoglu@mechsoft.com.tr>, 2017
@@ -15,16 +10,22 @@
 # Fırat Kaya <firat.kaya@mechsoft.com.tr>, 2017
 # Esin Kandemir <esaykandemir@gmail.com>, 2017
 # Ayhan KIZILTAN <akiziltan76@hotmail.com>, 2017
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2017
+# Ediz Duman <neps1192@gmail.com>, 2017
+# Güven YILMAZ <guvenyilmaz@outlook.com.tr>, 2017
 # Levent Karakaş <levent@mektup.at>, 2018
-# Umur Akın <umura@projetgrup.com>, 2018
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018
+# Martin Trigaux, 2018
+# Murat Kaplan <muratk@projetgrup.com>, 2018
+# Umur Akın <umura@projetgrup.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-30 13:11+0000\n"
-"PO-Revision-Date: 2017-11-30 13:11+0000\n"
-"Last-Translator: Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2018\n"
+"POT-Creation-Date: 2018-07-27 11:55+0000\n"
+"PO-Revision-Date: 2017-09-20 10:22+0000\n"
+"Last-Translator: Umur Akın <umura@projetgrup.com>, 2019\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -120,7 +121,7 @@ msgid ""
 "                                <span>We would be delighted to assist you along the way. Contact us through our\n"
 "                                <a href=\"https://www.odoo.com/help\">support form</a> if you have any question.\n"
 "                                You can also discover how to get the best out of Odoo Project with our </span>\n"
-"                                <a target=\"_blank\" href=\"https://www.odoo.com/documentation/user/10.0/project.html\">\n"
+"                                <a target=\"_blank\" href=\"https://www.odoo.com/documentation/user/11.0/project.html\">\n"
 "                                <span style=\"text-decoration:underline;\">User Documentation</span></a>\n"
 "                                </span><span> or with our </span>\n"
 "                                <a target=\"_blank\" href=\"https://www.odoo.com/documentation\">\n"
@@ -137,6 +138,107 @@ msgid ""
 "            </div>\n"
 "        </div>"
 msgstr ""
+"\n"
+"            <div style=\"margin: 10px auto;\">\n"
+"            % set last_created_project = user.env['project.project'].search([('alias_id','!=',False)], order=\"create_date desc\")[0]\n"
+"            <table cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%;\">\n"
+"                <tbody>\n"
+"                    <tr>\n"
+"                        <td style=\"padding:2px;width:30%;\">\n"
+"                            <img src=\"web/static/src/img/logo.png\"/>\n"
+"                        </td>\n"
+"                        <td style=\"vertical-align: top; padding: 8px 10px;text-align: left;font-size: 14px;\">\n"
+"                            <a href=\"web/login\" style=\"float:right ;margin:15px auto;background: #875A7B;border-radius: 5px;color: #ffffff;font-size: 16px;padding: 10px 20px 10px 20px;text-decoration: none;\">Otomatik Giriş</a>\n"
+"                        </td>\n"
+"                    </tr>\n"
+"                </tbody>\n"
+"            </table>\n"
+"            <table style=\"width:100%;text-align:justify;margin:0 auto;border-collapse:collapse;border-top:1px solid lightgray\"\">\n"
+"                <tbody>\n"
+"                    <tr>\n"
+"                        <td style=\"padding:15px 10px;font-size:20px\">\n"
+"                            <p dir=\"ltr\" style=\"font-size:15px;margin-top:0pt;margin-bottom:0pt;\">\n"
+"                                <span>Odoo Project uygulamanız aktif ve çalışıyor</span></p><br>\n"
+"                            <p dir=\"ltr\" style=\"margin-top:0pt;margin-bottom:8pt;\">\n"
+"                                <span style=\"font-size:13px;font-weight:bold;\">Sırada ne var?</span></p>\n"
+"                            <ul style=\"margin-top:0pt;margin-bottom:0pt;font-size:13px;list-style-type:disc;\">\n"
+"                                % if last_created_project:\n"
+"                                    <li dir=\"ltr\">\n"
+"                                        <p dir=\"ltr\" style=\"margin-top:0pt;margin-bottom:0pt;\">\n"
+"                                            <span>E-posta göndererek bir görev oluşturmayı deneyin </span>\n"
+"                                            <a href=\"mailto:${last_created_project.alias_id.name_get()[0][1] if last_created_project.alias_id.alias_domain else user.company_id.email}\">\n"
+"                                                <span style=\"font-weight:bold; text-decoration:underline;\">${last_created_project.alias_id.name_get()[0][1] if last_created_project.alias_id.alias_domain else user.company_id.email}</span>\n"
+"                                            </a>\n"
+"                                        </p>\n"
+"                                    </li>\n"
+"                                % endif\n"
+"                                <li dir=\"ltr\">\n"
+"                                    <p dir=\"ltr\" style=\"margin-top:0pt;margin-bottom:8pt;\">\n"
+"                                        <span><a href=\"/web#view_type=list&model=res.users&action=base.action_res_users\">\n"
+"                                            <span style=\"font-weight:bold; text-decoration:underline;\">Yeni kullanıcı davet et</span></a></span>\n"
+"                                        <span>birlikte çalışmak için</span>\n"
+"                                    </p>\n"
+"                                </li>\n"
+"                            </ul> <br>\n"
+"                            <p dir=\"ltr\" style=\"font-size:13px;margin-top:0pt;margin-bottom:8pt;\">\n"
+"                                <span style=\"font-weight:bold;\">Ekstra özellikleri etkinleştirmek için </span>\n"
+"                                <span><a href=\"/web#view_type=kanban&model=project.project&action=project.open_view_project_all\">\n"
+"                                    <span style=\"font-weight:bold; text-decoration:underline;\">proje planlayıcısını</span></a></span>\n"
+"                                <span> keşfedin</span>\n"
+"                                <span style=\"color:#875A7B;margin:0;font-weight:bold\">(${user.env['web.planner'].get_planner_progress('planner_project')}% done)</span>\n"
+"                            </p>\n"
+"                            <ul style=\"margin-top:0pt;margin-bottom:0pt;font-size:13px;list-style-type:disc;\">\n"
+"                                <li dir=\"ltr\">\n"
+"                                    <p dir=\"ltr\" style=\"margin-top:0pt;margin-bottom:0pt;\">\n"
+"                                        <span>Zaman çizelgeleri ile saatleri takip edin,</span>\n"
+"                                    </p>\n"
+"                                </li>\n"
+"                                <li dir=\"ltr\">\n"
+"                                    <p dir=\"ltr\" style=\"margin-top:0pt;margin-bottom:0pt;\">\n"
+"                                        <span>Görevleri ve kaynakları tahminlere göre planlayın,</span>\n"
+"                                    </p>\n"
+"                                </li>\n"
+"                                <li dir=\"ltr\">\n"
+"                                    <p dir=\"ltr\" style=\"margin-top:0pt;margin-bottom:0pt;\">\n"
+"                                        <span>Akıllı raporlama ve başarılı paneller elde edin,</span>\n"
+"                                    </p>\n"
+"                                </li>\n"
+"                                <li dir=\"ltr\">\n"
+"                                    <p dir=\"ltr\" style=\"margin-top:0pt;margin-bottom:0pt;\">\n"
+"                                        <span>Görevler yada olay kayıtları üzerinde zamanı faturalayın,</span>\n"
+"                                    </p>\n"
+"                                </li>\n"
+"                                <li dir=\"ltr\">\n"
+"                                    <p dir=\"ltr\" style=\"margin-top:0pt;margin-bottom:8pt;\">\n"
+"                                        <span>Ve daha fazlası...</span>\n"
+"                                    </p>\n"
+"                                </li>\n"
+"                            </ul>\n"
+"                            <br>\n"
+"                            <p dir=\"ltr\" style=\"font-size:13px;line-height:1.3;margin-top:0pt;margin-bottom:8pt;\">\n"
+"                                <span style=\"font-weight:bold;\">Yardıma mı ihtiyacınız var?</span>\n"
+"                                <span style=\"font-style:italic;\">Yalnız değilsiniz</span>\n"
+"                            </p>\n"
+"                            <p dir=\"ltr\" style=\"font-size:13px;margin-top:0pt;margin-bottom:8pt;\">\n"
+"                                <span>Yol boyunca size yardımcı olmaktan memnuniyet duyarız.  Bizimle \n"
+"                                <a href=\"https://www.odoo.com/help\">destek formu üzerinden bize ulaşın</a>Herhangi bir sorunuz var mı?\n"
+"                               Ayrıca, Odoo Projesi'nden en iyi şekilde nasıl yararlanabileceğimizi keşfedebilirsiniz </span>\n"
+"                                <a target=\"_blank\" href=\"https://www.odoo.com/documentation/user/11.0/project.html\">\n"
+"                                <span style=\"text-decoration:underline;\">Kullanıcı Dokümantasyonu ile</span></a>\n"
+"                                </span><span> yada bizim </span>\n"
+"                                <a target=\"_blank\" href=\"https://www.odoo.com/documentation\">\n"
+"                                <span style=\"text-decoration:underline;\">API Dokümantasyonu ile</span></a>\n"
+"                            </p>\n"
+"                            <br>\n"
+"                            <p dir=\"ltr\" style=\"font-size:13px;margin-top:0pt;margin-bottom:8pt;\"><span>Odoo deneyiminin keyfini çıkarın,</span></p>\n"
+"                        </td>\n"
+"                    </tr>\n"
+"                </tbody>\n"
+"            </table>\n"
+"            <div dir=\"ltr\" style=\"font-size:13px;margin-top:0pt;margin-bottom:8pt;color:grey\">\n"
+"                <span><br/>-- <br/>Odoo Ekibi<br/>Not: İnsanlar Odoo'yu seviyor, </span><a target=\"_blank\" href=\"https://twitter.com/odoo/favorites\"><span style=\"text-decoration:underline;\">insanların bununla ilgili neler dediğine bak.</span></a></span>\n"
+"            </div>\n"
+"        </div>"
 
 #. module: project
 #: model:mail.template,body_html:project.mail_template_data_project_task
@@ -181,7 +283,7 @@ msgstr "# nın Görevleri"
 
 #. module: project
 #: code:addons/project/models/project.py:244
-#: code:addons/project/models/project.py:533
+#: code:addons/project/models/project.py:542
 #, python-format
 msgid "%s (copy)"
 msgstr "%s (kopya)"
@@ -423,6 +525,11 @@ msgid ""
 "                                            <span class=\"small\">Delay to close an Task</span>\n"
 "                                        </span>"
 msgstr ""
+"<span class=\"panel-title\">\n"
+"                                            <span class=\"fa fa-thumb-tack\"/>\n"
+"                                            <strong> Çalışma 2</strong><br/>\n"
+"                                            <span class=\"small\">Bir görevin kapanışını geciktirme\n"
+"                                        </span>"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -456,6 +563,8 @@ msgid ""
 "<span class=\"text-muted\">NB: This will archive the selected tasks (Except "
 "the destination task)</span>"
 msgstr ""
+"<span class=\"text-muted\">NB: Bu seçilen görevleri arşivleyecek (Hedeflenen"
+" görev hariç)</span>"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -501,6 +610,8 @@ msgid ""
 "<strong> New business tasks (5 min)</strong>\n"
 "                                You may have learned something during the week that affects the project.  Share the news early in the meeting to help team members consider the  task as you walk through the project status session. Not every task warrants spending time here, so keep discussions to a minimum."
 msgstr ""
+"<strong> Yeni iş olay kayıtları (5 dak.)</strong>\n"
+"                                Hafta boyunca projeyi etkileyen bir şeyler öğrenmiş olabilirsiniz. Proje durumunu izlerken takım üyelerinin görevi değerlendirmesine yardımcı olmak için toplantı başında haberi paylaşın. Her görevin burada vakit geçirmeyi garanti etmediği için tartışmaları en düşük seviyede tutun."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -522,6 +633,8 @@ msgid ""
 "<strong> Q&amp;A and discussion time (10 min)</strong>\n"
 "                                Always give your team time to ask questions on tasks that were not discussed. This gives you another opportunity to reinforce key points that you've picked up during the week or discovered during the meeting."
 msgstr ""
+"<strong> Q&amp;A ve tartışma süresi (10 dk)</strong>\n"
+"                                Tartışılmayan görevler hakkında sorular sormak için her zaman ekibinize zaman verin. Bu size hafta boyunca topladığınız veya toplantı sırasında keşfettiğiniz kilit noktaları güçlendirmek için başka bir fırsat sunuyor."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -547,6 +660,8 @@ msgid ""
 "<strong>A great feature in Odoo is the integration of a Collaborative Notepad called Etherpad.</strong><br/>\n"
 "                            It replaces the standard Description area in Tasks and is extremely useful for several cases."
 msgstr ""
+"<strong>Odoo'nun en önemli özelliklerinden biri, Etherpad adı verilen Not Defterinin entegrasyonudur.</strong><br/>\n"
+"                            Bu, Görevler standart açıklama alanının yerini alıyor ve son derece kullanışlı."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -559,6 +674,8 @@ msgid ""
 "<strong>Add a Deadline</strong><br/>\n"
 "                                    The deadline will help you determine if a task is progressing as expected  and to anticipate its next update."
 msgstr ""
+"<strong>Son bitiş tarihi ekleyin</strong><br/>\n"
+"                                    Son bitiş tarihi, bir görevin beklendiği gibi ilerlediğini belirlemenize ve bir sonraki güncellemeyi ön görmenize yardımcı olacaktır."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -631,6 +748,8 @@ msgid ""
 "<strong>Create tasks by email</strong><br/>\n"
 "                                In Odoo, every project has an email alias. If you send an email to this alias, it will automatically create a task in the first stage of the project, with all the email recipients as its default followers."
 msgstr ""
+"<strong>E-posta ile görevler oluşturun</strong><br/>\n"
+"                                Odoo'da her projenin bir e-posta rumuzu vardır. Bu rumuza bir e-posta gönderirseniz, projenin ilk aşamasında tüm e-posta alıcılarını varsayılan takipçi olarak atadığı, otomatik olarak bir görev oluşturur."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.portal_my_project
@@ -677,6 +796,8 @@ msgid ""
 "<strong>Exercise:</strong> Try to create a graph with the monthly evolution "
 "of the 'Average delay to close'  of Tasks."
 msgstr ""
+"<strong>Alıştırma:</strong> Görevlerin kapatılması için ortalama gecikmenin "
+"aylık gelişimi ile bir grafik oluşturmaya çalışın."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -693,6 +814,8 @@ msgid ""
 "<strong>Follow every meeting with a recap email</strong>\n"
 "                                    As soon as the meeting is over, publish meeting minutes and distribute them along with the updated project schedule, task/action item matrix, and  any other appropriate documents. Try to use the same template throughout meetings and improve it continuously."
 msgstr ""
+"<strong>Her toplantıyı bir özet e-postasıyla takip et</strong>\n"
+"                                   Toplantı biter bitmez toplantı tutanaklarını yayınlayın ve bunları güncellenmiş proje takvimi, görev / eylem maddesi matrisi ve diğer uygun belgelerle birlikte dağıtın. Toplantılarda aynı şablonu kullanmaya ve sürekli olarak geliştirmeye çalışın."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -700,6 +823,8 @@ msgid ""
 "<strong>Follow only what you need</strong><br/>\n"
 "                                    The simplest way to use notifications is to follow a whole project: you will receive notifications for all the new and existing tasks of a project."
 msgstr ""
+"<strong>Sadece ihtiyacın olanı takip et</strong><br/>\n"
+"                                    Bildirimleri kullanmanın en basit yolu, tüm bir projeyi izlemektir: bir projenin tüm yeni ve mevcut görevler hakkında bildirim alırsınız."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -837,6 +962,8 @@ msgid ""
 "<strong>Rely on the chatter</strong><br/>\n"
 "                                    Below every Task (or more generally, below every Document in Odoo) is an area called Chatter."
 msgstr ""
+"<strong>Sohbet'e güvenin</strong><br/>\n"
+"                                    Her görevin altında (veya daha genel olarak, Odoo'daki her Dokümanın altında) Chatter adı verilen bir alan vardır."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.portal_my_task
@@ -849,6 +976,8 @@ msgid ""
 "<strong>Set Priorities</strong><br/>\n"
 "                                    The <i class=\"fa fa-star\"/> is used to indicate priority: in Kanban views, high priority Tasks will be displayed on top. This is particulary useful if you use a Scrum methodology to indicate the tasks for the week. Similarly to Status, you can change the meaning of the Star indicator from the Project Stages tab."
 msgstr ""
+"<strong>Öncelikleri Ayarlayın</strong><br/>\n"
+"                                    Önceliği belirtmek için  <i class=\"fa fa-star\"/> kullanılır: Kanban görünümlerinde, yüksek öncelikli Görevler üstte görüntülenir. Bu haftanın görevlerini belirtmek için bir Scrum metodolojisi kullanırsanız özellikle yararlı olabilir. Durum ile benzer şekilde, yıldız göstergesinin anlamını proje aşamaları sekmesinden değiştirebilirsiniz."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -893,6 +1022,8 @@ msgid ""
 "<strong>Use Status Indicator</strong><br/>\n"
 "                                    The Status indicator helps you manage Tasks by giving them one of 3 different colour: Grey, Green or Red. The meaning of these Statuses can be freely configured, for example:"
 msgstr ""
+"<strong>Durum Göstergelerini Kullanın</strong><br/>\n"
+"                                    Durum Göstergesi, görevleri 3 farklı renkten birini vererek yönetmenize yardımcı olur: Gri, Yeşil yada Kırmızı. Bu Durumların anlamı, özgürce yapılandırılabilir, örneğin :"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -900,6 +1031,8 @@ msgid ""
 "<strong>Use Tags</strong><br/>\n"
 "                                    Tags  are complementary to your project stages: they can work as a second  level categorization which is very useful if you have a lot of Tasks to manage. Also, it becomes very easy to find Tasks by typing  the Tag into the main Search bar."
 msgstr ""
+"<strong>Etiketleri Kullanın</strong><br/>\n"
+"                                    Etiketler projenizin aşamalarını tamamlar: Çok fazla görev yönetmeniz gerekiyorsa, etiketler ikincil seviye kategorizasyonu için oldukça kullanışlıdır. Ayrıca, arama çubuğuna etiketi yazarak Görevleri bulmanız çok kolaylaşır."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -1067,7 +1200,7 @@ msgid "Aliased Model"
 msgstr "Rumuzlama Modeli"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:89
+#: code:addons/project/controllers/portal.py:92
 #, python-format
 msgid "All"
 msgstr "Hepsi"
@@ -1246,6 +1379,7 @@ msgstr ""
 "sürmeye tutmaya çalışın."
 
 #. module: project
+#: code:addons/project/models/project.py:29
 #: model:project.task,legend_blocked:project.project_task_15
 #: model:project.task,legend_blocked:project.project_task_16
 #: model:project.task,legend_blocked:project.project_task_18
@@ -1272,6 +1406,7 @@ msgstr ""
 #: model:project.task.type,legend_blocked:project.project_stage_data_1
 #: model:project.task.type,legend_blocked:project.project_stage_data_2
 #: selection:report.project.task.user,state:0
+#, python-format
 msgid "Blocked"
 msgstr "Engellendi"
 
@@ -1579,6 +1714,8 @@ msgid ""
 "Creating Tasks is the next step in managing your Projects.<br/>\n"
 "                        In Odoo, it is pretty straightforward, but here are some explanations you may find useful."
 msgstr ""
+"Görev oluşturma, projelerinizi yönetmede bir sonraki adımdır. <br/>\n"
+"Odoo'da bu oldukça basittir, burada size yararlı olabilecek bazı açıklamalar verilmiştir."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.view_task_project_user_search
@@ -1621,7 +1758,7 @@ msgid "Currently there are not any activity scheduled."
 msgstr "Mevcutta planlanan herhangi bir aktivite yok."
 
 #. module: project
-#: code:addons/project/models/project.py:818
+#: code:addons/project/models/project.py:836
 #: model:ir.model.fields,field_description:project.field_project_project_partner_id
 #: model:ir.model.fields,field_description:project.field_project_task_partner_id
 #: model:ir.ui.view,arch_db:project.edit_project
@@ -1630,7 +1767,8 @@ msgid "Customer"
 msgstr "Müşteri"
 
 #. module: project
-#: code:addons/project/models/project.py:818
+#: code:addons/project/models/project.py:836
+#: code:addons/project/models/project.py:839
 #, python-format
 msgid "Customer Email"
 msgstr "Müşteri Epostası"
@@ -1902,6 +2040,12 @@ msgstr "Son"
 #: model:ir.model.fields,field_description:project.field_report_project_task_user_date_end
 msgid "Ending Date"
 msgstr "Bitiş Tarihi"
+
+#. module: project
+#: code:addons/project/models/project.py:556
+#, python-format
+msgid "Error! You cannot create recursive hierarchy of task(s)."
+msgstr "Hata! Görevl(ler) için tekrarlayan sıra düzeni oluşturamazsınız."
 
 #. module: project
 #: sql_constraint:project.project:0
@@ -2186,7 +2330,7 @@ msgid "Hours"
 msgstr "Saatl "
 
 #. module: project
-#: code:addons/project/models/project.py:730
+#: code:addons/project/models/project.py:745
 #, python-format
 msgid "I take it"
 msgstr "Ben alıyorum"
@@ -2282,6 +2426,9 @@ msgid ""
 "extract a Timesheet of the tasks to invoice directly to the customer. To do "
 "that:"
 msgstr ""
+"Eğer zamana &amp; bağlı bir proje üzerinde çalışıyorsanız, muhtemelen "
+"görevleri ve sorunları bir zaman çizelgesi doğrultusunda müşteriye "
+"faturalandırmak isteyeceksiniz. Bunu yapmak için:"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -2299,6 +2446,7 @@ msgid "Improve collaboration with customers"
 msgstr "Müşteriler ile işbirliğini geliştirmek"
 
 #. module: project
+#: code:addons/project/models/project.py:35
 #: model:project.task,legend_normal:project.project_task_1
 #: model:project.task,legend_normal:project.project_task_10
 #: model:project.task,legend_normal:project.project_task_11
@@ -2347,6 +2495,7 @@ msgstr "Müşteriler ile işbirliğini geliştirmek"
 #: model:project.task.type,legend_normal:project.project_stage_data_2
 #: model:project.task.type,name:project.project_stage_1
 #: selection:report.project.task.user,state:0
+#, python-format
 msgid "In Progress"
 msgstr "Sürüyor..."
 
@@ -2431,6 +2580,8 @@ msgid ""
 "It is time to think about how you will transform your activities into real projects in Odoo.<br/>\n"
 "                        For that, the most important part is defining the stages of your projects. Stages are the different steps a task can go through, from its creation to its ending. They will appear in what we call the 'Kanban' view of your projects."
 msgstr ""
+"Odoo'da, etkinliklerinizi, gerçek projelere nasıl dönüştüreceğinizi düşünmenin zamanı geldi.<br/>\n"
+"                        Bunun için, en önemli bölüm projelerinizin aşamalarını tanımlamaktır. Aşamalar, bir görevin oluşturulmasından sonuna kadar geçebileceği farklı adımlardır. Projelerinizin Kanban görünümünde görüneceklerdir çıkacaklardır."
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
@@ -2520,7 +2671,7 @@ msgid "Last Modified on"
 msgstr "Son Güncelleme"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:86
+#: code:addons/project/controllers/portal.py:89
 #: model:ir.model.fields,field_description:project.field_project_task_date_last_stage_update
 #: model:ir.model.fields,field_description:project.field_report_project_task_user_date_last_stage_update
 #, python-format
@@ -2700,9 +2851,10 @@ msgid "My Tasks"
 msgstr "Görevlerim"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:31
+#: code:addons/project/controllers/portal.py:35
 #: model:ir.model.fields,field_description:project.field_project_tags_name
 #: model:ir.ui.view,arch_db:project.portal_my_projects
+#: model:ir.ui.view,arch_db:project.portal_my_tasks
 #, python-format
 msgid "Name"
 msgstr "İsim"
@@ -2752,8 +2904,8 @@ msgid "New task name"
 msgstr "Yeni görev adı"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:30
-#: code:addons/project/controllers/portal.py:83
+#: code:addons/project/controllers/portal.py:34
+#: code:addons/project/controllers/portal.py:86
 #, python-format
 msgid "Newest"
 msgstr "En yeni"
@@ -2765,10 +2917,16 @@ msgid "Next Activities"
 msgstr "Sonraki Aktiviteler"
 
 #. module: project
-#: code:addons/project/models/project.py:775
+#: code:addons/project/models/project.py:792
 #, python-format
 msgid "No Subject"
 msgstr "Konu Yok"
+
+#. module: project
+#: code:addons/project/controllers/portal.py:102
+#, python-format
+msgid "None"
+msgstr "Hiçbiri"
 
 #. module: project
 #: selection:project.task,priority:0
@@ -2943,7 +3101,7 @@ msgid "Parent Record Thread ID"
 msgstr "Üst kayıt iş parçacığı kimliği"
 
 #. module: project
-#: code:addons/project/models/project.py:861
+#: code:addons/project/models/project.py:878
 #: model:ir.model.fields,field_description:project.field_project_task_parent_id
 #: model:ir.ui.view,arch_db:project.view_task_form2
 #, python-format
@@ -2972,7 +3130,7 @@ msgid "Planner"
 msgstr "Planlayıcı"
 
 #. module: project
-#: code:addons/project/models/project.py:887
+#: code:addons/project/models/project.py:918
 #, python-format
 msgid ""
 "Please remove existing tasks in the project linked to the accounts you want "
@@ -3016,7 +3174,8 @@ msgid "Product or software version"
 msgstr "Ürün veya yazılım sürümü"
 
 #. module: project
-#: code:addons/project/models/project.py:346
+#: code:addons/project/controllers/portal.py:103
+#: code:addons/project/models/project.py:355
 #: model:ir.model,name:project.model_project_project
 #: model:ir.model.fields,field_description:project.field_project_task_project_id
 #: model:ir.model.fields,field_description:project.field_report_project_task_user_project_id
@@ -3079,6 +3238,7 @@ msgstr "Proje Görevleri"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_res_company_project_time_mode_id
+#: model:ir.model.fields,field_description:project.field_res_config_settings_project_time_mode_id
 #: model:ir.model.fields,field_description:project.project_time_mode_id_duplicate_xmlid
 msgid "Project Time Unit"
 msgstr "Proje Zaman Birimi"
@@ -3125,6 +3285,7 @@ msgid "Rating on Tasks"
 msgstr "Görevler Üzerindeki Puanlama"
 
 #. module: project
+#: code:addons/project/models/project.py:32
 #: model:project.task,legend_done:project.project_task_1
 #: model:project.task,legend_done:project.project_task_12
 #: model:project.task,legend_done:project.project_task_15
@@ -3154,6 +3315,7 @@ msgstr "Görevler Üzerindeki Puanlama"
 #: model:project.task.type,legend_done:project.project_stage_data_0
 #: model:project.task.type,legend_done:project.project_stage_data_1
 #: model:project.task.type,legend_done:project.project_stage_data_2
+#, python-format
 msgid "Ready for Next Stage"
 msgstr "Bir Sonraki Aşama için Hazır"
 
@@ -3234,6 +3396,11 @@ msgstr "Kırmızı Kanban Etiketi"
 #: model:ir.ui.view,arch_db:project.project_planner
 msgid "Red: the Task is blocked (there's a problem)"
 msgstr "Kırmızı: Görev engellendi (bir sorun var)"
+
+#. module: project
+#: model:ir.ui.view,arch_db:project.portal_my_tasks
+msgid "Ref"
+msgstr "Ref"
 
 #. module: project
 #: model:ir.model.fields,field_description:project.field_project_project_code
@@ -3317,10 +3484,10 @@ msgid "Search"
 msgstr "Arama"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:92
+#: code:addons/project/controllers/portal.py:95
 #, python-format
 msgid "Search <span class=\"nolabel\"> (in Content)</span>"
-msgstr ""
+msgstr "Ara <span class=\"nolabel\"> (İçerik içinde)</span>"
 
 #. module: project
 #: model:ir.ui.view,arch_db:project.view_project_project_filter
@@ -3328,25 +3495,25 @@ msgid "Search Project"
 msgstr "Proje Ara"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:96
+#: code:addons/project/controllers/portal.py:99
 #, python-format
 msgid "Search in All"
 msgstr "Arama Konumu"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:94
+#: code:addons/project/controllers/portal.py:97
 #, python-format
 msgid "Search in Customer"
 msgstr "Müşteri Ara"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:93
+#: code:addons/project/controllers/portal.py:96
 #, python-format
 msgid "Search in Messages"
 msgstr "Mesajlarda Ara"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:95
+#: code:addons/project/controllers/portal.py:98
 #, python-format
 msgid "Search in Stages"
 msgstr "Aşamalarda Ara"
@@ -3470,7 +3637,7 @@ msgid "Sprint"
 msgstr "Sprint"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:85
+#: code:addons/project/controllers/portal.py:88
 #: model:ir.model.fields,field_description:project.field_project_task_stage_id
 #: model:ir.model.fields,field_description:project.field_report_project_task_user_stage_id
 #: model:ir.ui.view,arch_db:project.portal_my_tasks
@@ -3576,7 +3743,6 @@ msgstr "Hedef Proje"
 
 #. module: project
 #: model:ir.model,name:project.model_project_task
-#: model:ir.ui.view,arch_db:project.portal_my_tasks
 #: model:ir.ui.view,arch_db:project.view_task_form2
 #: model:ir.ui.view,arch_db:project.view_task_project_user_search
 #: model:ir.ui.view,arch_db:project.view_task_search_form
@@ -3931,6 +4097,7 @@ msgstr ""
 #: model:ir.model.fields,help:project.field_account_analytic_account_company_uom_id
 #: model:ir.model.fields,help:project.field_project_project_company_uom_id
 #: model:ir.model.fields,help:project.field_res_company_project_time_mode_id
+#: model:ir.model.fields,help:project.field_res_config_settings_project_time_mode_id
 #: model:ir.model.fields,help:project.project_time_mode_id_duplicate_xmlid
 msgid ""
 "This will set the unit of measure used in projects and tasks.\n"
@@ -3982,7 +4149,7 @@ msgid "Timetable working hours to adjust the gantt diagram report"
 msgstr "Gantt çizelgesini ayarlayacak çalışma süreleri zaman tablosu"
 
 #. module: project
-#: code:addons/project/controllers/portal.py:84
+#: code:addons/project/controllers/portal.py:87
 #, python-format
 msgid "Title"
 msgstr "Başlık"
@@ -4221,6 +4388,16 @@ msgstr ""
 "geliştirdik: <br/><br/>"
 
 #. module: project
+#: model:ir.model.fields,field_description:project.field_project_task_website_message_ids
+msgid "Website Messages"
+msgstr "Websitesi Mesajları"
+
+#. module: project
+#: model:ir.model.fields,help:project.field_project_task_website_message_ids
+msgid "Website communication history"
+msgstr "Web Sitesi iletişim geçmişi"
+
+#. module: project
 #: model:ir.ui.view,arch_db:project.project_planner
 msgid "Welcome"
 msgstr "Hoş Geldiniz"
@@ -4374,7 +4551,7 @@ msgstr ""
 "Raporlarınızı kolayca sonra tekrar kullanabilmeniz için kaydedebilirsiniz"
 
 #. module: project
-#: code:addons/project/models/project.py:547
+#: code:addons/project/models/project.py:562
 #, python-format
 msgid ""
 "You can't define a parent task if its project is not correctly configured. "
@@ -4444,6 +4621,11 @@ msgid "etc.."
 msgstr "vb.."
 
 #. module: project
+#: model:ir.ui.view,arch_db:project.portal_my_tasks
+msgid "for project:"
+msgstr "proje için:"
+
+#. module: project
 #: model:ir.ui.view,arch_db:project.view_task_kanban
 msgid "oe_kanban_text_red"
 msgstr "oe_kanban_text_red"
@@ -4451,7 +4633,7 @@ msgstr "oe_kanban_text_red"
 #. module: project
 #: model:ir.model,name:project.model_project_task_merge_wizard
 msgid "project.task.merge.wizard"
-msgstr ""
+msgstr "project.task.merge.wizard"
 
 #. module: project
 #: model:ir.model,name:project.model_res_config_settings
@@ -4464,7 +4646,7 @@ msgid "send us an email"
 msgstr "bize bir e-posta gönderin"
 
 #. module: project
-#: code:addons/project/models/project.py:595
+#: code:addons/project/models/project.py:610
 #, python-format
 msgid "tasks"
 msgstr "görevler"

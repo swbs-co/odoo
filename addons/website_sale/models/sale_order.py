@@ -54,7 +54,7 @@ class SaleOrder(models.Model):
         abandoned_delay = float(self.env['ir.config_parameter'].sudo().get_param('website_sale.cart_abandoned_delay', '1.0'))
         abandoned_datetime = fields.Datetime.to_string(datetime.utcnow() - relativedelta(hours=abandoned_delay))
         for order in self:
-            domain = order.date_order <= abandoned_datetime and order.team_id.team_type == 'website' and order.state == 'draft' and order.partner_id.id != self.env.ref('base.public_partner').id and order.order_line
+            domain = order.date_order and order.date_order <= abandoned_datetime and order.team_id.team_type == 'website' and order.state == 'draft' and order.partner_id.id != self.env.ref('base.public_partner').id and order.order_line
             order.is_abandoned_cart = bool(domain)
 
     def _search_abandoned_cart(self, operator, value):
@@ -64,13 +64,13 @@ class SaleOrder(models.Model):
             ('date_order', '<=', abandoned_datetime),
             ('team_id.team_type', '=', 'website'),
             ('state', '=', 'draft'),
-            ('partner_id.id', '!=', self.env.ref('base.public_partner').id),
+            ('partner_id', '!=', self.env.ref('base.public_partner').id),
             ('order_line', '!=', False)
         ])
         # is_abandoned domain possibilities
         if (operator not in expression.NEGATIVE_TERM_OPERATORS and value) or (operator in expression.NEGATIVE_TERM_OPERATORS and not value):
             return abandoned_domain
-        return expression.distribute_not(abandoned_domain)  # negative domain
+        return expression.distribute_not(['!'] + abandoned_domain)  # negative domain
 
     @api.multi
     def _cart_find_product_line(self, product_id=None, line_id=None, **kwargs):
@@ -98,11 +98,26 @@ class SaleOrder(models.Model):
             'pricelist': order.pricelist_id.id,
         })
         product = self.env['product.product'].with_context(product_context).browse(product_id)
-        pu = product.price
-        if order.pricelist_id and order.partner_id:
-            order_line = order._cart_find_product_line(product.id)
-            if order_line:
-                pu = self.env['account.tax']._fix_tax_included_price_company(pu, product.taxes_id, order_line[0].tax_id, self.company_id)
+        discount = 0
+
+        if order.pricelist_id.discount_policy == 'without_discount':
+            # This part is pretty much a copy-paste of the method '_onchange_discount' of
+            # 'sale.order.line'.
+            price, rule_id = order.pricelist_id.with_context(product_context).get_product_price_rule(product, qty or 1.0, order.partner_id)
+            pu, currency_id = request.env['sale.order.line'].with_context(product_context)._get_real_price_currency(product, rule_id, qty, product.uom_id, order.pricelist_id.id)
+            if pu != 0:
+                if order.pricelist_id.currency_id.id != currency_id:
+                    # we need new_list_price in the same currency as price, which is in the SO's pricelist's currency
+                    pu = request.env['res.currency'].browse(currency_id).with_context(product_context).compute(pu, order.pricelist_id.currency_id)
+                discount = (pu - price) / pu * 100
+                if discount < 0:
+                    discount = 0
+        else:
+            pu = product.price
+            if order.pricelist_id and order.partner_id:
+                order_line = order._cart_find_product_line(product.id)
+                if order_line:
+                    pu = self.env['account.tax']._fix_tax_included_price_company(pu, product.taxes_id, order_line[0].tax_id, self.company_id)
 
         return {
             'product_id': product_id,
@@ -110,6 +125,7 @@ class SaleOrder(models.Model):
             'order_id': order_id,
             'product_uom': product.uom_id.id,
             'price_unit': pu,
+            'discount': discount,
         }
 
     @api.multi

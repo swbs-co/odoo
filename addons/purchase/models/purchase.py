@@ -307,6 +307,7 @@ class PurchaseOrder(models.Model):
             'default_template_id': template_id,
             'default_composition_mode': 'comment',
             'custom_layout': "purchase.mail_template_data_notification_email_purchase_order",
+            'purchase_mark_rfq_sent': True,
             'force_email': True
         })
         return {
@@ -459,6 +460,16 @@ class PurchaseOrder(models.Model):
                     'currency_id': currency.id,
                     'delay': 0,
                 }
+                # In case the order partner is a contact address, a new supplierinfo is created on
+                # the parent company. In this case, we keep the product name and code.
+                seller = line.product_id._select_seller(
+                    partner_id=line.partner_id,
+                    quantity=line.product_qty,
+                    date=line.order_id.date_order and line.order_id.date_order[:10],
+                    uom_id=line.product_uom)
+                if seller:
+                    supplierinfo['product_name'] = seller.product_name
+                    supplierinfo['product_code'] = seller.product_code
                 vals = {
                     'seller_ids': [(0, 0, supplierinfo)],
                 }
@@ -521,6 +532,8 @@ class PurchaseOrder(models.Model):
             res = self.env.ref('account.invoice_supplier_form', False)
             result['views'] = [(res and res.id or False, 'form')]
             result['res_id'] = self.invoice_ids.id
+        result['context']['default_origin'] = self.name
+        result['context']['default_reference'] = self.partner_ref
         return result
 
     @api.multi
@@ -552,7 +565,7 @@ class PurchaseOrderLine(models.Model):
             taxes = line.product_id.supplier_taxes_id.filtered(lambda r: not line.company_id or r.company_id == line.company_id)
             line.taxes_id = fpos.map_tax(taxes, line.product_id, line.order_id.partner_id) if fpos else taxes
 
-    @api.depends('invoice_lines.invoice_id.state', 'invoice_lines.quantity')
+    @api.depends('invoice_lines.invoice_id.state', 'invoice_lines.quantity', 'invoice_lines.uom_id')
     def _compute_qty_invoiced(self):
         for line in self:
             qty = 0.0
@@ -746,9 +759,11 @@ class PurchaseOrderLine(models.Model):
     def _create_stock_moves(self, picking):
         moves = self.env['stock.move']
         done = self.env['stock.move'].browse()
-        for line in self:
-            for val in line._prepare_stock_moves(picking):
-                done += moves.create(val)
+        with self.env.norecompute():
+            for line in self:
+                for val in line._prepare_stock_moves(picking):
+                    done += moves.create(val)
+        self.recompute()
         return done
 
     @api.multi
@@ -946,7 +961,7 @@ class ProcurementRule(models.Model):
     def _get_purchase_order_date(self, product_id, product_qty, product_uom, values, partner, schedule_date):
         """Return the datetime value to use as Order Date (``date_order``) for the
            Purchase Order created to satisfy the given procurement. """
-        seller = product_id._select_seller(
+        seller = product_id.with_context(force_company=values['company_id'].id)._select_seller(
             partner_id=partner,
             quantity=product_qty,
             date=fields.Date.to_string(schedule_date),
@@ -956,7 +971,7 @@ class ProcurementRule(models.Model):
 
     def _update_purchase_order_line(self, product_id, product_qty, product_uom, values, line, partner):
         procurement_uom_po_qty = product_uom._compute_quantity(product_qty, product_id.uom_po_id)
-        seller = product_id._select_seller(
+        seller = product_id.with_context(force_company=values['company_id'].id)._select_seller(
             partner_id=partner,
             quantity=line.product_qty + procurement_uom_po_qty,
             date=line.order_id.date_order and line.order_id.date_order[:10],
@@ -1122,7 +1137,7 @@ class MailComposeMessage(models.TransientModel):
 
     @api.multi
     def mail_purchase_order_on_send(self):
-        if not self.filtered('subtype_id.internal'):
+        if self._context.get('purchase_mark_rfq_sent'):
             order = self.env['purchase.order'].browse(self._context['default_res_id'])
             if order.state == 'draft':
                 order.state = 'sent'
@@ -1130,6 +1145,7 @@ class MailComposeMessage(models.TransientModel):
     @api.multi
     def send_mail(self, auto_commit=False):
         if self._context.get('default_model') == 'purchase.order' and self._context.get('default_res_id'):
-            self = self.with_context(mail_post_autofollow=True)
+            order = self.env['purchase.order'].browse(self._context['default_res_id'])
+            self = self.with_context(mail_post_autofollow=True, lang=order.partner_id.lang)
             self.mail_purchase_order_on_send()
         return super(MailComposeMessage, self).send_mail(auto_commit=auto_commit)
