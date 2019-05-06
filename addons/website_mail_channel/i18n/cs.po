@@ -342,7 +342,7 @@ msgstr "Seznam diskusí"
 
 #. module: website_mail_channel
 #: model:ir.model,name:website_mail_channel.model_mail_channel
-msgid "Discussion channel"
+msgid "Discussion Channel"
 msgstr "Diskusní kanál"
 
 #. module: website_mail_channel
