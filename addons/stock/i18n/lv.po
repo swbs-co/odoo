@@ -7,6 +7,7 @@
 # Martin Trigaux, 2018
 # JanisJanis <jbojars@gmail.com>, 2018
 # Arnis Putniņš <arnis@allegro.lv>, 2019
+# Vladimirs Malejevs <vladimirs.malejevs@ms-idi.eu>, 2019
 # ievaputnina <ievai.putninai@gmail.com>, 2019
 # 
 msgid ""
@@ -332,7 +333,7 @@ msgstr ""
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_template_property_form
 msgid "<span>kg</span>"
-msgstr ""
+msgstr "kg"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_template_property_form
@@ -7526,7 +7527,7 @@ msgstr ""
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.stock_warn_insufficient_qty_form_view
 msgid "in"
-msgstr ""
+msgstr "iekš"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.inventory_planner
