@@ -14,7 +14,7 @@
 # Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2018
 # Wiktor Kaźmierczak <wik92tor@wp.pl>, 2018
 # Martin Trigaux, 2018
-# zbik2607 <darek@krokus.com.pl>, 2018
+# Dariusz Żbikowski <darek@krokus.com.pl>, 2018
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2018
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2018
 # Tomasz Leppich <t.leppich@gmail.com>, 2018
@@ -32,7 +32,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-08 05:29+0000\n"
+"POT-Creation-Date: 2019-03-29 10:09+0000\n"
 "PO-Revision-Date: 2018-08-24 09:20+0000\n"
 "Last-Translator: Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
@@ -1019,12 +1019,13 @@ msgstr "Treść"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_res_partner__message_bounce
+#: model:ir.model.fields,field_description:mail.field_res_users__message_bounce
 msgid "Bounce"
 msgstr "Odbijanie"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/thread.xml:398
+#: code:addons/mail/static/src/xml/thread.xml:391
 #: selection:mail.notification,email_status:0
 #, python-format
 msgid "Bounced"
@@ -4397,7 +4398,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model,name:mail.model_publisher_warranty_contract
 msgid "Publisher Warranty Contract"
-msgstr ""
+msgstr "Kontrakt Gwarancyjny Publikującego"
 
 #. module: mail
 #: model:ir.actions.server,name:mail.ir_cron_module_update_notification_ir_actions_server
@@ -4757,7 +4758,7 @@ msgstr ""
 #: code:addons/mail/static/src/xml/discuss.xml:183
 #, python-format
 msgid "Select All"
-msgstr ""
+msgstr "Zaznacz wszystko"
 
 #. module: mail
 #. openerp-web

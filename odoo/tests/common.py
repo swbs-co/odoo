@@ -488,7 +488,7 @@ class ChromeBrowser():
                 self.chrome_process.wait()
         if self.user_data_dir and os.path.isdir(self.user_data_dir) and self.user_data_dir != '/':
             self._logger.info('Removing chrome user profile "%s"', self.user_data_dir)
-            shutil.rmtree(self.user_data_dir)
+            shutil.rmtree(self.user_data_dir, ignore_errors=True)
         # Restore previous signal handler
         if self.sigxcpu_handler and os.name == 'posix':
             signal.signal(signal.SIGXCPU, self.sigxcpu_handler)
@@ -1416,7 +1416,8 @@ class Form(object):
         if not any(spec[f] for f in fields):
             return
 
-        result = self._model.onchange(self._onchange_values(), fields, spec)
+        record = self._model.browse(self._values.get('id'))
+        result = record.onchange(self._onchange_values(), fields, spec)
         if result.get('warning'):
             _logger.getChild('onchange').warn("%(title)s %(message)s" % result.get('warning'))
         values = result.get('value', {})

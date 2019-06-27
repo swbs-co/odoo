@@ -755,7 +755,7 @@ msgstr "החזר הזמנות"
 #: model_terms:ir.ui.view,arch_db:stock.report_package_barcode_small
 #: model_terms:ir.ui.view,arch_db:stock.report_picking
 msgid "Barcode"
-msgstr "בר-קוד"
+msgstr "ברקוד"
 
 #. module: stock
 #: model:ir.ui.menu,name:stock.menu_wms_barcode_nomenclature_all
@@ -2664,7 +2664,7 @@ msgstr "הפניה למלאי"
 #: model:ir.actions.act_window,name:stock.action_stock_quantity_history
 #: model:ir.ui.menu,name:stock.menu_valuation
 msgid "Inventory Report"
-msgstr "דו\"ח מלאי"
+msgstr "דו\"חות מלאי"
 
 #. module: stock
 #: model:ir.model,name:stock.model_stock_location_route
@@ -3202,7 +3202,7 @@ msgstr "סמן כמטלה לביצוע  "
 #. module: stock
 #: model:ir.ui.menu,name:stock.menu_stock_inventory_control
 msgid "Master Data"
-msgstr "קובץ מקור"
+msgstr "נתונים עיקריים"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_warehouse_orderpoint__product_max_qty
@@ -3854,12 +3854,12 @@ msgstr "חבילה"
 #. module: stock
 #: model:ir.actions.report,name:stock.action_report_quant_package_barcode_small
 msgid "Package Barcode (PDF)"
-msgstr "בר-קוד חבילה (PDF)"
+msgstr "ברקוד חבילה (PDF)"
 
 #. module: stock
 #: model:ir.actions.report,name:stock.action_report_quant_package_barcode
 msgid "Package Barcode with Content"
-msgstr "בר-קוד חבילה עם תוכן"
+msgstr "ברקוד חבילה עם תוכן"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
@@ -4640,7 +4640,7 @@ msgstr "מסלול קבלה"
 #: model:stock.picking.type,name:stock.picking_type_in
 #, python-format
 msgid "Receipts"
-msgstr "קבלות"
+msgstr ""
 
 #. module: stock
 #: selection:stock.warehouse,reception_steps:0
@@ -4774,7 +4774,7 @@ msgstr "סידור מחדש של כמות של מינימלית"
 #: model_terms:ir.ui.view,arch_db:stock.view_warehouse_orderpoint_tree
 #: model_terms:ir.ui.view,arch_db:stock.warehouse_orderpoint_search
 msgid "Reordering Rules"
-msgstr "כללי רענון"
+msgstr "חוקי רענון"
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.warehouse_orderpoint_search
@@ -5039,7 +5039,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock.view_picking_form
 #, python-format
 msgid "Scrap"
-msgstr "השמדה"
+msgstr "השמדות"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_scrap__scrap_location_id
@@ -6114,7 +6114,7 @@ msgstr "לביצוע"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.stock_picking_type_kanban
 msgid "To Process"
-msgstr "לעבד"
+msgstr "לערוך"
 
 #. module: stock
 #: selection:stock.picking,activity_state:0
@@ -6354,7 +6354,7 @@ msgstr "יחידת מידה"
 #: code:addons/stock/models/stock_picking.py:885
 #, python-format
 msgid "Unknow stream."
-msgstr ""
+msgstr "מחרוזת לא ידוע"
 
 #. module: stock
 #: code:addons/stock/models/stock_quant.py:348

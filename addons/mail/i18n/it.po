@@ -477,7 +477,7 @@ msgstr "Azione richiesta"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_ir_actions_server__state
 msgid "Action To Do"
-msgstr "Azione da svolgere"
+msgstr "Azione da eseguire"
 
 #. module: mail
 #: model:ir.model,name:mail.model_ir_actions_act_window_view
@@ -5844,7 +5844,7 @@ msgstr "Visualizza tutti gli allegati del record corrente"
 #: code:addons/mail/static/src/xml/thread.xml:58
 #, python-format
 msgid "Viewer"
-msgstr ""
+msgstr "Operazione ordine di lavoro"
 
 #. module: mail
 #. openerp-web
