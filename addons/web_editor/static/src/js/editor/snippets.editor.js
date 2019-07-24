@@ -373,6 +373,7 @@ var SnippetEditor = Widget.extend({
      */
     _onDragAndDropStart: function () {
         var self = this;
+        this.dropped = false;
         self.size = {
             width: self.$target.width(),
             height: self.$target.height()
@@ -418,9 +419,20 @@ var SnippetEditor = Widget.extend({
      * 'move' button.
      *
      * @private
+     * @param {Event} ev
+     * @param {Object} ui
      */
-    _onDragAndDropStop: function () {
+    _onDragAndDropStop: function (ev, ui) {
         var self = this;
+
+        // TODO lot of this is duplicated code of the d&d feature of snippets
+        if (!this.dropped) {
+            var $el = $.nearest({x: ui.position.left, y: ui.position.top}, '.oe_drop_zone').first();
+            if ($el.length) {
+                $el.after(this.$target);
+                this.dropped = true;
+            }
+        }
 
         $('.oe_drop_zone').droppable('destroy').remove();
 
@@ -799,7 +811,7 @@ var SnippetsMenu = Widget.extend({
              && (float_next === 'left' || float_next === 'right')) {
                 zone.remove();
             } else if (disp_prev !== null && disp_next !== null
-             && disp_prev !== 'block' && disp_next !== 'block') {
+             && disp_prev.indexOf('inline') >= 0 && disp_next.indexOf('inline') >= 0) {
                 zone.remove();
             }
         });

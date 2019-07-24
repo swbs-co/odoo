@@ -14,6 +14,7 @@ var Widget = require('web.Widget');
 var fieldUtils = require('web.field_utils');
 
 var createView = testUtils.createView;
+var createAsyncView = testUtils.createAsyncView;
 
 QUnit.module('fields', {}, function () {
 
@@ -2950,6 +2951,67 @@ QUnit.module('relational_fields', {
         pager_limit = form.$('.o_field_many2many.o_field_widget.o_field_x2many.o_field_x2many_list .o_pager_limit');
         assert.equal(pager_limit.text(), '51',
             'We should have 51 records in the m2m field');
+
+        form.destroy();
+    });
+
+    QUnit.test('focus when closing many2one modal in many2one modal', function (assert) {
+        assert.expect(12);
+
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form string="Partners">' +
+                    '<field name="trululu"/>' +
+                  '</form>',
+            res_id: 2,
+            archs: {
+                'partner,false,form': '<form><field name="trululu"/></form>'
+            },
+            mockRPC: function (route, args) {
+                if (args.method === 'get_formview_id') {
+                    return $.when(false);
+                }
+                return this._super(route, args);
+            },
+        });
+
+        // Open many2one modal
+        form.$buttons.find('.btn.o_form_button_edit').click();
+        form.$('.o_external_button').click();
+        var $originalModal = $('.modal');
+        var $focusedModal = $(document.activeElement).closest('.modal');
+
+        assert.equal($originalModal.length, 1, 'There should be one modal');
+        assert.equal($originalModal[0], $focusedModal[0], 'Modal is focused');
+        assert.ok($('body').hasClass('modal-open'), 'Modal is said opened');
+
+        // Open many2one modal of field in many2one modal
+        $originalModal.find('.o_external_button').click();
+        var $modals = $('.modal');
+        $focusedModal = $(document.activeElement).closest('.modal');
+
+        assert.equal($modals.length, 2, 'There should be two modals');
+        assert.equal($modals[1], $focusedModal[0], 'Last modal is focused');
+        assert.ok($('body').hasClass('modal-open'), 'Modal is said opened');
+
+        // Close second modal
+        $modals.last().find('button[class="close"]').click();
+        var $modal = $('.modal');
+        $focusedModal = $(document.activeElement).closest('.modal');
+
+        assert.equal($modal.length, 1, 'There should be one modal');
+        assert.equal($modal[0], $originalModal[0], 'First modal is still opened');
+        assert.equal($modal[0], $focusedModal[0], 'Modal is focused');
+        assert.ok($('body').hasClass('modal-open'), 'Modal is said opened');
+
+        // Close first modal
+        $modal.find('button[class="close"]').click();
+        $modal = $('.modal-dialog.modal-lg');
+
+        assert.equal($modal.length, 0, 'There should be no modal');
+        assert.notOk($('body').hasClass('modal-open'), 'Modal is not said opened');
 
         form.destroy();
     });
@@ -11072,6 +11134,58 @@ QUnit.module('relational_fields', {
         readDefs[2].resolve();
 
         assert.strictEqual(form.$('.o_field_widget[name=turtles] .o_data_cell').text(), 'raphael');
+
+        form.destroy();
+    });
+
+    // FORWARDPORT THIS UP TO 12.2, NOT FURTHER
+    QUnit.test('many2manys inside a one2many are fetched in batch after onchange', async function (assert) {
+        assert.expect(7);
+
+        this.data.partner.onchanges = {
+            turtles: function (obj) {
+                obj.turtles = [
+                    [5],
+                    [1, 1, {
+                        turtle_foo: "leonardo",
+                        partner_ids: [[4, 2]],
+                    }],
+                    [1, 2, {
+                        turtle_foo: "donatello",
+                        partner_ids: [[4, 2], [4, 4]],
+                    }],
+                ];
+            },
+        };
+
+        var form = await createAsyncView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form>' +
+                        '<field name="turtles">' +
+                            '<tree editable="bottom">' +
+                                '<field name="turtle_foo"/>' +
+                                '<field name="partner_ids" widget="many2many_tags"/>' +
+                            '</tree>' +
+                        '</field>' +
+                    '</form>',
+            enableBasicModelBachedRPCs: true,
+            mockRPC: function (route, args) {
+                assert.step(args.method || route);
+                if (args.method === 'read') {
+                    assert.deepEqual(args.args[0], [2, 4],
+                        'should read the partner_ids once, batched');
+                }
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        assert.containsN(form, '.o_data_row', 2);
+        assert.strictEqual(form.$('.o_field_widget[name="partner_ids"]').text().replace(/\s/g, ''),
+            "secondrecordsecondrecordaaa");
+
+        assert.verifySteps(['default_get', 'onchange', 'read']);
 
         form.destroy();
     });

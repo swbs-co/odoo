@@ -1071,7 +1071,7 @@ msgid ""
 "If the email address is on the blacklist, the contact won't receive mass "
 "mailing anymore, from any list"
 msgstr ""
-"Als het e-mail adres op de blacklist staat, zal het contact gen "
+"Als het e-mail adres op de blacklist staat, zal het contact geen "
 "bulkmailingen ontvangen, van geen enkele lijst."
 
 #. module: mass_mailing
@@ -2346,7 +2346,7 @@ msgstr "Datum uitschrijving"
 #: code:addons/mass_mailing/models/mass_mailing.py:880
 #, python-format
 msgid "Unsupported mass mailing model %s"
-msgstr ""
+msgstr "Niet ondersteund bulk mailing model %s"
 
 #. module: mass_mailing
 #: model_terms:ir.ui.view,arch_db:mass_mailing.unsubscribe
@@ -2500,10 +2500,10 @@ msgstr "U bent niet ingeschreven voor een van onze nieusbrieven."
 
 #. module: mass_mailing
 #. openerp-web
-#: code:addons/mass_mailing/static/src/js/unsubscribe.js:49
+#: code:addons/mass_mailing/static/src/js/unsubscribe.js:50
 #, python-format
-msgid "You have been <strong>successfully unsubscribed from </strong>."
-msgstr "U bent <strong> succesvol uitgeschreven uit</strong>."
+msgid "You have been <strong>successfully unsubscribed from %s</strong>."
+msgstr "U bent <strong>succesvol uitgeschreven van %s</strong>."
 
 #. module: mass_mailing
 #. openerp-web

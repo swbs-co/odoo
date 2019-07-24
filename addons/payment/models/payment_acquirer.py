@@ -356,6 +356,7 @@ class PaymentAcquirer(models.Model):
         if values is None:
             values = {}
 
+        values.setdefault('return_url', '/payment/process')
         # reference and amount
         values.setdefault('reference', reference)
         amount = float_round(amount, 2)
@@ -447,7 +448,6 @@ class PaymentAcquirer(models.Model):
             'context': self._context,
             'type': values.get('type') or 'form',
         })
-        values.setdefault('return_url', False)
 
         _logger.info('payment.acquirer.render: <%s> values rendered for form payment:\n%s', self.provider, pprint.pformat(values))
         return self.view_template_id.render(values, engine='ir.qweb')
@@ -879,7 +879,7 @@ class PaymentTransaction(models.Model):
 
             values.update({
                 'partner_name': partner.name,
-                'partner_lang': partner.lang or 'en_US',
+                'partner_lang': partner.lang or self.env.user.lang,
                 'partner_email': partner.email,
                 'partner_zip': partner.zip,
                 'partner_address': _partner_format_address(partner.street or '', partner.street2 or ''),
@@ -897,7 +897,7 @@ class PaymentTransaction(models.Model):
 
         # custom create
         custom_method_name = '%s_create' % acquirer.provider
-        if hasattr(acquirer, custom_method_name):
+        if hasattr(self, custom_method_name):
             values.update(getattr(self, custom_method_name)(values))
 
         if not values.get('reference'):
