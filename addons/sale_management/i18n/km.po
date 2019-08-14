@@ -6,14 +6,15 @@
 # Sengtha Chay <sengtha@gmail.com>, 2018
 # Chan Nath <channath@gmail.com>, 2018
 # Samkhann Seang <seangsamkhann@gmail.com>, 2018
+# Lux Sok <sok.lux@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-09 10:31+0000\n"
+"POT-Creation-Date: 2019-08-08 13:50+0000\n"
 "PO-Revision-Date: 2018-08-24 09:24+0000\n"
-"Last-Translator: Samkhann Seang <seangsamkhann@gmail.com>, 2018\n"
+"Last-Translator: Lux Sok <sok.lux@gmail.com>, 2019\n"
 "Language-Team: Khmer (https://www.transifex.com/odoo/teams/41243/km/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +26,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_management.report_saleorder_document_inherit_sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_portal_content_inherit_sale_management
 msgid "% discount"
-msgstr ""
+msgstr "% ការបញ្ចុះតម្លៃ"
 
 #. module: sale_management
 #: model:sale.order.template.line,name:sale_management.sale_order_template_line_1
@@ -35,7 +36,7 @@ msgstr ""
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_portal_content_inherit_sale_management
 msgid "<span>Discount</span>"
-msgstr ""
+msgstr "<span>ការបញ្ចុះតម្លៃ</span>"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.report_saleorder_document_inherit_sale_management
@@ -50,23 +51,23 @@ msgstr "សកម្ម"
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_form
 msgid "Add a note"
-msgstr ""
+msgstr "បន្ថែមចំណាំ"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_form_quote
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_form
 msgid "Add a product"
-msgstr ""
+msgstr "បន្ថែមផលិតផល"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_form
 msgid "Add a section"
-msgstr ""
+msgstr "បន្ថែមផ្នែកមួយទៀត"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_portal_content_inherit_sale_management
 msgid "Add one"
-msgstr ""
+msgstr "បន្ថែមមួយ"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_portal_content_inherit_sale_management
@@ -91,17 +92,25 @@ msgstr "ឯកសារ"
 #. module: sale_management
 #: model:ir.ui.menu,name:sale_management.menu_catalog_variants_action
 msgid "Attribute Values"
-msgstr ""
+msgstr "កំណត់គុណតម្លៃ"
 
 #. module: sale_management
 #: model:ir.ui.menu,name:sale_management.menu_product_attribute_action
 msgid "Attributes"
+msgstr "កំណត់"
+
+#. module: sale_management
+#: code:addons/sale_management/models/sale_order_template.py:39
+#, python-format
+msgid ""
+"Before archiving \"%s\" please select another default template in the "
+"settings."
 msgstr ""
 
 #. module: sale_management
 #: model:ir.model,name:sale_management.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "កំណត់រចនាសម្ព័ន្ធ"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_form
@@ -168,7 +177,7 @@ msgstr ""
 #. module: sale_management
 #: model:ir.model,name:sale_management.model_digest_digest
 msgid "Digest"
-msgstr ""
+msgstr "សង្ខេប"
 
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_option__discount
@@ -188,13 +197,15 @@ msgstr "ឈ្មោះសំរាប់បង្ហាញ"
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_template_line__display_type
 msgid "Display Type"
-msgstr ""
+msgstr "បង្ហាញប្រភេទ"
 
 #. module: sale_management
 #: code:addons/sale_management/models/digest.py:16
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
+"មិនមានសិទ្ធិ, "
+"រំលងទិន្នន័យនេះសម្រាប់ដោយការសង្ខេបតាមរយៈការប្រើប្រាស់អ៊ីមែលរបស់អ្នក"
 
 #. module: sale_management
 #: sql_constraint:sale.order.template.line:0
@@ -260,13 +271,13 @@ msgstr "ផ្លាស់ប្តូរចុងក្រោយ"
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_option__line_id
 msgid "Line"
-msgstr ""
+msgstr "បន្ទាត់"
 
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_template__sale_order_template_line_ids
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_form
 msgid "Lines"
-msgstr ""
+msgstr "ឋានៈនុក្រម"
 
 #. module: sale_management
 #: sql_constraint:sale.order.template.line:0
@@ -316,7 +327,7 @@ msgstr ""
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_portal_content_inherit_sale_management
 msgid "Price"
-msgstr ""
+msgstr "តម្លៃ"
 
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_option__product_id
@@ -329,7 +340,7 @@ msgstr "ផលិតផល"
 #. module: sale_management
 #: model:ir.ui.menu,name:sale_management.menu_product_settings
 msgid "Products"
-msgstr ""
+msgstr "ផលិតផល"
 
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_option__quantity
@@ -395,7 +406,7 @@ msgstr ""
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_portal_content_inherit_sale_management
 msgid "Remove"
-msgstr ""
+msgstr "ដកចេញ"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_portal_content_inherit_sale_management
@@ -424,17 +435,17 @@ msgstr ""
 #. module: sale_management
 #: model:ir.model,name:sale_management.model_sale_order
 msgid "Sale Order"
-msgstr ""
+msgstr "លក់តាមការម៉ង់"
 
 #. module: sale_management
 #: model_terms:ir.ui.view,arch_db:sale_management.digest_digest_view_form
 msgid "Sales"
-msgstr ""
+msgstr "ការលក់"
 
 #. module: sale_management
 #: model:ir.model,name:sale_management.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "លំដាប់បញ្ជាទិញ"
 
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_option__order_id
@@ -455,7 +466,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_management.sale_order_template_view_form
 #: selection:sale.order.template.line,display_type:0
 msgid "Section"
-msgstr ""
+msgstr "ផ្នែក"
 
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_option__sequence
@@ -466,7 +477,7 @@ msgstr "លំដាប់"
 #. module: sale_management
 #: model:ir.model.fields,help:sale_management.field_sale_order_template_line__display_type
 msgid "Technical field for UX purpose."
-msgstr ""
+msgstr "ផ្នែកបច្ចេកទេសសម្រាប់គោលបំណងរបស់ UX ។"
 
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_template__note
@@ -493,12 +504,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_template_option__price_unit
 #: model_terms:ir.ui.view,arch_db:sale_management.report_saleorder_document_inherit_sale_management
 msgid "Unit Price"
-msgstr ""
+msgstr "កត្តាតំលៃ"
 
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_template_line__product_uom_id
 msgid "Unit of Measure"
-msgstr ""
+msgstr "ឯកតារង្វាស់"
 
 #. module: sale_management
 #: model:ir.model.fields,field_description:sale_management.field_sale_order_option__uom_id
@@ -515,9 +526,17 @@ msgid ""
 msgstr ""
 
 #. module: sale_management
-#: code:addons/sale_management/models/sale_order.py:178
+#: code:addons/sale_management/models/sale_order.py:198
 #, python-format
 msgid "You cannot add options to a confirmed order."
+msgstr ""
+
+#. module: sale_management
+#: code:addons/sale_management/models/sale_order_template.py:90
+#, python-format
+msgid ""
+"You cannot change the type of a sale quote line. Instead you should delete "
+"the current line and create a new line of the proper type."
 msgstr ""
 
 #. module: sale_management

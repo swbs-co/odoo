@@ -198,11 +198,11 @@ def concat_xml(file_list):
 
     :param list(str) file_list: list of files to check
     :returns: (concatenation_result, checksum)
-    :rtype: (str, str)
+    :rtype: (bytes, str)
     """
     checksum = hashlib.new('sha1')
     if not file_list:
-        return '', checksum.hexdigest()
+        return b'', checksum.hexdigest()
 
     root = None
     for fname in file_list:
@@ -1167,6 +1167,7 @@ class Binary(http.Controller):
                     'res_model': model,
                     'res_id': int(id)
                 })
+                attachment._post_add_create()
             except Exception:
                 args.append({'error': _("Something horrible happened")})
                 _logger.exception("Fail to upload attachment %s" % ufile.filename)
