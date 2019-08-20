@@ -320,7 +320,7 @@ msgstr ""
 #: code:addons/pos_restaurant/static/src/xml/printbill.xml:140
 #, python-format
 msgid "Discounts"
-msgstr ""
+msgstr "ការបញ្ចុះតម្លៃ"
 
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_restaurant_floor__display_name
@@ -425,7 +425,7 @@ msgstr ""
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_restaurant_table__height
 msgid "Height"
-msgstr ""
+msgstr "តំលៃខ្ពស់"
 
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_restaurant_table__position_h
@@ -563,7 +563,7 @@ msgstr ""
 #: code:addons/pos_restaurant/static/src/xml/multiprint.xml:6
 #, python-format
 msgid "Order"
-msgstr ""
+msgstr "បញ្ជាទិញ"
 
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_pos_config__is_order_printer
@@ -609,7 +609,7 @@ msgstr ""
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_restaurant_floor__pos_config_id
 msgid "Point of Sale"
-msgstr ""
+msgstr "ចំនុច​នៃ​ការ​លក់"
 
 #. module: pos_restaurant
 #: model:ir.model,name:pos_restaurant.model_pos_config
@@ -677,7 +677,7 @@ msgstr "ចំនួន"
 #: code:addons/pos_restaurant/static/src/xml/floors.xml:148
 #, python-format
 msgid "Red"
-msgstr ""
+msgstr "ក្រហម"
 
 #. module: pos_restaurant
 #. openerp-web
@@ -975,7 +975,7 @@ msgstr ""
 #. module: pos_restaurant
 #: model:ir.model.fields,field_description:pos_restaurant.field_restaurant_table__width
 msgid "Width"
-msgstr ""
+msgstr "ទទឹង"
 
 #. module: pos_restaurant
 #. openerp-web
@@ -1006,7 +1006,7 @@ msgstr ""
 #: code:addons/pos_restaurant/static/src/xml/splitbill.xml:36
 #, python-format
 msgid "at"
-msgstr ""
+msgstr "នៅ"
 
 #. module: pos_restaurant
 #. openerp-web

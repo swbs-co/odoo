@@ -1849,8 +1849,11 @@ class AccountInvoiceLine(models.Model):
             return
         if not self.product_id:
             fpos = self.invoice_id.fiscal_position_id
-            default_tax = self.invoice_id.type in ('out_invoice', 'out_refund') and self.invoice_id.company_id.account_sale_tax_id or self.invoice_id.company_id.account_purchase_tax_id
-            self.invoice_line_tax_ids = fpos.map_tax(self.account_id.tax_ids or default_tax, partner=self.partner_id).ids
+            if self.invoice_id.type in ('out_invoice', 'out_refund'):
+                default_tax = self.invoice_id.company_id.account_sale_tax_id
+            else:
+                default_tax = self.invoice_id.company_id.account_purchase_tax_id
+            self.invoice_line_tax_ids = fpos.map_tax(self.account_id.tax_ids or default_tax, partner=self.partner_id)
         elif not self.price_unit:
             self._set_taxes()
 
@@ -1923,7 +1926,7 @@ class AccountInvoiceLine(models.Model):
     @api.multi
     def write(self, values):
         if 'display_type' in values and self.filtered(lambda line: line.display_type != values.get('display_type')):
-            raise UserError("You cannot change the type of an invoice line. Instead you should delete the current line and create a new line of the proper type.")
+            raise UserError(_("You cannot change the type of an invoice line. Instead you should delete the current line and create a new line of the proper type."))
         return super(AccountInvoiceLine, self).write(values)
 
     _sql_constraints = [
