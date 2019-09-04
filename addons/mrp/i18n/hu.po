@@ -4,12 +4,12 @@
 # 
 # Translators:
 # Kovács Tibor <kovika@gmail.com>, 2018
-# gezza <geza.nagy@oregional.hu>, 2018
 # Martin Trigaux, 2018
 # Zoltán Csapó <csapoz@gmail.com>, 2018
 # Tibor Kőnig <konig.tibor@evitalit.hu>, 2018
 # krnkris, 2018
 # Tamás Dombos, 2019
+# gezza <geza.nagy@oregional.hu>, 2019
 # Ákos Nagy <akos.nagy@oregional.hu>, 2019
 # 
 msgid ""
@@ -129,6 +129,9 @@ msgid ""
 "['|',('availability', 'in', ('assigned', 'none')), ('state', 'not in', "
 "('confirmed','progress'))]}\">Raw materials not available!</span>"
 msgstr ""
+"<span class=\"badge badge-danger\" attrs=\"{'invisible': "
+"['|',('availability', 'in', ('assigned', 'none')), ('state', 'not in', "
+"('confirmed','progress'))]}\">Az alapanyagok nem elérhetőek!</span>"
 
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.report_mrp_bom_line
@@ -553,8 +556,8 @@ msgid ""
 "Bill of Materials allow you to define the list of required raw materials to "
 "make a finished product."
 msgstr ""
-"Anyagjegyzék lehetővé teszi az előállítani kívánt termékhez való alapanyagok"
-" meghatározását."
+"Az anyagjegyzék lehetővé teszi egy kész termék előállításához szükséges "
+"alapanyagok listájának meghatározását."
 
 #. module: mrp
 #: model:ir.actions.act_window,name:mrp.mrp_bom_form_action
@@ -1106,7 +1109,7 @@ msgstr "Piszkozat"
 #: model:product.product,name:mrp.product_product_drawer_drawer
 #: model:product.template,name:mrp.product_product_drawer_drawer_product_template
 msgid "Drawer Black"
-msgstr ""
+msgstr "Fekete fiók"
 
 #. module: mrp
 #: model:product.product,name:mrp.product_product_drawer_case
@@ -2834,12 +2837,12 @@ msgstr "Mennyiség:"
 #. module: mrp
 #: model_terms:ir.ui.view,arch_db:mrp.view_mrp_production_filter
 msgid "Raw Material"
-msgstr "Nyersanyag"
+msgstr "Alapanyag"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__move_raw_ids
 msgid "Raw Materials"
-msgstr "Nyersanyagok"
+msgstr "Alapanyagok"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_production__location_src_id
@@ -2874,7 +2877,7 @@ msgstr "Ok"
 #: model:ir.model,name:mrp.model_mrp_product_produce
 #: model_terms:ir.ui.view,arch_db:mrp.view_mrp_product_produce_wizard
 msgid "Record Production"
-msgstr ""
+msgstr "Termelés rögzítése"
 
 #. module: mrp
 #: model:ir.model,name:mrp.model_mrp_product_produce_line
@@ -3392,6 +3395,7 @@ msgstr ""
 #: model:ir.model.fields,help:mrp.field_mrp_workorder__is_user_working
 msgid "Technical field indicating whether the current user is working. "
 msgstr ""
+"Egy technikai mező, amely jelzi, hogy a jelenlegi felhasználó dolgozik-e."
 
 #. module: mrp
 #: model:ir.model.fields,help:mrp.field_mrp_production__post_visible
