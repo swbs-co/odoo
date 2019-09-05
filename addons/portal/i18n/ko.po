@@ -4,20 +4,20 @@
 # 
 # Translators:
 # Martin Trigaux, 2018
-# JH CHOI <hwangtog@gmail.com>, 2018
 # Jongkwan, Yeom <jongkwanyeom@gmail.com>, 2018
 # Audrey Go <audrey.ggo@gmail.com>, 2018
 # Link Up링크업 <linkup.way@gmail.com>, 2018
 # Seongseok Shin <shinss61@hotmail.com>, 2018
 # Linkup <link-up@naver.com>, 2018
+# JH CHOI <hwangtog@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-09 10:32+0000\n"
+"POT-Creation-Date: 2019-08-08 13:50+0000\n"
 "PO-Revision-Date: 2018-08-24 09:22+0000\n"
-"Last-Translator: Linkup <link-up@naver.com>, 2018\n"
+"Last-Translator: JH CHOI <hwangtog@gmail.com>, 2019\n"
 "Language-Team: Korean (https://www.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,6 +31,12 @@ msgstr ""
 #, python-format
 msgid "%d days overdue"
 msgstr "연체 된 %d 일"
+
+#. module: portal
+#: code:addons/portal/controllers/portal.py:277
+#, python-format
+msgid "%s is not the reference of a report"
+msgstr ""
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_show_sign_in
@@ -167,15 +173,22 @@ msgid ""
 msgstr ""
 
 #. module: portal
+#. openerp-web
+#: code:addons/portal/static/src/xml/portal_signature.xml:19
+#, python-format
+msgid "Accept & Sign"
+msgstr ""
+
+#. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_mixin__access_warning
 #: model:ir.model.fields,field_description:portal.field_portal_share__access_warning
 msgid "Access warning"
-msgstr ""
+msgstr "접근 경고"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_wizard
 msgid "Add a note"
-msgstr ""
+msgstr "노트 추가"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_wizard
@@ -202,7 +215,7 @@ msgstr "보관 메시지"
 #: code:addons/portal/static/src/xml/portal_chatter.xml:26
 #, python-format
 msgid "Avatar"
-msgstr ""
+msgstr "아바타"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_wizard
@@ -215,6 +228,13 @@ msgstr "취소"
 #, python-format
 msgid ""
 "Changing VAT number is not allowed once document(s) have been issued for "
+"your account. Please contact us directly for this operation."
+msgstr ""
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
+msgid ""
+"Changing company name is not allowed once document(s) have been issued for "
 "your account. Please contact us directly for this operation."
 msgstr ""
 
@@ -293,7 +313,7 @@ msgstr "작성일"
 #. module: portal
 #: model:ir.model.fields,help:portal.field_portal_mixin__access_url
 msgid "Customer Portal URL"
-msgstr ""
+msgstr "고객 포털 URL"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_template
@@ -306,7 +326,7 @@ msgstr "....에게"
 #: model:ir.model.fields,field_description:portal.field_portal_wizard__display_name
 #: model:ir.model.fields,field_description:portal.field_portal_wizard_user__display_name
 msgid "Display Name"
-msgstr "이름 표시"
+msgstr "제목"
 
 #. module: portal
 #. openerp-web
@@ -350,7 +370,7 @@ msgstr ""
 #. module: portal
 #: model:ir.model,name:portal.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "HTTP 라우팅"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_breadcrumbs
@@ -375,6 +395,12 @@ msgstr "포털 내부"
 #, python-format
 msgid "Invalid Email! Please enter a valid email address."
 msgstr "이메일이 잘못되었습니다! 유효한 이메일 주소를 입력하세요."
+
+#. module: portal
+#: code:addons/portal/controllers/portal.py:272
+#, python-format
+msgid "Invalid report type: %s"
+msgstr ""
 
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_wizard__welcome_message
@@ -456,7 +482,7 @@ msgstr "Odoo"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_record_sidebar
 msgid "Odoo Logo"
-msgstr ""
+msgstr "Odoo 로고"
 
 #. module: portal
 #. openerp-web
@@ -473,7 +499,7 @@ msgstr "전화"
 #. module: portal
 #: model:ir.model.fields,field_description:portal.field_portal_mixin__access_url
 msgid "Portal Access URL"
-msgstr ""
+msgstr "포털 접근 URL"
 
 #. module: portal
 #: model:ir.model,name:portal.model_portal_mixin
@@ -506,7 +532,7 @@ msgstr "이전"
 #: code:addons/portal/static/src/xml/portal_chatter.xml:84
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "이전"
 
 #. module: portal
 #. openerp-web
@@ -611,6 +637,12 @@ msgstr ""
 #: code:addons/portal/static/src/xml/portal_chatter.xml:12
 #, python-format
 msgid "There are no comments for now."
+msgstr ""
+
+#. module: portal
+#: code:addons/portal/controllers/portal.py:237
+#, python-format
+msgid "This document does not exist."
 msgstr ""
 
 #. module: portal

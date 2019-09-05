@@ -7,18 +7,18 @@
 # Radoslav Sloboda <rado.sloboda@gmail.com>, 2018
 # Matus Krnac <matus.krnac@gmail.com>, 2018
 # Martin Trigaux, 2018
-# Jaroslav Bosansky <jaro.bosansky@ekoenergo.sk>, 2018
 # Pavol Krnáč <pavol.krnac@ekoenergo.sk>, 2018
 # gebri <gebri@inmail.sk>, 2019
 # Jan Prokop, 2019
+# Jaroslav Bosansky <jaro.bosansky@ekoenergo.sk>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-09 10:38+0000\n"
+"POT-Creation-Date: 2019-05-22 11:56+0000\n"
 "PO-Revision-Date: 2018-08-24 09:14+0000\n"
-"Last-Translator: Jan Prokop, 2019\n"
+"Last-Translator: Jaroslav Bosansky <jaro.bosansky@ekoenergo.sk>, 2019\n"
 "Language-Team: Slovak (https://www.transifex.com/odoo/teams/41243/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -5434,10 +5434,10 @@ msgstr ""
 "------------------------------- \n"
 "- koniec životnosti\n"
 "- dátum spotreby\n"
-"- dátum odstránenia\n"
+"- dátum vyradenia\n"
 "- dátum upozornenia\n"
 "\n"
-"Tiež implementuje stratégiu odstránenia, First Expiry First Out (FEFO) široko používanú napríklad v potravinárskom priemysle.\n"
+"Tiež implementuje stratégiu vyradenia, First Expiry First Out (FEFO) široko používanú napríklad v potravinárskom priemysle.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_transifex
@@ -6117,6 +6117,8 @@ msgid ""
 "<span class=\"o_form_label\">The selected modules have been updated / "
 "installed !</span>"
 msgstr ""
+"<span class=\"o_form_label\">TVybrané moduly boli aktualizované / "
+"nainštalované !</span>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_base_module_upgrade_install
@@ -6132,7 +6134,7 @@ msgid ""
 "label=\"Search\" title=\"Search\"/></span>"
 msgstr ""
 "<span class=\"searchIcon\"><i class=\"fa fa-search\" role=\"img\" aria-"
-"label=\"Search\" title=\"Hľahať\"/></span>"
+"label=\"Search\" title=\"Hľadať\"/></span>"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.demo_force_install_form
@@ -7544,9 +7546,7 @@ msgid "Application"
 msgstr "Aplikácia"
 
 #. module: base
-#: code:addons/base/models/res_users.py:968
 #: model_terms:ir.ui.view,arch_db:base.user_groups_view
-#, python-format
 msgid "Application Accesses"
 msgstr "Prístup k Aplikácii"
 
@@ -8411,7 +8411,7 @@ msgstr ""
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_quotation_builder
 msgid "Build great quotation templates"
-msgstr ""
+msgstr "Vytvorte skvelé šablóny cenovej ponuky"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_board
@@ -8590,6 +8590,12 @@ msgstr "Zrušiť Aktualizáciu"
 #: code:addons/models.py:2118
 #, python-format
 msgid "Cannot aggregate field %r."
+msgstr ""
+
+#. module: base
+#: code:addons/base/models/ir_translation.py:256
+#, python-format
+msgid "Cannot be translated; record not accessible."
 msgstr ""
 
 #. module: base
@@ -9535,7 +9541,7 @@ msgstr "Názov Štátu"
 #. module: base
 #: model:ir.model,name:base.model_res_country_state
 msgid "Country state"
-msgstr "Štátny štát"
+msgstr "Spolková krajina"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_website_sale_coupon
@@ -9611,7 +9617,7 @@ msgstr "Vytvoriť nový Záznam"
 #. module: base
 #: model_terms:ir.actions.act_window,help:base.action_res_bank_form
 msgid "Create a new bank"
-msgstr ""
+msgstr "Vytvoriť novú banku"
 
 #. module: base
 #: model_terms:ir.actions.act_window,help:base.action_res_company_form
@@ -10438,6 +10444,8 @@ msgid ""
 "Design great quotation templates with building blocks to significantly boost"
 " your success rate."
 msgstr ""
+"Navrhnite svoje šablóny ponúk pomocou stavebných blokov pre zvýšenie svojej "
+"úspešnosti"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_mass_mailing
@@ -11679,12 +11687,12 @@ msgstr "Fax"
 #: model:ir.model.fields,field_description:base.field_res_bank__state
 #: model:ir.model.fields,field_description:base.field_res_company__state_id
 msgid "Fed. State"
-msgstr "Fed. Štát"
+msgstr "Fed. štát"
 
 #. module: base
 #: model:ir.actions.act_window,name:base.action_country_state
 msgid "Fed. States"
-msgstr "Fed. Štáty"
+msgstr "Fed. štáty"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_delivery_fedex
@@ -11966,7 +11974,7 @@ msgstr "Fínsko"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_lang__week_start
 msgid "First Day of Week"
-msgstr ""
+msgstr "Prvý deň v týždni"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_fleet
@@ -12191,7 +12199,7 @@ msgstr "Od"
 #. module: base
 #: model:ir.module.module,summary:base.module_sale_management
 msgid "From quotations to invoices"
-msgstr ""
+msgstr "Od cenových ponúk po fakturáciu"
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.ir_access_view_search
@@ -12977,7 +12985,7 @@ msgstr "Pomáha vám spravovať prieskum na kontrolu rôznych používateľov."
 #. module: base
 #: model:ir.module.category,description:base.module_category_sign
 msgid "Helps you sign and complete your documents easily."
-msgstr ""
+msgstr "Pomôže vám podpísať a skompletizovať vaše dokumenty."
 
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.wizard_lang_export
@@ -13875,7 +13883,7 @@ msgstr "Neplatný 'group by' parameter"
 #: code:addons/models.py:2120
 #, python-format
 msgid "Invalid aggregation function %r."
-msgstr ""
+msgstr "Neplatná agregačná funkcia %r."
 
 #. module: base
 #: code:addons/base/models/ir_fields.py:330
@@ -13903,7 +13911,7 @@ msgstr "Neplatné pole %s.%s"
 #: code:addons/models.py:2110
 #, python-format
 msgid "Invalid field specification %r."
-msgstr ""
+msgstr "Neplatná špecifikácia poľa %r."
 
 #. module: base
 #: sql_constraint:ir.ui.view:0
@@ -13917,7 +13925,7 @@ msgstr ""
 #. module: base
 #: sql_constraint:ir.ui.view:0
 msgid "Invalid key: QWeb view should have a key"
-msgstr ""
+msgstr "Neplatný kľúč: pohľad QWeb musí mať kľúč"
 
 #. module: base
 #: code:addons/base/models/ir_actions.py:140
@@ -14622,7 +14630,7 @@ msgstr "Iniciatíva na úlohy"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.module_view_kanban
 msgid "Learn More"
-msgstr ""
+msgstr "Zistiť viac"
 
 #. module: base
 #: model:ir.module.category,name:base.module_category_hr_holidays
@@ -15724,12 +15732,12 @@ msgstr "Aktualizácia modulu"
 #. module: base
 #: model_terms:ir.ui.view,arch_db:base.view_base_module_update
 msgid "Module Update Result"
-msgstr "Výsledok aktualizácie modulu"
+msgstr "Výsledok aktualizácie modulov"
 
 #. module: base
 #: model:ir.actions.act_window,name:base.action_view_base_module_upgrade_install
 msgid "Module Upgrade Install"
-msgstr "Inštalácia vylepšenia modulu"
+msgstr "Inštalácia aktualizácie modulu"
 
 #. module: base
 #: model:ir.model,name:base.model_ir_module_module_dependency
@@ -17823,8 +17831,7 @@ msgid "Original currency"
 msgstr "Pôvodná mena"
 
 #. module: base
-#: code:addons/base/models/res_users.py:995
-#: code:addons/base/models/res_users.py:1178
+#: code:addons/base/models/res_users.py:1222
 #: model_terms:ir.ui.view,arch_db:base.user_groups_view
 #, python-format
 msgid "Other"
@@ -18890,7 +18897,7 @@ msgstr "Nástroj na tvorbu cenových ponúk"
 #: model:ir.module.module,summary:base.module_sale_expense
 #: model:ir.module.module,summary:base.module_sale_stock
 msgid "Quotation, Sales Orders, Delivery & Invoicing Control"
-msgstr ""
+msgstr "Cenové ponuky, objednávky predaja, dodanie & kontrola fakturácie"
 
 #. module: base
 #: model:ir.model,name:base.model_ir_qweb
@@ -19041,7 +19048,7 @@ msgstr "Iba na čítanie"
 #. module: base
 #: model:res.partner.industry,name:base.res_partner_industry_L
 msgid "Real Estate"
-msgstr ""
+msgstr "Nehnuteľnosť"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_server_object_lines__resource_ref
@@ -19931,6 +19938,7 @@ msgstr ""
 #: model:ir.module.module,summary:base.module_sign
 msgid "Send documents to sign online and handle filled copies"
 msgstr ""
+"Odosielanie dokumentov na podpis on-line a spracovanie vyplnených kópii"
 
 #. module: base
 #: model:ir.module.module,description:base.module_calendar_sms
@@ -20483,7 +20491,7 @@ msgstr "Spustiť konfiguráciu"
 #: model_terms:ir.ui.view,arch_db:base.view_partner_short_form
 #: model_terms:ir.ui.view,arch_db:base.view_res_bank_form
 msgid "State"
-msgstr "Stav"
+msgstr "Štát"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_country_state__code
@@ -20493,7 +20501,7 @@ msgstr "Kód štátu"
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_country_state__name
 msgid "State Name"
-msgstr "Meno štátu"
+msgstr "Názov štátu"
 
 #. module: base
 #: model:res.country,name:base.ps
@@ -20508,7 +20516,7 @@ msgstr ""
 #. module: base
 #: model:ir.model.fields,field_description:base.field_res_country__state_ids
 msgid "States"
-msgstr "Stavy"
+msgstr "Štáty"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_base_language_install__state
@@ -21467,6 +21475,7 @@ msgstr "Technický názov"
 #. module: base
 #: model:ir.module.category,name:base.module_category_hidden
 #: model:ir.module.category,name:base.module_category_technical_settings
+#: model_terms:ir.ui.view,arch_db:base.user_groups_view
 msgid "Technical Settings"
 msgstr "Technické nastavenia"
 
@@ -22971,7 +22980,7 @@ msgstr "Aktualizácie"
 #: model_terms:ir.ui.view,arch_db:base.module_form
 #: model_terms:ir.ui.view,arch_db:base.module_view_kanban
 msgid "Upgrade"
-msgstr "Vylepšenie"
+msgstr "Aktualizácia"
 
 #. module: base
 #: model:ir.model,name:base.model_base_module_upgrade
@@ -23131,9 +23140,7 @@ msgid "User Login"
 msgstr "Prihlásenia používateľa"
 
 #. module: base
-#: code:addons/base/models/res_users.py:967
 #: model_terms:ir.ui.view,arch_db:base.user_groups_view
-#, python-format
 msgid "User Type"
 msgstr "Typ užívateľa"
 
@@ -23885,7 +23892,7 @@ msgstr "Nemôžete vytvoriť rekurzívne menovky."
 #. module: base
 #: sql_constraint:res.users:0
 msgid "You can not have two users with the same login !"
-msgstr "Nemôžte mať dvoch používateľov s rovnakým pristúpovým menom!"
+msgstr "Nemôžte mať dvoch používateľov s rovnakým prihlasovacím menom!"
 
 #. module: base
 #: code:addons/base/models/res_users.py:482
@@ -24196,8 +24203,8 @@ msgstr "napr. en_US"
 #: model_terms:ir.ui.view,arch_db:base.view_company_form
 #: model_terms:ir.ui.view,arch_db:base.view_partner_address_form
 #: model_terms:ir.ui.view,arch_db:base.view_partner_form
-msgid "e.g. www.odoo.com"
-msgstr "napr. www.odoo.com"
+msgid "e.g. https://www.odoo.com"
+msgstr "napr. https://www.odoo.com"
 
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_sale_ebay

@@ -79,18 +79,45 @@ class AccountReconciliation(models.AbstractModel):
 
     @api.model
     def _get_bank_statement_line_partners(self, st_lines):
+        params = []
+
+        # Add the res.partner.ban's IR rules. In case partners are not shared between companies,
+        # identical bank accounts may exist in a company we don't have access to.
+        ir_rules_query = self.env['res.partner.bank']._where_calc([])
+        self.env['res.partner.bank']._apply_ir_rules(ir_rules_query, 'read')
+        from_clause, where_clause, where_clause_params = ir_rules_query.get_sql()
+        if where_clause:
+            where_bank = ('AND %s' % where_clause).replace('res_partner_bank', 'bank')
+            params += where_clause_params
+        else:
+            where_bank = ''
+
+        # Add the res.partner's IR rules. In case partners are not shared between companies,
+        # identical partners may exist in a company we don't have access to.
+        ir_rules_query = self.env['res.partner']._where_calc([])
+        self.env['res.partner']._apply_ir_rules(ir_rules_query, 'read')
+        from_clause, where_clause, where_clause_params = ir_rules_query.get_sql()
+        if where_clause:
+            where_partner = ('AND %s' % where_clause).replace('res_partner', 'p3')
+            params += where_clause_params
+        else:
+            where_partner = ''
+
         query = '''
             SELECT
                 st_line.id                          AS id,
                 COALESCE(p1.id,p2.id,p3.id)         AS partner_id
             FROM account_bank_statement_line st_line
-            LEFT JOIN res_partner_bank bank         ON bank.id = st_line.bank_account_id OR bank.acc_number = st_line.account_number
-            LEFT JOIN res_partner p1 ON st_line.partner_id=p1.id
-            LEFT JOIN res_partner p2 ON bank.partner_id=p2.id
-            LEFT JOIN res_partner p3 ON p3.name ILIKE st_line.partner_name
-            WHERE st_line.id IN %s
         '''
-        params = [tuple(st_lines.ids)]
+        query += 'LEFT JOIN res_partner_bank bank ON bank.id = st_line.bank_account_id OR bank.acc_number = st_line.account_number %s\n' % (where_bank)
+        query += 'LEFT JOIN res_partner p1 ON st_line.partner_id=p1.id \n'
+        query += 'LEFT JOIN res_partner p2 ON bank.partner_id=p2.id \n'
+        # By definition the commercial partner_id doesn't have a parent_id set
+        query += 'LEFT JOIN res_partner p3 ON p3.name ILIKE st_line.partner_name %s AND p3.parent_id is NULL \n' % (where_partner)
+        query += 'WHERE st_line.id IN %s'
+
+        params += [tuple(st_lines.ids)]
+
         self._cr.execute(query, params)
 
         result = {}
@@ -462,17 +489,22 @@ class AccountReconciliation(models.AbstractModel):
         ])
 
         domain = expression.OR([domain_reconciliation, domain_matching])
+        partner_domain = []
         if partner_id:
-            domain = expression.AND([domain, [('partner_id', '=', partner_id)]])
+            partner_domain = [('partner_id', '=', partner_id)]
+            domain = expression.AND([domain, partner_domain])
 
         # Domain factorized for all reconciliation use cases
         if search_str:
             str_domain = self._domain_move_lines(search_str=search_str)
             if not partner_id:
-                str_domain = expression.OR([
-                    str_domain,
-                    [('partner_id.name', 'ilike', search_str)]
-                ])
+                partner_domain = [('partner_id.name', 'ilike', search_str)]
+
+            str_domain = expression.OR([
+                str_domain,
+                partner_domain,
+            ])
+
             domain = expression.AND([
                 domain,
                 str_domain
