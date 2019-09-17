@@ -107,6 +107,8 @@ msgid ""
 "Changing your cost method is an important change that will impact your "
 "inventory valuation. Are you sure you want to make that change?"
 msgstr ""
+"Změna metody nákladů je důležitou změnou, která ovlivní vaše ocenění zásob. "
+"Opravdu chcete tuto změnu provést?"
 
 #. module: stock_account
 #: model:ir.model.fields,help:stock_account.field_stock_inventory_accounting_date
@@ -360,7 +362,7 @@ msgstr "Zbylá kvóta"
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_stock_move_remaining_value
 msgid "Remaining Value"
-msgstr ""
+msgstr "Zbývající hodnota"
 
 #. module: stock_account
 #: model:ir.ui.view,arch_db:stock_account.view_stock_quantity_history
@@ -398,6 +400,9 @@ msgid ""
 "        Average Cost (AVCO): The products are valued at weighted average cost.\n"
 "        First In First Out (FIFO): The products are valued supposing those that enter the company first will also leave it first."
 msgstr ""
+"Standardní cena: Produkty jsou oceňovány jejich standardní cenou definovanou na výrobku.\n"
+"Průměrné náklady (AVCO): Produkty jsou oceňovány váženou průměrnou cenou.\n"
+"First In First Out (FIFO): Produkty jsou oceňovány za předpokladu, že produkty, které vstoupí do společnosti jako první, jej také opustí jako první."
 
 #. module: stock_account
 #: model:ir.model.fields,help:stock_account.field_product_category_property_cost_method
@@ -567,7 +572,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_account.field_product_product_valuation
 #: model:ir.model.fields,field_description:stock_account.field_product_template_valuation
 msgid "Valuation"
-msgstr ""
+msgstr "Ocenění"
 
 #. module: stock_account
 #: model:ir.actions.act_window,name:stock_account.action_stock_inventory_valuation
@@ -578,7 +583,7 @@ msgstr ""
 #: code:addons/stock_account/models/product.py:245
 #, python-format
 msgid "Valuation at date"
-msgstr ""
+msgstr "Ocenění k datu"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_product_product_stock_value

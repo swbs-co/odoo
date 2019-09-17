@@ -126,6 +126,9 @@ msgid ""
 "costs and responsibilities between buyer and seller and reflect state-of-"
 "the-art transportation practices."
 msgstr ""
+"Incoterms je řada prodejních podmínek. Používají se k rozdělení transakčních"
+" nákladů a odpovědnosti mezi kupujícím a prodávajícím a odrážejí "
+"nejmodernější převodní postupy."
 
 #. module: sale_stock
 #: model:ir.model.fields,help:sale_stock.field_sale_order_incoterm
@@ -176,6 +179,9 @@ msgid ""
 "for procurement and delivery that many days earlier than the actual promised"
 " date, to cope with unexpected delays in the supply chain."
 msgstr ""
+"Rozpětí chyb pro data přislíbená zákazníkům. Produkty budou naplánovány na "
+"pořízení a dodání o mnoho dní dříve, než je skutečné slíbené datum, aby bylo"
+" možné čelit neočekávaným prodlevám v dodavatelském řetězci."
 
 #. module: sale_stock
 #: model:ir.ui.view,arch_db:sale_stock.res_config_settings_view_form_stock
@@ -197,7 +203,7 @@ msgstr ""
 #: code:addons/sale_stock/models/sale_order.py:188
 #, python-format
 msgid "Ordered quantity decreased!"
-msgstr ""
+msgstr "Objednané množství se snížilo!"
 
 #. module: sale_stock
 #: model:ir.model.fields,field_description:sale_stock.field_sale_order_line_product_packaging
@@ -360,6 +366,10 @@ msgid ""
 "available in sales orders, routes must have 'Sales Order Line' option "
 "checked in their setup form."
 msgstr ""
+"To umožňuje použít speciální trasu na řádcích prodejních objednávek (např. "
+"Dropshipping, výrova na objednávku) v případě neobvyklého scénáře "
+"objednávky. Aby byly trasy dostupné v prodejních objednávkách, musí mít ve "
+"formuláři nastavení zaškrtnutou možnost „Prodejní řádek“."
 
 #. module: sale_stock
 #: code:addons/sale_stock/models/sale_order.py:273

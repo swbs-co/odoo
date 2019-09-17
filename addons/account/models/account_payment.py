@@ -194,13 +194,11 @@ class account_register_payments(models.TransientModel):
         '''
         amount = self._compute_payment_amount(invoices) if self.multi else self.amount
         payment_type = ('inbound' if amount > 0 else 'outbound') if self.multi else self.payment_type
-        communication = (' '.join([inv.reference or inv.number for inv in invoices])
-                         if self.multi else self.communication)
         return {
             'journal_id': self.journal_id.id,
             'payment_method_id': self.payment_method_id.id,
             'payment_date': self.payment_date,
-            'communication': communication,  # DO NOT FORWARD PORT TO V12 OR ABOVE
+            'communication': self.communication, # DO NOT FORWARD PORT TO V12 OR ABOVE
             'invoice_ids': [(6, 0, invoices.ids)],
             'payment_type': payment_type,
             'amount': abs(amount),
@@ -251,6 +249,10 @@ class account_payment(models.Model):
     _inherit = ['mail.thread', 'account.abstract.payment']
     _description = "Payments"
     _order = "payment_date desc, name desc"
+
+    @api.model
+    def _get_move_name_transfer_separator(self):
+        return '§§'
 
     @api.one
     @api.depends('invoice_ids')
@@ -432,20 +434,25 @@ class account_payment(models.Model):
 
     @api.multi
     def button_invoices(self):
-        if self.partner_type == 'supplier':
-            views = [(self.env.ref('account.invoice_supplier_tree').id, 'tree'), (self.env.ref('account.invoice_supplier_form').id, 'form')]
-        else:
-            views = [(self.env.ref('account.invoice_tree').id, 'tree'), (self.env.ref('account.invoice_form').id, 'form')]
-        return {
+        action = {
             'name': _('Paid Invoices'),
             'view_type': 'form',
             'view_mode': 'tree,form',
             'res_model': 'account.invoice',
             'view_id': False,
-            'views': views,
             'type': 'ir.actions.act_window',
             'domain': [('id', 'in', [x.id for x in self.invoice_ids])],
         }
+        if self.partner_type == 'supplier':
+            action['views'] = [(self.env.ref('account.invoice_supplier_tree').id, 'tree'), (self.env.ref('account.invoice_supplier_form').id, 'form')]
+            action['context'] = {
+                'journal_type': 'purchase',
+                'type': 'in_invoice',
+                'default_type': 'in_invoice',
+            }
+        else:
+            action['views'] = [(self.env.ref('account.invoice_tree').id, 'tree'), (self.env.ref('account.invoice_form').id, 'form')]
+        return action
 
     @api.multi
     def button_dummy(self):
@@ -470,7 +477,9 @@ class account_payment(models.Model):
                     move.line_ids.remove_move_reconcile()
                 move.button_cancel()
                 move.unlink()
-            rec.state = 'cancelled'
+            rec.write({
+                'state': 'cancelled',
+            })
 
     @api.multi
     def unlink(self):
@@ -519,6 +528,7 @@ class account_payment(models.Model):
             # Create the journal entry
             amount = rec.amount * (rec.payment_type in ('outbound', 'transfer') and 1 or -1)
             move = rec._create_payment_entry(amount)
+            persist_move_name = move.name
 
             # In case of a transfer, the first journal entry created debited the source liquidity account and credited
             # the transfer account. Now we debit the transfer account and credit the destination liquidity account.
@@ -526,8 +536,9 @@ class account_payment(models.Model):
                 transfer_credit_aml = move.line_ids.filtered(lambda r: r.account_id == rec.company_id.transfer_account_id)
                 transfer_debit_aml = rec._create_transfer_entry(amount)
                 (transfer_credit_aml + transfer_debit_aml).reconcile()
+                persist_move_name += self._get_move_name_transfer_separator() + transfer_debit_aml.move_id.name
 
-            rec.write({'state': 'posted', 'move_name': move.name})
+            rec.write({'state': 'posted', 'move_name': persist_move_name})
         return True
 
     @api.multi
@@ -671,7 +682,23 @@ class account_payment(models.Model):
             raise UserError(_('Configuration Error !'), _('The journal %s does not have a sequence, please specify one.') % journal.name)
         if not journal.sequence_id.active:
             raise UserError(_('Configuration Error !'), _('The sequence of journal %s is deactivated.') % journal.name)
-        name = self.move_name or journal.with_context(ir_sequence_date=self.payment_date).sequence_id.next_by_id()
+
+        name = False
+        if self.move_name:
+            names = self.move_name.split(self._get_move_name_transfer_separator())
+            if self.payment_type == 'transfer':
+                if journal == self.destination_journal_id and len(names) == 2:
+                    name = names[1]
+                elif journal == self.destination_journal_id and len(names) != 2:
+                    # We are probably transforming a classical payment into a transfer
+                    name = False
+                else:
+                    name = names[0]
+            else:
+                name = names[0]
+
+        name = name or journal.with_context(ir_sequence_date=self.payment_date).sequence_id.next_by_id()
+
         return {
             'name': name,
             'date': self.payment_date,

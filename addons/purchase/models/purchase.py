@@ -592,6 +592,12 @@ class PurchaseOrderLine(models.Model):
                     if move.location_dest_id.usage == "supplier":
                         if move.to_refund:
                             total -= move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom)
+                    elif move.origin_returned_move_id._is_dropshipped() and not move._is_dropshipped_returned():
+                        # Edge case: the dropship is returned to the stock, no to the supplier.
+                        # In this case, the received quantity on the PO is set although we didn't
+                        # receive the product physically in our stock. To avoid counting the
+                        # quantity twice, we do nothing.
+                        pass
                     else:
                         total += move.product_uom._compute_quantity(move.product_uom_qty, line.product_uom)
             line.qty_received = total
@@ -884,9 +890,8 @@ class PurchaseOrderLine(models.Model):
         '''
         if not self.product_id:
             return
-
         seller_min_qty = self.product_id.seller_ids\
-            .filtered(lambda r: r.name == self.order_id.partner_id)\
+            .filtered(lambda r: r.name == self.order_id.partner_id and (not r.product_id or r.product_id == self.product_id))\
             .sorted(key=lambda r: r.min_qty)
         if seller_min_qty:
             self.product_qty = seller_min_qty[0].min_qty or 1.0

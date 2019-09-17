@@ -8,6 +8,7 @@
 # Vida Potočnik <vida.potocnik@mentis.si>, 2018
 # Dejan Sraka <dejan.sraka@picolabs.si>, 2018
 # jl2035 <jaka.luthar@gmail.com>, 2018
+# Tadej Lupšina <tadej@hbs.si>, 2019
 # Matjaz Mozetic <m.mozetic@matmoz.si>, 2019
 # 
 msgid ""
@@ -130,7 +131,7 @@ msgstr ""
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.lunch_cashmove_view_search_2
 msgid "By Employee"
-msgstr "Po zaposlenih"
+msgstr "Po kadru"
 
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.lunch_order_line_view_search
@@ -310,7 +311,7 @@ msgstr "Ne prezrite obvestil, izpisanih v rdečkastem polju"
 #. module: lunch
 #: model:ir.ui.menu,name:lunch.lunch_cashmove_menu_payment
 msgid "Employee Payments"
-msgstr "Plačila zaposlenih"
+msgstr "Plačila kadrom"
 
 #. module: lunch
 #: model:ir.model.fields,help:lunch.field_lunch_order_line_lucky_is_max_budget
@@ -731,7 +732,7 @@ msgstr "Prejeto"
 #. module: lunch
 #: model:ir.model.fields,field_description:lunch.field_lunch_alert_alert_type
 msgid "Recurrence"
-msgstr ""
+msgstr "Ponavljanje"
 
 #. module: lunch
 #: model:ir.actions.act_window,name:lunch.lunch_cashmove_action_payment
@@ -931,7 +932,7 @@ msgstr "gotovinska transakcija za prehrano"
 #. module: lunch
 #: model:ir.ui.view,arch_db:lunch.lunch_cashmove_view_search
 msgid "lunch employee payment"
-msgstr "plačilo obroka"
+msgstr "plačilo malice"
 
 #. module: lunch
 #: model:ir.model,name:lunch.model_lunch_order_line

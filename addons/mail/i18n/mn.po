@@ -12,6 +12,7 @@
 # Martin Trigaux, 2018
 # Khishigbat Ganbold <khishigbat@asterisk-tech.mn>, 2018
 # Otgonbayar.A <gobi.mn@gmail.com>, 2018
+# Baasansuren Sharavsuren <baasansuren@bumanit.mn>, 2019
 # Baskhuu Lodoikhuu <baskhuujacara@gmail.com>, 2019
 # 
 msgid ""
@@ -167,7 +168,7 @@ msgstr "%d Мессежүүд"
 #: code:addons/mail/static/src/js/activity.js:89
 #, python-format
 msgid "%d days overdue"
-msgstr ""
+msgstr "%d өдөр үлдлээ"
 
 #. module: mail
 #: code:addons/mail/models/mail_template.py:248
@@ -586,7 +587,7 @@ msgstr "Ажилбарын төрөл"
 #: code:addons/mail/static/src/xml/activity.xml:37
 #, python-format
 msgid "Activity type"
-msgstr ""
+msgstr "Ажилбарын төрөл"
 
 #. module: mail
 #. openerp-web
@@ -1559,7 +1560,7 @@ msgstr "Эцсийн огноо"
 #: code:addons/mail/static/src/js/activity.js:95
 #, python-format
 msgid "Due in %d days"
-msgstr ""
+msgstr "%d хоногийн дотор дуусна"
 
 #. module: mail
 #: model:ir.ui.view,arch_db:mail.email_template_form
@@ -2982,7 +2983,7 @@ msgstr "Хийхээр тэмдэглэх"
 #: code:addons/mail/static/src/xml/web_kanban_activity.xml:49
 #, python-format
 msgid "Mark as done"
-msgstr ""
+msgstr "Дууссанд тооцох"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_channel_image_medium
@@ -5418,7 +5419,7 @@ msgstr "Харагдац"
 #: code:addons/mail/models/mail_thread.py:673
 #, python-format
 msgid "View %s"
-msgstr ""
+msgstr "%s харах"
 
 #. module: mail
 #. openerp-web

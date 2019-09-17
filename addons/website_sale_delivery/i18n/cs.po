@@ -82,7 +82,7 @@ msgstr "DHL Způsoby doručení "
 #. module: website_sale_delivery
 #: model:ir.model.fields,field_description:website_sale_delivery.field_sale_order_amount_delivery
 msgid "Delivery Amount"
-msgstr ""
+msgstr "množství dodávky"
 
 #. module: website_sale_delivery
 #: model:ir.ui.menu,name:website_sale_delivery.menu_ecommerce_delivery
@@ -121,7 +121,7 @@ msgstr "Volno"
 #. module: website_sale_delivery
 #: model:ir.model.fields,help:website_sale_delivery.field_sale_order_has_delivery
 msgid "Has an order line set for delivery"
-msgstr ""
+msgstr "Má objednávkový řádek nastaven na doručení"
 
 #. module: website_sale_delivery
 #: model:ir.model.fields,field_description:website_sale_delivery.field_sale_order_has_delivery
@@ -183,4 +183,4 @@ msgstr ""
 #. module: website_sale_delivery
 #: model:ir.ui.view,arch_db:website_sale_delivery.res_config_settings_view_form
 msgid "bpost Delivery Methods"
-msgstr ""
+msgstr "Doručovací metody bpost"

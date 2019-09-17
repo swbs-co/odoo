@@ -2108,14 +2108,16 @@ $.summernote.pluginEvents.applyFont = function (event, editor, layoutInfo, color
     }
 
     // apply font: foreColor, backColor, size (the color can be use a class text-... or bg-...)
-    var font, $font, fonts = [], className;
+    var ancestors, font, $font, fonts = [], className;
     var i;
     if (color || bgcolor || size) {
       for (i=0; i<nodes.length; i++) {
         node = nodes[i];
 
-        font = dom.ancestor(node, dom.isFont);
-        if (!font) {
+        ancestors = dom.listAncestor(node, dom.isFont);
+        font = ancestors.slice(-1)[0];
+        // add font if node is not inside a font or inside an anchor firstly
+        if (!dom.isFont(font) || ancestors.filter(dom.isAnchor).length) {
           if (node.textContent.match(/^[ ]|[ ]$/)) {
             node.textContent = node.textContent.replace(/^[ ]|[ ]$/g, '\u00A0');
           }
@@ -2296,7 +2298,7 @@ $.summernote.pluginEvents.backColor = function (event, editor, layoutInfo, backC
 
 options.onCreateLink = function (sLinkUrl) {
     if (sLinkUrl.indexOf('mailto:') === 0 || sLinkUrl.indexOf('tel:') === 0) {
-      // pass
+      sLinkUrl = sLinkUrl.replace(/^tel:([0-9]+)$/, 'tel://$1');
     } else if (sLinkUrl.indexOf('@') !== -1 && sLinkUrl.indexOf(':') === -1) {
       sLinkUrl =  'mailto:' + sLinkUrl;
     } else if (sLinkUrl.indexOf('://') === -1 && sLinkUrl[0] !== '/'

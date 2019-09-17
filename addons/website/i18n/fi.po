@@ -14,7 +14,6 @@
 # Sanna Edelman <direct@generare.com>, 2017
 # Tommi Rintala <tommi.rintala@gmail.com>, 2017
 # Mikko Närjänen <mikko.narjanen@web-veistamo.fi>, 2017
-# Kari Lindgren <kari.lindgren@emsystems.fi>, 2017
 # Jukka Paulin <jukka.paulin@gmail.com>, 2018
 # Heikki Katajisto <heikki.katajisto@myyntivoima.fi>, 2018
 # Karoliina Nisula <karoliina.nisula@tawasta.fi>, 2018
@@ -23,6 +22,7 @@
 # Topi Aura <topi@aurat.fi>, 2019
 # Johanna Valkonen <johanna.valkonen@sv-oy.fi>, 2019
 # Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2019
+# Kari Lindgren <kari.lindgren@emsystems.fi>, 2019
 # Veikko Väätäjä <veikko.vaataja@gmail.com>, 2019
 # 
 msgid ""
@@ -1878,7 +1878,7 @@ msgstr "Nopea"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings_favicon
 msgid "Favicon"
-msgstr ""
+msgstr "Favicon"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_three_columns
@@ -4188,7 +4188,7 @@ msgstr "Näkymän perintätapa"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_page_inherit_children_ids
 msgid "Views which inherit from this one"
-msgstr ""
+msgstr "Tästä näkymästä periytyvät näkymät"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_blog_post_website_published
