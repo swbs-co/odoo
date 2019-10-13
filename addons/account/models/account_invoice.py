@@ -127,8 +127,10 @@ class AccountInvoice(models.Model):
             if line.currency_id == self.currency_id:
                 residual += line.amount_residual_currency if line.currency_id else line.amount_residual
             else:
-                from_currency = line.currency_id or line.company_id.currency_id
-                residual += from_currency._convert(line.amount_residual, self.currency_id, line.company_id, line.date or fields.Date.today())
+                if line.currency_id:
+                    residual += line.currency_id._convert(line.amount_residual_currency, self.currency_id, line.company_id, line.date or fields.Date.today())
+                else:
+                    residual += line.company_id.currency_id._convert(line.amount_residual, self.currency_id, line.company_id, line.date or fields.Date.today())
         self.residual_company_signed = abs(residual_company_signed) * sign
         self.residual_signed = abs(residual) * sign
         self.residual = abs(residual)
@@ -214,7 +216,7 @@ class AccountInvoice(models.Model):
                 amount_to_show = amount_currency
             else:
                 currency = payment.company_id.currency_id
-                amount_to_show = currency._convert(amount, self.currency_id, payment.company_id, self.date or fields.Date.today())
+                amount_to_show = currency._convert(amount, self.currency_id, payment.company_id, payment.date or fields.Date.today())
             if float_is_zero(amount_to_show, precision_rounding=self.currency_id.rounding):
                 continue
             payment_ref = payment.move_id.name
@@ -304,7 +306,7 @@ class AccountInvoice(models.Model):
              "means direct payment.")
     partner_id = fields.Many2one('res.partner', string='Partner', change_default=True,
         readonly=True, states={'draft': [('readonly', False)]},
-        track_visibility='always', help="You can find a contact by its Name, TIN, Email or Internal Reference.")
+        track_visibility='always', ondelete='restrict', help="You can find a contact by its Name, TIN, Email or Internal Reference.")
     vendor_bill_id = fields.Many2one('account.invoice', string='Vendor Bill',
         help="Auto-complete from a past bill.")
     payment_term_id = fields.Many2one('account.payment.term', string='Payment Terms', oldname='payment_term',
@@ -416,7 +418,7 @@ class AccountInvoice(models.Model):
                     vendor_display_name = _('From: ') + invoice.source_email
                     invoice.invoice_icon = '@'
                 else:
-                    vendor_display_name = ('Created by: ') + invoice.create_uid.name
+                    vendor_display_name = _('Created by: %s') % invoice.sudo().create_uid.name
                     invoice.invoice_icon = '#'
             invoice.vendor_display_name = vendor_display_name
 
@@ -544,6 +546,9 @@ class AccountInvoice(models.Model):
                 for field in changed_fields:
                     if field not in vals and invoice[field]:
                         vals[field] = invoice._fields[field].convert_to_write(invoice[field], invoice)
+        bank_account = self._get_default_bank_id(vals.get('type'), vals.get('company_id'))
+        if bank_account and not vals.get('partner_bank_id'):
+            vals['partner_bank_id'] = bank_account.id
 
         invoice = super(AccountInvoice, self.with_context(mail_create_nolog=True)).create(vals)
 
@@ -579,13 +584,19 @@ class AccountInvoice(models.Model):
         """
         res = super(AccountInvoice, self).default_get(default_fields)
 
-        if res.get('type', False) not in ('out_invoice', 'in_refund') or not 'company_id' in res:
-            return res
-
-        partner_bank_result = self._get_partner_bank_id(res['company_id'])
+        partner_bank_result = self._get_default_bank_id(res.get('type'), res.get('company_id'))
         if partner_bank_result:
             res['partner_bank_id'] = partner_bank_result.id
         return res
+
+    def _get_default_bank_id(self, type, company_id):
+        """When setting the default bank account, we have two cases:
+         in the case of 'out_invoice', 'in_refund', we want the bank account of the company.
+         otherwise, we want the bank account of the partner.
+        """
+        if type not in ('out_invoice', 'in_refund') or not company_id:
+            return False
+        return self._get_partner_bank_id(company_id)
 
     def _get_partner_bank_id(self, company_id):
         company = self.env['res.company'].browse(company_id)
@@ -637,6 +648,17 @@ class AccountInvoice(models.Model):
         self.ensure_one()
         template = self.env.ref('account.email_template_edi_invoice', False)
         compose_form = self.env.ref('account.account_invoice_send_wizard_form', False)
+        # have model_description in template language
+        lang = self.env.context.get('lang')
+        if template and template.lang:
+            lang = template._render_template(template.lang, 'account.invoice', self.id)
+        self = self.with_context(lang=lang)
+        TYPES = {
+            'out_invoice': _('Invoice'),
+            'in_invoice': _('Vendor Bill'),
+            'out_refund': _('Credit Note'),
+            'in_refund': _('Vendor Credit note'),
+        }
         ctx = dict(
             default_model='account.invoice',
             default_res_id=self.id,
@@ -644,6 +666,7 @@ class AccountInvoice(models.Model):
             default_template_id=template and template.id or False,
             default_composition_mode='comment',
             mark_invoice_as_sent=True,
+            model_description=TYPES[self.type],
             custom_layout="mail.mail_notification_paynow",
             force_email=True
         )
@@ -682,17 +705,22 @@ class AccountInvoice(models.Model):
         email_from = email_escape_char(email_split(email_from)[0])
         partner_id = self._search_on_partner(email_from, extra_domain=[('supplier', '=', True)])
 
+        is_internal = lambda p: (p.user_ids and
+                                 all(p.user_ids.mapped(lambda u: u.has_group('base.group_user'))))
         # 2) otherwise, if the email sender is from odoo internal users then it is likely that the vendor sent the bill
         # by mail to the internal user who, inturn, forwarded that email to the alias to automatically generate the bill
         # on behalf of the vendor.
         if not partner_id:
             user_partner_id = self._search_on_user(email_from)
             if user_partner_id and user_partner_id in self.env.ref('base.group_user').users.mapped('partner_id').ids:
-                # In this case, we will look for the vendor's email address in email's body and assume if will come first
-                email_addresses = email_re.findall(msg_dict.get('body'))
+                # In this case, we will look for the vendor's email address in email's body
+                email_addresses = set(email_re.findall(msg_dict.get('body')))
                 if email_addresses:
-                    partner_ids = [pid for pid in self._find_partner_from_emails([email_addresses[0]], force_create=False) if pid]
-                    partner_id = partner_ids and partner_ids[0]
+                    pids_list = [self._find_partner_from_emails([email], force_create=False) for email in email_addresses]
+                    partner_ids = set(pid for pids in pids_list for pid in pids if pid)
+                    potential_vendors = self.env['res.partner'].browse(partner_ids).filtered(lambda x: not is_internal(x))
+                    partner_id = ((potential_vendors.filtered('supplier') and potential_vendors.filtered('supplier')[0].id)
+                                  or (potential_vendors and potential_vendors[0].id))
             # otherwise, there's no fallback on the partner_id found for the regular author of the mail.message as we want
             # the partner_id to stay empty
 
@@ -716,8 +744,6 @@ class AccountInvoice(models.Model):
 
         # Subscribe internal users on the newly created bill
         partners = self.env['res.partner'].browse(seen_partner_ids)
-        is_internal = lambda p: (p.user_ids and
-                                 all(p.user_ids.mapped(lambda u: u.has_group('base.group_user'))))
         partners_to_subscribe = partners.filtered(is_internal)
         if partners_to_subscribe:
             invoice.message_subscribe([p.id for p in partners_to_subscribe])
@@ -1495,6 +1521,7 @@ class AccountInvoice(models.Model):
 
         values['type'] = TYPE2REFUND[invoice['type']]
         values['date_invoice'] = date_invoice or fields.Date.context_today(invoice)
+        values['date_due'] = values['date_invoice']
         values['state'] = 'draft'
         values['number'] = False
         values['origin'] = invoice.number
@@ -1836,8 +1863,11 @@ class AccountInvoiceLine(models.Model):
             return
         if not self.product_id:
             fpos = self.invoice_id.fiscal_position_id
-            default_tax = self.invoice_id.type in ('out_invoice', 'out_refund') and self.invoice_id.company_id.account_sale_tax_id or self.invoice_id.company_id.account_purchase_tax_id
-            self.invoice_line_tax_ids = fpos.map_tax(self.account_id.tax_ids or default_tax, partner=self.partner_id).ids
+            if self.invoice_id.type in ('out_invoice', 'out_refund'):
+                default_tax = self.invoice_id.company_id.account_sale_tax_id
+            else:
+                default_tax = self.invoice_id.company_id.account_purchase_tax_id
+            self.invoice_line_tax_ids = fpos.map_tax(self.account_id.tax_ids or default_tax, partner=self.partner_id)
         elif not self.price_unit:
             self._set_taxes()
 
@@ -1910,7 +1940,7 @@ class AccountInvoiceLine(models.Model):
     @api.multi
     def write(self, values):
         if 'display_type' in values and self.filtered(lambda line: line.display_type != values.get('display_type')):
-            raise UserError("You cannot change the type of an invoice line. Instead you should delete the current line and create a new line of the proper type.")
+            raise UserError(_("You cannot change the type of an invoice line. Instead you should delete the current line and create a new line of the proper type."))
         return super(AccountInvoiceLine, self).write(values)
 
     _sql_constraints = [
