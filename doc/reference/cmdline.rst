@@ -464,7 +464,7 @@ Configuration file
 .. program:: odoo-bin
 
 Most of the command-line options can also be specified via a configuration
-file. Most of the time, they use similar names with the prefix ``-`` removed
+file within the section ``[options]``. Most of the time, they use similar names with the prefix ``-`` removed
 and other ``-`` are replaced by ``_`` e.g. :option:`--db-template` becomes
 ``db_template``.
 
@@ -484,6 +484,12 @@ The default configuration file is :file:`{$HOME}/.odoorc` which
 can be overridden using :option:`--config <odoo-bin -c>`. Specifying
 :option:`--save <odoo-bin -s>` will save the current configuration state back
 to that file.
+
+Here is a sample file::
+
+   [options]
+   db_user=odoo
+   dbfilter=odoo
 
 .. _jinja2: http://jinja.pocoo.org
 .. _regular expression: https://docs.python.org/3/library/re.html
