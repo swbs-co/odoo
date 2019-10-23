@@ -9,6 +9,7 @@ from odoo.modules import get_modules, get_module_path
 
 commands = {}
 
+
 class CommandType(type):
     def __init__(cls, name, bases, attrs):
         super(CommandType, cls).__init__(name, bases, attrs)
@@ -17,7 +18,9 @@ class CommandType(type):
         if name != 'command':
             commands[name] = cls
 
+
 Command = CommandType('Command', (object,), {'run': lambda self, args: None})
+
 
 class Help(Command):
     """Display the list of available commands"""
@@ -30,6 +33,7 @@ class Help(Command):
             doc = (commands[k].__doc__ or '').strip()
             print("    %s%s" % (name, doc))
         print("\nUse '%s <command> --help' for individual command help." % sys.argv[0].split(os.path.sep)[-1])
+
 
 def main():
     args = sys.argv[1:]
@@ -46,7 +50,7 @@ def main():
 
     # TODO: find a way to properly discover addons subcommands without importing the world
     # Subcommand discovery
-    if len(args) and not args[0].startswith("-"):
+    if len(args) > 0 and not args[0].startswith("-"):
         logging.disable(logging.CRITICAL)
         for module in get_modules():
             if isdir(joinpath(get_module_path(module), 'cli')):
@@ -59,4 +63,4 @@ def main():
         o = commands[command]()
         o.run(args)
     else:
-        sys.exit('Unknow command %r' % (command,))
+        sys.exit('Unknown command %r' % (command,))

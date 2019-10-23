@@ -20,6 +20,7 @@ from passlib.context import CryptContext
 crypt_context = CryptContext(schemes=['pbkdf2_sha512', 'plaintext'],
                              deprecated=['plaintext'])
 
+
 class MyOption (optparse.Option, object):
     """ optparse Option with two additional attributes.
 
@@ -37,7 +38,10 @@ class MyOption (optparse.Option, object):
         self.my_default = attrs.pop('my_default', None)
         super(MyOption, self).__init__(*opts, **attrs)
 
+
 DEFAULT_LOG_HANDLER = ':INFO'
+
+
 def _get_default_datadir():
     home = os.path.expanduser('~')
     if os.path.isdir(home):
@@ -49,6 +53,7 @@ def _get_default_datadir():
             func = lambda **kwarg: "/var/lib/%s" % kwarg['appname'].lower()
     # No "version" kwarg as session and filestore paths are shared against series
     return func(appname=release.product_name, appauthor=release.author)
+
 
 def _deduplicate_loggers(loggers):
     """ Avoid saving multiple logging levels for the same loggers to a save
@@ -62,6 +67,7 @@ def _deduplicate_loggers(loggers):
         '{}:{}'.format(logger, level)
         for logger, level in dict(it.split(':') for it in loggers).items()
     )
+
 
 class configmanager(object):
     def __init__(self, fname=None):
@@ -502,7 +508,7 @@ class configmanager(object):
         self.options['translate_modules'] = opt.translate_modules and [m.strip() for m in opt.translate_modules.split(',')] or ['all']
         self.options['translate_modules'].sort()
 
-        dev_split = opt.dev_mode and  [s.strip() for s in opt.dev_mode.split(',')] or []
+        dev_split = opt.dev_mode and [s.strip() for s in opt.dev_mode.split(',')] or []
         self.options['dev_mode'] = 'all' in dev_split and dev_split + ['pdb', 'reload', 'qweb', 'werkzeug', 'xml'] or dev_split
 
         if opt.pg_path:
@@ -574,22 +580,22 @@ class configmanager(object):
         p = ConfigParser.RawConfigParser()
         try:
             p.read([self.rcfile])
-            for (name,value) in p.items('options'):
+            for (name, value) in p.items('options'):
                 name = outdated_options_map.get(name, name)
-                if value=='True' or value=='true':
+                if value == 'True' or value == 'true':
                     value = True
-                if value=='False' or value=='false':
+                if value == 'False' or value == 'false':
                     value = False
                 self.options[name] = value
-            #parse the other sections, as well
+            # parse the other sections, as well
             for sec in p.sections():
                 if sec == 'options':
                     continue
                 self.misc.setdefault(sec, {})
                 for (name, value) in p.items(sec):
-                    if value=='True' or value=='true':
+                    if value == 'True' or value == 'true':
                         value = True
-                    if value=='False' or value=='false':
+                    if value == 'False' or value == 'false':
                         value = False
                     self.misc[sec][name] = value
         except IOError:
@@ -599,7 +605,7 @@ class configmanager(object):
 
     def save(self):
         p = ConfigParser.RawConfigParser()
-        loglevelnames = dict(zip(self._LOGLEVELS.values(), self._LOGLEVELS))
+        log_level_names = dict(zip(self._LOGLEVELS.values(), self._LOGLEVELS))
         p.add_section('options')
         for opt in sorted(self.options):
             if opt in ('version', 'language', 'translate_out', 'translate_in', 'overwrite_existing_translations', 'init', 'update'):
@@ -607,7 +613,7 @@ class configmanager(object):
             if opt in self.blacklist_for_save:
                 continue
             if opt in ('log_level',):
-                p.set('options', opt, loglevelnames.get(self.options[opt], self.options[opt]))
+                p.set('options', opt, log_level_names.get(self.options[opt], self.options[opt]))
             elif opt == 'log_handler':
                 p.set('options', opt, ','.join(_deduplicate_loggers(self.options[opt])))
             else:
@@ -704,5 +710,6 @@ class configmanager(object):
             os.path.expanduser(
                 os.path.expandvars(
                     path.strip())))
+
 
 config = configmanager()
