@@ -28,16 +28,14 @@ class Opportunity2Quotation(models.TransientModel):
     lead_id = fields.Many2one('crm.lead', "Associated Lead", required=True)
 
     def action_apply(self):
-        """ Convert lead to opportunity or merge lead and opportunity and open
-            the freshly created opportunity view.
-        """
+        "Create a quotation from a lead according to the partner assignation policy"
         self.ensure_one()
         if self.action != 'nothing':
             self.lead_id.write({
                 'partner_id': self.partner_id.id if self.action == 'exist' else self._create_partner()
             })
             self.lead_id._onchange_partner_id()
-        return self.lead_id.action_new_quotation()
+        return self.lead_id.new_quotation_action()
 
     def _create_partner(self):
         """ Create partner based on action.
@@ -46,4 +44,3 @@ class Opportunity2Quotation(models.TransientModel):
         self.ensure_one()
         result = self.lead_id.handle_partner_assignation(action='create')
         return result.get(self.lead_id.id)
-
