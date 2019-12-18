@@ -39,26 +39,24 @@ class CrmLead(models.Model):
         res['invoiced']['target'] = self.env.user.target_sales_invoiced
         return res
 
-    def action_view_quotation(self):
-        action = super().action_view_quotation()
+    def action_new_quotation(self):
+        action = super().action_new_quotation()
         if not action:
-            action = self.env.ref('sale.action_quotations_with_onboarding').read()[0]
-            action.update(self._get_base_view_order_action(['draft', 'sent']))
-            if action.get('res_id'):
-                action['views'] = [(self.env.ref('sale.view_order_form').id, 'form')]
+            action = self.env.ref("sale_management_crm.new_quotation_action").read()[0]
+            action['context'] = self._get_quotation_action_context()
         return action
 
     def action_view_order(self):
         action = super().action_view_order()
         if not action:
-            action = self.env.ref('sale.action_orders').read()[0]
-            action.update(self._get_base_view_order_action(['sale', 'done']))
+            if self.env.context.get('order_status') == 'quotation':
+                action_id = 'sale.action_quotations_with_onboarding'
+                order_states = ('draft', 'sent')
+            else:
+                action_id = 'sale.action_orders'
+                order_states = ('sale', 'done')
+            action = self.env.ref(action_id).read()[0]
+            action.update(self._get_base_view_order_action(states=order_states))
             if action.get('res_id'):
                 action['views'] = [(self.env.ref('sale.view_order_form').id, 'form')]
         return action
-
-    def new_quotation_action(self):
-        return super().new_quotation_action() or {
-            **self.env.ref("sale_management_crm.sale_action_quotations_new").read()[0],
-            'context': self._get_quotation_action_context(),
-        }

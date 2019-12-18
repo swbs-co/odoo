@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="sale_action_quotations_new" model="ir.actions.act_window">
+    <record id="new_quotation_action" model="ir.actions.act_window">
         <field name="name">Quotation</field>
         <field name="res_model">sale.order</field>
         <field name="view_mode">form,tree,graph</field>
@@ -17,10 +17,10 @@
             <xpath expr="//button[@name='action_new_quotation_handle_partner']" position="attributes">
                 <attribute name="invisible">0</attribute>
             </xpath>
-            <xpath expr="//button[@name='action_view_quotation']" position="attributes">
+            <xpath expr="//button[@id='view_quotation_button']" position="attributes">
                 <attribute name="invisible">0</attribute>
             </xpath>
-            <xpath expr="//button[@name='action_view_order']" position="attributes">
+            <xpath expr="//button[@id='view_order_button']" position="attributes">
                 <attribute name="invisible">0</attribute>
             </xpath>
         </field>
