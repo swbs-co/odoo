@@ -7,13 +7,16 @@
 # Martin Trigaux, 2018
 # ilan kl <ilan@qaroads.co.il>, 2018
 # ExcaliberX <excaliberx@gmail.com>, 2018
+# Amit Spilman <amit@laylinetech.com>, 2019
+# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2020
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.saas~18\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-20 09:53+0000\n"
-"PO-Revision-Date: 2017-09-20 09:53+0000\n"
-"Last-Translator: ExcaliberX <excaliberx@gmail.com>, 2018\n"
+"PO-Revision-Date: 2017-09-20 10:18+0000\n"
+"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2020\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -183,7 +186,7 @@ msgstr "עובד"
 #. module: hr_contract
 #: model:ir.model,name:hr_contract.model_hr_contract
 msgid "Employee Contract"
-msgstr ""
+msgstr "חוזה עובד"
 
 #. module: hr_contract
 #: model:ir.model.fields,help:hr_contract.field_hr_contract_wage
@@ -219,7 +222,7 @@ msgstr ""
 #: selection:hr.contract,state:0
 #: model:mail.message.subtype,name:hr_contract.mt_contract_close
 msgid "Expired"
-msgstr ""
+msgstr "פג תוקף"
 
 #. module: hr_contract
 #: model:ir.model.fields,help:hr_contract.field_hr_contract_type_sequence
@@ -267,7 +270,7 @@ msgstr ""
 #. module: hr_contract
 #: model:ir.ui.view,arch_db:hr_contract.hr_contract_view_search
 msgid "Job"
-msgstr ""
+msgstr "תפקיד"
 
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract_job_id
@@ -326,7 +329,7 @@ msgstr "הערות"
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_employee_children
 msgid "Number of Children"
-msgstr ""
+msgstr "מספר הילדים"
 
 #. module: hr_contract
 #: model:ir.ui.view,arch_db:hr_contract.hr_contract_view_form
@@ -336,7 +339,7 @@ msgstr "מידע נוסף"
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_employee_place_of_birth
 msgid "Place of Birth"
-msgstr ""
+msgstr "מקום לידה"
 
 #. module: hr_contract
 #: selection:hr.contract,state:0
@@ -399,12 +402,12 @@ msgstr ""
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract_visa_expire
 msgid "Visa Expire Date"
-msgstr ""
+msgstr "תאריך תפוגה של הויזה"
 
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract_visa_no
 msgid "Visa No"
-msgstr ""
+msgstr "מספר ויזה"
 
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract_wage
@@ -414,7 +417,7 @@ msgstr ""
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract_permit_no
 msgid "Work Permit No"
-msgstr ""
+msgstr "מספר אישור עבודה"
 
 #. module: hr_contract
 #: model:ir.model.fields,field_description:hr_contract.field_hr_contract_resource_calendar_id

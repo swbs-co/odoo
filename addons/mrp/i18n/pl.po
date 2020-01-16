@@ -6,7 +6,7 @@
 # Paweł Michoń <michon.pawel@wp.pl>, 2017
 # Jaroslaw Kaczmarski, 2017
 # Mariusz, 2017
-# zbik2607 <darek@krokus.com.pl>, 2017
+# Dariusz Żbikowski <darek@krokus.com.pl>, 2017
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2017
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2017
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2017
@@ -20,6 +20,8 @@
 # Tomasz Leppich <t.leppich@gmail.com>, 2018
 # Wiktor Kaźmierczak <wik92tor@wp.pl>, 2018
 # Paweł Wodyński <pw@myodoo.pl>, 2018
+# Zbigniew Łukasiak <z.lukasiak@archimedes.pl>, 2019
+# Grzegorz Krukar <grzegorzgk1@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -27,7 +29,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-03 15:06+0000\n"
 "PO-Revision-Date: 2017-09-20 10:19+0000\n"
-"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2018\n"
+"Last-Translator: Grzegorz Krukar <grzegorzgk1@gmail.com>, 2019\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -114,6 +116,8 @@ msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: mrp
 #: model:ir.ui.view,arch_db:mrp.mrp_production_form_view
@@ -938,7 +942,7 @@ msgstr "Strefa docelowa"
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_stock_move_unbuild_id
 msgid "Disassembly Order"
-msgstr ""
+msgstr "Zlecenie demontażu"
 
 #. module: mrp
 #: model:ir.ui.view,arch_db:mrp.mrp_message_view_form_embedded_bom
@@ -1010,7 +1014,7 @@ msgstr ""
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_workorder_duration_percent
 msgid "Duration Deviation (%)"
-msgstr ""
+msgstr "Odchyłka czasu trwania (w %)"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_workorder_duration_unit
@@ -1711,7 +1715,7 @@ msgstr "Harmonogram produkcji mistrza (MPS)"
 #: model:ir.model.fields,field_description:mrp.field_mrp_production_availability
 #: model:ir.model.fields,field_description:mrp.field_mrp_workorder_production_availability
 msgid "Materials Availability"
-msgstr ""
+msgstr "Dostępność materiałów"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_message_message
@@ -2379,6 +2383,7 @@ msgstr "Surowce"
 
 #. module: mrp
 #: model:ir.model.fields,field_description:mrp.field_mrp_production_location_src_id
+#: model:ir.model.fields,field_description:mrp.field_mrp_routing_location_id
 msgid "Raw Materials Location"
 msgstr "Strefa materiałów do produkcji"
 

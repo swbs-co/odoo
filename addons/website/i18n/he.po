@@ -4,13 +4,15 @@
 # 
 # Translators:
 # Moshe Flam <pashute@gmail.com>, 2017
-# yacov mosbacher (‫יעקב מוסבכר‬‎) <ymosba@gmail.com>, 2018
+# yacov mosbacher <ymosba@gmail.com>, 2018
 # ExcaliberX <excaliberx@gmail.com>, 2018
 # Martin Trigaux, 2019
 # Fishfur A Banter <fishfurbanter@gmail.com>, 2019
 # Leandro Noijovich <eliel.sorcerer@gmail.com>, 2019
 # Yihya Hugirat <hugirat@gmail.com>, 2019
 # שהאב חוסיין <shhab89@gmail.com>, 2019
+# דודי מלכה <Dudimalka6@gmail.com>, 2019
+# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -18,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-03 15:06+0000\n"
 "PO-Revision-Date: 2017-09-20 10:25+0000\n"
-"Last-Translator: שהאב חוסיין <shhab89@gmail.com>, 2019\n"
+"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2019\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,7 +51,7 @@ msgstr ""
 #. module: website
 #: model:ir.ui.view,arch_db:website.show_website_info
 msgid "&amp;times;"
-msgstr ""
+msgstr "וזמנים"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.sitemap_index_xml
@@ -87,7 +89,7 @@ msgstr ""
 #: code:addons/website/models/website.py:743
 #, python-format
 msgid "(copy)"
-msgstr ""
+msgstr "(העתק)"
 
 #. module: website
 #. openerp-web
@@ -830,6 +832,9 @@ msgid ""
 "field as True to allow users to run this action. If it is set to False the "
 "action cannot be run through the website."
 msgstr ""
+"ניתן לבצע פעולת קוד שרת מהאתר, באמצעות בקר ייעודי. הכתובת היא is <base>/אתר "
+"אינטרנט/פעולה<website_path>. הגדר שדה זה כ- True כדי לאפשר למשתמשים להפעיל "
+"פעולה זו. אם הוא מוגדר False הפעולה לא ניתן להפעיל באמצעות האתר."
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_text_block
@@ -1279,12 +1284,12 @@ msgstr "ליחצו כדי לערוך את הטקסט"
 #. module: website
 #: model:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Client ID"
-msgstr ""
+msgstr "מזהה לקוח"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Client Secret"
-msgstr ""
+msgstr "סוד לקוח"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.edit_website_pages
@@ -1334,7 +1339,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:website.bs_debug_page_ir_ui_view
 #: model:website.page,arch_db:website.bs_debug_page
 msgid "Components"
-msgstr ""
+msgstr "רכיבים"
 
 #. module: website
 #: model:ir.ui.menu,name:website.menu_website_global_configuration
@@ -1513,7 +1518,7 @@ msgstr "ברירת מחדל"
 #. module: website
 #: model:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Default Access Rights"
-msgstr ""
+msgstr "זכויות גישה המוגדרות כברירת מחדל"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_default_lang_id
@@ -2106,7 +2111,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:website.field_res_config_settings_has_google_maps
 #: model:ir.ui.view,arch_db:website.company_description
 msgid "Google Maps"
-msgstr ""
+msgstr "גוגל מפות"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_res_config_settings_google_maps_api_key
@@ -2138,7 +2143,7 @@ msgstr "מוצרים נהדרים ואנשים נהדרים"
 #. module: website
 #: model:ir.ui.view,arch_db:website.snippet_options
 msgid "Grid"
-msgstr ""
+msgstr "רשת"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.menu_search
@@ -2289,7 +2294,7 @@ msgstr "מזהה"
 #. module: website
 #: model:ir.model.fields,help:website.field_website_page_xml_id
 msgid "ID of the view defined in xml file"
-msgstr ""
+msgstr "מזהה של תצוגה מוגדרת קובץ XML"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.500
@@ -2305,6 +2310,8 @@ msgid ""
 "If this field is empty, the view applies to all users. Otherwise, the view "
 "applies to the users of those groups only."
 msgstr ""
+"אם שדה זה ריק, התצוגה חלה על כל המשתמשים. אחרת, התצוגה חלה על המשתמשים של "
+"קבוצות אלה בלבד."
 
 #. module: website
 #: model:ir.model.fields,help:website.field_website_page_active
@@ -2347,7 +2354,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:website.index_management
 #, python-format
 msgid "Indexed"
-msgstr ""
+msgstr "אינדקס"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.show_website_info
@@ -2542,14 +2549,14 @@ msgstr "תאריך עדכון אחרון"
 #: code:addons/website/static/src/xml/website.backend.xml:109
 #, python-format
 msgid "Last Week"
-msgstr ""
+msgstr "שבוע שעבר"
 
 #. module: website
 #. openerp-web
 #: code:addons/website/static/src/xml/website.backend.xml:111
 #, python-format
 msgid "Last Year"
-msgstr ""
+msgstr "שנה שעברה"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
@@ -2576,7 +2583,7 @@ msgstr ""
 #. module: website
 #: model:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "Let your customers log in to see their documents"
-msgstr ""
+msgstr "תן ללקוחות שלך להיכנס כדי לראות את המסמכים שלהם"
 
 #. module: website
 #. openerp-web
@@ -2750,7 +2757,7 @@ msgstr "מודל"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_page_model_data_id
 msgid "Model Data"
-msgstr ""
+msgstr "מודל נתונים"
 
 #. module: website
 #: model:ir.model,name:website.model_ir_model
@@ -3171,7 +3178,7 @@ msgstr "פרטי שותף"
 #. module: website
 #: model:ir.model.fields,help:website.field_website_partner_id
 msgid "Partner-related data of the user"
-msgstr ""
+msgstr "נתונים הקשורים ללקוח/ספק של המשתמש"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.template_partner_comment
@@ -3196,7 +3203,7 @@ msgstr "אנשים"
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner
 msgid "Plan"
-msgstr ""
+msgstr "תוכנית"
 
 #. module: website
 #: model:web.planner,tooltip_planner:website.planner_website
@@ -3243,7 +3250,7 @@ msgstr "תצוגה מקדימה"
 #: model:ir.ui.view,arch_db:website.bs_debug_page_ir_ui_view
 #: model:website.page,arch_db:website.bs_debug_page
 msgid "Previous"
-msgstr ""
+msgstr "הקודם"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_comparisons
@@ -3813,7 +3820,7 @@ msgstr ""
 #: model:ir.model.fields,help:website.field_website_page_website_url
 #: model:ir.model.fields,help:website.field_website_published_mixin_website_url
 msgid "The full URL to access the document through the website."
-msgstr ""
+msgstr "כתובת האתר המלאה כדי לגשת למסמך דרך האתר."
 
 #. module: website
 #: model:ir.model.fields,help:website.field_ir_act_server_website_url
@@ -3895,7 +3902,7 @@ msgstr ""
 #: model:ir.model.fields,help:website.field_res_config_settings_default_lang_code
 #: model:ir.model.fields,help:website.field_website_default_lang_code
 msgid "This field is used to set/get locales for user"
-msgstr ""
+msgstr "שדה זה משמש כדי להגדיר / לקבל מיקומים עבור המשתמש"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.bs_debug_page_ir_ui_view
@@ -4153,12 +4160,12 @@ msgstr "סוג תצוגה"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_page_mode
 msgid "View inheritance mode"
-msgstr ""
+msgstr "הצג מצב ירושה"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_website_page_inherit_children_ids
 msgid "Views which inherit from this one"
-msgstr ""
+msgstr "צפיות אשר יורשו מזה"
 
 #. module: website
 #: model:ir.model.fields,field_description:website.field_blog_post_website_published
@@ -4292,7 +4299,7 @@ msgstr ""
 #. module: website
 #: model:ir.model.fields,field_description:website.field_ir_act_server_website_path
 msgid "Website Path"
-msgstr ""
+msgstr "אתר נתיב"
 
 #. module: website
 #: model:ir.model,name:website.model_website_redirect
@@ -4347,7 +4354,7 @@ msgstr "כתובת אתר (url)"
 #. module: website
 #: model:ir.model.fields,field_description:website.field_ir_act_server_website_url
 msgid "Website Url"
-msgstr ""
+msgstr "כתובת אתר"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.s_faq_collapse
@@ -4821,7 +4828,7 @@ msgstr "או עריכת מקור"
 #. module: website
 #: model:ir.ui.view,arch_db:website.res_config_settings_view_form
 msgid "page"
-msgstr ""
+msgstr "עמוד"
 
 #. module: website
 #: model:ir.ui.view,arch_db:website.website_planner

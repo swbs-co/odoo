@@ -7508,7 +7508,7 @@ msgstr "완료된 스크랩은 삭제할 수 없습니다."
 #: code:addons/stock/models/stock_inventory.py:104
 #, python-format
 msgid "You cannot delete a validated inventory adjustement."
-msgstr ""
+msgstr "승인된 재고조사를 삭제할 수 없습니다."
 
 #. module: stock
 #: code:addons/stock/models/stock_inventory.py:394
@@ -7921,3 +7921,9 @@ msgstr "<i>유효성 검사</i> 버튼 사용"
 #: model:ir.ui.view,arch_db:stock.view_inventory_form
 msgid "⇒ Set quantities to 0"
 msgstr "⇒ 수량을 0으로 설정"
+
+#. module: stock
+#: code:addons/stock/models/stock_move_line.py:223
+#, python-format
+msgid "Changing the product is only allowed in 'Draft' state."
+msgstr ""
