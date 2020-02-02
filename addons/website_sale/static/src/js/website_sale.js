@@ -7,6 +7,7 @@ odoo.define('website_sale.cart', function (require) {
 
     var shopping_cart_link = $('ul#top_menu li a[href$="/shop/cart"]');
     var shopping_cart_link_counter;
+    var popoverRpc = null;
     shopping_cart_link.popover({
         trigger: 'manual',
         animation: true,
@@ -24,7 +25,7 @@ odoo.define('website_sale.cart', function (require) {
         shopping_cart_link_counter = setTimeout(function(){
             if($(self).is(':hover') && !$(".mycart-popover:visible").length)
             {
-                $.get("/shop/cart", {'type': 'popover'})
+                popoverRpc = $.get("/shop/cart", {'type': 'popover'})
                     .then(function (data) {
                         $(self).data("bs.popover").options.content =  data;
                         $(self).popover("show");
@@ -33,7 +34,7 @@ odoo.define('website_sale.cart', function (require) {
                         });
                     });
             }
-        }, 100);
+        }, 300);
     }).on("mouseleave", function () {
         var self = this;
         setTimeout(function () {
@@ -43,6 +44,20 @@ odoo.define('website_sale.cart', function (require) {
                 }
             }
         }, 1000);
+    }).on('click', function (ev) {
+        // When clicking on the cart link, prevent any popover to show up (by
+        // clearing the related setTimeout) and, if a popover rpc is ongoing,
+        // wait for it to be completed before going to the link's href. Indeed,
+        // going to that page may perform the same computation the popover rpc
+        // is already doing.
+        clearTimeout(shopping_cart_link_counter);
+        if (popoverRpc && popoverRpc.state() === 'pending') {
+            ev.preventDefault();
+            var href = ev.currentTarget.href;
+            popoverRpc.then(function () {
+                window.location.href = href;
+            });
+        }
     });
 });
 
@@ -90,7 +105,7 @@ odoo.define('website_sale.website_sale', function (require) {
             var product_ids = [];
             var product_dom = $(event.target).closest(".js_product").find("ul.js_add_cart_variants");
             var qty = $(event.target).closest('form').find('input[name="add_qty"]').val();
-            if (!product_dom.length) {
+            if (!product_dom.length || $('body').hasClass('editor_enable')) {
                 // if variants in list view, update variant price based on quantity
                 var $list_products = $(event.target).closest('.js_product').find('.js_product_change');
                 if ($list_products.length) {
@@ -145,7 +160,7 @@ odoo.define('website_sale.website_sale', function (require) {
 
         $(oe_website_sale).on("change", ".oe_cart input.js_quantity[data-product-id]", function () {
           var $input = $(this);
-            if ($input.data('update_change')) {
+            if ($input.data('update_change') || $('body').hasClass('editor_enable')) {
                 return;
             }
           var value = parseInt($input.val() || 0, 10);
@@ -214,6 +229,9 @@ odoo.define('website_sale.website_sale', function (require) {
 
         // hack to add and remove from cart with json
         $(oe_website_sale).on('click', 'a.js_add_cart_json', function (ev) {
+            if ($('body').hasClass('editor_enable')) {
+                return;
+            }
             ev.preventDefault();
             var $link = $(ev.currentTarget);
             var $input = $link.parent().find("input");

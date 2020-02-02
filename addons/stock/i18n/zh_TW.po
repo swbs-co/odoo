@@ -4,16 +4,18 @@
 # 
 # Translators:
 # Martin Trigaux, 2017
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2017
 # Michael Yeung, 2017
 # Bill Hsu <hcm86@icloud.com>, 2018
+# sejun huang <sejun.huang@gmail.com>, 2019
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-27 11:55+0000\n"
-"PO-Revision-Date: 2018-07-27 11:55+0000\n"
-"Last-Translator: Bill Hsu <hcm86@icloud.com>, 2018\n"
+"POT-Creation-Date: 2019-01-03 15:06+0000\n"
+"PO-Revision-Date: 2017-09-20 10:24+0000\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -724,6 +726,12 @@ msgid "Active"
 msgstr "有效"
 
 #. module: stock
+#: model:ir.ui.view,arch_db:stock.view_picking_form
+msgid ""
+"Add an internal note that will be printed on the Picking Operations sheet"
+msgstr "添加在“揀配操作”頁上標示的內部注意事項"
+
+#. module: stock
 #: model:ir.model.fields,help:stock.field_res_config_settings_group_stock_adv_location
 msgid ""
 "Add and customize route operations to process product moves in your warehouse(s): e.g. unload > quality control > stock for incoming products, pick > pack > ship for outgoing products. \n"
@@ -887,6 +895,18 @@ msgstr "盡快"
 #: model:ir.ui.view,arch_db:stock.view_picking_form
 msgid "Assign Owner"
 msgstr "指定所有者"
+
+#. module: stock
+#: model:ir.ui.view,arch_db:stock.view_picking_form
+msgid "Assign Partner"
+msgstr ""
+
+#. module: stock
+#: model:ir.ui.view,arch_db:stock.view_picking_form
+msgid ""
+"Assign the partner to the Operations. Use only if the partner is manually "
+"changed!"
+msgstr ""
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_picking_internal_search
@@ -1960,7 +1980,7 @@ msgstr "交貨路線"
 #. module: stock
 #: model:ir.actions.report,name:stock.action_report_delivery
 msgid "Delivery Slip"
-msgstr "交貨單"
+msgstr "交貨單/收貨單"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_procurement_group_move_type
@@ -2168,7 +2188,7 @@ msgstr "已完成的調撥，按日期"
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.res_config_settings_view_form
 msgid "Don’t propagate scheduling changes through chains of operations"
-msgstr ""
+msgstr "不要通過操作鏈來傳播排程變更"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.inventory_planner
@@ -3460,7 +3480,7 @@ msgstr "明細的列表視圖"
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_location_form
 msgid "Localization"
-msgstr "本地化"
+msgstr "位置"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_production_lot_form
@@ -3468,7 +3488,6 @@ msgid "Locate"
 msgstr "定位"
 
 #. module: stock
-#: code:addons/stock/models/barcode.py:12
 #: model:ir.model.fields,field_description:stock.field_product_product_location_id
 #: model:ir.model.fields,field_description:stock.field_product_template_location_id
 #: model:ir.model.fields,field_description:stock.field_stock_change_product_qty_location_id
@@ -3487,7 +3506,6 @@ msgstr "定位"
 #: model:ir.ui.view,arch_db:stock.stock_scrap_search_view
 #: model:ir.ui.view,arch_db:stock.view_move_search
 #: model:ir.ui.view,arch_db:stock.warehouse_orderpoint_search
-#, python-format
 msgid "Location"
 msgstr "位置"
 
@@ -3547,10 +3565,8 @@ msgid "Logistics"
 msgstr "物流"
 
 #. module: stock
-#: code:addons/stock/models/barcode.py:13
 #: model:ir.model.fields,field_description:stock.field_stock_move_line_lot_id
 #: model:ir.model.fields,field_description:stock.field_stock_scrap_lot_id
-#, python-format
 msgid "Lot"
 msgstr "批次"
 
@@ -3959,7 +3975,7 @@ msgstr "此批號沒有作業"
 #, python-format
 msgid ""
 "No procurement rule found. Please verify the configuration of your routes"
-msgstr "沒有找到採購規則。請驗證路線的配置。"
+msgstr "沒有找到補貨規則。請驗證路線的配置。"
 
 #. module: stock
 #: code:addons/stock/wizard/stock_picking_return.py:58
@@ -3989,6 +4005,11 @@ msgstr "正常"
 #: selection:stock.move,priority:0 selection:stock.picking,priority:0
 msgid "Not urgent"
 msgstr "不緊急"
+
+#. module: stock
+#: model:ir.ui.view,arch_db:stock.view_picking_form
+msgid "Note"
+msgstr "備註"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_move_note
@@ -4196,7 +4217,7 @@ msgstr "用於交貨的可選地址，專門用於配發"
 #: model:ir.model.fields,help:stock.field_stock_location_posy
 #: model:ir.model.fields,help:stock.field_stock_location_posz
 msgid "Optional localization details, for information purpose only"
-msgstr "可選的定位細節，僅供參考"
+msgstr "可選的位置細節，僅供參考"
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_move_returned_move_ids
@@ -4359,7 +4380,6 @@ msgid "Pack Type"
 msgstr "包裹類型"
 
 #. module: stock
-#: code:addons/stock/models/barcode.py:14
 #: model:ir.model.fields,field_description:stock.field_stock_quant_package_id
 #: model:ir.model.fields,field_description:stock.field_stock_scrap_package_id
 #: model:ir.ui.view,arch_db:stock.quant_package_search_view
@@ -4368,7 +4388,6 @@ msgstr "包裹類型"
 #: model:ir.ui.view,arch_db:stock.view_quant_package_form
 #: model:ir.ui.view,arch_db:stock.view_quant_package_picking_tree
 #: model:ir.ui.view,arch_db:stock.view_quant_package_tree
-#, python-format
 msgid "Package"
 msgstr "包裹"
 
@@ -4981,7 +5000,7 @@ msgstr "上架方法"
 #: model:ir.model,name:stock.model_product_putaway
 #: model:ir.model.fields,field_description:stock.field_stock_location_putaway_strategy_id
 msgid "Put Away Strategy"
-msgstr "下架策略"
+msgstr "上架策略"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_picking_form
@@ -6271,13 +6290,6 @@ msgstr ""
 " 這樣，我們總是知道需要去哪裡，也就是為什麼它們比推式規則更受歡迎。"
 
 #. module: stock
-#: model:ir.ui.view,arch_db:stock.product_category_form_view_inherit
-msgid ""
-"The following routes will apply to the products in this category taking into"
-" account parent categories:"
-msgstr "考慮到其上級類別，下面的路線將應用到這個類別的產品："
-
-#. module: stock
 #: sql_constraint:stock.warehouse:0
 msgid "The name of the warehouse must be unique per company!"
 msgstr "每個公司的倉庫名稱必須唯一!"
@@ -6315,7 +6327,7 @@ msgstr "該包裹包含此份"
 msgid ""
 "The parent location that includes this location. Example : The 'Dispatch "
 "Zone' is the 'Gate 1' parent location."
-msgstr "包含此位置的父位置。示例：「調度區域」是「1號門」的父位置。"
+msgstr "包含此位置的上級位置。示例：「調度區域」是「1號門」的上級位置。"
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_warehouse_orderpoint_qty_multiple
@@ -7139,12 +7151,6 @@ msgid "We hope this guide helped you implement Odoo Inventory."
 msgstr "我們希望這個嚮導能夠幫您執行Odoo的盤點。"
 
 #. module: stock
-#: code:addons/stock/models/barcode.py:11
-#, python-format
-msgid "Weighted Product"
-msgstr "稱重的產品"
-
-#. module: stock
 #: model:ir.ui.view,arch_db:stock.inventory_planner
 msgid "Welcome"
 msgstr "歡迎"
@@ -7428,6 +7434,8 @@ msgid ""
 "lot. Please first validate the first inventory adjustement with this product"
 " before creating another one."
 msgstr ""
+"同一產品(%s), 同一位置(%s), 同一包裹, 同一所有人以及同一批號，不能有2個狀態為「進行中」的庫存調整.  "
+"在創建另一個之前，請先驗證第一個庫存調整。"
 
 #. module: stock
 #: code:addons/stock/models/stock_inventory.py:166
@@ -7469,15 +7477,7 @@ msgid ""
 msgstr "您不能使用兩次相同的序列號。 請更正序列號編碼。"
 
 #. module: stock
-#: code:addons/stock/models/stock_picking.py:723
-#, python-format
-msgid ""
-"You cannot validate a transfer if you have not processed any quantity for "
-"%s."
-msgstr "如果您尚未處理%s的數量，則無法驗證轉移。"
-
-#. module: stock
-#: code:addons/stock/models/stock_picking.py:707
+#: code:addons/stock/models/stock_picking.py:709
 #, python-format
 msgid ""
 "You cannot validate a transfer if you have not processed any quantity. You "
@@ -7574,7 +7574,7 @@ msgstr "您不應該把包裹的內容放在不同的地方。"
 msgid ""
 "You still have some active reordering rules on this product. Please archive "
 "or delete them first."
-msgstr "您對此產品仍然有一些有效的重新排序規則。 請先歸檔或刪除它們。"
+msgstr "您對此產品仍然有一些有效的重訂貨規則。 請先歸檔或刪除它們。"
 
 #. module: stock
 #: code:addons/stock/models/stock_move.py:338
@@ -7831,3 +7831,9 @@ msgstr "帶有<i>確認</i> 按鈕"
 #: model:ir.ui.view,arch_db:stock.view_inventory_form
 msgid "⇒ Set quantities to 0"
 msgstr "⇒ 設定數量為 0"
+
+#. module: stock
+#: code:addons/stock/models/stock_move_line.py:223
+#, python-format
+msgid "Changing the product is only allowed in 'Draft' state."
+msgstr ""

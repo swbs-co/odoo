@@ -209,6 +209,7 @@
                                  <tree string="Purchase Order Lines" editable="bottom">
                                     <field name="currency_id" invisible="1"/>
                                     <field name="state" invisible="1"/>
+                                    <field name="invoice_lines" invisible="1"/>
                                     <field name="sequence" widget="handle"/>
                                     <field name="product_id" attrs="{'readonly': [('state', 'in', ('purchase', 'to approve','done', 'cancel'))]}" context="{'partner_id':parent.partner_id, 'quantity':product_qty,'uom':product_uom, 'company_id': parent.company_id}" force_save="1"/>
                                     <field name="name"/>
@@ -221,7 +222,7 @@
                                     <field name="qty_received" invisible="not context.get('show_purchase', True)"/>
                                     <field name="qty_invoiced" invisible="not context.get('show_purchase', True)"/>
                                     <field name="product_uom" groups="product.group_uom" attrs="{'readonly': [('state', 'in', ('purchase', 'done', 'cancel'))]}" force_save="1"/>
-                                    <field name="price_unit"/>
+                                    <field name="price_unit" attrs="{'readonly': [('invoice_lines', '!=', [])]}"/>
                                     <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use','=','purchase')]" context="{'default_type_tax_use': 'purchase'}" options="{'no_create': True}"/>
                                     <field name="price_subtotal" widget="monetary"/>
                                 </tree>
@@ -244,6 +245,7 @@
                                                 <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use', '=', 'purchase')]" options="{'no_create': True}"/>
                                                 <field name="date_planned" widget="date"/>
                                                 <field name="account_analytic_id" colspan="2" groups="purchase.group_analytic_accounting"/>
+                                                <field name="analytic_tag_ids" groups="purchase.group_analytic_accounting" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                                 <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                                             </group>
                                         </group>
@@ -253,6 +255,7 @@
                                         </page><page string="Invoices and Incoming Shipments">
                                             <field name="invoice_lines"/>
                                             <field name="move_ids"/>
+                                            <field name="move_dest_ids" invisible="1"/>
                                         </page>
                                         </notebook>
                                     </sheet>

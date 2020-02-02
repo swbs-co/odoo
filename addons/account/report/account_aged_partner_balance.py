@@ -42,21 +42,15 @@ class ReportAgedPartnerBalance(models.AbstractModel):
         res = []
         total = []
         cr = self.env.cr
-        company_ids = self.env.context.get('company_ids', (self.env.user.company_id.id,))
+        user_company = self.env.user.company_id
+        user_currency = user_company.currency_id
+        ResCurrency = self.env['res.currency'].with_context(date=date_from)
+        company_ids = self._context.get('company_ids') or [user_company.id]
         move_state = ['draft', 'posted']
         if target_move == 'posted':
             move_state = ['posted']
-        arg_list = (tuple(move_state), tuple(account_type))
-        #build the reconciliation clause to see what partner needs to be printed
-        reconciliation_clause = '(l.reconciled IS FALSE)'
-        cr.execute('SELECT debit_move_id, credit_move_id FROM account_partial_reconcile where create_date > %s', (date_from,))
-        reconciled_after_date = []
-        for row in cr.fetchall():
-            reconciled_after_date += [row[0], row[1]]
-        if reconciled_after_date:
-            reconciliation_clause = '(l.reconciled IS FALSE OR l.id IN %s)'
-            arg_list += (tuple(reconciled_after_date),)
-        arg_list += (date_from, tuple(company_ids))
+        arg_list = (tuple(move_state), tuple(account_type),
+                    date_from, date_from, date_from, tuple(company_ids))
         query = '''
             SELECT DISTINCT l.partner_id, UPPER(res_partner.name)
             FROM account_move_line AS l left join res_partner on l.partner_id = res_partner.id, account_account, account_move am
@@ -64,7 +58,14 @@ class ReportAgedPartnerBalance(models.AbstractModel):
                 AND (l.move_id = am.id)
                 AND (am.state IN %s)
                 AND (account_account.internal_type IN %s)
-                AND ''' + reconciliation_clause + '''
+                AND (
+                        l.reconciled IS FALSE
+                        OR l.id IN(
+                            SELECT credit_move_id FROM account_partial_reconcile where max_date > %s
+                            UNION ALL
+                            SELECT debit_move_id FROM account_partial_reconcile where max_date > %s
+                        )
+                    )
                 AND (l.date <= %s)
                 AND l.company_id IN %s
             ORDER BY UPPER(res_partner.name)'''
@@ -99,15 +100,15 @@ class ReportAgedPartnerBalance(models.AbstractModel):
             partner_id = line.partner_id.id or False
             if partner_id not in undue_amounts:
                 undue_amounts[partner_id] = 0.0
-            line_amount = line.balance
-            if line.balance == 0:
+            line_amount = ResCurrency._compute(line.company_id.currency_id, user_currency, line.balance)
+            if user_currency.is_zero(line_amount):
                 continue
             for partial_line in line.matched_debit_ids:
                 if partial_line.max_date <= date_from:
-                    line_amount += partial_line.amount
+                    line_amount += ResCurrency._compute(partial_line.company_id.currency_id, user_currency, partial_line.amount)
             for partial_line in line.matched_credit_ids:
                 if partial_line.max_date <= date_from:
-                    line_amount -= partial_line.amount
+                    line_amount -= ResCurrency._compute(partial_line.company_id.currency_id, user_currency, partial_line.amount)
             if not self.env.user.company_id.currency_id.is_zero(line_amount):
                 undue_amounts[partner_id] += line_amount
                 lines[partner_id].append({
@@ -147,19 +148,19 @@ class ReportAgedPartnerBalance(models.AbstractModel):
             partners_amount = {}
             aml_ids = cr.fetchall()
             aml_ids = aml_ids and [x[0] for x in aml_ids] or []
-            for line in self.env['account.move.line'].browse(aml_ids):
+            for line in self.env['account.move.line'].browse(aml_ids).with_context(prefetch_fields=False):
                 partner_id = line.partner_id.id or False
                 if partner_id not in partners_amount:
                     partners_amount[partner_id] = 0.0
-                line_amount = line.balance
-                if line.balance == 0:
+                line_amount = ResCurrency._compute(line.company_id.currency_id, user_currency, line.balance)
+                if user_currency.is_zero(line_amount):
                     continue
                 for partial_line in line.matched_debit_ids:
                     if partial_line.max_date <= date_from:
-                        line_amount += partial_line.amount
+                        line_amount += ResCurrency._compute(partial_line.company_id.currency_id, user_currency, partial_line.amount)
                 for partial_line in line.matched_credit_ids:
                     if partial_line.max_date <= date_from:
-                        line_amount -= partial_line.amount
+                        line_amount -= ResCurrency._compute(partial_line.company_id.currency_id, user_currency, partial_line.amount)
 
                 if not self.env.user.company_id.currency_id.is_zero(line_amount):
                     partners_amount[partner_id] += line_amount

@@ -7,13 +7,16 @@
 # Martin Trigaux, 2018
 # ExcaliberX <excaliberx@gmail.com>, 2018
 # Leandro Noijovich <eliel.sorcerer@gmail.com>, 2018
+# דודי מלכה <Dudimalka6@gmail.com>, 2019
+# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-24 09:00+0000\n"
-"PO-Revision-Date: 2017-10-24 09:00+0000\n"
-"Last-Translator: Leandro Noijovich <eliel.sorcerer@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-03 15:07+0000\n"
+"PO-Revision-Date: 2017-09-20 10:25+0000\n"
+"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2019\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -72,7 +75,7 @@ msgstr ""
 #. module: website_blog
 #: model:ir.ui.view,arch_db:website_blog.latest_blogs
 msgid "&amp;times;"
-msgstr ""
+msgstr "וזמנים"
 
 #. module: website_blog
 #: model:ir.ui.view,arch_db:website_blog.blog_feed
@@ -117,6 +120,11 @@ msgid ""
 "<b>Write your story here.</b> Use the top toolbar to style your text: add an"
 " image or table, set bold or italic, etc. Drag and drop building blocks for "
 "more graphical blogs."
+msgstr ""
+
+#. module: website_blog
+#: model:ir.ui.view,arch_db:website_blog.latest_blogs
+msgid "<span class=\"fa fa-exclamation-triangle ml8\" title=\"Unpublished\"/>"
 msgstr ""
 
 #. module: website_blog
@@ -197,7 +205,7 @@ msgstr "מחבר"
 #. module: website_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_post_author_avatar
 msgid "Avatar"
-msgstr ""
+msgstr "אווטר"
 
 #. module: website_blog
 #: model:ir.ui.view,arch_db:website_blog.website_blog
@@ -286,7 +294,7 @@ msgstr "בלוגים"
 #. module: website_blog
 #: model:ir.ui.view,arch_db:website_blog.website_blog
 msgid "Blue"
-msgstr ""
+msgstr "כחול"
 
 #. module: website_blog
 #: model:blog.post,subtitle:website_blog.blog_post_2
@@ -630,7 +638,7 @@ msgstr ""
 #. module: website_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_post_visits
 msgid "No of Views"
-msgstr ""
+msgstr "לא של תצוגה"
 
 #. module: website_blog
 #: model:ir.ui.view,arch_db:website_blog.website_blog
@@ -777,6 +785,8 @@ msgid ""
 "image, with aspect ratio preserved. Use this field anywhere a small image is"
 " required."
 msgstr ""
+"תמונה בגודל קטן של איש קשר זה. הוא משתנה באופן אוטומטי כתמונה 64x64px, עם "
+"יחס היבט נשמר. השתמש בשדה זה בכל מקום נדרש תמונה קטנה."
 
 #. module: website_blog
 #. openerp-web
@@ -969,7 +979,7 @@ msgstr ""
 #. module: website_blog
 #: model:ir.ui.view,arch_db:website_blog.website_blog
 msgid "Yellow"
-msgstr ""
+msgstr "צהוב"
 
 #. module: website_blog
 #: model:ir.ui.view,arch_db:website_blog.latest_blogs

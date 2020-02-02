@@ -770,7 +770,7 @@ var VideoDialog = Widget.extend({
         options = options || {};
 
         // Video url patterns(youtube, instagram, vimeo, dailymotion, youku, ...)
-        var ytRegExp = /^(?:(?:https?:)?\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+        var ytRegExp = /^(?:(?:https?:)?\/\/)?(?:www\.)?(?:youtu\.be\/|youtube(-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((?:\w|-){11})(?:\S+)?$/;
         var ytMatch = url.match(ytRegExp);
 
         var insRegExp = /(.*)instagram.com\/p\/(.[a-zA-Z0-9]*)/;
@@ -795,10 +795,10 @@ var VideoDialog = Widget.extend({
             return {errorCode: 0};
         }
 
-        var autoplay = options.autoplay ? '?autoplay=1' : '?autoplay=0';
+        var autoplay = options.autoplay ? '?autoplay=1&mute=1' : '?autoplay=0';
 
-        if (ytMatch && ytMatch[1].length === 11) {
-            $video.attr('src', '//www.youtube.com/embed/' + ytMatch[1] + autoplay);
+        if (ytMatch && ytMatch[2].length === 11) {
+            $video.attr('src', '//www.youtube' + (ytMatch[1] || '') + '.com/embed/' + ytMatch[2] + autoplay);
         } else if (insMatch && insMatch[2].length) {
             $video.attr('src', '//www.instagram.com/p/' + insMatch[2] + '/embed/');
             videoType = 'ins';
@@ -806,7 +806,7 @@ var VideoDialog = Widget.extend({
             $video.attr('src', vinMatch[0] + '/embed/simple');
             videoType = 'vin';
         } else if (vimMatch && vimMatch[3].length) {
-            $video.attr('src', '//player.vimeo.com/video/' + vimMatch[3] + autoplay);
+            $video.attr('src', '//player.vimeo.com/video/' + vimMatch[3] + autoplay.replace('mute', 'muted'));
             videoType = 'vim';
         } else if (dmMatch && dmMatch[2].length) {
             var just_id = dmMatch[2].replace('video/','');
@@ -824,7 +824,8 @@ var VideoDialog = Widget.extend({
             $video.attr('src', $video.attr('src') + '&rel=0');
         }
         if (options.loop && (ytMatch || vimMatch)) {
-            $video.attr('src', $video.attr('src') + '&loop=1');
+            var videoSrc = _.str.sprintf('%s&loop=1', $video.attr('src'));
+            $video.attr('src', ytMatch ? _.str.sprintf('%s&playlist=%s', videoSrc, ytMatch[2]) : videoSrc);
         }
         if (options.hide_controls && (ytMatch || dmMatch)) {
             $video.attr('src', $video.attr('src') + '&controls=0');
@@ -986,10 +987,14 @@ var MediaDialog = Dialog.extend({
 
         this.$modal.addClass('note-image-dialog');
         this.$modal.find('.modal-dialog').addClass('o_select_media_dialog');
-
+        // DO NOT FORWARD PORT
+        this.mailCompose = this.options.res_model === "mail.compose.message";
         this.only_images = this.options.only_images || this.options.select_images || (this.media && ($(this.media).parent().data("oe-field") === "image" || $(this.media).parent().data("oe-type") === "image"));
+        if (this.only_images || this.mailCompose) {
+            this.$('[href="#editor-media-video"]').addClass('hidden');
+        }
         if (this.only_images) {
-            this.$('[href="#editor-media-document"], [href="#editor-media-video"], [href="#editor-media-icon"]').addClass('hidden');
+            this.$('[href="#editor-media-document"], [href="#editor-media-icon"]').addClass('hidden');
         }
 
         this.opened((function () {
@@ -1016,8 +1021,10 @@ var MediaDialog = Dialog.extend({
         if (!this.only_images) {
             this.iconDialog = new fontIconsDialog(this, this.media, this.options);
             this.iconDialog.appendTo(this.$("#editor-media-icon"));
-            this.videoDialog = new VideoDialog(this, this.media, this.options);
-            this.videoDialog.appendTo(this.$("#editor-media-video"));
+            if (!this.mailCompose) {
+                this.videoDialog = new VideoDialog(this, this.media, this.options);
+                this.videoDialog.appendTo(this.$("#editor-media-video"));
+            }
         }
 
         this.active = this.imageDialog;
@@ -1183,6 +1190,7 @@ var LinkDialog = Dialog.extend({
                 }
 
                 this.data.range = range.create(sc, so, ec, eo);
+                $(editable).data("range", this.data.range);
                 this.data.range.select();
             } else {
                 nodes = dom.ancestor(sc, dom.isAnchor).childNodes;

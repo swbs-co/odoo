@@ -3,20 +3,22 @@
 # * website_blog
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Manuela Silva <manuela.silva@sky.com>, 2017
 # Joao Felix <jrmfelix@gmail.com>, 2018
 # Nuno Silva <nuno.silva@arxi.pt>, 2018
+# Martin Trigaux, 2018
 # Ricardo Martins <ricardo.nbs.martins@gmail.com>, 2018
 # Daniel C Santos <dcs@thinkopensolutions.pt>, 2018
 # Manuela Silva <inactive+alfalb@transifex.com>, 2018
+# Pedro Castro Silva <pedrocs@exo.pt>, 2019
+# Manuela Silva <manuelarodsilva@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-24 09:00+0000\n"
-"PO-Revision-Date: 2017-10-24 09:00+0000\n"
-"Last-Translator: Manuela Silva <inactive+alfalb@transifex.com>, 2018\n"
+"POT-Creation-Date: 2019-01-03 15:07+0000\n"
+"PO-Revision-Date: 2017-09-20 10:25+0000\n"
+"Last-Translator: Manuela Silva <manuelarodsilva@gmail.com>, 2019\n"
 "Language-Team: Portuguese (https://www.transifex.com/odoo/teams/41243/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -123,6 +125,11 @@ msgid ""
 msgstr ""
 
 #. module: website_blog
+#: model:ir.ui.view,arch_db:website_blog.latest_blogs
+msgid "<span class=\"fa fa-exclamation-triangle ml8\" title=\"Unpublished\"/>"
+msgstr ""
+
+#. module: website_blog
 #: model:blog.post,content:website_blog.blog_post_1
 msgid ""
 "A mix of push &amp; pull: Today, people\n"
@@ -200,7 +207,7 @@ msgstr "Autor"
 #. module: website_blog
 #: model:ir.model.fields,field_description:website_blog.field_blog_post_author_avatar
 msgid "Avatar"
-msgstr ""
+msgstr "Avatar"
 
 #. module: website_blog
 #: model:ir.ui.view,arch_db:website_blog.website_blog
@@ -431,7 +438,7 @@ msgstr ""
 #. module: website_blog
 #: model:ir.ui.view,arch_db:website_blog.website_blog
 msgid "Full Screen"
-msgstr ""
+msgstr "Ecrã completo"
 
 #. module: website_blog
 #: model:blog.post,content:website_blog.blog_post_1

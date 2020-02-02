@@ -1051,11 +1051,13 @@ class Meeting(models.Model):
                 meeting_attendees |= attendee
                 meeting_partners |= partner
 
-            if meeting_attendees:
+            if meeting_attendees and not self._context.get('detaching'):
                 to_notify = meeting_attendees.filtered(lambda a: a.email != current_user.email)
                 to_notify._send_mail_to_attendees('calendar.calendar_template_meeting_invitation')
 
+            if meeting_attendees:
                 meeting.write({'attendee_ids': [(4, meeting_attendee.id) for meeting_attendee in meeting_attendees]})
+
             if meeting_partners:
                 meeting.message_subscribe(partner_ids=meeting_partners.ids)
 
@@ -1371,13 +1373,14 @@ class Meeting(models.Model):
                 rrule_type=False,
                 rrule='',
                 recurrency=False,
-                final_date=datetime.strptime(data.get('start'), DEFAULT_SERVER_DATETIME_FORMAT if data['allday'] else DEFAULT_SERVER_DATETIME_FORMAT) + timedelta(hours=values.get('duration', False) or data.get('duration'))
+                final_date=False,
+                end_type=False
             )
 
             # do not copy the id
             if data.get('id'):
                 del data['id']
-            return meeting_origin.copy(default=data)
+            return meeting_origin.with_context(detaching=True).copy(default=data)
 
     @api.multi
     def action_detach_recurring_event(self):
@@ -1754,7 +1757,15 @@ class Meeting(models.Model):
             if values.get('description'):
                 activity_values['note'] = values['description']
             if values.get('start'):
-                activity_values['date_deadline'] = fields.Datetime.from_string(values['start']).date()
+                # self.start is a datetime UTC *only when the event is not allday*
+                # activty.date_deadline is a date (No TZ, but should represent the day in which the user's TZ is)
+                # See 72254129dbaeae58d0a2055cba4e4a82cde495b7 for the same issue, but elsewhere
+                deadline = fields.Datetime.from_string(values['start'])
+                user_tz = self.env.context.get('tz')
+                if user_tz and not self.allday:
+                    deadline = pytz.UTC.localize(deadline)
+                    deadline = deadline.astimezone(pytz.timezone(user_tz))
+                activity_values['date_deadline'] = deadline.date()
             if values.get('user_id'):
                 activity_values['user_id'] = values['user_id']
             if activity_values.keys():

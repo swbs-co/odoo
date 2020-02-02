@@ -3,20 +3,22 @@
 # * hr_expense
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Manuela Silva <manuela.silva@sky.com>, 2017
 # Joao Felix <jrmfelix@gmail.com>, 2018
-# Nuno Silva <nuno.silva@arxi.pt>, 2018
-# Ricardo Martins <ricardo.nbs.martins@gmail.com>, 2018
 # José Gomes <jg@opencloud.pro>, 2018
+# Martin Trigaux, 2018
 # Manuela Silva <inactive+h_manuela_rodsilva@transifex.com>, 2018
+# Ricardo Martins <ricardo.nbs.martins@gmail.com>, 2018
+# Manuela Silva <manuelarodsilva@gmail.com>, 2018
+# Nuno Silva <nuno.silva@arxi.pt>, 2019
+# Reinaldo Ramos <reinaldo.ramos@arxi.pt>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-19 13:43+0000\n"
-"PO-Revision-Date: 2018-02-19 13:43+0000\n"
-"Last-Translator: Manuela Silva <inactive+h_manuela_rodsilva@transifex.com>, 2018\n"
+"POT-Creation-Date: 2019-01-03 15:06+0000\n"
+"PO-Revision-Date: 2017-09-20 10:18+0000\n"
+"Last-Translator: Reinaldo Ramos <reinaldo.ramos@arxi.pt>, 2019\n"
 "Language-Team: Portuguese (https://www.transifex.com/odoo/teams/41243/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,6 +62,8 @@ msgid ""
 "<i class=\"text-muted oe_edit_only\">Use [Reference] as a subject prefix for"
 " incoming receipts</i>"
 msgstr ""
+"<i class=\"text-muted oe_edit_only\">Utilize [Referência] como prefixo da "
+"categoria dos recebimentos</i>"
 
 #. module: hr_expense
 #. openerp-web
@@ -98,7 +102,7 @@ msgstr ""
 #: code:addons/hr_expense/static/src/js/tour.js:39
 #, python-format
 msgid "<p>Select expenses to submit them to your manager</p>"
-msgstr ""
+msgstr "<p>Selecione as despesas para as submeter ao seu gestor</p>"
 
 #. module: hr_expense
 #. openerp-web
@@ -1263,6 +1267,11 @@ msgid "Product Template"
 msgstr "Template Artigo"
 
 #. module: hr_expense
+#: model:ir.ui.view,arch_db:hr_expense.product_product_expense_tree_view
+msgid "Product Variants"
+msgstr "Variantes de Artigo"
+
+#. module: hr_expense
 #: model:ir.ui.view,arch_db:hr_expense.hr_expense_planner
 msgid ""
 "Provide your customer with detailed reports (along with copies of receipts)"
@@ -1291,7 +1300,7 @@ msgstr "Quantidade"
 #. module: hr_expense
 #: model:ir.ui.view,arch_db:hr_expense.hr_expense_template_refuse_reason
 msgid "Reason :"
-msgstr ""
+msgstr "Motivo :"
 
 #. module: hr_expense
 #: model:ir.ui.view,arch_db:hr_expense.hr_expense_refuse_wizard_view_form

@@ -3,20 +3,21 @@
 # * stock
 # 
 # Translators:
-# Bohdan Lisnenko, 2017
-# Martin Trigaux, 2017
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2017
-# ТАрас <tratatuta@i.ua>, 2017
-# Анатолій Пономаренко <aponomarenko020@gmail.com>, 2017
 # Zoriana Zaiats, 2017
-# Olga Lugova <trolka.olug@gmail.com>, 2018
+# Анатолій Пономаренко <aponomarenko020@gmail.com>, 2017
+# ТАрас <tratatuta@i.ua>, 2017
+# trolka <trolka.olug@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
+# Bohdan Lisnenko, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-27 11:55+0000\n"
-"PO-Revision-Date: 2018-07-27 11:55+0000\n"
-"Last-Translator: Olga Lugova <trolka.olug@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-03 15:06+0000\n"
+"PO-Revision-Date: 2017-09-20 10:24+0000\n"
+"Last-Translator: Bohdan Lisnenko, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +35,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"%s --> Товар UoM є %s (%s) - Рух UoM є %s (%s)"
+"%s --> Одиниця вимірювання товару %s (%s) - Одиниця вимірювання переміщення %s (%s)"
 
 #. module: stock
 #: code:addons/stock/models/stock_move.py:341
@@ -73,7 +74,7 @@ msgstr ""
 "* Чернетка: ще не підтверджено і не буде заплановано до підтвердження.\n"
 "  * Очікування ще однієї операції: чекає черговий перехід, перш ніж він стане автоматично доступним (наприклад, у процесах \"Зворотнє замовлення\").\n"
 "  * Очікування: якщо він не готовий до відправлення, оскільки необхідні товари не можуть бути зарезервовані.\n"
-"  * Готово: товари зарезервовані та готові до відправки. Якщо політика доставки - \"якомога швидше\", це станеться, як тільки щось зарезервовано.\n"
+"  * Виконано: товари зарезервовані та готові до відправки. Якщо політика доставки - \"якомога швидше\", це станеться, як тільки щось зарезервовано.\n"
 "  * Виконано: було оброблено, більше не можна змінювати або скасовувати.\n"
 "  * Скасовано: було скасовано, більше не може бути підтверджено."
 
@@ -786,6 +787,13 @@ msgid "Active"
 msgstr "Активно"
 
 #. module: stock
+#: model:ir.ui.view,arch_db:stock.view_picking_form
+msgid ""
+"Add an internal note that will be printed on the Picking Operations sheet"
+msgstr ""
+"Додайте внутрішню примітку, яка буде надрукована на листі комплектації"
+
+#. module: stock
 #: model:ir.model.fields,help:stock.field_res_config_settings_group_stock_adv_location
 msgid ""
 "Add and customize route operations to process product moves in your warehouse(s): e.g. unload > quality control > stock for incoming products, pick > pack > ship for outgoing products. \n"
@@ -959,6 +967,20 @@ msgid "Assign Owner"
 msgstr "Призначити власника"
 
 #. module: stock
+#: model:ir.ui.view,arch_db:stock.view_picking_form
+msgid "Assign Partner"
+msgstr "Призначити партнера"
+
+#. module: stock
+#: model:ir.ui.view,arch_db:stock.view_picking_form
+msgid ""
+"Assign the partner to the Operations. Use only if the partner is manually "
+"changed!"
+msgstr ""
+"Призначте партнера для операцій. Використовуйте, лише якщо партнера змінено "
+"вручну!"
+
+#. module: stock
 #: model:ir.ui.view,arch_db:stock.view_picking_internal_search
 msgid "Assigned Moves"
 msgstr "Призначити переміщення"
@@ -1047,7 +1069,7 @@ msgstr "Дозамовлення"
 #: model:ir.model.fields,field_description:stock.field_stock_location_barcode
 #: model:ir.ui.view,arch_db:stock.report_picking
 msgid "Barcode"
-msgstr "Штрихкод"
+msgstr "Штрих-код"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_picking_type_barcode_nomenclature_id
@@ -1111,12 +1133,12 @@ msgstr "Придбати"
 #. module: stock
 #: selection:product.template,tracking:0
 msgid "By Lots"
-msgstr "По партіях"
+msgstr "За партіями"
 
 #. module: stock
 #: selection:product.template,tracking:0
 msgid "By Unique Serial Number"
-msgstr "По унікальному серійному номеру"
+msgstr "За унікальним серійним номером"
 
 #. module: stock
 #: code:addons/stock/models/stock_move.py:644
@@ -1726,12 +1748,12 @@ msgstr "Дата створення, зазвичай дата замовлен�
 #: code:addons/stock/models/stock_warehouse.py:437
 #, python-format
 msgid "Cross-Dock"
-msgstr "Борт-до-борту"
+msgstr "Крос-докінг"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_warehouse_crossdock_route_id
 msgid "Crossdock Route"
-msgstr "Маршрут борт-до-борту"
+msgstr "Маршрут крос-докінгу"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_report_stock_forecast_cumulative_quantity
@@ -1781,7 +1803,7 @@ msgstr ""
 "Поточна кількість товару.\n"
 "В контексті розташування запасів буде включено запаси по цьому розташуванню та по всіх підпорядкованих розташуваннях.\n"
 "В контексті складу, буде включено запаси на всіх розташуваннях запасів цього складу та на всіх підпорядкованих до нього.\n"
-"В інших випадках буде по казано запаси по всіх  складах з типом 'Внутрішній'."
+"В інших випадках включені товари складуються на будь-якому місцехнаходженні складу з типом 'Внутрішній'."
 
 #. module: stock
 #: code:addons/stock/models/stock_picking.py:111
@@ -2265,7 +2287,7 @@ msgstr ""
 #: selection:stock.move,state:0 selection:stock.picking,state:0
 #: selection:stock.scrap,state:0
 msgid "Done"
-msgstr "Готово"
+msgstr "Виконано"
 
 #. module: stock
 #: model:ir.actions.act_window,name:stock.action_picking_tree_done
@@ -2506,7 +2528,7 @@ msgstr "Повна назва розташування"
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_picking_internal_search
 msgid "Future Activities"
-msgstr "Майбутня діяльність"
+msgstr "Майбутні дії"
 
 #. module: stock
 #: code:addons/stock/models/product.py:332
@@ -2723,13 +2745,13 @@ msgstr "ID"
 #: code:addons/stock/models/stock_inventory.py:421
 #, python-format
 msgid "INV:"
-msgstr "INV:"
+msgstr "РАХ:"
 
 #. module: stock
 #: code:addons/stock/wizard/stock_change_product_qty.py:97
 #, python-format
 msgid "INV: %s"
-msgstr "INV: %s"
+msgstr "РАХ: %s"
 
 #. module: stock
 #: model:stock.location,name:stock.stock_location_3
@@ -3077,8 +3099,8 @@ msgid ""
 "the-art transportation practices."
 msgstr ""
 "Інкотермс - це набір термінів продажу. Вони служать для визначення розподілу"
-" відповідальності та вартості доставки між покупцем і продавцем і уособлюють"
-" витвір мистецтва практики перевезень."
+" відповідальності та вартості доставки між покупцем і продавцем і для "
+"найкращої практики перевезень."
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_move_product_uom_qty
@@ -3455,7 +3477,7 @@ msgstr "Ноутбук E5023"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_picking_type_last_done_picking
 msgid "Last 10 Done Pickings"
-msgstr "10 останніх виконаних відборів"
+msgstr "10 останніх виконаних комплектувань"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_procurement_group___last_update
@@ -3607,7 +3629,7 @@ msgstr ""
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_location_parent_left
 msgid "Left Parent"
-msgstr "Залишений батько "
+msgstr "Лівий батьківський елемент"
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_location_company_id
@@ -3646,7 +3668,6 @@ msgid "Locate"
 msgstr "Знайти"
 
 #. module: stock
-#: code:addons/stock/models/barcode.py:12
 #: model:ir.model.fields,field_description:stock.field_product_product_location_id
 #: model:ir.model.fields,field_description:stock.field_product_template_location_id
 #: model:ir.model.fields,field_description:stock.field_stock_change_product_qty_location_id
@@ -3665,7 +3686,6 @@ msgstr "Знайти"
 #: model:ir.ui.view,arch_db:stock.stock_scrap_search_view
 #: model:ir.ui.view,arch_db:stock.view_move_search
 #: model:ir.ui.view,arch_db:stock.warehouse_orderpoint_search
-#, python-format
 msgid "Location"
 msgstr "Розташування"
 
@@ -3710,7 +3730,7 @@ msgstr "Розташування, де система буде зберігат�
 #: model:ir.ui.view,arch_db:stock.view_picking_type_form
 #: model:ir.ui.view,arch_db:stock.view_warehouse
 msgid "Locations"
-msgstr "Розташування"
+msgstr "Місцезнаходження"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.view_picking_form
@@ -3725,10 +3745,8 @@ msgid "Logistics"
 msgstr "Логістика"
 
 #. module: stock
-#: code:addons/stock/models/barcode.py:13
 #: model:ir.model.fields,field_description:stock.field_stock_move_line_lot_id
 #: model:ir.model.fields,field_description:stock.field_stock_scrap_lot_id
-#, python-format
 msgid "Lot"
 msgstr "Партія"
 
@@ -3810,7 +3828,7 @@ msgstr "під замовлення"
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_warehouse_mto_pull_id
 msgid "MTO rule"
-msgstr "Правило ВПЗ"
+msgstr "Правило ВНЗ"
 
 #. module: stock
 #: code:addons/stock/models/stock_warehouse.py:479
@@ -3928,7 +3946,7 @@ msgstr "Максимальна кількість"
 #: model:ir.model.fields,field_description:stock.field_res_partner_picking_warn_msg
 #: model:ir.model.fields,field_description:stock.field_res_users_picking_warn_msg
 msgid "Message for Stock Picking"
-msgstr "Повідомлення для збирання запасів"
+msgstr "Повідомлення для складського комплектування"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_product_removal_method
@@ -4157,7 +4175,7 @@ msgid ""
 "No products to return (only lines in Done state and not fully returned yet "
 "can be returned)!"
 msgstr ""
-"Ніяких товарів для повернення (тільки рядки в стані Готово і не повністю "
+"Ніяких товарів для повернення (тільки рядки в стані Виконано і не повністю "
 "повернуті ще можна повернути)!"
 
 #. module: stock
@@ -4180,6 +4198,11 @@ msgstr "Звичайний"
 #: selection:stock.move,priority:0 selection:stock.picking,priority:0
 msgid "Not urgent"
 msgstr "Нетерміновий"
+
+#. module: stock
+#: model:ir.ui.view,arch_db:stock.view_picking_form
+msgid "Note"
+msgstr "Примітка"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_move_note
@@ -4566,7 +4589,6 @@ msgid "Pack Type"
 msgstr "Тип упакування"
 
 #. module: stock
-#: code:addons/stock/models/barcode.py:14
 #: model:ir.model.fields,field_description:stock.field_stock_quant_package_id
 #: model:ir.model.fields,field_description:stock.field_stock_scrap_package_id
 #: model:ir.ui.view,arch_db:stock.quant_package_search_view
@@ -4575,14 +4597,13 @@ msgstr "Тип упакування"
 #: model:ir.ui.view,arch_db:stock.view_quant_package_form
 #: model:ir.ui.view,arch_db:stock.view_quant_package_picking_tree
 #: model:ir.ui.view,arch_db:stock.view_quant_package_tree
-#, python-format
 msgid "Package"
 msgstr "Упаковка"
 
 #. module: stock
 #: model:ir.actions.report,name:stock.action_report_quant_package_barcode_small
 msgid "Package BarCode"
-msgstr "Штрихкод упаковки"
+msgstr "Штрих-код упаковки"
 
 #. module: stock
 #: model:ir.actions.report,name:stock.action_report_quant_package_barcode
@@ -5398,7 +5419,7 @@ msgstr "Оцінити комплектування пізніше"
 #: model:ir.ui.view,arch_db:stock.view_picking_internal_search
 #: selection:stock.picking,state:0
 msgid "Ready"
-msgstr "Напоготові"
+msgstr "Готово"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_move_product_qty
@@ -5667,12 +5688,12 @@ msgstr "Повернене комплектування"
 #. module: stock
 #: model:ir.actions.act_window,name:stock.act_stock_return_picking
 msgid "Reverse Transfer"
-msgstr "Зворотнє переміщення"
+msgstr "Скасувати переміщення"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_location_parent_right
 msgid "Right Parent"
-msgstr "Правий батько"
+msgstr "Правий батьківський елемент"
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_procurement_rule_route_id
@@ -5849,7 +5870,7 @@ msgstr "Пошук шляхів розташування запасів"
 #: code:addons/stock/models/stock_inventory.py:115
 #, python-format
 msgid "Select products manually"
-msgstr "Оббрати товари вручну"
+msgstr "Обрати товари вручну"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.stock_location_route_form_view
@@ -5900,7 +5921,7 @@ msgstr "Внутрішня черга"
 #: code:addons/stock/models/stock_warehouse.py:704
 #, python-format
 msgid "Sequence out"
-msgstr "Зовнішня послідовність"
+msgstr "Вихідна послідовність"
 
 #. module: stock
 #: code:addons/stock/models/stock_warehouse.py:709
@@ -5927,7 +5948,7 @@ msgstr "Призначений склад"
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.res_config_settings_view_form
 msgid "Set Putaway Strategies on Locations"
-msgstr "Встановіть перехресні стратегії на місцезнаходженнях"
+msgstr "Встановіть стратегії викладки товару на місцезнаходженнях"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.res_config_settings_view_form
@@ -6560,15 +6581,6 @@ msgstr ""
 "йти, і саме тому вони віддають перевагу над правилами відправки."
 
 #. module: stock
-#: model:ir.ui.view,arch_db:stock.product_category_form_view_inherit
-msgid ""
-"The following routes will apply to the products in this category taking into"
-" account parent categories:"
-msgstr ""
-"Наступні маршрути будуть застосовуватися до товарів цієї категорії з "
-"урахуванням батьківських категорій:"
-
-#. module: stock
 #: sql_constraint:stock.warehouse:0
 msgid "The name of the warehouse must be unique per company!"
 msgstr "Назва складу повинна бути унікальною для кожної компанії!"
@@ -6941,7 +6953,7 @@ msgstr "Це цілі пакунки комплектування, показа�
 #: model:ir.ui.view,arch_db:stock.view_move_tree
 #: model:ir.ui.view,arch_db:stock.view_quant_package_picking_tree
 msgid "To"
-msgstr "По"
+msgstr "До"
 
 #. module: stock
 #: model:ir.actions.act_window,name:stock.action_picking_tree_ready
@@ -7029,7 +7041,7 @@ msgstr "Загальна кількість маршрутів"
 #: model:ir.ui.view,arch_db:stock.res_config_settings_view_form
 #: model:ir.ui.view,arch_db:stock.view_template_property_form
 msgid "Traceability"
-msgstr "Переміщення"
+msgstr "Відстеження"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.report_stock_body_print
@@ -7277,7 +7289,7 @@ msgstr "Використовуйте існуючі партії/серійні 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.res_config_settings_view_form
 msgid "Use your own routes and putaway strategies"
-msgstr "Використовуйте свої власні маршрути та стратегії"
+msgstr "Використовуйте свої власні маршрути та стратегії викладки"
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_picking_type_sequence
@@ -7496,12 +7508,6 @@ msgstr ""
 msgid "We hope this guide helped you implement Odoo Inventory."
 msgstr ""
 "Ми сподіваємось, що цей помічник допоміг вам впровадити Інвентаризацію Odoo."
-
-#. module: stock
-#: code:addons/stock/models/barcode.py:11
-#, python-format
-msgid "Weighted Product"
-msgstr "Зважений товар"
 
 #. module: stock
 #: model:ir.ui.view,arch_db:stock.inventory_planner
@@ -7799,7 +7805,8 @@ msgstr ""
 #, python-format
 msgid "You cannot cancel a stock move that has been set to 'Done'."
 msgstr ""
-"Ви не можете скасувати складське переміщення, яке встановлене як \"Готово\"."
+"Ви не можете скасувати складське переміщення, яке встановлене як "
+"\"Виконано\"."
 
 #. module: stock
 #: code:addons/stock/models/stock_location.py:96
@@ -7892,16 +7899,7 @@ msgstr ""
 " виправте зашифровані серійні номери."
 
 #. module: stock
-#: code:addons/stock/models/stock_picking.py:723
-#, python-format
-msgid ""
-"You cannot validate a transfer if you have not processed any quantity for "
-"%s."
-msgstr ""
-"Ви не можете підтвердити переказ, якщо ви не обробляли жодної кількості %s."
-
-#. module: stock
-#: code:addons/stock/models/stock_picking.py:707
+#: code:addons/stock/models/stock_picking.py:709
 #, python-format
 msgid ""
 "You cannot validate a transfer if you have not processed any quantity. You "
@@ -8278,3 +8276,9 @@ msgstr "з кнопкою <i>Перевірити</i> "
 #: model:ir.ui.view,arch_db:stock.view_inventory_form
 msgid "⇒ Set quantities to 0"
 msgstr "⇒ Обнулити кількість"
+
+#. module: stock
+#: code:addons/stock/models/stock_move_line.py:223
+#, python-format
+msgid "Changing the product is only allowed in 'Draft' state."
+msgstr ""

@@ -159,7 +159,7 @@ def translate_xml_node(node, callback, parse, serialize):
     """
 
     def nonspace(text):
-        return bool(text) and not text.isspace()
+        return bool(text) and len(re.sub(r'\W+', '', text)) > 1
 
     def concat(text1, text2):
         return text2 if text1 is None else text1 + (text2 or "")
@@ -251,7 +251,10 @@ def translate_xml_node(node, callback, parse, serialize):
             # complete result and return it
             append_content(result, todo)
             result.tail = node.tail
-            has_text = todo_has_text or nonspace(result.text) or nonspace(result.tail)
+            has_text = (
+                todo_has_text or nonspace(result.text) or nonspace(result.tail)
+                or any(name in TRANSLATED_ATTRS for name in result.attrib)
+            )
             return (has_text, result)
 
         # translate the content of todo and append it to result
@@ -807,14 +810,6 @@ def trans_generate(lang, modules, cr):
         # empty and one-letter terms are ignored, they probably are not meant to be
         # translated, and would be very hard to translate anyway.
         sanitized_term = (source or '').strip()
-        try:
-            # verify the minimal size without eventual xml tags
-            # wrap to make sure html content like '<a>b</a><c>d</c>' is accepted by lxml
-            wrapped = u"<div>%s</div>" % sanitized_term
-            node = etree.fromstring(wrapped)
-            sanitized_term = etree.tostring(node, encoding='unicode', method='text')
-        except etree.ParseError:
-            pass
         # remove non-alphanumeric chars
         sanitized_term = re.sub(r'\W+', '', sanitized_term)
         if not sanitized_term or len(sanitized_term) <= 1:
@@ -958,8 +953,11 @@ def trans_generate(lang, modules, cr):
         extra_comments = extra_comments or []
         if not module: return
         src_file = open(fabsolutepath, 'rb')
+        options = {}
+        if extract_method == 'python':
+            options['encoding'] = 'UTF-8'
         try:
-            for extracted in extract.extract(extract_method, src_file, keywords=extract_keywords):
+            for extracted in extract.extract(extract_method, src_file, keywords=extract_keywords, options=options):
                 # Babel 0.9.6 yields lineno, message, comments
                 # Babel 1.3 yields lineno, message, comments, context
                 lineno, message, comments = extracted[:3]

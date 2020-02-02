@@ -3,29 +3,31 @@
 # * sale
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Kim Asplund <kim.asplund@gmail.com>, 2017
-# Anders Wallenquist <anders.wallenquist@vertel.se>, 2017
 # Zou Haojun <haojunzou84@gmail.com>, 2017
-# Patrik Lermon <patrik.lermon@gmail.com>, 2017
-# lasch a <bmail440@gmail.com>, 2017
-# Kristoffer Grundström <kristoffer.grundstrom1983@gmail.com>, 2017
-# Jonathan S <jonathan.c.strom@gmail.com>, 2017
-# Haojun Zou <apollo_zhj@msn.com>, 2017
-# lynnliuying <lynn.liu1971@gmail.com>, 2017
 # Christelle Wehbe <libanon_cristelle@hotmail.com>, 2017
+# Haojun Zou <apollo_zhj@msn.com>, 2017
 # Daniel Forslund <daniel.forslund@gmail.com>, 2017
-# Egils Verkstad <egils@riseup.net>, 2017
+# Jonathan S <jonathan.c.strom@gmail.com>, 2017
 # Robert Frykelius <robert.frykelius@linserv.se>, 2017
+# Kristoffer Grundström <hamnisdude@gmail.com>, 2017
+# Egils Verkstad <egils@riseup.net>, 2017
+# lasch a <bmail440@gmail.com>, 2017
 # Martin Wilderoth <martin.wilderoth@linserv.se>, 2017
-# Chrille Hedberg <hedberg.chrille@gmail.com>, 2018
+# Patrik Lermon <patrik.lermon@gmail.com>, 2017
+# lynnliuying <lynn.liu1971@gmail.com>, 2017
+# Martin Trigaux, 2019
+# Kim Asplund <kim.asplund@gmail.com>, 2019
+# Chrille Hedberg <hedberg.chrille@gmail.com>, 2019
+# Jakob Krabbe <jakob.krabbe@vertel.se>, 2019
+# Anders Wallenquist <anders.wallenquist@vertel.se>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-27 11:56+0000\n"
-"PO-Revision-Date: 2018-07-27 11:56+0000\n"
-"Last-Translator: Chrille Hedberg <hedberg.chrille@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-03 15:07+0000\n"
+"PO-Revision-Date: 2017-09-20 10:23+0000\n"
+"Last-Translator: Anders Wallenquist <anders.wallenquist@vertel.se>, 2019\n"
 "Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -138,7 +140,7 @@ msgstr "&amp;bull;"
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.portal_my_orders
 msgid "&amp;nbsp;"
-msgstr ""
+msgstr "&amp;nbsp;"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.portal_order_page
@@ -242,6 +244,13 @@ msgid ""
 msgstr ""
 
 #. module: sale
+#: model:ir.ui.view,arch_db:sale.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+
+#. module: sale
 #: model:ir.ui.view,arch_db:sale.portal_my_orders
 msgid ""
 "<span class=\"hidden-xs\">Sales Order #</span>\n"
@@ -261,6 +270,8 @@ msgid ""
 "<span class=\"label label-default\"><i class=\"fa fa-fw fa-clock-o\"/> "
 "Expired</span>"
 msgstr ""
+"<span class=\"label label-default\"><i class=\"fa fa-fw fa-clock-o\"/> "
+"Utgången</span>"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.portal_my_quotations
@@ -269,6 +280,8 @@ msgid ""
 "<span class=\"label label-default\"><i class=\"fa fa-fw fa-remove\"/> "
 "Cancelled</span>"
 msgstr ""
+"<span class=\"label label-default\"><i class=\"fa fa-fw fa-remove\"/> "
+"Avbruten</span>"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.portal_order_page
@@ -318,7 +331,7 @@ msgstr ""
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.report_saleorder_document
 msgid "<strong>Date Ordered:</strong>"
-msgstr ""
+msgstr "<strong>Orderdatum:</strong>"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.portal_order_page
@@ -329,7 +342,7 @@ msgstr "<strong>Datum:</strong>"
 #: model:ir.ui.view,arch_db:sale.portal_order_page
 #: model:ir.ui.view,arch_db:sale.report_saleorder_document
 msgid "<strong>Expiration Date:</strong>"
-msgstr ""
+msgstr "<strong>Förfallodatum: </strong>"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.report_saleorder_document
@@ -364,7 +377,7 @@ msgstr ""
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.report_saleorder_document
 msgid "<strong>Quotation Date:</strong>"
-msgstr ""
+msgstr "Offertdatum:</strong>"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.report_saleorder_document
@@ -1023,7 +1036,7 @@ msgstr ""
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_sales_order_filter
 msgid "Future Activities"
-msgstr ""
+msgstr "Framtida aktivieteter"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.res_config_settings_view_form
@@ -1262,7 +1275,7 @@ msgstr ""
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_is_expired
 msgid "Is expired"
-msgstr ""
+msgstr "Är utgången"
 
 #. module: sale
 #: code:addons/sale/models/sale.py:864
@@ -1308,7 +1321,7 @@ msgstr "Senast uppdaterad"
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_sales_order_filter
 msgid "Late Activities"
-msgstr ""
+msgstr "Försenade aktiviteter"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_account_invoice_line_layout_category_sequence
@@ -1409,7 +1422,7 @@ msgstr ""
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_sales_order_filter
 msgid "My Activities"
-msgstr ""
+msgstr "Mina aktivieteter"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_sales_order_filter
@@ -1786,6 +1799,11 @@ msgid "Product Catalog"
 msgstr ""
 
 #. module: sale
+#: model:ir.ui.menu,name:sale.menu_product_category_config_sale
+msgid "Product Categories"
+msgstr "Produktkategorier"
+
+#. module: sale
 #: model:ir.model.fields,field_description:sale.field_report_all_channels_sales_categ_id
 #: model:ir.model.fields,field_description:sale.field_sale_report_categ_id
 #: model:ir.ui.view,arch_db:sale.view_order_product_search
@@ -1795,7 +1813,7 @@ msgstr "Produktkategori"
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_sale_order_line_product_image
 msgid "Product Image"
-msgstr ""
+msgstr "Produkt Bild"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_report_all_channels_sales_product_qty
@@ -1892,7 +1910,7 @@ msgstr "Offert / Order"
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_quotation_tree
 msgid "Quotation Date"
-msgstr ""
+msgstr "Offertdatum"
 
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_quotation_tree
@@ -2035,13 +2053,13 @@ msgstr "Försäljningsanalys"
 #: model:ir.ui.view,arch_db:sale.view_order_product_search
 #: model:ir.ui.view,arch_db:sale.view_sales_order_filter
 msgid "Sales Channel"
-msgstr ""
+msgstr "Säljkanal"
 
 #. module: sale
 #: model:ir.ui.menu,name:sale.report_sales_team
 #: model:ir.ui.menu,name:sale.sales_team_config
 msgid "Sales Channels"
-msgstr ""
+msgstr "Försäljnings Kanal"
 
 #. module: sale
 #: selection:sale.report,state:0
@@ -2288,7 +2306,7 @@ msgstr "Fraktkostnader"
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_sales_order_filter
 msgid "Show all records which has next action date is before today"
-msgstr ""
+msgstr "Visa ella poster som har nästa händelse före idag"
 
 #. module: sale
 #: model:res.groups,comment:sale.group_show_price_total
@@ -2433,12 +2451,28 @@ msgid "Terms and conditions"
 msgstr "Villkor"
 
 #. module: sale
-#: code:addons/sale/models/analytic.py:129
-#: code:addons/sale/models/analytic.py:143
+#: code:addons/sale/models/analytic.py:134
 #, python-format
 msgid ""
-"The Sales Order %s linked to the Analytic Account must be validated before "
-"registering expenses."
+"The Sales Order %s linked to the Analytic Account %s is cancelled. You "
+"cannot register an expense on a cancelled Sales Order."
+msgstr ""
+
+#. module: sale
+#: code:addons/sale/models/analytic.py:133
+#, python-format
+msgid ""
+"The Sales Order %s linked to the Analytic Account %s is currently locked. "
+"You cannot register an expense on a locked Sales Order. Please create a new "
+"SO linked to this Analytic Account."
+msgstr ""
+
+#. module: sale
+#: code:addons/sale/models/analytic.py:129
+#, python-format
+msgid ""
+"The Sales Order %s linked to the Analytic Account %s must be validated "
+"before registering expenses."
 msgstr ""
 
 #. module: sale
@@ -2582,7 +2616,7 @@ msgstr "Att fakturera"
 #. module: sale
 #: model:ir.ui.view,arch_db:sale.view_sales_order_filter
 msgid "Today Activities"
-msgstr ""
+msgstr "Dagens aktiviteter"
 
 #. module: sale
 #: model:ir.model.fields,field_description:sale.field_report_all_channels_sales_price_total

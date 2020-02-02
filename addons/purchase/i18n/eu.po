@@ -3,23 +3,25 @@
 # * purchase
 # 
 # Translators:
-# Martin Trigaux, 2017
 # Eneko <eastigarraga@codesyntax.com>, 2018
-# Mikel Lizarralde <mikellizarralde@gmail.com>, 2018
-# Naomi Hidalgo <naomihid96@gmail.com>, 2018
+# Nagore Ruiz de Escudero <nagore.ruiz.escudero@gmail.com>, 2018
+# Martin Trigaux, 2018
 # José Miguel Andonegi <jm.andonegi@gmail.com>, 2018
 # oihane <oihanecruce@gmail.com>, 2018
 # Esther Martín Menéndez <esthermartin001@gmail.com>, 2018
 # ibinka lete <ilete@fpbidasoa.net>, 2018
 # Gorka Toledo <gorka.toledo@gmail.com>, 2018
-# Nagore Ruiz de Escudero <nagore.ruiz.escudero@gmail.com>, 2018
+# Naomi Hidalgo <naomihid96@gmail.com>, 2018
+# Mikel Lizarralde <mikellizarralde@gmail.com>, 2018
+# Victor Laskurain <blaskurain@binovo.es>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-27 11:55+0000\n"
-"PO-Revision-Date: 2018-07-27 11:55+0000\n"
-"Last-Translator: Nagore Ruiz de Escudero <nagore.ruiz.escudero@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-01-03 15:06+0000\n"
+"PO-Revision-Date: 2017-09-20 10:22+0000\n"
+"Last-Translator: Victor Laskurain <blaskurain@binovo.es>, 2019\n"
 "Language-Team: Basque (https://www.transifex.com/odoo/teams/41243/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,11 +51,11 @@ msgid ""
 "from ${object.company_id.name}.\n"
 "</p>\n"
 "\n"
-"<p>Do not hesitate to contact us, further you have any question.</p>\n"
+"<p>Do not hesitate to contact us if you have any further question.</p>\n"
 "<p>Best regards,</p>\n"
 "<p style=\"color:#888888;\">\n"
-"% if object.user_id and object.user_id.signature:\n"
-"    ${object.user_id.signature | safe}\n"
+"% if object.sudo().create_uid and object.sudo().create_uid.signature:\n"
+"    ${object.sudo().create_uid.signature | safe}\n"
 "% endif\n"
 "</p>\n"
 msgstr ""
@@ -81,6 +83,11 @@ msgid ""
 "\n"
 "<p>You can reply to this email if you have any questions.</p>\n"
 "<p>Thank you,</p>\n"
+"<p style=\"color:#888888;\">\n"
+"% if object.sudo().create_uid and object.sudo().create_uid.signature:\n"
+"    ${object.sudo().create_uid.signature | safe}\n"
+"% endif\n"
+"</p>\n"
 msgstr ""
 
 #. module: purchase
@@ -212,6 +219,14 @@ msgid ""
 "                </body>\n"
 "                </html>\n"
 "            "
+msgstr ""
+
+#. module: purchase
+#: model:ir.ui.view,arch_db:purchase.res_config_settings_view_form_purchase
+#: model:ir.ui.view,arch_db:purchase.res_config_settings_view_form_stock
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
 
 #. module: purchase
@@ -733,7 +748,7 @@ msgstr ""
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.view_purchase_order_filter
 msgid "Expected Date"
-msgstr ""
+msgstr "Esperotako data"
 
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.view_purchase_order_search
@@ -823,7 +838,7 @@ msgstr "Produktu berriak"
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.purchase_order_form
 msgid "Incoming Shipments"
-msgstr ""
+msgstr "Sarrera bidalketak"
 
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_incoterm_id
@@ -994,7 +1009,7 @@ msgstr ""
 #. module: purchase
 #: model:ir.model,name:purchase.model_stock_warehouse_orderpoint
 msgid "Minimum Inventory Rule"
-msgstr ""
+msgstr "Gutxieneko inbentario erregela"
 
 #. module: purchase
 #: model:ir.model.fields,help:purchase.field_res_company_po_double_validation_amount
@@ -1203,7 +1218,7 @@ msgstr "Hornikuntza taldea"
 #. module: purchase
 #: model:ir.model,name:purchase.model_procurement_group
 msgid "Procurement Requisition"
-msgstr ""
+msgstr "Hornikuntza eskaera"
 
 #. module: purchase
 #: model:ir.model,name:purchase.model_procurement_rule
@@ -1443,7 +1458,7 @@ msgstr "Erosketa eskariak"
 #. module: purchase
 #: model:ir.model,name:purchase.model_stock_location_path
 msgid "Pushed Flow"
-msgstr ""
+msgstr "Push fluxua"
 
 #. module: purchase
 #: model:ir.model.fields,help:purchase.field_purchase_order_dest_address_id
@@ -1601,7 +1616,7 @@ msgstr "Arduraduna"
 #. module: purchase
 #: model:ir.model,name:purchase.model_stock_return_picking
 msgid "Return Picking"
-msgstr ""
+msgstr "Itzulpen albarana"
 
 #. module: purchase
 #: model:ir.ui.view,arch_db:purchase.res_config_settings_view_form_stock
@@ -1684,6 +1699,8 @@ msgstr "Bidalketa"
 #: model:ir.ui.view,arch_db:purchase.view_purchase_order_filter
 msgid "Show all records which has next action date is before today"
 msgstr ""
+"Erakutsi gaur baino lehenagoko hurrengo ekintza data duten erregistro "
+"guztiak"
 
 #. module: purchase
 #: model:ir.model.fields,field_description:purchase.field_purchase_order_origin
@@ -2136,4 +2153,4 @@ msgstr "egun"
 #. module: purchase
 #: model:ir.model,name:purchase.model_res_config_settings
 msgid "res.config.settings"
-msgstr ""
+msgstr "res.config.settings"

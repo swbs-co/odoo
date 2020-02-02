@@ -217,10 +217,13 @@ command is available and configured properly, run the following commands :
     $ sudo systemctl start postgresql
 
 In order to print PDF reports, you must install wkhtmltopdf_ yourself:
-the version of wkhtmltopdf_ available in debian repositories does not support
-headers and footers so it can not be installed automatically.
-The recommended version is 0.12.1 and is available on `the wkhtmltopdf download page`_,
-in the archive section.
+the version of wkhtmltopdf_ available in Debian repositories does
+not support headers and footers so it is not used as a direct dependency.
+The recommended version is 0.12.5 and is available on
+`the wkhtmltopdf download page`_, in the archive section. Previously
+recommended version 0.12.1 is a good alternative.
+More details on the various versions and their respective quirks can be
+found in our `wiki <https://github.com/odoo/odoo/wiki/Wkhtmltopdf>`_.
 
 Repository
 ^^^^^^^^^^
@@ -490,20 +493,20 @@ Under Windows a typical way to execute odoo would be:
 
 .. code-block:: doscon
 
-    C:\YourOdooPath> python3 odoo-bin -w odoo -r odoo --addons-path=addons,../mymodules --db-filter=mydb$
+    C:\YourOdooPath> python3 odoo-bin -w odoo -r odoo --addons-path=addons -d mydb
 
-Where ``odoo``, ``odoo`` are the postgresql login and password,
-``../mymodules`` a directory with additional addons and ``mydb`` the default
-db to serve on localhost:8069
+Where ``odoo``, ``odoo`` are the postgresql login and password
+and ``mydb`` the default db to serve on localhost:8069. You can add other
+directory paths separated by a comma to ``addons`` at the end of addons-path option.
 
 Under Unix a typical way to execute odoo would be:
 
 .. code-block:: console
 
-    $ ./odoo-bin --addons-path=addons,../mymodules --db-filter=mydb$
+    $ ./odoo-bin --addons-path=addons -d mydb
 
-Where ``../mymodules`` is a directory with additional addons and ``mydb`` the
-default db to serve on localhost:8069
+Where ``mydb`` is the default db to serve on localhost:8069. You can add other
+directory paths separated by a comma to ``addons`` at the end of addons-path option.
 
 Virtualenv
 ----------
@@ -606,7 +609,7 @@ official Odoo `docker image <https://registry.hub.docker.com/_/odoo/>`_ page.
     http://www.enterprisedb.com/products-services-training/pgdownload
 .. _Quilt: http://en.wikipedia.org/wiki/Quilt_(software)
 .. _saas: https://www.odoo.com/page/start
-.. _the wkhtmltopdf download page: https://github.com/wkhtmltopdf/wkhtmltopdf/releases/tag/0.12.1
+.. _the wkhtmltopdf download page: https://github.com/wkhtmltopdf/wkhtmltopdf/releases/tag/0.12.5
 .. _UAC: http://en.wikipedia.org/wiki/User_Account_Control
 .. _wkhtmltopdf: http://wkhtmltopdf.org
 .. _pip: https://pip.pypa.io

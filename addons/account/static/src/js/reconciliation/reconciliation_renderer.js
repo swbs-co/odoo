@@ -389,10 +389,10 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
                     .attr("data-content", qweb.render('reconciliation.line.mv_line.details', {'line': line}));
             }
             if (line.already_paid === false &&
-                ((state.balance.amount_currency < 0 || line.partial_reconcile)
+                (((state.balance.amount_currency < 0 || line.partial_reconcile)
                     && line.amount > 0 && state.st_line.amount > 0 && targetLineAmount < line.amount && partialDebitProps <= 1) ||
                 ((state.balance.amount_currency > 0 || line.partial_reconcile)
-                    && line.amount < 0 && state.st_line.amount < 0 && targetLineAmount > line.amount && partialCreditProps <= 1)) {
+                    && line.amount < 0 && state.st_line.amount < 0 && targetLineAmount > line.amount && partialCreditProps <= 1))) {
                 var $cell = $line.find(line.amount > 0 ? '.cell_right' : '.cell_left');
                 var text;
                 if (line.partial_reconcile) {
@@ -487,7 +487,7 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
         }
         return this.model.makeRecord('account.bank.statement.line', [field], {
             partner_id: {
-                domain: [["parent_id", "=", false], "|", ["customer", "=", true], ["supplier", "=", true]],
+                domain: ["|", ["is_company", "=", true], ["parent_id", "=", false], "|", ["customer", "=", true], ["supplier", "=", true]],
                 options: {
                     no_open: true
                 }
@@ -526,7 +526,10 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
             type: 'float',
             name: 'amount',
         }], {
-            account_id: {string: _t("Account")},
+            account_id: {
+                string: _t("Account"),
+                domain: [['deprecated', '=', false]],
+            },
             label: {string: _t("Label")},
             amount: {string: _t("Account")}
         }).then(function (recordID) {
@@ -692,7 +695,8 @@ var LineRenderer = Widget.extend(FieldManagerMixin, {
      * @param {MouseEvent} event
      */
     _onSelectMoveLine: function (event) {
-        var $el = $(event.target)
+        var $el = $(event.target);
+        $el.prop('disabled', true);
         this._destroyPopover($el);
         var moveLineId = $el.closest('.mv_line').data('line-id');
         this.trigger_up('add_proposition', {'data': moveLineId});

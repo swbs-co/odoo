@@ -3,18 +3,19 @@
 # * payment
 # 
 # Translators:
-# Martin Trigaux, 2017
-# Hamid Darabi, 2017
-# Faraz Sadri Alamdari <ifarazir@gmail.com>, 2017
-# Hamed Mohammadi <hamed@dehongi.com>, 2017
 # Sahar Daraye <sahar.daraye.1369@gmail.com>, 2017
+# Hamid Darabi, 2017
+# Martin Trigaux, 2017
+# Faraz Sadri Alamdari <ifarazir@gmail.com>, 2018
+# Hamed Mohammadi <hamed@dehongi.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-27 11:56+0000\n"
-"PO-Revision-Date: 2018-07-27 11:56+0000\n"
-"Last-Translator: Sahar Daraye <sahar.daraye.1369@gmail.com>, 2017\n"
+"POT-Creation-Date: 2019-07-17 15:01+0000\n"
+"PO-Revision-Date: 2017-09-20 10:20+0000\n"
+"Last-Translator: Hamed Mohammadi <hamed@dehongi.com>, 2019\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,6 +46,20 @@ msgstr ""
 #. module: payment
 #: model:ir.ui.view,arch_db:payment.confirm
 msgid "<i class=\"fa fa-arrow-circle-right\"/> Back to My Account"
+msgstr ""
+
+#. module: payment
+#: model:ir.ui.view,arch_db:payment.payment_tokens_list
+msgid ""
+"<i class=\"fa fa-check text-success\" title=\"This payment method is "
+"verified by our system.\"/>"
+msgstr ""
+
+#. module: payment
+#: model:ir.ui.view,arch_db:payment.payment_tokens_list
+msgid ""
+"<i class=\"fa fa-close text-danger\" title=\"This payment method has not "
+"been verified by our system.\"/>"
 msgstr ""
 
 #. module: payment
@@ -1031,6 +1046,20 @@ msgstr "تولید"
 #: model:ir.ui.view,arch_db:payment.acquirer_search
 msgid "Provider"
 msgstr "فراهم‌کننده"
+
+#. module: payment
+#. openerp-web
+#: code:addons/payment/static/src/js/payment_translations.js:9
+#, python-format
+msgid "Publish"
+msgstr "انتشار"
+
+#. module: payment
+#. openerp-web
+#: code:addons/payment/static/src/js/payment_translations.js:8
+#, python-format
+msgid "Published"
+msgstr "منتشر شده"
 
 #. module: payment
 #: selection:payment.acquirer,payment_flow:0

@@ -1891,6 +1891,15 @@ $.summernote.pluginEvents.formatBlock = function (event, editor, layoutInfo, sTa
     if (!r) {
         return;
     }
+    // select content since container (that firefox selects) may be removed
+    if (r.so === 0) {
+        r.sc = dom.firstChild(r.sc);
+    }
+    if (dom.nodeLength(r.ec) >= r.eo) {
+        r.ec = dom.lastChild(r.ec);
+        r.eo = dom.nodeLength(r.ec);
+    }
+    r = range.create(r.sc, r.so, r.ec, r.eo);
     r.reRange().select();
 
     if (sTagName === "blockquote" || sTagName === "pre") {
@@ -1904,6 +1913,10 @@ $.summernote.pluginEvents.formatBlock = function (event, editor, layoutInfo, sTa
     for (var i=0; i<nodes.length; i++) {
         if (dom.isBR(nodes[i]) || (dom.isText(nodes[i]) && dom.isVisibleText(nodes[i])) || dom.isB(nodes[i]) || dom.isU(nodes[i]) || dom.isS(nodes[i]) || dom.isI(nodes[i]) || dom.isFont(nodes[i])) {
             var ancestor = dom.ancestor(nodes[i], isFormatNode);
+            if ($(ancestor).parent().is('blockquote')) {
+                // firefox may wrap formatting block in blockquote
+                $(ancestor).unwrap();
+            }
             if (!ancestor) {
                 dom.wrap(nodes[i], sTagName);
             } else if (ancestor.tagName.toLowerCase() !== sTagName) {
@@ -2095,14 +2108,16 @@ $.summernote.pluginEvents.applyFont = function (event, editor, layoutInfo, color
     }
 
     // apply font: foreColor, backColor, size (the color can be use a class text-... or bg-...)
-    var font, $font, fonts = [], className;
+    var ancestors, font, $font, fonts = [], className;
     var i;
     if (color || bgcolor || size) {
       for (i=0; i<nodes.length; i++) {
         node = nodes[i];
 
-        font = dom.ancestor(node, dom.isFont);
-        if (!font) {
+        ancestors = dom.listAncestor(node, dom.isFont);
+        font = ancestors.slice(-1)[0];
+        // add font if node is not inside a font or inside an anchor firstly
+        if (!dom.isFont(font) || ancestors.filter(dom.isAnchor).length) {
           if (node.textContent.match(/^[ ]|[ ]$/)) {
             node.textContent = node.textContent.replace(/^[ ]|[ ]$/g, '\u00A0');
           }
@@ -2186,7 +2201,7 @@ $.summernote.pluginEvents.applyFont = function (event, editor, layoutInfo, color
     // select nodes to clean (to remove empty font and merge same nodes)
     nodes = [];
     dom.walkPoint(startPoint, endPoint, function (point) {
-      nodes.push(point.node);
+      nodes.push(point.node.childNodes[point.offset] || point.node);
     });
     nodes = list.unique(nodes);
 
@@ -2205,10 +2220,8 @@ $.summernote.pluginEvents.applyFont = function (event, editor, layoutInfo, color
      for (i=0; i<nodes.length; i++) {
       node = nodes[i];
 
-      if ((dom.isText(node) || dom.isBR(node)) && !dom.isVisibleText(node)) {
+      if (dom.isText(node) && !node.nodeValue) {
         remove(node);
-        nodes.splice(i,1);
-        i--;
         continue;
       }
 
@@ -2225,18 +2238,14 @@ $.summernote.pluginEvents.applyFont = function (event, editor, layoutInfo, color
 
       if (!className && !style) {
         remove(node, node.parentNode);
-        nodes.splice(i,1);
-        i--;
         continue;
       }
 
-      if (i>0 && (font = dom.ancestor(nodes[i-1], dom.isFont))) {
+      if (font = dom.ancestor(node.previousSibling, dom.isFont)) {
         className2 = font.getAttribute('class');
         style2 = font.getAttribute('style');
         if (node !== font && className === className2 && style === style2) {
           remove(node, font);
-          nodes.splice(i,1);
-          i--;
           continue;
         }
       }
@@ -2283,7 +2292,7 @@ $.summernote.pluginEvents.backColor = function (event, editor, layoutInfo, backC
 
 options.onCreateLink = function (sLinkUrl) {
     if (sLinkUrl.indexOf('mailto:') === 0 || sLinkUrl.indexOf('tel:') === 0) {
-      // pass
+      sLinkUrl = sLinkUrl.replace(/^tel:([0-9]+)$/, 'tel://$1');
     } else if (sLinkUrl.indexOf('@') !== -1 && sLinkUrl.indexOf(':') === -1) {
       sLinkUrl =  'mailto:' + sLinkUrl;
     } else if (sLinkUrl.indexOf('://') === -1 && sLinkUrl[0] !== '/'

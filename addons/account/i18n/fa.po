@@ -3,32 +3,33 @@
 # * account
 # 
 # Translators:
-# Hamed Mohammadi <hamed@dehongi.com>, 2017
-# arya sadeghy <aryasadeghy@gmail.com>, 2017
-# Martin Trigaux, 2017
-# Hamid Darabi, 2017
 # Ali Alikhani <a.alikhani@gmail.com>, 2017
-# hamid hvbnet <hvbnet@yahoo.com>, 2017
-# Sahar Daraye <sahar.daraye.1369@gmail.com>, 2017
-# mohammad rahmani <mohammadrahmani2o0@gmail.com>, 2017
 # Mohammad Ali Rooeintan <m.a.rooeintan@gmail.com>, 2017
-# Sepehr Khoshnood <sepehr.kho@gmail.com>, 2017
-# Faraz Sadri Alamdari <ifarazir@gmail.com>, 2017
-# Sahand Hashemi <sahand.twastica@gmail.com>, 2017
-# elaheh pourrezaie <elaheh.pourrezaie@hotmail.com>, 2017
 # hamid k <hamidk1010@yahoo.com>, 2017
-# Zahed Alfak <tamass4116@gmail.com>, 2017
+# elaheh pourrezaie <elaheh.pourrezaie@hotmail.com>, 2017
 # Sia Rezazadeh <siavash.rezazadeh@gmail.com>, 2017
 # Maziar Niaki <maziarmn@gmail.com>, 2017
+# Faraz Sadri Alamdari <ifarazir@gmail.com>, 2017
+# Sahand Hashemi <sahand.twastica@gmail.com>, 2017
+# mohammad rahmani <mohammadrahmani2o0@gmail.com>, 2017
+# Sahar Daraye <sahar.daraye.1369@gmail.com>, 2017
+# hamid hvbnet <hvbnet@yahoo.com>, 2017
+# Zahed Alfak <tamass4116@gmail.com>, 2017
+# arya sadeghi <aryasadeghy@gmail.com>, 2017
+# Hamid Darabi, 2017
+# Sepehr Khoshnood <sepehr.kho@gmail.com>, 2017
 # سید محمد آذربرا <mohammadazarbara98@gmail.com>, 2017
 # Arash Sardari <arashss77@gmail.com>, 2018
+# Martin Trigaux, 2019
+# Hamed Mohammadi <hamed@dehongi.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-27 11:55+0000\n"
-"PO-Revision-Date: 2018-07-27 11:55+0000\n"
-"Last-Translator: Arash Sardari <arashss77@gmail.com>, 2018\n"
+"POT-Creation-Date: 2019-03-29 09:07+0000\n"
+"PO-Revision-Date: 2017-09-20 10:13+0000\n"
+"Last-Translator: Hamed Mohammadi <hamed@dehongi.com>, 2019\n"
 "Language-Team: Persian (https://www.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -435,6 +436,15 @@ msgstr ""
 #: model:ir.ui.view,arch_db:account.account_planner
 msgid "<span class=\"fa fa-arrow-circle-o-down\"/> Install Now"
 msgstr "<span class=\"fa fa-arrow-circle-o-down\"/>الان نصب کن "
+
+#. module: account
+#: model:ir.ui.view,arch_db:account.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
@@ -1208,7 +1218,7 @@ msgstr ""
 #: code:addons/account/models/account_move.py:891
 #, python-format
 msgid "A reconciliation must involve at least 2 move lines."
-msgstr ""
+msgstr "یک همگام سازی باید حداقل شامل 2 خط انتقال باشد."
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -1372,7 +1382,7 @@ msgstr ""
 #. module: account
 #: model:ir.ui.view,arch_db:account.view_account_move_reversal
 msgid "Account Move Reversal"
-msgstr ""
+msgstr "برگشت انتقال حساب"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_bank_accounts_wizard_acc_name
@@ -1932,12 +1942,12 @@ msgstr "اجازه دادن به حاشیه محصول"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_account_reconcile
 msgid "Allow Reconciliation"
-msgstr ""
+msgstr "اجازه همگام سازی"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings_module_l10n_us_check_printing
 msgid "Allow check printing and deposits"
-msgstr ""
+msgstr "اجازه چاپ چک و پس انداز"
 
 #. module: account
 #: model:res.groups,name:account.group_cash_rounding
@@ -2001,7 +2011,7 @@ msgstr "مقدار سر رسید"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_residual_company_signed
 msgid "Amount Due in Company Currency"
-msgstr ""
+msgstr "مقدار سر رسید در ارز شرکت"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_residual_signed
@@ -2452,7 +2462,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_company_account_setup_bank_data_done
 msgid "Bank Setup Marked As Done"
-msgstr ""
+msgstr "برباسازی بانک علامت زده به صورت انجام شده"
 
 #. module: account
 #: model:ir.model,name:account.model_account_bank_statement
@@ -2682,12 +2692,12 @@ msgstr ""
 #: code:addons/account/models/chart_template.py:197
 #, python-format
 msgid "CABA"
-msgstr ""
+msgstr "CABA"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "CAMT Import"
-msgstr ""
+msgstr "ورود از CAMT"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -3814,11 +3824,19 @@ msgid "Currency as per company's country."
 msgstr "ارز به ازای هر کشور شرکت."
 
 #. module: account
-#: code:addons/account/models/account_move.py:1609
-#: code:addons/account/models/account_move.py:1621
+#: code:addons/account/models/account_move.py:1663
+#: code:addons/account/models/account_move.py:1675
 #, python-format
 msgid "Currency exchange rate difference"
 msgstr "اختلاف نرخ تبدیل ارز"
+
+#. module: account
+#: code:addons/account/models/account.py:451
+#, python-format
+msgid ""
+"Currency field should only be set if the journal's currency is different "
+"from the company's. Leave the field blank to use company currency."
+msgstr ""
 
 #. module: account
 #: model:account.account.type,name:account.data_account_type_current_assets
@@ -4197,6 +4215,12 @@ msgid ""
 msgstr ""
 
 #. module: account
+#: code:addons/account/models/account_move.py:235
+#, python-format
+msgid "Difference debit - credit: "
+msgstr ""
+
+#. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
 msgid "Direct connection to your bank"
 msgstr ""
@@ -4454,7 +4478,12 @@ msgid "Due date"
 msgstr "تاریخ سررسید"
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:1176
+#: model:ir.ui.view,arch_db:account.view_move_form
+msgid "Duplicate"
+msgstr "تکثیر کردن"
+
+#. module: account
+#: code:addons/account/models/account_invoice.py:1194
 #, python-format
 msgid ""
 "Duplicated vendor reference detected. You probably encoded twice the same "
@@ -10525,6 +10554,7 @@ msgstr "گزارش تراز آزمایشی"
 #: model:ir.model.fields,field_description:account.field_account_account_user_type_id
 #: model:ir.model.fields,field_description:account.field_account_bank_statement_journal_type
 #: model:ir.model.fields,field_description:account.field_account_financial_report_type
+#: model:ir.model.fields,field_description:account.field_account_invoice_line_invoice_type
 #: model:ir.model.fields,field_description:account.field_account_invoice_report_type
 #: model:ir.model.fields,field_description:account.field_account_invoice_type
 #: model:ir.model.fields,field_description:account.field_account_journal_type
@@ -11274,7 +11304,7 @@ msgid "You cannot put/take money in/out for a bank statement which is closed."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account.py:253
+#: code:addons/account/models/account.py:261
 #, python-format
 msgid ""
 "You cannot remove/deactivate an account which is set on a customer or "
@@ -11282,13 +11312,21 @@ msgid ""
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1330
+#: code:addons/account/models/account.py:249
+#, python-format
+msgid ""
+"You cannot set a currency on this account as it already has some journal "
+"entries having a different foreign currency."
+msgstr ""
+
+#. module: account
+#: code:addons/account/models/account_move.py:1368
 #, python-format
 msgid "You cannot use deprecated account."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:1250
+#: code:addons/account/models/account_move.py:1283
 #, python-format
 msgid ""
 "You cannot use this general account in this journal, check the tab 'Entry "
@@ -11297,7 +11335,7 @@ msgstr ""
 
 #. module: account
 #: code:addons/account/models/account_invoice.py:74
-#: code:addons/account/models/account_invoice.py:777
+#: code:addons/account/models/account_invoice.py:780
 #, python-format
 msgid ""
 "You cannot validate an invoice with a negative total amount. You should "
@@ -11687,11 +11725,3 @@ msgstr "wizard.multi.charts.accounts"
 #: model:ir.ui.view,arch_db:account.view_bank_statement_form
 msgid "→ Count"
 msgstr "→ شمردن"
-
-#. module: account
-#: code:addons/account/models/account.py:309
-#, python-format
-msgid ""
-"Currency field should only be set if the journal's currency is different "
-"from the company's. Leave the field blank to use company currency."
-msgstr ""

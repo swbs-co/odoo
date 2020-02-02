@@ -4,16 +4,17 @@
 # 
 # Translators:
 # Martin Trigaux, 2017
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2017
-# Michael Yeung, 2017
+# Michael Yeung, 2018
 # Bill Hsu <hcm86@icloud.com>, 2018
+# 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-27 11:56+0000\n"
-"PO-Revision-Date: 2018-07-27 11:56+0000\n"
-"Last-Translator: Bill Hsu <hcm86@icloud.com>, 2018\n"
+"POT-Creation-Date: 2019-03-29 09:08+0000\n"
+"PO-Revision-Date: 2017-09-20 10:22+0000\n"
+"Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2019\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -721,9 +722,7 @@ msgid "Computer SC234"
 msgstr "電腦 SC234"
 
 #. module: product
-#: code:addons/product/models/product_template.py:50
 #: selection:product.template,type:0
-#, python-format
 msgid "Consumable"
 msgstr "可消耗"
 
@@ -754,6 +753,12 @@ msgstr "產品單位 %s 與預設單位 %s 無法轉換，二者屬於不同的�
 #: selection:product.pricelist.item,base:0
 msgid "Cost"
 msgstr "成本"
+
+#. module: product
+#: model:ir.model.fields,field_description:product.field_product_product_cost_currency_id
+#: model:ir.model.fields,field_description:product.field_product_template_cost_currency_id
+msgid "Cost Currency"
+msgstr "成本貨幣"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product_standard_price
@@ -1434,6 +1439,10 @@ msgstr "庫存"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product_is_product_variant
+msgid "Is Product Variant"
+msgstr "是產品變體"
+
+#. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_is_product_variant
 msgid "Is a product variant"
 msgstr "是產品變體"
@@ -1706,7 +1715,7 @@ msgstr "超過375000的應用程序。"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_packaging_name
 msgid "Package Type"
-msgstr "包裹類型"
+msgstr "包裝類型"
 
 #. module: product
 #: model:ir.model,name:product.model_product_packaging
@@ -2091,7 +2100,7 @@ msgstr "採購計量單位"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_packaging_qty
 msgid "Quantity per Package"
-msgstr "每包裹的數量"
+msgstr "每包裝的數量"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_price_list_qty1
@@ -2279,9 +2288,7 @@ msgid "Server"
 msgstr "伺服器"
 
 #. module: product
-#: code:addons/product/models/product_template.py:51
 #: selection:product.template,type:0
-#, python-format
 msgid "Service"
 msgstr "服務"
 

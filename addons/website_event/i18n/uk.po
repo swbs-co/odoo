@@ -3,18 +3,19 @@
 # * website_event
 # 
 # Translators:
-# ТАрас <tratatuta@i.ua>, 2017
 # Yaroslav Molochko <onorua@gmail.com>, 2017
 # Bohdan Lisnenko, 2017
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2017
 # Martin Trigaux, 2017
+# ТАрас <tratatuta@i.ua>, 2017
+# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.saas~18\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-20 09:54+0000\n"
-"PO-Revision-Date: 2017-09-20 09:54+0000\n"
-"Last-Translator: Martin Trigaux, 2017\n"
+"POT-Creation-Date: 2019-03-29 09:08+0000\n"
+"PO-Revision-Date: 2017-09-20 10:26+0000\n"
+"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -279,11 +280,6 @@ msgstr "Перетягніть цей блок і залиште його на �
 #: model:ir.ui.view,arch_db:website_event.registration_complete
 msgid "E-mail"
 msgstr "E-mail"
-
-#. module: website_event
-#: model:ir.ui.view,arch_db:website_event.event_event_view_form_inherit_website
-msgid "Edit Badges"
-msgstr "Редагувати бейдж"
 
 #. module: website_event
 #: model:ir.ui.view,arch_db:website_event.ticket
@@ -558,7 +554,7 @@ msgstr "Переглянути всі найближчі події"
 #. module: website_event
 #: model:ir.ui.view,arch_db:website_event.event_description_full
 msgid "Social Stream"
-msgstr "Соціальний потік"
+msgstr "Трансляція у соціальних мережах"
 
 #. module: website_event
 #: model:ir.ui.view,arch_db:website_event.404
@@ -637,7 +633,7 @@ msgid ""
 "                        events."
 msgstr ""
 "Напишіть тут відгук одного з учасників.\n"
-"Це покаже довіру до Ваших \n"
+"Це покаже довіру до ваших \n"
 "подій."
 
 #. module: website_event
@@ -648,7 +644,7 @@ msgstr "Ваша реєстрація"
 #. module: website_event
 #: model:ir.ui.view,arch_db:website_event.event_details
 msgid "to"
-msgstr "по"
+msgstr "до"
 
 #. module: website_event
 #: model:ir.ui.view,arch_db:website_event.index

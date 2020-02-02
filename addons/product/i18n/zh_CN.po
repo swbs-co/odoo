@@ -3,36 +3,39 @@
 # * product
 # 
 # Translators:
-# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2017
-# Martin Trigaux, 2017
-# Ted Wang <feiyuwang2012@gmail.com>, 2017
-# Jeffery CHEN Fan <jeffery9@gmail.com>, 2017
+# Yuan Xulei <hi@yxl.name>, 2017
+# Si Ling Lau <happy8645@hotmail.com>, 2017
 # zpq001 <zpq001@live.com>, 2017
-# liAnGjiA <liangjia@qq.com>, 2017
+# liyes <bodetools@gmail.com>, 2017
+# Yaorong Li <55yaorong.li@gmail.com>, 2017
+# Ted Wang <feiyuwang2012@gmail.com>, 2017
+# THL <wt39181819@gmail.com>, 2017
+# v2exerer <9010446@qq.com>, 2017
+# xiaobin wu <bd5dml@gmail.com>, 2017
+# Maie <m@maie.name>, 2017
+# glovebx <ruinning@163.com>, 2017
 # Gary Wei <Gary.wei@elico-corp.com>, 2017
 # zhining wu <wzn63@21cn.com>, 2017
-# v2exerer <9010446@qq.com>, 2017
-# fausthuang, 2017
-# Yuan Xulei <hi@yxl.name>, 2017
-# 苏州远鼎 <tiexinliu@126.com>, 2017
-# Si Ling Lau <happy8645@hotmail.com>, 2017
 # waveyeung <waveyeung@qq.com>, 2017
-# liyes <bodetools@gmail.com>, 2017
-# glovebx <ruinning@163.com>, 2017
-# THL <wt39181819@gmail.com>, 2017
-# Maie <m@maie.name>, 2017
-# Yaorong Li <55yaorong.li@gmail.com>, 2017
-# xiaobin wu <bd5dml@gmail.com>, 2017
+# fausthuang, 2017
+# 苏州远鼎 <tiexinliu@126.com>, 2017
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2018
 # 老窦 北京 <2662059195@qq.com>, 2018
 # liulixia <liu.lixia@elico-corp.com>, 2018
-# 广州救火 <7017511@qq.com>, 2018
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2018
+# Martin Trigaux, 2018
+# keecome <7017511@qq.com>, 2018
+# liAnGjiA <liangjia@qq.com>, 2018
+# diaojiaolou <124412206@qq.com>, 2019
+# F4NNIU <sparkamax@gmail.com>, 2019
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-27 11:56+0000\n"
-"PO-Revision-Date: 2018-07-27 11:56+0000\n"
-"Last-Translator: 广州救火 <7017511@qq.com>, 2018\n"
+"POT-Creation-Date: 2019-03-29 09:08+0000\n"
+"PO-Revision-Date: 2017-09-20 10:22+0000\n"
+"Last-Translator: F4NNIU <sparkamax@gmail.com>, 2019\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -742,9 +745,7 @@ msgid "Computer SC234"
 msgstr "电脑 SC234"
 
 #. module: product
-#: code:addons/product/models/product_template.py:50
 #: selection:product.template,type:0
-#, python-format
 msgid "Consumable"
 msgstr "可消耗"
 
@@ -775,6 +776,12 @@ msgstr "产品单位 %s 与默认单位 %s 无法转换，二者属于不同的�
 #: selection:product.pricelist.item,base:0
 msgid "Cost"
 msgstr "成本"
+
+#. module: product
+#: model:ir.model.fields,field_description:product.field_product_product_cost_currency_id
+#: model:ir.model.fields,field_description:product.field_product_template_cost_currency_id
+msgid "Cost Currency"
+msgstr "成本货币"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product_standard_price
@@ -1462,6 +1469,10 @@ msgstr "库存"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product_is_product_variant
+msgid "Is Product Variant"
+msgstr "是产品变体"
+
+#. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_is_product_variant
 msgid "Is a product variant"
 msgstr "是产品变体"
@@ -2310,9 +2321,7 @@ msgid "Server"
 msgstr "服务器"
 
 #. module: product
-#: code:addons/product/models/product_template.py:51
 #: selection:product.template,type:0
-#, python-format
 msgid "Service"
 msgstr "服务"
 
