@@ -1,6 +1,7 @@
 odoo.define('payment_stripe_sca.payment_form', function (require) {
     "use strict";
-    
+
+    require('web.dom_ready');
     var ajax = require('web.ajax');
     var core = require('web.core');
     var rpc = require('web.rpc');
@@ -12,9 +13,13 @@ odoo.define('payment_stripe_sca.payment_form', function (require) {
     PaymentForm.include({
     
         willStart: function () {
-            return this._super.apply(this, arguments).then(function () {
-                return ajax.loadJS("https://js.stripe.com/v3/");
-            })
+            var res = this._super.apply(this, arguments);
+            if (this.$('[data-provider="stripe"]').length) {
+                return res.then(function () {
+                    return ajax.loadJS("https://js.stripe.com/v3/");
+                });
+            }
+            return res;
         },
     
         //--------------------------------------------------------------------------
@@ -124,6 +129,10 @@ odoo.define('payment_stripe_sca.payment_form', function (require) {
                     var stripe = new Stripe(tx_info.stripe_publishable_key);
                     return $.Deferred(function(defer) {
                         stripe.handleCardPayment(tx_info.stripe_payment_intent_secret).then(function (result) {defer.resolve(result)});
+                    });
+                } else {
+                    return $.Deferred().reject({
+                        "message": {"data": { "message": _t("An error occured with transaction ") + (tx_info.reference || "")}}
                     });
                 }
             }).then(function (result) {

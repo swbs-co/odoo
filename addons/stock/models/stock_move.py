@@ -304,7 +304,7 @@ class StockMove(models.Model):
         if self.state == 'done':
             self.availability = self.product_qty
         else:
-            total_availability = self.env['stock.quant']._get_available_quantity(self.product_id, self.location_id)
+            total_availability = self.env['stock.quant']._get_available_quantity(self.product_id, self.location_id) if self.product_id else 0.0
             self.availability = min(self.product_qty, total_availability)
 
     def _compute_string_qty_information(self):
@@ -734,6 +734,10 @@ class StockMove(models.Model):
             'location_dest_id': self.location_dest_id.id,
         }
 
+    def _should_be_assigned(self):
+        self.ensure_one()
+        return bool(not self.picking_id and self.picking_type_id)
+
     def _action_confirm(self, merge=True, merge_into=False):
         """ Confirms stock move or put it in waiting if it's linked to another move.
         :param: merge: According to this boolean, a newly confirmed move will be merged
@@ -753,7 +757,7 @@ class StockMove(models.Model):
                     move_create_proc |= move
                 else:
                     move_to_confirm |= move
-            if not move.picking_id and move.picking_type_id:
+            if move._should_be_assigned():
                 key = (move.group_id.id, move.location_id.id, move.location_dest_id.id)
                 if key not in to_assign:
                     to_assign[key] = self.env['stock.move']
@@ -1225,7 +1229,9 @@ class StockMove(models.Model):
 
     def _recompute_state(self):
         for move in self:
-            if move.reserved_availability == move.product_uom_qty:
+            if move.state in ('cancel', 'done', 'draft'):
+                continue
+            elif move.reserved_availability == move.product_uom_qty:
                 move.state = 'assigned'
             elif move.reserved_availability and move.reserved_availability <= move.product_uom_qty:
                 move.state = 'partially_available'
