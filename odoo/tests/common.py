@@ -18,6 +18,7 @@ import re
 import requests
 import shutil
 import signal
+import socket
 import subprocess
 import tempfile
 import threading
@@ -32,7 +33,7 @@ from decorator import decorator
 from lxml import etree, html
 
 from odoo.models import BaseModel
-from odoo.osv.expression import normalize_domain
+from odoo.osv.expression import normalize_domain, TRUE_LEAF, FALSE_LEAF
 from odoo.tools import pycompat
 from odoo.tools import single_email_re
 from odoo.tools.misc import find_in_path
@@ -470,7 +471,7 @@ class ChromeBrowser():
         if websocket is None:
             self._logger.warning("websocket-client module is not installed")
             raise unittest.SkipTest("websocket-client module is not installed")
-        self.devtools_port = PORT + 2
+        self.devtools_port = None
         self.ws_url = ''  # WebSocketUrl
         self.ws = None  # websocket
         self.request_id = 0
@@ -539,6 +540,12 @@ class ChromeBrowser():
     def _chrome_start(self):
         if self.chrome_process is not None:
             return
+        with socket.socket() as s:
+            s.bind(('localhost', 0))
+            if hasattr(socket, 'SO_REUSEADDR'):
+                s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            _, self.devtools_port = s.getsockname()
+
         switches = {
             '--headless': '',
             '--enable-logging': 'stderr',
@@ -708,7 +715,14 @@ class ChromeBrowser():
 
     def set_cookie(self, name, value, path, domain):
         params = {'name': name, 'value': value, 'path': path, 'domain': domain}
-        self._websocket_send('Network.setCookie', params=params)
+        _id = self._websocket_send('Network.setCookie', params=params)
+        return self._websocket_wait_id(_id)
+
+    def delete_cookie(self, name, **kwargs):
+        params = {kw:kwargs[kw] for kw in kwargs if kw in ['url', 'domain', 'path']}
+        params.update({'name': name})
+        _id = self._websocket_send('Network.deleteCookies', params=params)
+        return self._websocket_wait_id(_id)
 
     def _wait_ready(self, ready_code, timeout=60):
         self._logger.info('Evaluate ready code "%s"', ready_code)
@@ -879,6 +893,9 @@ class HttpCase(TransactionCase):
     def authenticate(self, user, password):
         # stay non-authenticated
         if user is None:
+            if self.session:
+                odoo.http.root.session_store.delete(self.session)
+            self.browser.delete_cookie('session_id', domain=HOST)
             return
 
         db = get_db_name()
@@ -1200,6 +1217,10 @@ class Form(object):
                 contexts[fname] = ctx
 
             descr = fvg['fields'].get(fname) or {'type': None}
+            # FIXME: better widgets support
+            # NOTE: selection breaks because of m2o widget=selection
+            if f.get('widget') in ['many2many']:
+                descr['type'] = f.get('widget')
             if level and descr['type'] == 'one2many':
                 self._o2m_set_edition_view(descr, f, level)
 
@@ -1210,8 +1231,12 @@ class Form(object):
         fields = self._view['fields']
         def cleanup(k, v):
             if fields[k]['type'] == 'one2many':
-                # o2m default gets a (6) at the start, makes no sense
-                return [c for c in v if c[0] != 6]
+                return [
+                    # use None as "empty" value for UPDATE instead of {}
+                    (1, c[1], None) if c[0] == 1 and not c[2] else c
+                    for c in v
+                    if c[0] != 6 # o2m default gets a (6) at the start, nonsensical
+                ]
             elif fields[k]['type'] == 'datetime' and isinstance(v, datetime):
                 return odoo.fields.Datetime.to_string(v)
             elif fields[k]['type'] == 'date' and isinstance(v, date):
@@ -1279,14 +1304,37 @@ class Form(object):
                 e1 = stack.pop()
                 e2 = stack.pop()
                 stack.append(e1 or e2)
-            elif isinstance(it, list):
+            elif isinstance(it, tuple):
+                if it == TRUE_LEAF:
+                    stack.append(True)
+                    continue
+                elif it == FALSE_LEAF:
+                    stack.append(False)
+                    continue
                 f, op, val = it
                 # hack-ish handling of parent.<field> modifiers
                 f, n = re.subn(r'^parent\.', '', f, 1)
-                field_val = (vals['•parent•'] if n else vals)[f]
+                if n:
+                    field_val = vals['•parent•'][f]
+                else:
+                    field_val = vals[f]
+                    # apparent artefact of JS data representation: m2m field
+                    # values are assimilated to lists of ids?
+                    # FIXME: SSF should do that internally, but the requirement
+                    #        of recursively post-processing to generate lists of
+                    #        commands on save (e.g. m2m inside an o2m) means the
+                    #        data model needs proper redesign
+                    # we're looking up the "current view" so bits might be
+                    # missing when processing o2ms in the parent (see
+                    # values_to_save:1450 or so)
+                    f_ = self._view['fields'].get(f, {'type': None})
+                    if f_['type'] == 'many2many':
+                        # field value should be [(6, _, ids)], we want just the ids
+                        field_val = field_val[0][2] if field_val else []
+
                 stack.append(self._OPS[op](field_val, val))
             else:
-                raise ValueError("Unknown domain element %s" % it)
+                raise ValueError("Unknown domain element %s" % [it])
         [result] = stack
         return result
     _OPS = {
@@ -1312,7 +1360,8 @@ class Form(object):
         # * the environment's context (?)
         # * a few magic values
         record_id = self._values.get('id') or False
-        ctx = dict(self._values)
+
+        ctx = dict(self._values_to_save(all_fields=True))
         ctx.update(self._env.context)
         ctx.update(
             id=record_id,
@@ -1368,37 +1417,40 @@ class Form(object):
                 r.write(values)
         else:
             r = self._model.create(values)
-        [data] = r.read(list(self._view['fields']))
-        # FIXME: process relational fields
-        # alternative: iterate on record & read from it directly? pb: would
-        # provide recordsets for relational fields which may or may not be
-        # what we ultimately want, but we've got to re-process them anyway so...?
-        self._values.update(data)
+            self._values.update(
+                record_to_values(self._view['fields'], r)
+            )
         self._changed.clear()
+        self._model.invalidate_cache()
         return r
 
-    def _values_to_save(self):
+    def _values_to_save(self, all_fields=False):
         """ Validates values and returns only fields modified since
         load/save
+
+        :param bool all_fields: if False (the default), checks for required
+                                fields and only save fields which are changed
+                                and not readonly
         """
         values = {}
         fields = self._view['fields']
         for f in fields:
+            descr = fields[f]
             v = self._values[f]
-            if self._get_modifier(f, 'required') and not fields[f]['type'] == 'boolean':
+            # note: maybe `invisible` should not skip `required` if model attribute
+            if not all_fields and self._get_modifier(f, 'required') and not (descr['type'] == 'boolean' or self._get_modifier(f, 'invisible')):
                 assert v is not False, "{} is a required field".format(f)
-
-            # skip unmodified fields
-            if f not in self._changed:
+            # skip unmodified fields unless all_fields (also always ignore id)
+            if f == 'id' or not (all_fields or f in self._changed):
                 continue
 
             if self._get_modifier(f, 'readonly'):
                 node = _get_node(self._view, f)
-                if not node.get('force_save'):
+                if not (all_fields or node.get('force_save')):
                     continue
 
-            if fields[f]['type'] == 'one2many':
-                view = fields[f]['views']['edition']
+            if descr['type'] == 'one2many':
+                view = descr['views']['edition']
                 modifiers = view['modifiers']
                 oldvals = v
                 v = []
@@ -1411,13 +1463,32 @@ class Form(object):
 
                 for (c, rid, vs) in oldvals:
                     if c in (0, 1):
-                        items = list(getattr(vs, 'changed_items', vs.items)())
-                        # FIXME: should be more extensive processing of o2m defaults
-                        vs.setdefault('id', False)
-                        vs['•parent•'] = self._values
+                        vs = vs or {}
+                        if all_fields:
+                            items = list(vs.items())
+                        else:
+                            items = list(getattr(vs, 'changed_items', vs.items)())
+                        fields_ = view['fields']
+                        missing = fields_.keys() - vs.keys()
+                        if missing: # FIXME: maaaybe this should be done at the start?
+                            Model = self._env[descr['relation']]
+                            if c == 0:
+                                vs.update(dict.fromkeys(missing, False))
+                                vs.update(
+                                    (k, _cleanup_from_default(fields_[k], v))
+                                    for k, v in Model.default_get(list(missing)).items()
+                                )
+                            else:
+                                vs.update(record_to_values(
+                                    {k: v for k, v in fields_.items() if k not in vs},
+                                    Model.browse(rid)
+                                ))
+                        context = dict(vs)
+                        context.setdefault('id', False)
+                        context['•parent•'] = self._values
                         vs = {
                             k: v for k, v in items
-                            if nodes[k].get('force_save') or not self._get_modifier(k, 'readonly', modmap=modifiers, vals=vs)
+                            if (all_fields and k != 'id') or nodes[k].get('force_save') or not self._get_modifier(k, 'readonly', modmap=modifiers, vals=context)
                         }
                     v.append((c, rid, vs))
 
@@ -1438,7 +1509,7 @@ class Form(object):
         record = self._model.browse(self._values.get('id'))
         result = record.onchange(self._onchange_values(), fields, spec)
         if result.get('warning'):
-            _logger.getChild('onchange').warn("%(title)s %(message)s" % result.get('warning'))
+            _logger.getChild('onchange').warning("%(title)s %(message)s" % result.get('warning'))
         values = result.get('value', {})
         # mark onchange output as changed
         self._changed.update(values.keys())
@@ -1480,27 +1551,48 @@ class Form(object):
             if not descr['views']:
                 return []
 
+            if current is None:
+                current = []
             v = []
-            c = {t[1] for t in current if t[0] in (1, 2)} if current else set()
+            c = {t[1] for t in current if t[0] in (1, 2)}
+            current_values = {c[1]: c[2] for c in current if c[0] == 1}
             # which view should this be???
             subfields = descr['views']['edition']['fields']
             # TODO: simplistic, unlikely to work if e.g. there's a 5 inbetween other commands
             for command in value:
-                if command[0] in (0, 1):
-                    c.discard(command[1])
-                    v.append((command[0], command[1], {
-                        k: self._cleanup_onchange(
-                            subfields[k], v, None
-                        )
+                if command[0] == 0:
+                    v.append((0, 0, {
+                        k: self._cleanup_onchange(subfields[k], v, None)
                         for k, v in command[2].items()
                         if k in subfields
                     }))
+                elif command[0] == 1:
+                    record_id = command[1]
+                    c.discard(record_id)
+                    stored = current_values.get(record_id)
+                    if stored is None:
+                        record = self._env[descr['relation']].browse(record_id)
+                        stored = UpdateDict(record_to_values(subfields, record))
+
+                    updates = (
+                        (k, self._cleanup_onchange(subfields[k], v, None))
+                        for k, v in command[2].items()
+                        if k in subfields
+                    )
+                    for field, value in updates:
+                        # if there are values from the onchange which differ
+                        # from current values, update & mark field as changed
+                        if stored.get(field, value) != value:
+                            stored._changed.add(field)
+                            stored[field] = value
+
+                    v.append((1, record_id, stored))
                 elif command[0] == 2:
                     c.discard(command[1])
                     v.append((2, command[1], False))
                 elif command[0] == 4:
                     c.discard(command[1])
-                    v.append((1, command[1], {}))
+                    v.append((1, command[1], None))
                 elif command[0] == 5:
                     v = []
             # explicitly mark all non-relinked (or modified) records as deleted
@@ -1549,7 +1641,10 @@ class O2MForm(Form):
         if index is None:
             self._init_from_defaults(m)
         else:
-            self._values.update(proxy._records[index])
+            vals = proxy._records[index]
+            self._values.update(vals)
+            if hasattr(vals, '_changed'):
+                self._changed.update(vals._changed)
 
     def _get_modifier(self, field, modifier, default=False, modmap=None, vals=None):
         if vals is None:
@@ -1561,8 +1656,8 @@ class O2MForm(Form):
         values = super(O2MForm, self)._onchange_values()
         # computed o2m may not have a relation_field(?)
         descr = self._proxy._descr
-        if 'relation_field' in descr:
-            values[descr['relation_field']] = self._proxy._parent._values
+        if 'relation_field' in descr: # note: should be fine because not recursive
+            values[descr['relation_field']] = self._proxy._parent._onchange_values()
         return values
 
     def save(self):
@@ -1577,7 +1672,9 @@ class O2MForm(Form):
             if c == 0:
                 vs.update(values)
             elif c == 1:
-                vs = UpdateDict(vs)
+                if vs is None:
+                    vs = UpdateDict()
+                assert isinstance(vs, UpdateDict), type(vs)
                 vs.update(values)
                 commands[index] = (1, id_, vs)
             else:
@@ -1586,12 +1683,14 @@ class O2MForm(Form):
         # FIXME: should be called when performing on change => value needs to be serialised into parent every time?
         proxy._parent._perform_onchange([proxy._field])
 
-    def _values_to_save(self):
+    def _values_to_save(self, all_fields=False):
         """ Validates values and returns only fields modified since
         load/save
         """
         values = UpdateDict(self._values)
         values._changed.update(self._changed)
+        if all_fields:
+            return values
 
         for f in self._view['fields']:
             if self._get_modifier(f, 'required'):
@@ -1603,6 +1702,8 @@ class UpdateDict(dict):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._changed = set()
+        if args and isinstance(args[0], UpdateDict):
+            self._changed.update(args[0]._changed)
 
     def changed_items(self):
         return (
@@ -1636,11 +1737,11 @@ class O2MProxy(X2MProxy):
             if command == 0:
                 self._records.append(values)
             elif command == 1:
-                # read based on view info
-                r = model.browse(rid)
-                record = record_to_values(fields, r)
-                record.update(values)
-                self._records.append(record)
+                if values is None:
+                    # read based on view info
+                    r = model.browse(rid)
+                    values = UpdateDict(record_to_values(fields, r))
+                self._records.append(values)
             elif command == 2:
                 pass
             else:
@@ -1808,13 +1909,30 @@ def record_to_values(fields, record):
             assert v._name == descr['relation']
             v = [(6, 0, v.ids)]
         elif descr['type'] == 'one2many':
-            v = [(1, r.id, {}) for r in v]
+            v = [(1, r.id, None) for r in v]
         elif descr['type'] == 'datetime' and isinstance(v, datetime):
             v = odoo.fields.Datetime.to_string(v)
         elif descr['type'] == 'date' and isinstance(v, date):
             v = odoo.fields.Date.to_string(v)
         r[f] = v
     return r
+
+def _cleanup_from_default(type_, value):
+    if not value:
+        if type_ == 'many2many':
+            return [(6, False, [])]
+        elif type_ == 'one2many':
+            return []
+        elif type_ in ('integer', 'float'):
+            return 0
+        return value
+
+    if type_ == 'one2many':
+        return [c for c in value if c[0] != 6]
+    elif type_ == 'datetime' and isinstance(value, datetime):
+        return odoo.fields.Datetime.to_string(value)
+    elif type_ == 'date' and isinstance(value, date):
+        return odoo.fields.Date.to_string(value)
 
 def _get_node(view, f, *arg):
     """ Find etree node for the field ``f`` in the view's arch
