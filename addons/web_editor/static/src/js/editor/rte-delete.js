@@ -7,7 +7,7 @@ var core = require('web.core');
 var Widget = require('web.Widget');
 var weContext = require('web_editor.context');
 var summernote = require('web_editor.summernote');
-var summernoteCustomColors = require('web_editor.rte.summernote_custom_colors');
+// var summernoteCustomColors = require('web_editor.rte.summernote_custom_colors');
 
 var _t = core._t;
 

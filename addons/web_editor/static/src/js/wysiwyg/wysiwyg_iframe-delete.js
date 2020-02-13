@@ -10,7 +10,7 @@ var qweb = core.qweb;
 var promiseCommon;
 var promiseWysiwyg;
 
-
+console.log('wysiwyg imported')
 /**
  * Add option (inIframe) to load Wysiwyg in an iframe.
  **/
