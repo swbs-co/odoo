@@ -117,7 +117,7 @@
 
     <script type="text/javascript" src="/website/static/src/js/editor/editor.js"/>
     <script type="text/javascript" src="/website/static/src/js/editor/snippets.editor.js"/>
-    <script type="text/javascript" src="/website/static/src/js/editor/rte.summernote.js"/>
+    <!-- <script type="text/javascript" src="/website/static/src/js/editor/rte.summernote.js"/> -->
     <script type="text/javascript" src="/website/static/src/js/editor/snippets.options.js"/>
     <script type="text/javascript" src="/website/static/src/snippets/s_facebook_page/options.js"/>
     <script type="text/javascript" src="/website/static/src/snippets/s_image_gallery/options.js"/>
@@ -133,8 +133,8 @@
     <script type="text/javascript" src="/website/static/src/snippets/s_table_of_content/options.js"/>
     <script type="text/javascript" src="/website/static/src/snippets/s_timeline/options.js"/>
 
-    <script type="text/javascript" src="/website/static/src/js/editor/wysiwyg_multizone.js"/>
-    <script type="text/javascript" src="/website/static/src/js/editor/wysiwyg_multizone_translate.js"/>
+    <!-- <script type="text/javascript" src="/website/static/src/js/editor/wysiwyg_multizone.js"/>
+    <script type="text/javascript" src="/website/static/src/js/editor/wysiwyg_multizone_translate.js"/> -->
     <script type="text/javascript" src="/website/static/src/js/editor/widget_link.js"/>
 </template>
 
@@ -143,6 +143,7 @@
 
     <link rel="stylesheet" type="text/scss" href="/website/static/src/scss/website.editor.ui.scss"/>
 
+    <!-- why is it added here? -->
     <script type="text/javascript" src="/website/static/src/js/editor/editor_menu.js"/>
     <script type="text/javascript" src="/website/static/src/js/editor/editor_menu_translate.js"/>
 

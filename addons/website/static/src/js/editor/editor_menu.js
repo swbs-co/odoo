@@ -4,16 +4,9 @@ odoo.define('website.editor.menu', function (require) {
 var Dialog = require('web.Dialog');
 var Widget = require('web.Widget');
 var core = require('web.core');
-var Wysiwyg = require('web_editor.wysiwyg.root');
+var wysiwygLoader = require('web_editor.loader');
 
 var _t = core._t;
-
-var WysiwygMultizone = Wysiwyg.extend({
-    assetLibs: Wysiwyg.prototype.assetLibs.concat(['website.compiled_assets_wysiwyg']),
-    _getWysiwygContructor: function () {
-        return odoo.__DEBUG__.services['web_editor.wysiwyg.multizone'];
-    }
-});
 
 var EditorMenu = Widget.extend({
     template: 'website.editorbar',
@@ -30,27 +23,25 @@ var EditorMenu = Widget.extend({
     /**
      * @override
      */
-    willStart: function () {
+    willStart: async function () {
         var self = this;
         this.$el = null; // temporary null to avoid hidden error (@see start)
-        return this._super()
-            .then(function () {
-                var $wrapwrap = $('#wrapwrap');
-                $wrapwrap.removeClass('o_editable'); // clean the dom before edition
-                self.editable($wrapwrap).addClass('o_editable');
-                self.wysiwyg = self._wysiwygInstance();
-            });
+        await this._super();
+
+        var $wrapwrap = $('#wrapwrap');
+        $wrapwrap.removeClass('o_editable'); // clean the dom before edition
+        self.editable($wrapwrap).addClass('o_editable');
     },
     /**
      * @override
      */
-    start: function () {
+    start: async function () {
         var self = this;
         this.$el.css({width: '100%'});
-        return this.wysiwyg.attachTo($('#wrapwrap')).then(function () {
-            self.trigger_up('edit_mode');
-            self.$el.css({width: ''});
-        });
+        self.wysiwyg = await self._createWysiwyg();
+        await this.wysiwyg.attachTo($('#wrapwrap'));
+        self.trigger_up('edit_mode');
+        self.$el.css({width: ''});
     },
     /**
      * @override
@@ -73,59 +64,23 @@ var EditorMenu = Widget.extend({
      *        (do nothing otherwise but add this to allow class extension)
      * @returns {Deferred}
      */
-    cancel: function (reload) {
-        var self = this;
-        var def = new Promise(function (resolve, reject) {
-            if (!self.wysiwyg.isDirty()) {
+    cancel: async function (reload) {
+        await new Promise( (resolve, reject) => {
+            if (!this.wysiwyg.isDirty()) {
                 resolve();
             } else {
-                var confirm = Dialog.confirm(self, _t("If you discard the current edits, all unsaved changes will be lost. You can cancel to return to edit mode."), {
+                var confirm = Dialog.confirm(this, _t("If you discard the current edits, all unsaved changes will be lost. You can cancel to return to edit mode."), {
                     confirm_callback: resolve,
                 });
-                confirm.on('closed', self, reject);
+                confirm.on('closed', this, reject);
             }
         });
-
-        return def.then(function () {
-            self.trigger_up('edition_will_stopped');
-            var $wrapwrap = $('#wrapwrap');
-            self.editable($wrapwrap).removeClass('o_editable');
-            if (reload !== false) {
-                window.onbeforeunload = null;
-                self.wysiwyg.destroy();
-                return self._reload();
-            } else {
-                self.wysiwyg.destroy();
-                self.trigger_up('readonly_mode');
-                self.trigger_up('edition_was_stopped');
-                self.destroy();
-            }
-        });
-    },
-    /**
-     * Asks the snippets to clean themself, then saves the page, then reloads it
-     * if asked to.
-     *
-     * @param {boolean} [reload=true]
-     *        true if the page has to be reloaded after the save
-     * @returns {Deferred}
-     */
-    save: function (reload) {
-        var self = this;
         this.trigger_up('edition_will_stopped');
-        return this.wysiwyg.save(false).then(function (result) {
-            var $wrapwrap = $('#wrapwrap');
-            self.editable($wrapwrap).removeClass('o_editable');
-            if (result.isDirty && reload !== false) {
-                // remove top padding because the connected bar is not visible
-                $('body').removeClass('o_connected_user');
-                return self._reload();
-            } else {
-                self.wysiwyg.destroy();
-                self.trigger_up('edition_was_stopped');
-                self.destroy();
-            }
-        });
+    },
+
+    save: async function (reload) {
+        this.trigger_up('edition_will_stopped');
+        await this.wysiwyg.saveToServer(false);
     },
     /**
      * Returns the editable areas on the page.
@@ -155,20 +110,23 @@ var EditorMenu = Widget.extend({
     /**
      * @private
      */
-    _wysiwygInstance: function () {
+    _createWysiwyg: async function () {
         var context;
         this.trigger_up('context_get', {
             callback: function (ctx) {
                 context = ctx;
             },
         });
-        return new WysiwygMultizone(this, {
+
+        const Wysiwyg = await wysiwygLoader.loadWysiwyg();
+
+        return new Wysiwyg(this, {
             snippets: 'website.snippets',
             recordInfo: {
                 context: context,
                 data_res_model: 'website',
                 data_res_id: context.website_id,
-            }
+            }, value: $('#wrapwrap')[0].outerHTML,
         });
     },
     /**
@@ -178,6 +136,9 @@ var EditorMenu = Widget.extend({
      * @returns {Deferred} (never resolved, the page is reloading anyway)
      */
     _reload: function () {
+        // should call the reload of the wysiwig
+        // this.wysiwyg._reload()
+        // return new Promise(function() {});
         $('body').addClass('o_wait_reload');
         this.wysiwyg.destroy();
         this.$el.hide();
