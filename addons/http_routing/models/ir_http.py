@@ -324,7 +324,7 @@ class IrHttp(models.AbstractModel):
                 return werkzeug.utils.redirect(new_url, 301)
             rule, arguments = cls._find_handler(return_rule=True)
             func = rule.endpoint
-            request.is_frontend = func.routing.get('website', False)
+            request.is_frontend = True #func.routing.get('website', False)
         except werkzeug.exceptions.NotFound as e:
             # either we have a language prefixed route, either a real 404
             # in all cases, website processes them
