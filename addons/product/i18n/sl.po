@@ -12,6 +12,8 @@
 # Martin Trigaux, 2018
 # Matjaz Mozetic <m.mozetic@matmoz.si>, 2019
 # Boris Kodelja <boris@hbs.si>, 2019
+# Jasmina Macur <jasmina@hbs.si>, 2019
+# Tadej Lupšina <tadej@hbs.si>, 2019
 # 
 msgid ""
 msgstr ""
@@ -19,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-29 09:08+0000\n"
 "PO-Revision-Date: 2017-09-20 10:22+0000\n"
-"Last-Translator: Boris Kodelja <boris@hbs.si>, 2019\n"
+"Last-Translator: Tadej Lupšina <tadej@hbs.si>, 2019\n"
 "Language-Team: Slovenian (https://www.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,12 +38,12 @@ msgstr "Kategorija proizvoda"
 #: model:ir.model.fields,field_description:product.field_product_product_product_variant_count
 #: model:ir.model.fields,field_description:product.field_product_template_product_variant_count
 msgid "# Product Variants"
-msgstr ""
+msgstr "# Različice proizvoda"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_category_product_count
 msgid "# Products"
-msgstr ""
+msgstr "# Izdelki"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:446
@@ -135,11 +137,14 @@ msgid ""
 "                            <span attrs=\"{'invisible':[('base', '!=', 'standard_price')]}\">Cost  -  </span>\n"
 "                            <span attrs=\"{'invisible':[('base', '!=', 'pricelist')]}\">Other Pricelist  -  </span>"
 msgstr ""
+"<span attrs=\"{'invisible':[('base', '!=', 'list_price')]}\">Javna cena  -  </span>\n"
+"                            <span attrs=\"{'invisible':[('base', '!=', 'standard_price')]}\">Strošek  -  </span>\n"
+"                            <span attrs=\"{'invisible':[('base', '!=', 'pricelist')]}\">Drugi cenik  -  </span>"
 
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_category_form_view
 msgid "<span class=\"o_stat_text\"> Products</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\"> Izdelki</span>"
 
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_variant_easy_edit_view
@@ -178,11 +183,14 @@ msgid ""
 "                        will delete and recreate existing variants and lead\n"
 "                        to the loss of their possible customizations."
 msgstr ""
+"<strong>Opozorilo</strong>: dodajanje ali brisanje atributov\n"
+"                         izbriše in ponovno ustvari obstoječe različice in vodi\n"
+"                         do izgube njihovih možnih prilagoditev."
 
 #. module: product
 #: sql_constraint:product.product:0
 msgid "A barcode can only be assigned to one product !"
-msgstr ""
+msgstr "Črtna koda je lahko dodeljena samo enemu izdelku!"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_product_product_description_sale
@@ -273,7 +281,7 @@ msgstr "Vsi proizvodi"
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "All general settings about this product are managed on"
-msgstr ""
+msgstr "Vse splošne nastavitve tega izdelka se upravljajo na"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_res_config_settings_group_sale_pricelist
@@ -281,6 +289,8 @@ msgid ""
 "Allows to manage different prices based on rules per category of customers.\n"
 "                Example: 10% for retailers, promotion of 5 EUR on this product, etc."
 msgstr ""
+"Omogoča upravljanje različnih cen, ki temeljijo na pravilih za vsako kategorijo kupcev.\n"
+"                 Primer: 10% za trgovce na drobno, promocija 5 EUR za ta izdelek itd."
 
 #. module: product
 #: model:product.product,website_description:product.product_product_8
@@ -323,7 +333,7 @@ msgstr "Uporabljivo pri"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item_applied_on
 msgid "Apply On"
-msgstr ""
+msgstr "Uporabi na"
 
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_pricelist_view_search
@@ -552,13 +562,13 @@ msgstr "Kategorija"
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_category_form_view
 msgid "Category name"
-msgstr ""
+msgstr "Naziv kategorije"
 
 #. module: product
 #: code:addons/product/models/product_pricelist.py:435
 #, python-format
 msgid "Category: %s"
-msgstr ""
+msgstr "Kategorija: %s"
 
 #. module: product
 #: model:product.product,website_description:product.product_product_5b
@@ -623,7 +633,7 @@ msgstr ""
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "Codes"
-msgstr ""
+msgstr "Oznake"
 
 #. module: product
 #: model:product.attribute,name:product.product_attribute_2
@@ -679,7 +689,7 @@ msgstr "Celotni naziv"
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item_compute_price
 #: model:ir.ui.view,arch_db:product.product_pricelist_item_form_view
 msgid "Compute Price"
-msgstr ""
+msgstr "Izračunaj ceno"
 
 #. module: product
 #: model:product.product,name:product.product_product_16
@@ -849,7 +859,7 @@ msgstr ""
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product_partner_ref
 msgid "Customer Ref"
-msgstr ""
+msgstr "Sklic kupca"
 
 #. module: product
 #: model:product.product,name:product.product_delivery_02
@@ -1111,7 +1121,7 @@ msgstr ""
 #. module: product
 #: selection:product.pricelist.item,compute_price:0
 msgid "Fix Price"
-msgstr ""
+msgstr "Fiksna cena"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item_fixed_price
@@ -1416,12 +1426,12 @@ msgstr "Zaloga"
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_product_is_product_variant
 msgid "Is Product Variant"
-msgstr ""
+msgstr "Je varianta izdelka"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_template_is_product_variant
 msgid "Is a product variant"
-msgstr ""
+msgstr "Je varianta izdelka"
 
 #. module: product
 #: model:product.product,website_description:product.product_product_7
@@ -1555,7 +1565,7 @@ msgstr "Več enot mere"
 #. module: product
 #: model:res.groups,name:product.group_pricelist_item
 msgid "Manage Pricelist Items"
-msgstr ""
+msgstr "Upravljaj s postavkami cenikov"
 
 #. module: product
 #: model:res.groups,name:product.group_stock_packaging
@@ -1565,7 +1575,7 @@ msgstr "Pakiranje izdelkov"
 #. module: product
 #: model:res.groups,name:product.group_product_variant
 msgid "Manage Product Variants"
-msgstr ""
+msgstr "Upravljaj z različicami izdelkov"
 
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_pricelist_item_form_view
@@ -1720,7 +1730,7 @@ msgstr ""
 #. module: product
 #: selection:product.pricelist.item,compute_price:0
 msgid "Percentage (discount)"
-msgstr ""
+msgstr "Odstotek (popust)"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_item_percent_price
@@ -1857,7 +1867,7 @@ msgstr ""
 #: model:ir.ui.view,arch_db:product.product_pricelist_view
 #: model:ir.ui.view,arch_db:product.product_template_form_view
 msgid "Pricelist Items"
-msgstr ""
+msgstr "Ceniki izdelkov"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_product_pricelist_name
@@ -1878,7 +1888,7 @@ msgstr "Ceniki"
 #. module: product
 #: model:res.groups,name:product.group_product_pricelist
 msgid "Pricelists On Product"
-msgstr ""
+msgstr "Ceniki na izdelkih"
 
 #. module: product
 #: model:ir.ui.view,arch_db:product.view_partner_property_form
@@ -1974,7 +1984,7 @@ msgstr "Pakiranja proizvoda"
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_packaging_form_view
 msgid "Product Packaging"
-msgstr ""
+msgstr "Pakiranje izdelkov"
 
 #. module: product
 #: model:ir.model,name:product.model_product_template
@@ -2294,7 +2304,7 @@ msgstr ""
 #. module: product
 #: model:ir.model.fields,field_description:product.field_res_config_settings_company_share_product
 msgid "Share product to all companies"
-msgstr ""
+msgstr "Souporaba izdelkov z vsemi družbami"
 
 #. module: product
 #: model:ir.model.fields,help:product.field_res_config_settings_company_share_product
@@ -2303,6 +2313,9 @@ msgid ""
 " * Checked : Product are visible for every company, even if a company is defined on the partner.\n"
 " * Unchecked : Each company can see only its product (product where company is defined). Product not related to a company are visible for all companies."
 msgstr ""
+"Souporaba izdelkov z vsemi družbami določenimi v instanci.\n"
+" * Označeno : izdelki so vidni vsem družbam, čeprav je družba določena med partnerji.\n"
+" * Neoznačeno : vsaka družba vidi le svoje izdelke (izdelki, kjer je določena družba). Izdelki, ki niso povezani z določeno družbo, so vidni vsem družbam."
 
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_template_search_view
@@ -2313,12 +2326,12 @@ msgstr ""
 #. module: product
 #: model:ir.model.fields,field_description:product.field_res_config_settings_group_product_pricelist
 msgid "Show pricelists On Products"
-msgstr ""
+msgstr "Prikaži cenike za izdelke"
 
 #. module: product
 #: model:ir.model.fields,field_description:product.field_res_config_settings_group_pricelist_item
 msgid "Show pricelists to customers"
-msgstr ""
+msgstr "Pokaži cenike strankam"
 
 #. module: product
 #: model:product.product,name:product.membership_1
@@ -2589,7 +2602,7 @@ msgstr ""
 #. module: product
 #: model:ir.model.fields,help:product.field_product_supplierinfo_price
 msgid "The price to purchase a product"
-msgstr ""
+msgstr "Cena za nakup izdelka"
 
 #. module: product
 #: model:ir.actions.act_window,help:product.product_normal_action
@@ -3145,17 +3158,17 @@ msgstr "decimal.precision"
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_category_form_view
 msgid "e.g. Lamps"
-msgstr ""
+msgstr "npr. svetilke"
 
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "e.g. Odoo Enterprise Subscription"
-msgstr ""
+msgstr "npr. Naročnina na Odoo Enterprise"
 
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_pricelist_view
 msgid "e.g. USD Retailers"
-msgstr ""
+msgstr "npr. Trgovci na drobno"
 
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_uom_form_view
@@ -3284,13 +3297,13 @@ msgstr "quart"
 #: model:product.product,description_sale:product.consu_delivery_02
 #: model:product.template,description_sale:product.consu_delivery_02_product_template
 msgid "raid 1, 512ECC ram"
-msgstr ""
+msgstr "raid 1, 512ECC ram"
 
 #. module: product
 #: model:product.product,description_sale:product.consu_delivery_01
 #: model:product.template,description_sale:product.consu_delivery_01_product_template
 msgid "raid 10, 2048ECC ram"
-msgstr ""
+msgstr "raid 10, 2048ECC ram"
 
 #. module: product
 #: model:ir.model,name:product.model_report_product_report_pricelist
@@ -3310,7 +3323,7 @@ msgstr "Nadrejeno podjetje"
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_variant_easy_edit_view
 msgid "the product template"
-msgstr ""
+msgstr "predloga izdelka"
 
 #. module: product
 #: model:ir.ui.view,arch_db:product.product_supplierinfo_form_view

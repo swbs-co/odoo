@@ -541,7 +541,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:stock_account.field_stock_move_to_refund
 #: model:ir.model.fields,field_description:stock_account.field_stock_return_picking_line_to_refund
 msgid "To Refund (update SO/PO)"
-msgstr ""
+msgstr "De restituit (actualizare SO/PO)"
 
 #. module: stock_account
 #: model:ir.model.fields,help:stock_account.field_stock_move_to_refund
@@ -606,7 +606,7 @@ msgstr ""
 #: code:addons/stock_account/models/product.py:245
 #, python-format
 msgid "Valuation at date"
-msgstr ""
+msgstr "Evaluare la data"
 
 #. module: stock_account
 #: model:ir.model.fields,field_description:stock_account.field_product_product_stock_value

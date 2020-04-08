@@ -435,6 +435,8 @@ msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
@@ -4262,6 +4264,12 @@ msgid ""
 "Difference between the computed ending balance and the specified ending "
 "balance."
 msgstr "계산된 결산 잔액과 지정된 결산 잔액 간의 차이입니다."
+
+#. module: account
+#: code:addons/account/models/account_move.py:235
+#, python-format
+msgid "Difference debit - credit: "
+msgstr ""
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_planner

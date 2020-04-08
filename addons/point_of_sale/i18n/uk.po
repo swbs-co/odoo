@@ -8,7 +8,7 @@
 # ТАрас <tratatuta@i.ua>, 2017
 # Yaroslav Molochko <onorua@gmail.com>, 2017
 # rontif <oleksandr.basenko@gmail.com>, 2017
-# Olga Lugova <trolka.olug@gmail.com>, 2018
+# trolka <trolka.olug@gmail.com>, 2018
 # Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
 # Bohdan Lisnenko, 2019
 # 
@@ -584,7 +584,7 @@ msgstr "Рядок банківської виписки"
 #: code:addons/point_of_sale/static/src/xml/pos.xml:443
 #, python-format
 msgid "Barcode"
-msgstr "Штрихкод"
+msgstr "Штрих-код"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config_barcode_nomenclature_id
@@ -1320,7 +1320,7 @@ msgstr ""
 #. module: point_of_sale
 #: model:ir.ui.view,arch_db:point_of_sale.view_pos_order_filter
 msgid "Done"
-msgstr "Готово"
+msgstr "Виконано"
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_config_iface_vkeyboard
@@ -2254,7 +2254,7 @@ msgstr "Відкрити касову скриньку"
 #. module: point_of_sale
 #: model:ir.actions.client,name:point_of_sale.action_client_pos_menu
 msgid "Open POS Menu"
-msgstr "Відкрити меню терміналу"
+msgstr "Відкрити меню точки продажу"
 
 #. module: point_of_sale
 #: model:ir.ui.view,arch_db:point_of_sale.view_pos_open_statement
@@ -2615,7 +2615,7 @@ msgstr "Телефон:"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order_picking_id
 msgid "Picking"
-msgstr "Відбирання"
+msgstr "Комплектування"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_session_picking_count
@@ -2992,7 +2992,7 @@ msgstr "Одиниця вимірювання товару"
 #. module: point_of_sale
 #: model:ir.model,name:point_of_sale.model_product_uom_categ
 msgid "Product UoM Categories"
-msgstr "Категорії товару UoM"
+msgstr "Категорії одиниці вимірювання товару"
 
 #. module: point_of_sale
 #: model:ir.actions.act_window,name:point_of_sale.product_product_action
@@ -3008,7 +3008,7 @@ msgstr "Ціни товару на квитанції"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config_iface_tipproduct
 msgid "Product tips"
-msgstr "Товар для чайових"
+msgstr "Чайові товару"
 
 #. module: point_of_sale
 #: model:ir.actions.act_window,name:point_of_sale.product_template_action_pos_product
@@ -3378,7 +3378,7 @@ msgstr "Вказати клієнта"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config_start_category
 msgid "Set Start Category"
-msgstr "Встановити початок категорії"
+msgstr "Встановити початкову категорію"
 
 #. module: point_of_sale
 #. openerp-web
@@ -4034,8 +4034,8 @@ msgid ""
 "This sequence is automatically created by Odoo but you can change it to "
 "customize the reference numbers of your orders lines."
 msgstr ""
-"Ця послідовність автоматично створюється компанією Odoo, але ви можете "
-"змінити її, щоб налаштувати довідкові номери ваших рядків замовлень."
+"Ця послідовність автоматично створюється Odoo, але ви можете змінити її, щоб"
+" налаштувати номери референсу ваших рядків замовлень."
 
 #. module: point_of_sale
 #: model:ir.model.fields,help:point_of_sale.field_pos_config_sequence_id
@@ -4069,7 +4069,7 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/xml/pos.xml:690
 #, python-format
 msgid "Tip"
-msgstr "Підказка"
+msgstr "Чайові"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config_tip_product_id
@@ -4080,7 +4080,7 @@ msgstr "Товар чайових"
 #: model:product.product,name:point_of_sale.product_product_tip
 #: model:product.template,name:point_of_sale.product_product_tip_product_template
 msgid "Tips"
-msgstr "Підказки"
+msgstr "Чайові"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_product_product_to_weight
@@ -4387,7 +4387,7 @@ msgid ""
 "{reference} is in state {state}, total amount: {total}, paid: {paid}"
 msgstr ""
 "Ви не можете підтвердити всі замовлення цієї сесії, оскільки вони не мають \"платного\" статусу.\n"
-"{довідка} знаходиться в стані, загальна сума: {загальна}, оплачена: {оплачена}"
+"{reference}  знаходиться в стані {state}, загальна сума: {total}, оплачена: {paid}"
 
 #. module: point_of_sale
 #: code:addons/point_of_sale/models/pos_session.py:151

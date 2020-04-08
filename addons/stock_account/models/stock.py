@@ -88,7 +88,10 @@ class StockMoveLine(models.Model):
         if 'qty_done' in vals:
             moves_to_update = {}
             for move_line in self.filtered(lambda ml: ml.state == 'done' and (ml.move_id._is_in() or ml.move_id._is_out())):
-                moves_to_update[move_line.move_id] = vals['qty_done'] - move_line.qty_done
+                rounding = move_line.product_uom_id.rounding
+                qty_difference = float_round(vals['qty_done'] - move_line.qty_done, precision_rounding=rounding)
+                if not float_is_zero(qty_difference, precision_rounding=rounding):
+                    moves_to_update[move_line.move_id] = qty_difference
 
             for move_id, qty_difference in moves_to_update.items():
                 move_vals = {}
@@ -197,7 +200,7 @@ class StockMove(models.Model):
                     '|',
                         ('location_dest_id.company_id', '=', False),
                         '&',
-                            ('location_dest_id.usage', '=', 'inventory'),
+                            ('location_dest_id.usage', 'in', ['inventory', 'production']),
                             ('location_dest_id.company_id', '=', company_id or self.env.user.company_id.id),
         ]
         return domain
@@ -408,15 +411,16 @@ class StockMove(models.Model):
             rounding = move.product_id.uom_id.rounding
 
             qty_done = move.product_uom._compute_quantity(move.quantity_done, move.product_id.uom_id)
-            if float_is_zero(product_tot_qty_available, precision_rounding=rounding):
+            qty = forced_qty or qty_done
+            # If the current stock is negative, we should not average it with the incoming one
+            if float_is_zero(product_tot_qty_available, precision_rounding=rounding) or product_tot_qty_available < 0:
                 new_std_price = move._get_price_unit()
             elif float_is_zero(product_tot_qty_available + move.product_qty, precision_rounding=rounding) or \
-                    float_is_zero(product_tot_qty_available + qty_done, precision_rounding=rounding):
+                    float_is_zero(product_tot_qty_available + qty, precision_rounding=rounding):
                 new_std_price = move._get_price_unit()
             else:
                 # Get the standard price
                 amount_unit = std_price_update.get((move.company_id.id, move.product_id.id)) or move.product_id.standard_price
-                qty = forced_qty or qty_done
                 new_std_price = ((amount_unit * product_tot_qty_available) + (move._get_price_unit() * qty)) / (product_tot_qty_available + qty)
 
             tmpl_dict[move.product_id.id] += qty_done
@@ -713,3 +717,5 @@ class ProcurementGroup(models.Model):
     def _run_scheduler_tasks(self, use_new_cursor=False, company_id=False):
         super(ProcurementGroup, self)._run_scheduler_tasks(use_new_cursor=use_new_cursor, company_id=company_id)
         self.env['stock.move']._run_fifo_vacuum()
+        if use_new_cursor:
+            self._cr.commit()
