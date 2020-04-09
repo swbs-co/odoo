@@ -72,7 +72,11 @@ class SaleOrder(models.Model):
                     price = self.pricelist_id.with_context(uom=line.product_uom_id.id).get_product_price(line.product_id, 1, False)
                     if self.pricelist_id.discount_policy == 'without_discount' and line.price_unit:
                         discount = (line.price_unit - price) / line.price_unit * 100
-                        price = line.price_unit
+                        # negative discounts (= surcharge) are included in the display price
+                        if discount < 0:
+                            discount = 0
+                        else:
+                            price = line.price_unit
 
                 else:
                     price = line.price_unit
@@ -169,14 +173,15 @@ class SaleOrderOption(models.Model):
         if not self.product_id:
             return
         product = self.product_id.with_context(lang=self.order_id.partner_id.lang)
-        self.price_unit = product.list_price
         self.name = product.get_product_multiline_description_sale()
         self.uom_id = self.uom_id or product.uom_id
-        pricelist = self.order_id.pricelist_id
-        if pricelist and product:
-            partner_id = self.order_id.partner_id.id
-            self.price_unit = pricelist.with_context(uom=self.uom_id.id).get_product_price(product, self.quantity, partner_id)
         domain = {'uom_id': [('category_id', '=', self.product_id.uom_id.category_id.id)]}
+        # To compute the dicount a so line is created in cache
+        values = self._get_values_to_add_to_order()
+        new_sol = self.env['sale.order.line'].new(values)
+        new_sol._onchange_discount()
+        self.discount = new_sol.discount
+        self.price_unit = new_sol._get_display_price(product)
         return {'domain': domain}
 
     @api.multi

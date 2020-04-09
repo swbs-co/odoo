@@ -44,9 +44,9 @@ class AcquirerSips(models.Model):
     provider = fields.Selection(selection_add=[('sips', 'Sips')])
     sips_merchant_id = fields.Char('Merchant ID', help="Used for production only", required_if_provider='sips', groups='base.group_user')
     sips_secret = fields.Char('Secret Key', size=64, required_if_provider='sips', groups='base.group_user')
-    sips_test_url = fields.Char("Test url", required_if_provider='sips', groups='base.group_no_one', default='https://payment-webinit.sips-atos.com/paymentInit')
-    sips_prod_url = fields.Char("Production url", required_if_provider='sips', groups='base.group_no_one', default='https://payment-webinit.simu.sips-atos.com/paymentInit')
-    sips_version = fields.Char("Interface Version", required_if_provider='sips', groups='base.group_no_one', default='HP_2.3')
+    sips_test_url = fields.Char("Test url", required_if_provider='sips', default='https://payment-webinit.simu.sips-atos.com/paymentInit')
+    sips_prod_url = fields.Char("Production url", required_if_provider='sips', default='https://payment-webinit.sips-atos.com/paymentInit')
+    sips_version = fields.Char("Interface Version", required_if_provider='sips', default='HP_2.3')
 
     def _sips_generate_shasign(self, values):
         """ Generate the shasign for incoming or outgoing communications.
@@ -69,12 +69,12 @@ class AcquirerSips(models.Model):
     @api.multi
     def sips_form_generate_values(self, values):
         self.ensure_one()
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        base_url = self.get_base_url()
         currency = self.env['res.currency'].sudo().browse(values['currency_id'])
         currency_code = CURRENCY_CODES.get(currency.name, False)
         if not currency_code:
             raise ValidationError(_('Currency not supported by Wordline'))
-        amount = int(values['amount'] * 100)
+        amount = round(values['amount'] * 100)
         if self.environment == 'prod':
             # For production environment, key version 2 is required
             merchant_id = getattr(self, 'sips_merchant_id')
@@ -90,7 +90,7 @@ class AcquirerSips(models.Model):
                     u'currencyCode=%s|' % currency_code +
                     u'merchantId=%s|' % merchant_id +
                     u'normalReturnUrl=%s|' % urls.url_join(base_url, SipsController._return_url) +
-                    u'automaticResponseUrl=%s|' % urls.url_join(base_url, SipsController._return_url) +
+                    u'automaticResponseUrl=%s|' % urls.url_join(base_url, SipsController._notify_url) +
                     u'transactionReference=%s|' % values['reference'] +
                     u'statementReference=%s|' % values['reference'] +
                     u'keyVersion=%s' % key_version,
@@ -186,7 +186,6 @@ class TxSips(models.Model):
         status = data.get('responseCode')
         data = {
             'acquirer_reference': data.get('transactionReference'),
-            'partner_reference': data.get('customerId'),
             'date': data.get('transactionDateTime',
                                       fields.Datetime.now())
         }

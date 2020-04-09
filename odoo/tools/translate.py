@@ -784,7 +784,7 @@ def _extract_translatable_qweb_terms(element, callback):
                 and not ("t-jquery" in el.attrib and "t-operation" not in el.attrib)
                 and el.get("t-translation", '').strip() != "off"):
             _push(callback, el.text, el.sourceline)
-            for att in ('title', 'alt', 'label', 'placeholder'):
+            for att in ('title', 'alt', 'label', 'placeholder', 'aria-label'):
                 if att in el.attrib:
                     _push(callback, el.attrib[att], el.sourceline)
             _extract_translatable_qweb_terms(el, callback)
@@ -964,8 +964,11 @@ def trans_generate(lang, modules, cr):
         extra_comments = extra_comments or []
         if not module: return
         src_file = open(fabsolutepath, 'rb')
+        options = {}
+        if extract_method == 'python':
+            options['encoding'] = 'UTF-8'
         try:
-            for extracted in extract.extract(extract_method, src_file, keywords=extract_keywords):
+            for extracted in extract.extract(extract_method, src_file, keywords=extract_keywords, options=options):
                 # Babel 0.9.6 yields lineno, message, comments
                 # Babel 1.3 yields lineno, message, comments, context
                 lineno, message, comments = extracted[:3]

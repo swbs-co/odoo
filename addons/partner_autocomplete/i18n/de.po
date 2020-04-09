@@ -6,6 +6,7 @@
 # Martin Trigaux, 2018
 # Johannes Croe <jcr@odoo.com>, 2018
 # Chris Egal <sodaswed@web.de>, 2019
+# Leon Grill <leg@odoo.com>, 2019
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-02 10:06+0000\n"
 "PO-Revision-Date: 2018-09-21 14:23+0000\n"
-"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
+"Last-Translator: Leon Grill <leg@odoo.com>, 2019\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,6 +52,8 @@ msgid ""
 "<i class=\"fa fa-fw mr-2 fa-building text-primary\"/>\n"
 "                <b>Company type:</b>"
 msgstr ""
+"<i class=\"fa fa-fw mr-2 fa-building text-primary\"/>\n"
+"                <b>Unternehmensart:</b>"
 
 #. module: partner_autocomplete
 #: model_terms:ir.ui.view,arch_db:partner_autocomplete.additional_info_template
@@ -58,6 +61,8 @@ msgid ""
 "<i class=\"fa fa-fw mr-2 fa-calendar text-primary\"/>\n"
 "                <b>Founded:</b>"
 msgstr ""
+"<i class=\"fa fa-fw mr-2 fa-calendar text-primary\"/>\n"
+"                <b>Gegründet:</b>"
 
 #. module: partner_autocomplete
 #: model_terms:ir.ui.view,arch_db:partner_autocomplete.additional_info_template
@@ -92,6 +97,8 @@ msgid ""
 "<i class=\"fa fa-fw mr-2 fa-industry text-primary\"/>\n"
 "                <b>Sector:</b>"
 msgstr ""
+"<i class=\"fa fa-fw mr-2 fa-industry text-primary\"/>\n"
+"                <b>Bereich:</b>"
 
 #. module: partner_autocomplete
 #: model_terms:ir.ui.view,arch_db:partner_autocomplete.additional_info_template
@@ -99,6 +106,8 @@ msgid ""
 "<i class=\"fa fa-fw mr-2 fa-money text-primary\"/>\n"
 "                <b>Annual revenue:</b>"
 msgstr ""
+"<i class=\"fa fa-fw mr-2 fa-money text-primary\"/>\n"
+"                <b>Jahresumsatz:</b>"
 
 #. module: partner_autocomplete
 #: model_terms:ir.ui.view,arch_db:partner_autocomplete.additional_info_template
@@ -106,6 +115,8 @@ msgid ""
 "<i class=\"fa fa-fw mr-2 fa-money text-primary\"/>\n"
 "                <b>Estimated annual revenue:</b>"
 msgstr ""
+"<i class=\"fa fa-fw mr-2 fa-money text-primary\"/>\n"
+"                <b>Geschätzter Jahresumsatz:</b>"
 
 #. module: partner_autocomplete
 #: model_terms:ir.ui.view,arch_db:partner_autocomplete.additional_info_template
@@ -216,17 +227,17 @@ msgstr "Partner"
 #: model:ir.cron,cron_name:partner_autocomplete.ir_cron_partner_autocomplete
 #: model:ir.cron,name:partner_autocomplete.ir_cron_partner_autocomplete
 msgid "Partner Autocomplete : Sync with remote DB"
-msgstr ""
+msgstr "Partner Autovervollständigung: Synchronisation mit der Remote-DB"
 
 #. module: partner_autocomplete
 #: model:ir.model,name:partner_autocomplete.model_res_partner_autocomplete_sync
 msgid "Partner Autocomplete Sync"
-msgstr ""
+msgstr "Partner Autovervollständigung Syncroninastion"
 
 #. module: partner_autocomplete
 #: model_terms:ir.ui.view,arch_db:partner_autocomplete.additional_info_template
 msgid "Partner created by Odoo Partner Autocomplete Service"
-msgstr ""
+msgstr "Partner erstellt von Odoo Partner Autovervollständigung Service"
 
 #. module: partner_autocomplete
 #. openerp-web
@@ -240,7 +251,7 @@ msgstr "Platzhalter"
 #: code:addons/partner_autocomplete/static/src/js/partner_autocomplete_many2one.js:22
 #, python-format
 msgid "Searching Autocomplete..."
-msgstr ""
+msgstr "Autovervollständigung wird gesucht ..."
 
 #. module: partner_autocomplete
 #: model_terms:ir.ui.view,arch_db:partner_autocomplete.additional_info_template
@@ -250,4 +261,4 @@ msgstr "Twitter :"
 #. module: partner_autocomplete
 #: model_terms:ir.ui.view,arch_db:partner_autocomplete.additional_info_template
 msgid "followers)"
-msgstr ""
+msgstr "Followers)"

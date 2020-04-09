@@ -73,7 +73,7 @@ msgstr "월"
 #. module: pos_sale
 #: selection:sale.report,state:0
 msgid "New"
-msgstr "새로운"
+msgstr "신규"
 
 #. module: pos_sale
 #: model:ir.model.fields,field_description:pos_sale.field_crm_team__pos_sessions_open_count
@@ -204,7 +204,7 @@ msgstr ""
 msgid ""
 "The rate of the currency to the currency of rate applicable at the date of "
 "the order"
-msgstr ""
+msgstr "주문 날짜에 적용되는 환율에 대한 환율"
 
 #. module: pos_sale
 #: model:ir.model.fields,help:pos_sale.field_crm_team__team_type

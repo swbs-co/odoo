@@ -138,6 +138,7 @@ class SnailmailLetter(models.Model):
                 'letter_id': letter.id,
                 'res_model': letter.model,
                 'res_id': letter.res_id,
+                'contact_address': letter.partner_id.with_context(snailmail_layout=True, show_address=True).name_get()[0][1],
                 'address': {
                     'name': letter.partner_id.name,
                     'street': letter.partner_id.street,
@@ -165,7 +166,7 @@ class SnailmailLetter(models.Model):
             else:
                 # adding the web logo from the company for future possible customization
                 document.update({
-                    'company_logo': letter.company_id.logo_web.decode('utf-8'),
+                    'company_logo': letter.company_id.logo_web and letter.company_id.logo_web.decode('utf-8') or False,
                 })
                 attachment = letter._fetch_attachment()
                 if attachment:
