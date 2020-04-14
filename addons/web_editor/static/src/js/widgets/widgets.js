@@ -757,7 +757,7 @@ var VideoDialog = Widget.extend({
                 '<div class="media_iframe_video" data-oe-expression="' + this.$content.attr('src') + '">'+
                     '<div class="css_editable_mode_display">&nbsp;</div>'+
                     '<div class="media_iframe_video_size" contenteditable="false">&nbsp;</div>'+
-                    '<iframe src="' + this.$content.attr('src') + '" frameborder="0" contenteditable="false"></iframe>'+
+                    '<iframe src="' + this.$content.attr('src') + '" frameborder="0" contenteditable="false" allowfullscreen="allowfullscreen"></iframe>'+
                 '</div>'
             );
             $(this.media).replaceWith($content);
@@ -815,7 +815,7 @@ var VideoDialog = Widget.extend({
         var vimRegExp = /\/\/(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})[?]?.*/;
         var vimMatch = url.match(vimRegExp);
 
-        var dmRegExp = /.+dailymotion.com\/(video|hub|embed)\/([^_]+)[^#]*(#video=([^_&]+))?/;
+        var dmRegExp = /.+dailymotion.com\/(video|hub|embed)\/([^_?]+)[^#]*(#video=([^_&]+))?/;
         var dmMatch = url.match(dmRegExp);
 
         var ykuRegExp = /(.*).youku\.com\/(v_show\/id_|embed\/)(.+)/;

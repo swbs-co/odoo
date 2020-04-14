@@ -433,6 +433,8 @@ msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Valorile stabilite aici sunt "
+"specifice companiei.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.account_planner
@@ -1514,7 +1516,7 @@ msgstr "Șablon Cont"
 #: model:ir.model.fields,field_description:account.field_account_chart_template_property_stock_valuation_account_id
 #: model:ir.model.fields,field_description:account.field_res_company_property_stock_valuation_account_id
 msgid "Account Template for Stock Valuation"
-msgstr ""
+msgstr "Șablon de cont pentru evaluarea stocurilor"
 
 #. module: account
 #: model:ir.actions.act_window,name:account.action_account_template_form
@@ -3080,6 +3082,8 @@ msgid ""
 "Check this box if this account allows invoices & payments matching of "
 "journal items."
 msgstr ""
+"Bifează această casetă dacă acest cont permite potrivirea facturilor și "
+"plăților elementelor din jurnal."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal_refund_sequence
@@ -3860,6 +3864,7 @@ msgstr "Valoarea creditului"
 #: model:ir.model.fields,help:account.field_account_move_line_matched_credit_ids
 msgid "Credit journal items that are matched with this journal item."
 msgstr ""
+"Elementele jurnal de credit care se potrivesc cu acest element de jurnal."
 
 #. module: account
 #: model:ir.ui.menu,name:account.menu_action_currency_form
@@ -7394,7 +7399,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_res_config_settings_module_account_payment
 #: model:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Online Payment"
-msgstr ""
+msgstr "Plata online"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_wizard_multi_charts_accounts_only_one_chart_template
@@ -7928,7 +7933,7 @@ msgstr "Termen plată: plată imediată"
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line_payment_id
 msgid "Payment that created this entry"
-msgstr ""
+msgstr "Plata care a creat această intrare"
 
 #. module: account
 #: code:addons/account/models/account_payment.py:229
@@ -9001,6 +9006,7 @@ msgstr ""
 #: model:ir.model.fields,help:account.field_account_payment_term_line_value
 msgid "Select here the kind of valuation related to this payment terms line."
 msgstr ""
+"Selectați aici tipul de evaluare aferent acestei linii de condiții de plată."
 
 #. module: account
 #: model:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -9527,7 +9533,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_tax_template_type_tax_use
 #: model:ir.model.fields,field_description:account.field_account_tax_type_tax_use
 msgid "Tax Scope"
-msgstr ""
+msgstr "Scop taxă"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position_tax_template_tax_src_id
