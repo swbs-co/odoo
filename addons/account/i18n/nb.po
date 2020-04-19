@@ -6,6 +6,7 @@
 # Jan Pedro Tumusok <jpt@eyenetworks.no>, 2018
 # Martin Trigaux, 2019
 # Jorunn D. Newth, 2019
+# Fredrik Ahlsen <fredrik@gdx.no>, 2020
 # Marius Stedjan <marius@stedjan.com>, 2020
 # 
 msgid ""
@@ -265,6 +266,9 @@ msgid ""
 "remove\" aria-label=\"Cancelled\" title=\"Cancelled\" role=\"img\"/><span "
 "class=\"d-none d-md-inline\"> Cancelled</span></span>"
 msgstr ""
+"<span class=\"badge badge-pill badge-warning\"><i class=\"fa fa-fw fa-"
+"remove\" aria-label=\"Cancelled\" title=\"Cancelled\" role=\"img\"/><span "
+"class=\"d-none d-md-inline\"> Kansellert</span></span>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
@@ -478,6 +482,11 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "<span>Quantity</span>"
+msgstr ""
+
+#. module: account
+#: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
+msgid "<span>Reference</span>"
 msgstr ""
 
 #. module: account
@@ -788,7 +797,7 @@ msgstr ""
 #. module: account
 #: model:ir.model,name:account.model_account_chart_template
 msgid "Account Chart Template"
-msgstr ""
+msgstr "Kontoplanmal"
 
 #. module: account
 #: model:ir.model,name:account.model_account_common_report
@@ -4100,7 +4109,7 @@ msgstr "Vis på fakturaer"
 #: code:addons/account/models/digest.py:16
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
-msgstr ""
+msgstr "Har ikke tilgang, hopp over denne dataen for brukerens digest e-post"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_send__auto_delete_message
@@ -4621,7 +4630,7 @@ msgstr "Følgere (partnere)"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__inbound_payment_method_ids
 msgid "For Incoming Payments"
-msgstr ""
+msgstr "For innkommende betalinger"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__outbound_payment_method_ids
@@ -6430,6 +6439,9 @@ msgid ""
 "Electronic: Get paid automatically through a payment acquirer by requesting a transaction on a card saved by the customer when buying or subscribing online (payment token).\n"
 "Batch Deposit: Encase several customer checks at once by generating a batch deposit to submit to your bank. When encoding the bank statement in Odoo,you are suggested to reconcile the transaction with the batch deposit. Enable this option from the settings."
 msgstr ""
+"Manuell: Få betalt med kontant, sjekk eller andre metoder utenfor Odoo.\n"
+"Elektronisk: Få betalt automatisk gjennom en betalingsinnløser, ved å be om en transaksjon fra kort lagret av kunden ved kjøp eller abonnement på nett (betalingstoken).\n"
+"Partiinnskudd: Behandle flere sjekker om gangen, ved å generere et partiinnskudd som du sender til banken. Når du gjør bankavstemming i Odoo, vil du bli bedt om å avstemme transaksjonen med partiinnskuddet. Aktiver denne funksjonen i innstillinger for regnskap."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_abstract_payment__payment_method_id
@@ -7499,7 +7511,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_payment__journal_id
 #: model:ir.model.fields,field_description:account.field_account_register_payments__journal_id
 msgid "Payment Journal"
-msgstr ""
+msgstr "Betalingsjournal"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_payment_form
@@ -7604,7 +7616,7 @@ msgstr "Betalingsvilkår: 15 dager"
 #. module: account
 #: model:account.payment.term,note:account.account_payment_term_2months
 msgid "Payment terms: 2 Months"
-msgstr ""
+msgstr "Betalingsvilkår: 2 måneder"
 
 #. module: account
 #: model:account.payment.term,note:account.account_payment_term_net
@@ -7619,7 +7631,7 @@ msgstr "Betalingsvilkår: 30% forskudd utgangen av påfølgende måned"
 #. module: account
 #: model:account.payment.term,note:account.account_payment_term_45days
 msgid "Payment terms: 45 Days"
-msgstr ""
+msgstr "Betalingsvilkår: 45 dager"
 
 #. module: account
 #: model:account.payment.term,note:account.account_payment_term
@@ -8177,7 +8189,7 @@ msgstr ""
 #: model:ir.actions.client,name:account.action_bank_reconcile
 #: model:ir.actions.client,name:account.action_bank_reconcile_bank_statements
 msgid "Reconciliation on Bank Statements"
-msgstr ""
+msgstr "Avstemming av bankutskrifter"
 
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_vendor_bill_template
@@ -9639,8 +9651,8 @@ msgstr ""
 #: model:ir.model.fields,help:account.field_account_payment__multi
 #: model:ir.model.fields,help:account.field_account_register_payments__multi
 msgid ""
-"Technical field indicating if the user selected invoices from multiple "
-"partners or from different types."
+"Technical field indicating if the registering payment will generate multiple"
+" payments or not."
 msgstr ""
 
 #. module: account
@@ -10068,7 +10080,7 @@ msgstr ""
 #: code:addons/account/models/company.py:145
 #, python-format
 msgid "The lock date for advisors is irreversible and can't be removed."
-msgstr ""
+msgstr "Låsedatoen for rådgivere er innreversibel og kan ikke fjernes."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__move_id
@@ -10086,6 +10098,7 @@ msgstr ""
 msgid ""
 "The new lock date for advisors must be set after the previous lock date."
 msgstr ""
+"Den nye låsedatoen for rådgivere, må settes til etter forrige låsedato."
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_journal__refund_sequence_number_next
@@ -11478,6 +11491,9 @@ msgid ""
 "You cannot define stricter conditions on advisors than on users. Please make"
 " sure that the lock date on advisor is set before the lock date for users."
 msgstr ""
+"Du kan ikke definere strengere betingelser for rådgivere enn for brukere. "
+"Forsikre deg om at låsedato for rådgivere er satt til før låsedato for "
+"brukere."
 
 #. module: account
 #: code:addons/account/models/account_payment.py:611
@@ -11552,6 +11568,9 @@ msgid ""
 "You cannot lock a period that is not finished yet. Please make sure that the"
 " lock date for advisors is not set after the last day of the previous month."
 msgstr ""
+"Du kan ikke låse en periode som ikke er ferdigstilt. Forsikre deg om at "
+"låsedato for rådgivere ikke er satt til etter den siste dagen i forrige "
+"måned."
 
 #. module: account
 #. openerp-web
