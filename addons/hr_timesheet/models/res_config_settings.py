@@ -21,7 +21,8 @@ class ResConfigSettings(models.TransientModel):
         compute="_compute_timesheet_modules", store=True, readonly=False)
     module_project_timesheet_holidays = fields.Boolean("Record Time Off",
         compute="_compute_timesheet_modules", store=True, readonly=False)
-    project_time_mode_id = fields.Many2one('uom.uom', string='Project Time Unit',
+    project_time_mode_id = fields.Many2one('uom.uom',
+        string='Project Time Unit',
         config_parameter='hr_timesheet.project_time_mode_id',
         domain=lambda self: [('category_id', '=', self.env.ref('uom.uom_categ_wtime').id)],
         default=_default_encoding_uom_id,
@@ -29,7 +30,8 @@ class ResConfigSettings(models.TransientModel):
         help="This will set the unit of measure used in projects and tasks.\n"
              "If you use the timesheet linked to projects, don't "
              "forget to setup the right unit of measure in your employees.")
-    timesheet_encode_uom_id = fields.Many2one('uom.uom', string="Encoding Unit",
+    timesheet_encode_uom_id = fields.Many2one('uom.uom',
+        string="Encoding Unit",
         config_parameter='hr_timesheet.timesheet_encode_uom_id',
         domain=lambda self: [('category_id', '=', self.env.ref('uom.uom_categ_wtime').id)],
         default=_default_encoding_uom_id,

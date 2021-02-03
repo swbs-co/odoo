@@ -12,7 +12,7 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     def _default_timesheet_encode_uom_id(self):
-        return int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.timesheet_encode_uom_id'))
+        return self.env['account.analytic.line'].get_encoding_uom_config_id()
 
     timesheet_ids = fields.Many2many('account.analytic.line', compute='_compute_timesheet_ids', string='Timesheet activities associated to this sale')
     timesheet_count = fields.Float(string='Timesheet activities', compute='_compute_timesheet_ids', groups="hr_timesheet.group_hr_timesheet_user")
@@ -138,7 +138,7 @@ class SaleOrderLine(models.Model):
                 name = names.get(line.id)
                 if line.remaining_hours_available:
                     company = self.env.company
-                    encoding_uom = self.env['uom.uom']._get_uom_by_config_parameter('hr_timesheet.timesheet_encode_uom_id')
+                    encoding_uom = self.env['account.analytic.line'].get_encoding_uom_id()
                     remaining_time = ''
                     if encoding_uom == uom_hour:
                         hours, minutes = divmod(abs(line.remaining_hours) * 60, 60)
@@ -212,7 +212,7 @@ class SaleOrderLine(models.Model):
     ###########################################
 
     def _convert_qty_company_hours(self, dest_company):
-        company_time_uom_id = self.env['uom.uom']._get_uom_by_config_parameter('hr_timesheet.project_time_mode_id')
+        company_time_uom_id = self.env['project.project'].get_encoding_uom_id()
         if self.product_uom.id != company_time_uom_id.id and self.product_uom.category_id.id == company_time_uom_id.category_id.id:
             planned_hours = self.product_uom._compute_quantity(self.product_uom_qty, company_time_uom_id)
         else:

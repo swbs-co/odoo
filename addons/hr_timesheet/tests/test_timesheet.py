@@ -98,7 +98,7 @@ class TestTimesheet(TestCommonTimesheet):
     def test_log_timesheet(self):
         """ Test when log timesheet : check analytic account, user and employee are correctly set. """
         Timesheet = self.env['account.analytic.line']
-        timesheet_uom = int(self.env['ir.config_parameter'].sudo().get_param('hr_timesheet.project_time_mode_id'))
+        timesheet_uom = self.env['project.project'].get_encoding_uom_config_id()
         # employee 1 log some timesheet on task 1
         timesheet1 = Timesheet.with_user(self.user_employee).create({
             'project_id': self.project_customer.id,

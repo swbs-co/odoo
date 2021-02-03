@@ -72,7 +72,7 @@ class ProjectCreateSalesOrder(models.TransientModel):
             if not unit_amount:
                 line.info_invoice = False
                 continue
-            encoding_uom = self.env['uom.uom']._get_uom_by_config_parameter('hr_timesheet.timesheet_encode_uom_id')
+            encoding_uom = self.env['account.analytic.line'].get_encoding_uom_id()
             label = _("hours")
             if encoding_uom == self.env.ref('uom.product_uom_day'):
                 label = _("days")
