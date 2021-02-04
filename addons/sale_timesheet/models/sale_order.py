@@ -20,7 +20,8 @@ class SaleOrder(models.Model):
     timesheet_total_duration = fields.Integer("Timesheet Total Duration", compute='_compute_timesheet_total_duration', help="Total recorded duration, expressed in the encoding UoM, and rounded to the unit")
 
     def _compute_timesheet_encode_uom_id(self):
-        return self.env['account.analytic.line'].get_encoding_uom_config_id()
+        for account_analytic_line in self:
+            account_analytic_line.timesheet_encode_uom_id = self.env['account.analytic.line'].get_encoding_uom_config_id()
 
     @api.depends('analytic_account_id.line_ids')
     def _compute_timesheet_ids(self):
