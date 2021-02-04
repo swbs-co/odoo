@@ -11,16 +11,16 @@ from odoo.tools import float_compare
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    def _default_timesheet_encode_uom_id(self):
-        return self.env['account.analytic.line'].get_encoding_uom_config_id()
-
     timesheet_ids = fields.Many2many('account.analytic.line', compute='_compute_timesheet_ids', string='Timesheet activities associated to this sale')
     timesheet_count = fields.Float(string='Timesheet activities', compute='_compute_timesheet_ids', groups="hr_timesheet.group_hr_timesheet_user")
 
     # override domain
     project_id = fields.Many2one(domain="[('pricing_type', 'in', ('fixed_rate', 'task_rate')), ('analytic_account_id', '!=', False), ('company_id', '=', company_id)]")
-    timesheet_encode_uom_id = fields.Many2one('uom.uom', default=_default_timesheet_encode_uom_id)
+    timesheet_encode_uom_id = fields.Many2one('uom.uom', compute='_compute_timesheet_encode_uom_id')
     timesheet_total_duration = fields.Integer("Timesheet Total Duration", compute='_compute_timesheet_total_duration', help="Total recorded duration, expressed in the encoding UoM, and rounded to the unit")
+
+    def _compute_timesheet_encode_uom_id(self):
+        return self.env['account.analytic.line'].get_encoding_uom_config_id()
 
     @api.depends('analytic_account_id.line_ids')
     def _compute_timesheet_ids(self):
@@ -34,7 +34,7 @@ class SaleOrder(models.Model):
                 order.timesheet_ids = []
             order.timesheet_count = len(order.timesheet_ids)
 
-    @api.depends('timesheet_ids', 'timesheet_encode_uom_id')
+    @api.depends('timesheet_ids')
     def _compute_timesheet_total_duration(self):
         for sale_order in self:
             timesheets = sale_order.timesheet_ids if self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') else sale_order.timesheet_ids.filtered(lambda t: t.user_id.id == self.env.uid)
