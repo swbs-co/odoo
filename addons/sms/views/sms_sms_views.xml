@@ -21,6 +21,9 @@
                             <field name="number" required="1"/>
                             <field name="error_code" readonly="1" attrs="{'invisible': [('error_code', '=', False)]}"/>
                         </group>
+                        <group>
+                            <field name="provider_state"/>
+                        </group>
                     </group>
                     <group>
                         <field name="body" widget="sms_widget" string="Message" required="1"/>
