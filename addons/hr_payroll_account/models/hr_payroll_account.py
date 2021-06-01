@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+# Part of Odoo. See LICENSE file for full copyright and licensing details. 190114 hsn v11 added the line 'partner_id': slip.employee_id.user_id.partner_id.id to write the partner name at JE for all lines . on v12 that didnot work so amended
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
@@ -23,6 +23,7 @@ class HrPayslipLine(models.Model):
             if register_partner_id or self.salary_rule_id.account_debit.internal_type in ('receivable', 'payable'):
                 return partner_id
         return False
+#return partner_id at last line didnot fetch the partner id on v12 at the slip JE lines
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
@@ -79,7 +80,8 @@ class HrPayslip(models.Model):
                 if debit_account_id:
                     debit_line = (0, 0, {
                         'name': line.name,
-                        'partner_id': line._get_partner_id(credit_account=False),
+#SW_line_HSN           'partner_id': line._get_partner_id(credit_account=False),
+                        'partner_id': slip.employee_id.user_id.partner_id.id,
                         'account_id': debit_account_id,
                         'journal_id': slip.journal_id.id,
                         'date': date,
@@ -94,7 +96,8 @@ class HrPayslip(models.Model):
                 if credit_account_id:
                     credit_line = (0, 0, {
                         'name': line.name,
-                        'partner_id': line._get_partner_id(credit_account=True),
+#SW_line_HSN            'partner_id': line._get_partner_id(credit_account=True),
+                        'partner_id': slip.employee_id.user_id.partner_id.id,
                         'account_id': credit_account_id,
                         'journal_id': slip.journal_id.id,
                         'date': date,
