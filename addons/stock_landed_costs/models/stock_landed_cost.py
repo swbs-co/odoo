@@ -344,7 +344,7 @@ class AdjustmentLines(models.Model):
         AccountMoveLine.append([0, 0, credit_line])
 
         # Create account move lines for quants already out of stock
-        if False qty_out > 0:
+        if False and qty_out > 0:
             debit_line = dict(base_line,
                               name=(self.name + ": " + str(qty_out) + _(' already out')),
                               quantity=0,
