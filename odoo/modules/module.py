@@ -338,7 +338,6 @@ def load_information_from_description_file(module, mod_path=None):
             'description': '',
             'icon': get_module_icon(module),
             'installable': True,
-            'license': 'LGPL-3',
             'post_load': None,
             'version': '1.0',
             'web': False,
@@ -380,6 +379,10 @@ def load_information_from_description_file(module, mod_path=None):
             info['auto_install'] = set(info['depends'])
         else:
             info['auto_install'] = False
+
+        if not info.get('license'):
+            info['license'] = 'LGPL-3'
+            _logger.warning(f"Missing `license` key in manifest for '{module}', defaulting to LGPL-3")
 
         info['version'] = adapt_version(info['version'])
         return info
