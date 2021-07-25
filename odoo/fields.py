@@ -745,7 +745,7 @@ class Field(MetaField('DummyField', (object,), {})):
 
     @property
     def _description_sortable(self):
-        return self.store or (self.inherited and self.related_field._description_sortable)
+        return (self.column_type and self.store) or (self.inherited and self.related_field._description_sortable)
 
     def _description_string(self, env):
         if self.string and env.lang:
@@ -893,10 +893,17 @@ class Field(MetaField('DummyField', (object,), {})):
             if model._table_has_rows():
                 model._init_column(self.name)
 
-        if self.required and not has_notnull:
-            sql.set_not_null(model._cr, model._table, self.name)
-        elif not self.required and has_notnull:
-            sql.drop_not_null(model._cr, model._table, self.name)
+        if self.required:
+            if not has_notnull:
+                err_msg = sql.set_not_null(model._cr, model._table, self.name)
+                if err_msg:
+                    model.pool._notnull_errors.setdefault((model._table, self.name), err_msg)
+        else:
+            if has_notnull:
+                sql.drop_not_null(model._cr, model._table, self.name)
+            # the NOT NULL constraint should not be there, so make sure to not
+            # log an error message about its absence
+            model.pool._notnull_errors.pop((model._table, self.name), None)
 
     def update_db_index(self, model, column):
         """ Add or remove the index corresponding to ``self``.
@@ -907,8 +914,7 @@ class Field(MetaField('DummyField', (object,), {})):
         indexname = '%s_%s_index' % (model._table, self.name)
         if self.index:
             try:
-                with model._cr.savepoint():
-                    sql.create_index(model._cr, indexname, model._table, ['"%s"' % self.name])
+                sql.create_index(model._cr, indexname, model._table, ['"%s"' % self.name])
             except psycopg2.OperationalError:
                 _schema.error("Unable to add index for %s", self)
         else:
@@ -1321,7 +1327,7 @@ class _String(Field):
         super(_String, self).__init__(string=string, **kwargs)
 
     def _setup_attrs(self, model, name):
-        super()._setup_attrs(model, name)
+        super(_String, self)._setup_attrs(model, name)
         if self.prefetch is None:
             # do not prefetch complex translated fields by default
             self.prefetch = not callable(self.translate)
@@ -1456,7 +1462,7 @@ class Html(_String):
 
     def _get_attrs(self, model, name):
         # called by _setup_attrs(), working together with _String._setup_attrs()
-        attrs = super()._get_attrs(model, name)
+        attrs = super(Html, self)._get_attrs(model, name)
         # Translated sanitized html fields must use html_translate or a callable.
         if attrs.get('translate') is True and attrs.get('sanitize', True):
             attrs['translate'] = html_translate
@@ -1667,6 +1673,12 @@ class Binary(Field):
     @property
     def column_type(self):
         return None if self.attachment else ('bytea', 'bytea')
+
+    def _get_attrs(self, model, name):
+        attrs = super(Binary, self)._get_attrs(model, name)
+        if not attrs.get('store', True):
+            attrs['attachment'] = False
+        return attrs
 
     _description_attachment = property(attrgetter('attachment'))
 
