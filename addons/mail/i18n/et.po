@@ -15,8 +15,8 @@
 # Algo Kärp <algokarp@gmail.com>, 2020
 # Andre Roomet <andreroomet@gmail.com>, 2021
 # Piia Paurson <piia@avalah.ee>, 2021
-# Triine Aavik <triine@avalah.ee>, 2021
 # Martin Talts <martin.t@avalah.ee>, 2021
+# Triine Aavik <triine@avalah.ee>, 2021
 # Eneli Õigus <enelioigus@gmail.com>, 2021
 # 
 msgid ""
@@ -1811,7 +1811,7 @@ msgstr "Tähtaeg"
 #: code:addons/mail/static/src/js/activity.js:95
 #, python-format
 msgid "Due in %d days"
-msgstr ""
+msgstr "Tähtaeg %d päeva pärast"
 
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_ir_actions_server__activity_date_deadline_range_type
@@ -2106,7 +2106,7 @@ msgstr "Evaõnnestumise põhjus"
 #. module: mail
 #: model:ir.model.fields,field_description:mail.field_mail_notification__failure_reason
 msgid "Failure reason"
-msgstr ""
+msgstr "Ebaõnnestumise põhjus"
 
 #. module: mail
 #: model:ir.model.fields,help:mail.field_mail_mail__failure_reason
@@ -3973,7 +3973,7 @@ msgstr ""
 #: code:addons/mail/models/mail_channel.py:165
 #, python-format
 msgid "Only mailing lists can be moderated."
-msgstr ""
+msgstr "Ainult meliliste saab modereerida."
 
 #. module: mail
 #: selection:mail.channel.partner,fold_state:0
