@@ -4,6 +4,7 @@ import { registerModel } from '@mail/model/model_core';
 import { decrement, increment, insert, insertAndReplace, link, replace, unlink } from '@mail/model/model_field_command';
 import { htmlToTextContentInline } from '@mail/js/utils';
 
+import { escape } from '@web/core/utils/strings';
 import { str_to_datetime } from 'web.time';
 import { Markup } from 'web.utils';
 
@@ -692,7 +693,7 @@ registerModel({
                     notificationTitle = author.nameOrDisplayName;
                 }
             }
-            const notificationContent = owl.utils.escape(
+            const notificationContent = escape(
                 htmlToTextContentInline(message.body).substr(0, PREVIEW_MSG_MAX_SIZE)
             );
             this.env.services['bus_service'].sendNotification({

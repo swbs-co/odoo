@@ -3738,43 +3738,12 @@
         }
     }
 
-    /**
-     * Cleans on the root fiber the patch and willPatch fiber lists
-     * It is typically needed when the same root fiber needs to recycle on
-     * of its children or grandchildren's fiber.
-     */
-    function cleanPatchableFiber(child, root) {
-        const { willPatch, patched } = root;
-        let i = willPatch.indexOf(child);
-        if (i > -1) {
-            willPatch.splice(i, 1);
-        }
-        i = patched.indexOf(child);
-        if (i > -1) {
-            patched.splice(i, 1);
-        }
-    }
     function makeChildFiber(node, parent) {
         let current = node.fiber;
         if (current) {
-            // current is necessarily a rootfiber here
             let root = parent.root;
-            const isSameRoot = current.root === root;
             cancelFibers(root, current.children);
-            current.children = [];
-            current.parent = parent;
-            // only increment our rendering if we were not
-            // already accounted for, or that we have been rendered
-            // already (in which case our fiber was removed from the root rendering)
-            if (!isSameRoot || current.bdom) {
-                root.counter++;
-            }
-            if (isSameRoot) {
-                cleanPatchableFiber(current, root);
-            }
-            current.bdom = null;
-            current.root = root;
-            return current;
+            current.root = null;
         }
         return new Fiber(node, parent);
     }
@@ -4066,7 +4035,7 @@
             //   a root fiber to a child fiber in the previous microtick, because it was
             //   embedded in a rendering coming from above, so the fiber will be rendered
             //   in the next microtick anyway, so we should not render it again.
-            if (this.fiber && (current || !fiber.parent)) {
+            if (this.fiber === fiber && (current || !fiber.parent)) {
                 this._render(fiber);
             }
         }
@@ -4991,8 +4960,8 @@ See https://github.com/odoo/owl/blob/master/doc/reference/config.md#mode for mor
 
 
     __info__.version = '2.0.0-alpha1';
-    __info__.date = '2022-01-18T14:03:02.355Z';
-    __info__.hash = '2788b6b';
+    __info__.date = '2022-01-19T08:25:04.365Z';
+    __info__.hash = 'dbee8f5';
     __info__.url = 'https://github.com/odoo/owl';
 
 

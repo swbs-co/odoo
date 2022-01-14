@@ -38,7 +38,6 @@ import {
 } from "../helpers/mock_services";
 import { getFixture, legacyExtraNextTick, nextTick, patchWithCleanup } from "../helpers/utils";
 import session from "web.session";
-import { ComponentAdapter } from "web.OwlCompatibility";
 import LegacyMockServer from "web.MockServer";
 import Widget from "web.Widget";
 import { userService } from "@web/core/user_service";

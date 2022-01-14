@@ -21,11 +21,11 @@ import AbstractStorageService from 'web.AbstractStorageService';
 import RamStorage from 'web.RamStorage';
 import {
     createView,
-    getFixture,
     makeTestPromise,
     mock,
 } from 'web.test_utils';
 import Widget from 'web.Widget';
+import { getFixture } from "@web/../tests/helpers/utils";
 import { createWebClient, getActionManagerServerData } from "@web/../tests/webclient/helpers";
 
 import LegacyRegistry from "web.Registry";
@@ -35,7 +35,8 @@ const {
     patch: legacyPatch,
     unpatch: legacyUnpatch,
 } = mock;
-const { Component, EventBus } = owl;
+const { Component, EventBus, App } = owl;
+const { afterNextRender } = App;
 
 //------------------------------------------------------------------------------
 // Private
@@ -163,73 +164,12 @@ function _useDiscuss(callbacks, { afterNextRender }) {
  * @returns {Promise}
  */
 function nextAnimationFrame() {
-    const requestAnimationFrame = owl.Component.scheduler.requestAnimationFrame;
+    // NXOWL: Apps may have different requestAnimationFrame functions: which one do we use ?
+    // const requestAnimationFrame = owl.Component.scheduler.requestAnimationFrame;
     return new Promise(function (resolve) {
         setTimeout(() => requestAnimationFrame(() => resolve()));
     });
 }
-
-/**
- * Returns a promise resolved the next time OWL stops rendering.
- *
- * @param {function} func function which, when called, is
- *   expected to trigger OWL render(s).
- * @param {number} [timeoutDelay=5000] in ms
- * @returns {Promise}
- */
-const afterNextRender = (function () {
-    const stop = owl.Component.scheduler.stop;
-    const stopPromises = [];
-
-    owl.Component.scheduler.stop = function () {
-        const wasRunning = this.isRunning;
-        stop.call(this);
-        if (wasRunning) {
-            while (stopPromises.length) {
-                stopPromises.pop().resolve();
-            }
-        }
-    };
-
-    async function afterNextRender(func, timeoutDelay = 5000) {
-        // Define the potential errors outside of the promise to get a proper
-        // trace if they happen.
-        const startError = new Error("Timeout: the render didn't start.");
-        const stopError = new Error("Timeout: the render didn't stop.");
-        // Set up the timeout to reject if no render happens.
-        let timeoutNoRender;
-        const timeoutProm = new Promise((resolve, reject) => {
-            timeoutNoRender = setTimeout(() => {
-                let error = startError;
-                if (owl.Component.scheduler.isRunning) {
-                    error = stopError;
-                }
-                console.error(error);
-                reject(error);
-            }, timeoutDelay);
-        });
-        // Set up the promise to resolve if a render happens.
-        const prom = makeTestPromise();
-        stopPromises.push(prom);
-        // Start the function expected to trigger a render after the promise
-        // has been registered to not miss any potential render.
-        const funcRes = func();
-        // Make them race (first to resolve/reject wins).
-        await Promise.race([prom, timeoutProm]);
-        clearTimeout(timeoutNoRender);
-        // Wait the end of the function to ensure all potential effects are
-        // taken into account during the following verification step.
-        await funcRes;
-        // Wait one more frame to make sure no new render has been queued.
-        await nextAnimationFrame();
-        if (owl.Component.scheduler.isRunning) {
-            await afterNextRender(() => {}, timeoutDelay);
-        }
-    }
-
-    return afterNextRender;
-})();
-
 
 //------------------------------------------------------------------------------
 // Public: test lifecycle
@@ -291,7 +231,7 @@ function beforeEach(self) {
     }
 
     Object.assign(self, {
-        components: [],
+        apps: [],
         data,
         unpatch,
         widget: undefined
@@ -311,9 +251,8 @@ function afterEach(self) {
     // The components must be destroyed before the widget, because the
     // widget might destroy the models before destroying the components,
     // and the components might still rely on messaging (or other) record(s).
-    while (self.components.length > 0) {
-        const component = self.components.pop();
-        component.destroy();
+    while (self.apps.length > 0) {
+        self.apps.pop().destroy();
     }
     if (self.widget) {
         self.widget.destroy();
@@ -387,12 +326,13 @@ function getAfterEvent({ messagingBus }) {
  * @returns {Component}
  */
 async function createRootComponent(self, Component, { props = {}, target }) {
-    Component.env = self.env;
-    const component = new Component(null, props);
-    delete Component.env;
-    self.components.push(component);
-    await afterNextRender(() => component.mount(target));
-    return component;
+    const app = new App(Component, {
+        props,
+        templates: window.__ODOO_TEMPLATES__,
+        env: self.env
+    })
+    self.apps.push(app);
+    return await app.mount(target);
 }
 
 /**
@@ -419,76 +359,76 @@ function getClick({ afterNextRender }) {
     };
 }
 
-function getCreateChatterContainerComponent({ components, env, widget }) {
+function getCreateChatterContainerComponent({ apps, env, widget }) {
     return async function createChatterContainerComponent(props) {
-        return await createRootMessagingComponent({ components, env }, "ChatterContainer", {
+        return await createRootMessagingComponent({ apps, env }, "ChatterContainer", {
             props,
             target: widget.el,
         });
     };
 }
 
-function getCreateComposerComponent({ components, env, modelManager, widget }) {
+function getCreateComposerComponent({ apps, env, modelManager, widget }) {
     return async function createComposerComponent(composer, props) {
         const composerView = modelManager.messaging.models['ComposerView'].create({
             qunitTest: insertAndReplace({
                 composer: replace(composer),
             }),
         });
-        return await createRootMessagingComponent({ components, env }, "Composer", {
+        return await createRootMessagingComponent({ apps, env }, "Composer", {
             props: { localId: composerView.localId, ...props },
             target: widget.el,
         });
     };
 }
 
-function getCreateComposerSuggestionComponent({ components, env, modelManager, widget }) {
+function getCreateComposerSuggestionComponent({ apps, env, modelManager, widget }) {
     return async function createComposerSuggestionComponent(composer, props) {
         const composerView = modelManager.messaging.models['ComposerView'].create({
             qunitTest: insertAndReplace({
                 composer: replace(composer),
             }),
         });
-        await createRootMessagingComponent({ components, env }, "ComposerSuggestion", {
+        await createRootMessagingComponent({ apps, env }, "ComposerSuggestion", {
             props: { ...props, composerViewLocalId: composerView.localId },
             target: widget.el,
         });
     };
 }
 
-function getCreateMessageComponent({ components, env, modelManager, widget }) {
+function getCreateMessageComponent({ apps, env, modelManager, widget }) {
     return async function createMessageComponent(message) {
         const messageView = modelManager.messaging.models['MessageView'].create({
             message: replace(message),
             qunitTest: insertAndReplace(),
         });
-        await createRootMessagingComponent({ components, env }, "Message", {
+        await createRootMessagingComponent({ apps, env }, "Message", {
             props: { localId: messageView.localId },
             target: widget.el,
         });
     };
 }
 
-function getCreateMessagingMenuComponent({ components, env, widget }) {
+function getCreateMessagingMenuComponent({ apps, env, widget }) {
     return async function createMessagingMenuComponent() {
-        return await createRootComponent({ components, env }, MessagingMenuContainer, { target: widget.el });
+        return await createRootComponent({ apps, env }, MessagingMenuContainer, { target: widget.el });
     };
 }
 
-function getCreateNotificationListComponent({ components, env, modelManager, widget }) {
+function getCreateNotificationListComponent({ apps, env, modelManager, widget }) {
     return async function createNotificationListComponent({ filter = 'all' } = {}) {
         const notificationListView = modelManager.messaging.models['NotificationListView'].create({
             filter,
             qunitTestOwner: insertAndReplace(),
         });
-        await createRootMessagingComponent({ components, env }, "NotificationList", {
+        await createRootMessagingComponent({ apps, env }, "NotificationList", {
             props: { localId: notificationListView.localId },
             target: widget.el,
         });
     };
 }
 
-function getCreateThreadViewComponent({ afterEvent, components, env, widget }) {
+function getCreateThreadViewComponent({ afterEvent, apps, env, widget }) {
     return async function createThreadViewComponent(threadView, otherProps = {}, { isFixedSize = false, waitUntilMessagesLoaded = true } = {}) {
         let target;
         if (isFixedSize) {
@@ -505,7 +445,7 @@ function getCreateThreadViewComponent({ afterEvent, components, env, widget }) {
             target = widget.el;
         }
         async function func() {
-            return createRootMessagingComponent({ components, env }, "ThreadView", { props: { localId: threadView.localId, ...otherProps }, target });
+            return createRootMessagingComponent({ apps, env }, "ThreadView", { props: { localId: threadView.localId, ...otherProps }, target });
         }
         if (waitUntilMessagesLoaded) {
             await afterNextRender(() => afterEvent({
@@ -816,10 +756,10 @@ async function start(param0 = {}) {
         testSetupDoneDeferred.resolve();
         waitUntilEventPromise = Promise.resolve();
     }
-    const components = [];
+    const apps = [];
     const result = {
         afterEvent,
-        components,
+        apps,
         env: testEnv,
         mockServer,
         widget,
@@ -845,13 +785,13 @@ async function start(param0 = {}) {
         ...result,
         afterNextRender,
         click: getClick({ afterNextRender }),
-        createChatterContainerComponent: getCreateChatterContainerComponent({ components, env: testEnv, widget }),
-        createComposerComponent: getCreateComposerComponent({ components, env: testEnv, modelManager, widget }),
-        createComposerSuggestionComponent: getCreateComposerSuggestionComponent({ components, env: testEnv, modelManager, widget }),
-        createMessageComponent: getCreateMessageComponent({ components, env: testEnv, modelManager, widget }),
-        createMessagingMenuComponent: getCreateMessagingMenuComponent({ components, env: testEnv, widget }),
-        createNotificationListComponent: getCreateNotificationListComponent({ components, env: testEnv, modelManager, widget }),
-        createThreadViewComponent: getCreateThreadViewComponent({ afterEvent, components, env: testEnv, widget }),
+        createChatterContainerComponent: getCreateChatterContainerComponent({ apps, env: testEnv, widget }),
+        createComposerComponent: getCreateComposerComponent({ apps, env: testEnv, modelManager, widget }),
+        createComposerSuggestionComponent: getCreateComposerSuggestionComponent({ apps, env: testEnv, modelManager, widget }),
+        createMessageComponent: getCreateMessageComponent({ apps, env: testEnv, modelManager, widget }),
+        createMessagingMenuComponent: getCreateMessagingMenuComponent({ apps, env: testEnv, widget }),
+        createNotificationListComponent: getCreateNotificationListComponent({ apps, env: testEnv, modelManager, widget }),
+        createThreadViewComponent: getCreateThreadViewComponent({ afterEvent, apps, env: testEnv, widget }),
         openDiscuss,
     };
 }

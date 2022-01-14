@@ -344,5 +344,6 @@ odoo.define('web.Popover', function (require) {
         titleAttribute: { type: String, optional: true },
     };
 
+    owl.Component._components.Popover = Popover;
     return Popover;
 });
