@@ -59,7 +59,7 @@ odoo.define('web.test_env', async function (require) {
                 SIZES: { XS: 0, VSM: 1, SM: 2, MD: 3, LG: 4, XL: 5, XXL: 6 },
             }, env.device),
             isDebug: env.isDebug || (() => false),
-            renderToString(template, context) {
+            renderToString(template, context = {}) {
                 const div = document.createElement("div");
                 const templateFn = app.getTemplate(template);
                 const bdom = templateFn(context);
