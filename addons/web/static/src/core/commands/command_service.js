@@ -39,17 +39,16 @@ const commandSetupRegistry = registry.category("command_setup");
 
 class DefaultFooter extends Component {
     setup() {
-        let nextId = 1;
         this.elements = commandSetupRegistry
             .getEntries()
-            .map((el) => ({ namespace: el[0], name: el[1].name, id: nextId++ }))
+            .map((el) => ({ namespace: el[0], name: el[1].name }))
             .filter((el) => el.name);
     }
 }
 DefaultFooter.template = xml`
 <span>
     <span class='o_promote'>TIP</span> — search for
-    <t t-foreach="elements" t-as="element" t-key="element.id">
+    <t t-foreach="elements" t-as="element" t-key="element.namespace">
         <t t-if="!(element_first || element_last)">, </t>
         <t t-if="element_last and !element_first"> and </t>
         <span t-esc="element.namespace" class='o_promote'/><t t-esc="element.name"/>
