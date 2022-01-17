@@ -453,7 +453,7 @@ QUnit.test("footer displays the right tips", async (assert) => {
         name: "FirstName",
     });
 
-    testComponent = await mount(TestComponent, { env, target });
+    await mount(TestComponent, { env, target });
 
     // Open palette
     triggerHotkey("control+k");
