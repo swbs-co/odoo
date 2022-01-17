@@ -1295,10 +1295,14 @@ odoo.define('web.OwlCompatibilityTests', function (require) {
             widget.destroy();
         });
 
-        QUnit.skipNXOWL("sub component can be updated (not in DOM)", async function (assert) {
-            assert.expect(4);
+        QUnit.test("sub component can be updated (not in DOM)", async function (assert) {
+            assert.expect(18);
 
-            class MyComponent extends Component {}
+            class MyComponent extends Component {
+                setup() {
+                    useLogLifeCycle((log) => assert.step(log));
+                }
+            }
             MyComponent.template = xml`<div>Component <t t-esc="props.val"/></div>`;
             const MyWidget = WidgetAdapter.extend({
                 start() {
@@ -1313,23 +1317,43 @@ odoo.define('web.OwlCompatibilityTests', function (require) {
             const target = testUtils.prepareTarget();
             const widget = new MyWidget();
             await widget.appendTo(target);
+            assert.verifySteps([
+                "onWillStart MyComponent",
+                "onWillRender MyComponent",
+                "onRendered MyComponent",
+                "onMounted MyComponent"
+            ]);
 
-            assert.strictEqual(widget.el.innerHTML, '<div>Component 1</div>');
+            assert.strictEqual(target.innerHTML, '<div><div>Component 1</div></div>');
 
             widget.$el.detach();
             widget.on_detach_callback();
 
-            assert.ok(widget.component.__owl__.status !== ISMOUNTED);
+            assert.verifySteps([
+                "onWillUnmount MyComponent"
+            ]);
 
             await widget.update();
+            assert.verifySteps([
+                "onWillUpdateProps MyComponent",
+                "onWillRender MyComponent",
+                "onRendered MyComponent"
+            ]);
 
             widget.$el.appendTo(target);
             widget.on_attach_callback();
+            assert.verifySteps([
+                "onMounted MyComponent"
+            ]);
 
-            assert.ok(widget.component.__owl__.status === ISMOUNTED);
-            assert.strictEqual(widget.el.innerHTML, '<div>Component 2</div>');
+            assert.strictEqual(target.innerHTML, '<div><div>Component 2</div></div>');
 
             widget.destroy();
+
+            assert.verifySteps([
+                "onWillUnmount MyComponent",
+                "onWillDestroy MyComponent"
+            ]);
         });
 
         QUnit.test("update a destroyed sub component", async function (assert) {
