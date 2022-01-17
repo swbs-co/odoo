@@ -679,7 +679,7 @@ odoo.define('web.OwlCompatibility', function (require) {
             this.status = "unmounted";
         }
 
-        update(nextProps) {
+        async update(nextProps) {
             if (this.status === "destroyed") {
                 return;
             }
