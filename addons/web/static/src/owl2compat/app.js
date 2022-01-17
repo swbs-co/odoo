@@ -1,7 +1,12 @@
 (function () {
     const App = owl.App;
 
-    const compiledTemplates = {};
+    // templates' code is shared between multiple instances of Apps
+    // This is useful primarly for the OWL2 to Legacy compatibility layer
+    // It is also useful for tests.
+    // The downside of this is that the compilation is done once with the compiling app's
+    // translate function and attributes.
+    const sharedTemplates = {};
     const stopPromises = [];
     const schedulers = new Set();
 
@@ -21,19 +26,23 @@
     owl.App = class extends App {
         constructor() {
             super(...arguments);
-            this.templates = compiledTemplates;
-            this.destroyed = false;
+            this.setup();
             hookIntoScheduler(this.scheduler);
             schedulers.add(this.scheduler);
         }
         destroy() {
             schedulers.delete(this.scheduler);
-            if (!this.destroyed) {
-                super.destroy();
-                this.destroyed = true;
-            }
+            super.destroy();
         }
+        _compileTemplate(name) {
+            if (!(name in sharedTemplates)) {
+                sharedTemplates[name] = super._compileTemplate(...arguments);
+            }
+            return sharedTemplates[name];
+        }
+        setup() {}
     };
+    owl.App.sharedTemplates = sharedTemplates;
     /**
      * Returns a promise resolved the next time OWL stops rendering.
      *
@@ -55,7 +64,6 @@
                 if ([...schedulers].some(({ isRunning }) => isRunning)) {
                     error = stopError;
                 }
-                debugger;
                 console.error(error);
                 reject(error);
             }, timeoutDelay);
