@@ -53,7 +53,8 @@ export const makeWithSearch = async (params) => {
     const target = getFixture();
 
     const appConfig = {
-        env, props,
+        env,
+        props,
         templates: window.__ODOO_TEMPLATES__,
     };
     const app = new App(WithSearch, appConfig);

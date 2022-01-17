@@ -199,7 +199,7 @@ QUnit.module("Views", (hooks) => {
     QUnit.module("PivotView");
 
     QUnit.test("simple pivot rendering", async function (assert) {
-        assert.expect(3);
+        assert.expect(4);
 
         const pivot = await makeView({
             type: "pivot",
@@ -218,6 +218,7 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
+        assert.hasClass(pivot.el, "o_action o_view_controller");
         assert.hasClass(pivot.el.querySelector("table"), "o_enable_linking");
         assert.containsOnce(
             pivot,

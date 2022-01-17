@@ -252,6 +252,7 @@ export class View extends Component {
         const viewProps = {
             info: { actionMenus, mode: this.props.display.mode },
             arch,
+            className: "o_action o_view_controller",
             fields,
             resModel,
             useSampleModel: false,

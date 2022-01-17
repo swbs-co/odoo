@@ -288,9 +288,9 @@ QUnit.module("Views", (hooks) => {
     QUnit.module("GraphView");
 
     QUnit.test("simple bar chart rendering", async function (assert) {
-        assert.expect(12);
         const graph = await makeView({ serverData, type: "graph", resModel: "foo" });
         const { measure, mode, order, stacked } = getGraphModelMetaData(graph);
+        assert.hasClass(graph.el, "o_action o_view_controller");
         assert.containsOnce(graph, "div.o_graph_canvas_container canvas");
         assert.strictEqual(measure, "__count", `the active measure should be "__count" by default`);
         assert.strictEqual(mode, "bar", "should be in bar chart mode by default");

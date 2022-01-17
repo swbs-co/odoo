@@ -70,10 +70,6 @@ export class WithSearch extends Component {
         for (const key of OTHER_SEARCH_KEYS) {
             componentProps.info[key] = this.searchModel[key];
         }
-        // if (this.props.class) {
-        // NXOWL what if componentProps already contains class? Possible?
-        // --> rethink system with View and WithSearch
-        // }
         return componentProps;
     }
 }

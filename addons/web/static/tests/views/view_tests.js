@@ -109,15 +109,16 @@ QUnit.module("Views", (hooks) => {
     // load_views
     ////////////////////////////////////////////////////////////////////////////
 
-    QUnit.skipNXOWL("simple rendering", async function (assert) {
-        assert.expect(10);
+    QUnit.test("simple rendering", async function (assert) {
+        assert.expect(11);
 
         const ToyView = viewRegistry.get("toy");
         patchWithCleanup(ToyView.prototype, {
             setup() {
                 this._super();
-                const { arch, fields, info } = this.props;
+                const { arch, fields, info, className } = this.props;
                 assert.strictEqual(arch, serverData.views["animal,false,toy"]);
+                assert.strictEqual(className, "o_action o_view_controller");
                 assert.deepEqual(fields, serverData.models.animal.fields);
                 assert.strictEqual(info.actionMenus, undefined);
                 assert.strictEqual(this.env.config.viewId, false);
@@ -139,7 +140,7 @@ QUnit.module("Views", (hooks) => {
             resModel: "animal",
             type: "toy",
         });
-        assert.hasClass(view.el, "o_action o_view_controller o_toy_view");
+        assert.hasClass(view.el, "o_toy_view");
         assert.strictEqual(view.el.innerHTML, serverData.views["animal,false,toy"]);
     });
 

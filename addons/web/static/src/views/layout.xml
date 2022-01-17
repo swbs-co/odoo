@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="web.Layout" owl="1">
-        <div t-att-class="{ o_view_sample_data: props.useSampleModel }" t-attf-class="{{ props.viewType ? `o_${props.viewType}_view` : '' }}">
+        <div t-att-class="className">
             <t t-component="components.ControlPanel" slots="controlPanelSlots" t-if="display.controlPanel">
                 <!-- Empty body to assign slot id to control panel -->
             </t>
