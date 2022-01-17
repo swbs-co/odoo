@@ -146,10 +146,9 @@ export class View extends Component {
 
         // NXOWL: not acceptable I think
         this.env = Object.create(this.env);
-        this.env.keepLast = new KeepLast();
         this.config = { ...getDefaultConfig(), ...this.env.config };
         useSubEnv({
-            keepLast: this.env.keepLast,
+            keepLast: new KeepLast(),
             config: this.config,
         });
 
