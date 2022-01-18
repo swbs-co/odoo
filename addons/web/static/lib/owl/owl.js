@@ -4568,37 +4568,37 @@ See https://github.com/odoo/owl/blob/master/doc/reference/config.md#mode for mor
     // -----------------------------------------------------------------------------
     function onWillStart(fn) {
         const node = getCurrent();
-        node.willStart.push(fn);
+        node.willStart.push(fn.bind(node.component));
     }
     function onWillUpdateProps(fn) {
         const node = getCurrent();
-        node.willUpdateProps.push(fn);
+        node.willUpdateProps.push(fn.bind(node.component));
     }
     function onMounted(fn) {
         const node = getCurrent();
-        node.mounted.push(fn);
+        node.mounted.push(fn.bind(node.component));
     }
     function onWillPatch(fn) {
         const node = getCurrent();
-        node.willPatch.unshift(fn);
+        node.willPatch.unshift(fn.bind(node.component));
     }
     function onPatched(fn) {
         const node = getCurrent();
-        node.patched.push(fn);
+        node.patched.push(fn.bind(node.component));
     }
     function onWillUnmount(fn) {
         const node = getCurrent();
-        node.willUnmount.unshift(fn);
+        node.willUnmount.unshift(fn.bind(node.component));
     }
     function onWillDestroy(fn) {
         const node = getCurrent();
-        node.willDestroy.push(fn);
+        node.willDestroy.push(fn.bind(node.component));
     }
     function onWillRender(fn) {
         const node = getCurrent();
         const renderFn = node.renderFn;
         node.renderFn = () => {
-            fn();
+            fn.call(node.component);
             return renderFn();
         };
     }
@@ -4607,7 +4607,7 @@ See https://github.com/odoo/owl/blob/master/doc/reference/config.md#mode for mor
         const renderFn = node.renderFn;
         node.renderFn = () => {
             const result = renderFn();
-            fn();
+            fn.call(node.component);
             return result;
         };
     }
@@ -4618,7 +4618,7 @@ See https://github.com/odoo/owl/blob/master/doc/reference/config.md#mode for mor
             handlers = [];
             nodeErrorHandlers.set(node, handlers);
         }
-        handlers.push(callback);
+        handlers.push(callback.bind(node.component));
     }
 
     // Allows to get the target of a Reactive (used for making a new Reactive from the underlying object)
@@ -4991,8 +4991,8 @@ See https://github.com/odoo/owl/blob/master/doc/reference/config.md#mode for mor
 
 
     __info__.version = '2.0.0-alpha1';
-    __info__.date = '2022-01-18T12:06:50.368Z';
-    __info__.hash = '83d38a6';
+    __info__.date = '2022-01-18T14:03:02.355Z';
+    __info__.hash = '2788b6b';
     __info__.url = 'https://github.com/odoo/owl';
 
 
