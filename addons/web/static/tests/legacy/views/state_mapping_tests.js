@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { legacyExtraNextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { getFixture, legacyExtraNextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import {
     getFacetTexts,
     removeFacet,
@@ -29,8 +29,11 @@ const serviceRegistry = registry.category("services");
 const viewRegistry = registry.category("views");
 
 let serverData;
+let target;
 QUnit.module("Views", (hooks) => {
     hooks.beforeEach(async () => {
+        target = getFixture();
+
         serverData = {
             models: {
                 foo: {
@@ -108,7 +111,7 @@ QUnit.module("Views", (hooks) => {
 
             const unpatchDate = mock.patchDate(2021, 6, 1, 10, 0, 0);
 
-            const webClient = await createWebClient({ serverData });
+            const webClient = await createWebClient({ target, serverData });
 
             await doAction(webClient, {
                 name: "Action name",
@@ -127,9 +130,9 @@ QUnit.module("Views", (hooks) => {
                 },
             });
 
-            assert.containsOnce(webClient, ".o_switch_view.o_toy.active");
+            assert.containsOnce(target, ".o_switch_view.o_toy.active");
             assert.deepEqual(
-                getFacetTexts(webClient).map((s) => s.replace(/\s/, "")),
+                getFacetTexts(target).map((s) => s.replace(/\s/, "")),
                 [
                     "FooABC",
                     "TrueDomainorDate Filter: July 2021",
@@ -137,11 +140,11 @@ QUnit.module("Views", (hooks) => {
                 ]
             );
 
-            await toggleMenu(webClient, "Comparison");
-            await toggleMenuItem(webClient, "Date Filter: Previous Period");
+            await toggleMenu(target, "Comparison");
+            await toggleMenuItem(target, "Date Filter: Previous Period");
 
             assert.deepEqual(
-                getFacetTexts(webClient).map((s) => s.replace(/\s/, "")),
+                getFacetTexts(target).map((s) => s.replace(/\s/, "")),
                 [
                     "FooABC",
                     "TrueDomainorDate Filter: July 2021",
@@ -150,12 +153,12 @@ QUnit.module("Views", (hooks) => {
                 ]
             );
 
-            await switchView(webClient, "legacy_toy");
+            await switchView(target, "legacy_toy");
             await legacyExtraNextTick();
 
-            assert.containsOnce(webClient, ".o_switch_view.o_legacy_toy.active");
+            assert.containsOnce(target, ".o_switch_view.o_legacy_toy.active");
             assert.deepEqual(
-                getFacetTexts(webClient).map((s) => s.replace(/\s/, "")),
+                getFacetTexts(target).map((s) => s.replace(/\s/, "")),
                 [
                     "FooABC",
                     "TrueDomainorDate Filter: July 2021",
@@ -164,21 +167,21 @@ QUnit.module("Views", (hooks) => {
                 ]
             );
 
-            await removeFacet(webClient, 1);
+            await removeFacet(target, 1);
 
             assert.deepEqual(
-                getFacetTexts(webClient).map((s) => s.replace(/\s/, "")),
+                getFacetTexts(target).map((s) => s.replace(/\s/, "")),
                 [
                     "FooABC",
                     "DateGroupBy: Month>Bar",
                 ]
             );
 
-            await switchView(webClient, "toy");
+            await switchView(target, "toy");
 
-            assert.containsOnce(webClient, ".o_switch_view.o_toy.active");
+            assert.containsOnce(target, ".o_switch_view.o_toy.active");
             assert.deepEqual(
-                getFacetTexts(webClient).map((s) => s.replace(/\s/, "")),
+                getFacetTexts(target).map((s) => s.replace(/\s/, "")),
                 [
                     "FooABC",
                     "DateGroupBy: Month>Bar",
@@ -186,19 +189,19 @@ QUnit.module("Views", (hooks) => {
             );
 
             // Check if update works
-            await removeFacet(webClient, 1);
+            await removeFacet(target, 1);
 
             assert.deepEqual(
-                getFacetTexts(webClient).map((s) => s.replace(/\s/, "")),
+                getFacetTexts(target).map((s) => s.replace(/\s/, "")),
                 [
                     "FooABC",
                 ]
             );
 
-            await switchView(webClient, "legacy_toy");
+            await switchView(target, "legacy_toy");
 
             assert.deepEqual(
-                getFacetTexts(webClient).map((s) => s.replace(/\s/, "")),
+                getFacetTexts(target).map((s) => s.replace(/\s/, "")),
                 [
                     "FooABC",
                 ]
@@ -225,7 +228,7 @@ QUnit.module("Views", (hooks) => {
                 },
             ];
 
-            const webClient = await createWebClient({ serverData });
+            const webClient = await createWebClient({ target, serverData });
 
             await doAction(webClient, {
                 name: "Action name",
@@ -237,19 +240,19 @@ QUnit.module("Views", (hooks) => {
                 ],
             });
 
-            assert.containsOnce(webClient, ".o_switch_view.o_toy.active");
-            assert.deepEqual(getFacetTexts(webClient), ["My favorite"]);
+            assert.containsOnce(target, ".o_switch_view.o_toy.active");
+            assert.deepEqual(getFacetTexts(target), ["My favorite"]);
 
-            await switchView(webClient, "legacy_toy");
+            await switchView(target, "legacy_toy");
             await legacyExtraNextTick();
 
-            assert.containsOnce(webClient, ".o_switch_view.o_legacy_toy.active");
-            assert.deepEqual(getFacetTexts(webClient), ["My favorite"]);
+            assert.containsOnce(target, ".o_switch_view.o_legacy_toy.active");
+            assert.deepEqual(getFacetTexts(target), ["My favorite"]);
 
-            await switchView(webClient, "toy");
+            await switchView(target, "toy");
 
-            assert.containsOnce(webClient, ".o_switch_view.o_toy.active");
-            assert.deepEqual(getFacetTexts(webClient), ["My favorite"]);
+            assert.containsOnce(target, ".o_switch_view.o_toy.active");
+            assert.deepEqual(getFacetTexts(target), ["My favorite"]);
         }
     );
 
@@ -259,7 +262,7 @@ QUnit.module("Views", (hooks) => {
             assert.expect(5);
 
             patchWithCleanup(browser, { setTimeout: (fn) => fn() });
-            const webClient = await createWebClient({
+            const webClient = await createWebClient({ target,
                 serverData,
                 mockRPC(_, args) {
                     if (args.method === "create_or_replace") {
@@ -280,19 +283,19 @@ QUnit.module("Views", (hooks) => {
                 ],
             });
 
-            assert.containsOnce(webClient, ".o_switch_view.o_toy.active");
+            assert.containsOnce(target, ".o_switch_view.o_toy.active");
 
-            await toggleFavoriteMenu(webClient);
-            await toggleSaveFavorite(webClient);
-            await saveFavorite(webClient);
+            await toggleFavoriteMenu(target);
+            await toggleSaveFavorite(target);
+            await saveFavorite(target);
 
-            assert.deepEqual(getFacetTexts(webClient), ["Action name"]);
+            assert.deepEqual(getFacetTexts(target), ["Action name"]);
 
-            await switchView(webClient, "legacy_toy");
+            await switchView(target, "legacy_toy");
             await legacyExtraNextTick();
 
-            assert.containsOnce(webClient, ".o_switch_view.o_legacy_toy.active");
-            assert.deepEqual(getFacetTexts(webClient), ["Action name"]);
+            assert.containsOnce(target, ".o_switch_view.o_legacy_toy.active");
+            assert.deepEqual(getFacetTexts(target), ["Action name"]);
         }
     );
 
@@ -350,7 +353,7 @@ QUnit.module("Views", (hooks) => {
             });
             legacyViewRegistry.add("legacy_toy_with_extension", LegacyToyViewWithExtension);
 
-            const webClient = await createWebClient({ serverData });
+            const webClient = await createWebClient({ target, serverData });
 
             await doAction(webClient, {
                 name: "Action name",
@@ -362,17 +365,17 @@ QUnit.module("Views", (hooks) => {
                 ],
             });
 
-            assert.containsOnce(webClient, ".o_switch_view.o_toy.active");
+            assert.containsOnce(target, ".o_switch_view.o_toy.active");
 
-            await switchView(webClient, "legacy_toy");
+            await switchView(target, "legacy_toy");
             await legacyExtraNextTick();
 
-            assert.containsOnce(webClient, ".o_switch_view.o_legacy_toy.active");
+            assert.containsOnce(target, ".o_switch_view.o_legacy_toy.active");
             assert.verifySteps([`{"locationId":"Grand-Rosière"}`]);
 
-            await switchView(webClient, "toy");
+            await switchView(target, "toy");
 
-            assert.containsOnce(webClient, ".o_switch_view.o_toy.active");
+            assert.containsOnce(target, ".o_switch_view.o_toy.active");
             assert.verifySteps([`{"locationId":"Grand-Rosière"}`]);
 
             await doAction(webClient, {
@@ -386,18 +389,18 @@ QUnit.module("Views", (hooks) => {
             });
             await legacyExtraNextTick();
 
-            assert.containsOnce(webClient, ".o_switch_view.o_legacy_toy.active");
+            assert.containsOnce(target, ".o_switch_view.o_legacy_toy.active");
             assert.verifySteps([`no state`]);
 
-            await switchView(webClient, "toy");
+            await switchView(target, "toy");
 
-            assert.containsOnce(webClient, ".o_switch_view.o_toy.active");
+            assert.containsOnce(target, ".o_switch_view.o_toy.active");
             assert.verifySteps([`{"locationId":"The place to be"}`]);
 
-            await switchView(webClient, "legacy_toy");
+            await switchView(target, "legacy_toy");
             await legacyExtraNextTick();
 
-            assert.containsOnce(webClient, ".o_switch_view.o_legacy_toy.active");
+            assert.containsOnce(target, ".o_switch_view.o_legacy_toy.active");
             assert.verifySteps([`{"locationId":"The place to be"}`]);
         }
     );

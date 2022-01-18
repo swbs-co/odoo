@@ -453,56 +453,57 @@ odoo.define('web.owl_dialog_tests', function (require) {
                 },
             };
 
-            const webClient = await createWebClient({ serverData });
+            const target = getFixture();
+            const webClient = await createWebClient({ target, serverData });
             await doAction(webClient, 1);
 
-            await testUtils.dom.click(webClient.el.querySelector(`.fc-event[data-event-id="1"]`));
-            await testUtils.dom.click(webClient.el.querySelector(`.o_cw_popover_edit`));
+            await testUtils.dom.click(target.querySelector(`.fc-event[data-event-id="1"]`));
+            await testUtils.dom.click(target.querySelector(`.o_cw_popover_edit`));
 
-            assert.containsNone(webClient.el, ".o_dialog");
-            assert.containsOnce(webClient.el, ".modal");
-            assert.containsOnce(webClient.el, ".modal[tabindex='-1']");
+            assert.containsNone(target, ".o_dialog");
+            assert.containsOnce(target, ".modal");
+            assert.containsOnce(target, ".modal[tabindex='-1']");
 
             assert.strictEqual(
-                webClient.el.querySelector(`.o_field_widget[name="display_name"]`).value,
+                target.querySelector(`.o_field_widget[name="display_name"]`).value,
                 "Event 1"
             );
             await testUtils.fields.editInput(
-                webClient.el.querySelector(`.o_field_widget[name="display_name"]`),
+                target.querySelector(`.o_field_widget[name="display_name"]`),
                 "legacy"
             );
             assert.strictEqual(
-                webClient.el.querySelector(`.o_field_widget[name="display_name"]`).value,
+                target.querySelector(`.o_field_widget[name="display_name"]`).value,
                 "legacy"
             );
 
-            await testUtils.dom.click(webClient.el.querySelector(`button[name="2"]`));
-            assert.containsOnce(webClient.el, ".o_dialog");
-            assert.containsN(webClient.el, ".modal", 2);
-            assert.containsOnce(webClient.el, ".modal:not([tabindex='-1'])");
-            assert.containsOnce(webClient.el, ".o_dialog .modal[tabindex='-1']");
+            await testUtils.dom.click(target.querySelector(`button[name="2"]`));
+            assert.containsOnce(target, ".o_dialog");
+            assert.containsN(target, ".modal", 2);
+            assert.containsOnce(target, ".modal:not([tabindex='-1'])");
+            assert.containsOnce(target, ".o_dialog .modal[tabindex='-1']");
 
             assert.strictEqual(
-                webClient.el.querySelector(`.o_dialog .o_field_widget[name="display_name"]`).value,
+                target.querySelector(`.o_dialog .o_field_widget[name="display_name"]`).value,
                 ""
             );
             await testUtils.fields.editInput(
-                webClient.el.querySelector(`.o_dialog .o_field_widget[name="display_name"]`),
+                target.querySelector(`.o_dialog .o_field_widget[name="display_name"]`),
                 "wowl"
             );
             assert.strictEqual(
-                webClient.el.querySelector(`.o_dialog .o_field_widget[name="display_name"]`).value,
+                target.querySelector(`.o_dialog .o_field_widget[name="display_name"]`).value,
                 "wowl"
             );
 
-            await testUtils.dom.click(webClient.el.querySelector(`.o_dialog .modal-header .close`));
-            assert.containsNone(webClient.el, ".o_dialog");
-            assert.containsOnce(webClient.el, ".modal");
-            assert.containsOnce(webClient.el, ".modal[tabindex='-1']");
+            await testUtils.dom.click(target.querySelector(`.o_dialog .modal-header .close`));
+            assert.containsNone(target, ".o_dialog");
+            assert.containsOnce(target, ".modal");
+            assert.containsOnce(target, ".modal[tabindex='-1']");
 
-            await testUtils.dom.click(webClient.el.querySelector(`.modal-header .close`));
-            assert.containsNone(webClient.el, ".o_dialog");
-            assert.containsNone(webClient.el, ".modal");
+            await testUtils.dom.click(target.querySelector(`.modal-header .close`));
+            assert.containsNone(target, ".o_dialog");
+            assert.containsNone(target, ".modal");
         });
     });
 });

@@ -2,8 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="web.WebClient" owl="1">
-        <!-- TODO NXOWL -->
-        <NotUpdatable>
+        <NotUpdatable t-if="!state.fullscreen">
             <NavBar/>
         </NotUpdatable>
         <NotUpdatable>

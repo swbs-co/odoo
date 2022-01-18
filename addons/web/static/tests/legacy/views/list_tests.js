@@ -25,13 +25,13 @@ var _t = core._t;
 const cpHelpers = require('@web/../tests/search/helpers');
 var createView = testUtils.createView;
 
-const { click, legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+const { getFixture, click, legacyExtraNextTick } = require("@web/../tests/helpers/utils");
 const { createWebClient, doAction, loadState } = require('@web/../tests/webclient/helpers');
 
 const { markup } = owl;
 
 let serverData;
-
+let target;
 QUnit.module('Views', {
     beforeEach: function () {
         this.data = {
@@ -135,6 +135,7 @@ QUnit.module('Views', {
         };
 
         serverData = { models: this.data };
+        target = getFixture();
     }
 }, function () {
 
@@ -2000,20 +2001,20 @@ QUnit.module('Views', {
                 '</search>',
         };
 
-        const webClient = await createWebClient({ serverData });
+        const webClient = await createWebClient({ target, serverData });
 
         await doAction(webClient, 11);
-        await testUtils.dom.click($(webClient.el).find('.o_list_button_add'));
+        await testUtils.dom.click($(target).find('.o_list_button_add'));
 
-        assert.isNotVisible($(webClient.el).find('.o_list_button_add'),
+        assert.isNotVisible($(target).find('.o_list_button_add'),
             "create button should be invisible");
-        assert.isVisible($(webClient.el).find('.o_list_button_save'), "save button should be visible");
+        assert.isVisible($(target).find('.o_list_button_save'), "save button should be visible");
 
-        await testUtils.dom.click($(webClient.el).find('.dropdown-toggle:contains("Group By")'));
-        await testUtils.dom.click($(webClient.el).find('.o_group_by_menu .o_menu_item:contains("candle")'));
+        await testUtils.dom.click($(target).find('.dropdown-toggle:contains("Group By")'));
+        await testUtils.dom.click($(target).find('.o_group_by_menu .o_menu_item:contains("candle")'));
 
-        assert.isNotVisible($(webClient.el).find('.o_list_button_add'), "create button should be invisible");
-        assert.isNotVisible($(webClient.el).find('.o_list_button_save'),
+        assert.isNotVisible($(target).find('.o_list_button_add'), "create button should be invisible");
+        assert.isNotVisible($(target).find('.o_list_button_save'),
             "save button should be invisible after applying groupby");
     });
 
@@ -3982,17 +3983,17 @@ QUnit.module('Views', {
             }
         };
 
-        const webClient = await createWebClient({ serverData, mockRPC });
+        const webClient = await createWebClient({ target, serverData, mockRPC });
         await doAction(webClient, 11);
 
-        assert.containsNone(webClient, '.o_cp_action_menus', 'sidebar should be invisible');
-        assert.containsN(webClient, 'tbody td.o_list_record_selector', 4, "should have 4 records");
+        assert.containsNone(target, '.o_cp_action_menus', 'sidebar should be invisible');
+        assert.containsN(target, 'tbody td.o_list_record_selector', 4, "should have 4 records");
 
-        await click(webClient.el.querySelector('tbody td.o_list_record_selector input'));
-        assert.containsOnce(webClient, '.o_cp_action_menus', 'sidebar should be visible');
+        await click(target.querySelector('tbody td.o_list_record_selector input'));
+        assert.containsOnce(target, '.o_cp_action_menus', 'sidebar should be visible');
 
-        await click(webClient.el.querySelector('.o_cp_action_menus .dropdown-toggle'));
-        const archiveItem = [...webClient.el.querySelectorAll('.o_cp_action_menus .dropdown-menu li > a')]
+        await click(target.querySelector('.o_cp_action_menus .dropdown-toggle'));
+        const archiveItem = [...target.querySelectorAll('.o_cp_action_menus .dropdown-menu li > a')]
             .filter((elem) => elem.textContent === 'Archive');
         await click(archiveItem[0]);
         assert.strictEqual(document.querySelectorAll('.modal').length, 1,
@@ -10005,25 +10006,25 @@ QUnit.module('Views', {
             }
         };
 
-        const webClient = await createWebClient({serverData, mockRPC});
+        const webClient = await createWebClient({ target,serverData, mockRPC});
         await doAction(webClient, 11);
 
-        assert.containsOnce(webClient, '.o_list_view');
-        assert.strictEqual($(webClient.el).find('.o_pager_counter').text().trim(), '1-3 / 4');
-        assert.containsN(webClient, '.o_group_header', 3); // page 1
+        assert.containsOnce(target, '.o_list_view');
+        assert.strictEqual($(target).find('.o_pager_counter').text().trim(), '1-3 / 4');
+        assert.containsN(target, '.o_group_header', 3); // page 1
 
-        await testUtils.dom.click($(webClient.el).find('.o_pager_next')); // switch to page 2
+        await testUtils.dom.click($(target).find('.o_pager_next')); // switch to page 2
         await legacyExtraNextTick();
 
-        assert.strictEqual($(webClient.el).find('.o_pager_counter').text().trim(), '4-4 / 4');
-        assert.containsN(webClient, '.o_group_header', 1); // page 2
+        assert.strictEqual($(target).find('.o_pager_counter').text().trim(), '4-4 / 4');
+        assert.containsN(target, '.o_group_header', 1); // page 2
 
         // toggle a filter -> there should be only one group left (on page 1)
-        await cpHelpers.toggleFilterMenu(webClient);
-        await cpHelpers.toggleMenuItem(webClient, 0);
+        await cpHelpers.toggleFilterMenu(target);
+        await cpHelpers.toggleMenuItem(target, 0);
 
-        assert.strictEqual($(webClient.el).find('.o_pager_counter').text().trim(), '1-1 / 1');
-        assert.containsN(webClient, '.o_group_header', 1); // page 1
+        assert.strictEqual($(target).find('.o_pager_counter').text().trim(), '1-1 / 1');
+        assert.containsN(target, '.o_group_header', 1); // page 1
 
         assert.verifySteps([
             '[], undefined',
@@ -11666,22 +11667,22 @@ QUnit.module('Views', {
             'foo,false,search': '<search><field name="foo" string="Foo"/></search>',
         };
 
-        const webClient = await createWebClient({ serverData });
+        const webClient = await createWebClient({ target, serverData });
 
         await doAction(webClient, 2);
 
-        assert.containsOnce(webClient, '.o_list_view',
+        assert.containsOnce(target, '.o_list_view',
             "should have rendered a list view");
 
-        assert.containsN(webClient, 'th', 3, "should display 3 th (selector + 2 fields)");
+        assert.containsN(target, 'th', 3, "should display 3 th (selector + 2 fields)");
 
         // enable optional field
-        await testUtils.dom.click($(webClient.el).find('table .o_optional_columns_dropdown_toggle'));
-        assert.notOk($(webClient.el).find('div.o_optional_columns div.dropdown-item [name="m2o"]').is(":checked"));
-        assert.ok($(webClient.el).find('div.o_optional_columns div.dropdown-item [name="o2m"]').is(":checked"));
-        await testUtils.dom.click($(webClient.el).find('div.o_optional_columns div.dropdown-item:first'));
-        assert.containsN(webClient, 'th', 4, "should display 4 th (selector + 3 fields)");
-        assert.ok($(webClient.el).find('th:contains(M2O field)').is(':visible'),
+        await testUtils.dom.click($(target).find('table .o_optional_columns_dropdown_toggle'));
+        assert.notOk($(target).find('div.o_optional_columns div.dropdown-item [name="m2o"]').is(":checked"));
+        assert.ok($(target).find('div.o_optional_columns div.dropdown-item [name="o2m"]').is(":checked"));
+        await testUtils.dom.click($(target).find('div.o_optional_columns div.dropdown-item:first'));
+        assert.containsN(target, 'th', 4, "should display 4 th (selector + 3 fields)");
+        assert.ok($(target).find('th:contains(M2O field)').is(':visible'),
             "should have a visible m2o field"); //m2o field
 
         // switch to kanban view
@@ -11690,9 +11691,9 @@ QUnit.module('Views', {
             view_type: 'kanban',
         });
 
-        assert.containsNone(webClient, '.o_list_view',
+        assert.containsNone(target, '.o_list_view',
             "should not display the list view anymore");
-        assert.containsOnce(webClient, '.o_kanban_view',
+        assert.containsOnce(target, '.o_kanban_view',
             "should have switched to the kanban view");
 
         // switch back to list view
@@ -11701,46 +11702,46 @@ QUnit.module('Views', {
             view_type: 'list',
         });
 
-        assert.containsNone(webClient, '.o_kanban_view',
+        assert.containsNone(target, '.o_kanban_view',
             "should not display the kanban view anymoe");
-        assert.containsOnce(webClient, '.o_list_view',
+        assert.containsOnce(target, '.o_list_view',
             "should display the list view");
 
-        assert.containsN(webClient, 'th', 4, "should display 4 th");
-        assert.ok($(webClient.el).find('th:contains(M2O field)').is(':visible'),
+        assert.containsN(target, 'th', 4, "should display 4 th");
+        assert.ok($(target).find('th:contains(M2O field)').is(':visible'),
             "should have a visible m2o field"); //m2o field
-        assert.ok($(webClient.el).find('th:contains(O2M field)').is(':visible'),
+        assert.ok($(target).find('th:contains(O2M field)').is(':visible'),
             "should have a visible o2m field"); //m2o field
 
         // disable optional field
-        await testUtils.dom.click($(webClient.el).find('table .o_optional_columns_dropdown_toggle'));
-        assert.ok($(webClient.el).find('div.o_optional_columns div.dropdown-item [name="m2o"]').is(":checked"));
-        assert.ok($(webClient.el).find('div.o_optional_columns div.dropdown-item [name="o2m"]').is(":checked"));
-        await testUtils.dom.click($(webClient.el).find('div.o_optional_columns div.dropdown-item:last input'));
-        assert.ok($(webClient.el).find('th:contains(M2O field)').is(':visible'),
+        await testUtils.dom.click($(target).find('table .o_optional_columns_dropdown_toggle'));
+        assert.ok($(target).find('div.o_optional_columns div.dropdown-item [name="m2o"]').is(":checked"));
+        assert.ok($(target).find('div.o_optional_columns div.dropdown-item [name="o2m"]').is(":checked"));
+        await testUtils.dom.click($(target).find('div.o_optional_columns div.dropdown-item:last input'));
+        assert.ok($(target).find('th:contains(M2O field)').is(':visible'),
             "should have a visible m2o field"); //m2o field
-        assert.notOk($(webClient.el).find('th:contains(O2M field)').is(':visible'),
+        assert.notOk($(target).find('th:contains(O2M field)').is(':visible'),
             "should have a visible o2m field"); //m2o field
-        assert.containsN(webClient, 'th', 3, "should display 3 th");
+        assert.containsN(target, 'th', 3, "should display 3 th");
 
         await doAction(webClient, 1);
 
-        assert.containsNone(webClient, '.o_list_view',
+        assert.containsNone(target, '.o_list_view',
             "should not display the list view anymore");
-        assert.containsOnce(webClient, '.o_kanban_view',
+        assert.containsOnce(target, '.o_kanban_view',
             "should have switched to the kanban view");
 
         await doAction(webClient, 2);
 
-        assert.containsNone(webClient, '.o_kanban_view',
+        assert.containsNone(target, '.o_kanban_view',
             "should not havethe kanban view anymoe");
-        assert.containsOnce(webClient, '.o_list_view',
+        assert.containsOnce(target, '.o_list_view',
             "should display the list view");
 
-        assert.containsN(webClient, 'th', 3, "should display 3 th");
-        assert.ok($(webClient.el).find('th:contains(M2O field)').is(':visible'),
+        assert.containsN(target, 'th', 3, "should display 3 th");
+        assert.ok($(target).find('th:contains(M2O field)').is(':visible'),
             "should have a visible m2o field"); //m2o field
-        assert.notOk($(webClient.el).find('th:contains(O2M field)').is(':visible'),
+        assert.notOk($(target).find('th:contains(O2M field)').is(':visible'),
             "should have a visible o2m field"); //m2o field
     });
 
@@ -12315,22 +12316,22 @@ QUnit.module('Views', {
             'foo,2,list': '<tree editable="top"><field name="foo"/></tree>',
             'foo,3,list': '<tree editable="top"><field name="foo"/></tree>',
         };
-        const webClient = await createWebClient({ serverData });
+        const webClient = await createWebClient({ target, serverData });
 
         await doAction(webClient, 1);
 
-        assert.strictEqual($(webClient.el).find('.o_field_cell[name="foo"]').text(), "yopblipgnapblip");
-        assert.containsN(webClient, '.o_data_row', 4);
+        assert.strictEqual($(target).find('.o_field_cell[name="foo"]').text(), "yopblipgnapblip");
+        assert.containsN(target, '.o_data_row', 4);
 
-        await testUtils.dom.click($(webClient.el).find('.o_list_button_add'));
-        await testUtils.fields.editInput($(webClient.el).find('.o_field_widget[name="foo"]'), "test");
+        await testUtils.dom.click($(target).find('.o_list_button_add'));
+        await testUtils.fields.editInput($(target).find('.o_field_widget[name="foo"]'), "test");
 
         // change action and come back
         await doAction(webClient, 2);
         await doAction(webClient, 1, { clearBreadcrumbs: true });
 
-        assert.strictEqual($(webClient.el).find('.o_field_cell[name="foo"]').text(), "yopblipgnapbliptest");
-        assert.containsN(webClient, '.o_data_row', 5);
+        assert.strictEqual($(target).find('.o_field_cell[name="foo"]').text(), "yopblipgnapbliptest");
+        assert.containsN(target, '.o_data_row', 5);
     });
 
     QUnit.test("Auto save: modify a record and leave action", async function (assert) {
@@ -12359,20 +12360,20 @@ QUnit.module('Views', {
             'foo,2,list': '<tree editable="top"><field name="foo"/></tree>',
             'foo,3,list': '<tree editable="top"><field name="foo"/></tree>',
         };
-        const webClient = await createWebClient({ serverData });
+        const webClient = await createWebClient({ target, serverData });
 
         await doAction(webClient, 1);
 
-        assert.strictEqual($(webClient.el).find('.o_field_cell[name="foo"]').text(), "yopblipgnapblip");
+        assert.strictEqual($(target).find('.o_field_cell[name="foo"]').text(), "yopblipgnapblip");
 
-        await testUtils.dom.click($(webClient.el).find('.o_field_cell[name="foo"]:first'));
-        await testUtils.fields.editInput($(webClient.el).find('.o_field_widget[name="foo"]'), "test");
+        await testUtils.dom.click($(target).find('.o_field_cell[name="foo"]:first'));
+        await testUtils.fields.editInput($(target).find('.o_field_widget[name="foo"]'), "test");
 
         // change action and come back
         await doAction(webClient, 2);
         await doAction(webClient, 1, { clearBreadcrumbs: true });
 
-        assert.strictEqual($(webClient.el).find('.o_field_cell[name="foo"]').text(), "testblipgnapblip");
+        assert.strictEqual($(target).find('.o_field_cell[name="foo"]').text(), "testblipgnapblip");
     });
 
     QUnit.test("Auto save: modify a record and leave action (reject)", async function (assert) {
@@ -12401,20 +12402,20 @@ QUnit.module('Views', {
             'foo,2,list': '<tree editable="top"><field name="foo" required="1"/></tree>',
             'foo,3,list': '<tree editable="top"><field name="foo"/></tree>',
         };
-        const webClient = await createWebClient({ serverData });
+        const webClient = await createWebClient({ target, serverData });
 
         await doAction(webClient, 1);
 
-        assert.strictEqual($(webClient.el).find('.o_field_cell[name="foo"]').text(), "yopblipgnapblip");
+        assert.strictEqual($(target).find('.o_field_cell[name="foo"]').text(), "yopblipgnapblip");
 
-        await testUtils.dom.click($(webClient.el).find('.o_field_cell[name="foo"]:first'));
-        await testUtils.fields.editInput($(webClient.el).find('.o_field_widget[name="foo"]'), "");
+        await testUtils.dom.click($(target).find('.o_field_cell[name="foo"]:first'));
+        await testUtils.fields.editInput($(target).find('.o_field_widget[name="foo"]'), "");
 
         await assert.rejects(doAction(webClient, 2));
 
-        assert.strictEqual($(webClient.el).find('.o_field_cell[name="foo"]').text(), "blipgnapblip");
-        assert.hasClass($(webClient.el).find('.o_field_widget[name="foo"]:first'), 'o_field_invalid');
-        assert.containsN(webClient, '.o_data_row', 4);
+        assert.strictEqual($(target).find('.o_field_cell[name="foo"]').text(), "blipgnapblip");
+        assert.hasClass($(target).find('.o_field_widget[name="foo"]:first'), 'o_field_invalid');
+        assert.containsN(target, '.o_data_row', 4);
     });
 
     QUnit.test("Auto save: add a record and change page", async function (assert) {

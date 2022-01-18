@@ -6,7 +6,7 @@ const GraphView = require('web.GraphView');
 const testUtils = require('web.test_utils');
 const { sortBy } = require('web.utils');
 const { browser } = require('@web/core/browser/browser');
-const { legacyExtraNextTick, patchWithCleanup } = require("@web/../tests/helpers/utils");
+const { getFixture, legacyExtraNextTick, patchWithCleanup } = require("@web/../tests/helpers/utils");
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 const legacyViewRegistry = require("web.view_registry");
 const { registry } = require("@web/core/registry");
@@ -913,7 +913,9 @@ QUnit.module('Views', {
         legacyViewRegistry.add("graph", GraphView); // We want to test the legacy view that was not added to viewRegistry!
         // (see end of registerView in legacy_views.js)
 
-        const webClient = await createWebClient({ serverData });
+        const target = getFixture();
+
+        const webClient = await createWebClient({ serverData, target });
 
         await doAction(webClient, {
             res_model: 'foo',
@@ -926,16 +928,16 @@ QUnit.module('Views', {
             },
         });
 
-        assert.containsOnce(webClient, '.o_control_panel .o_graph_measures_list',
+        assert.containsOnce(target, '.o_control_panel .o_graph_measures_list',
             "Measures dropdown is present at init"
         );
 
-        await cpHelpers.switchView(webClient, 'kanban');
+        await cpHelpers.switchView(target, 'kanban');
         await legacyExtraNextTick();
-        await cpHelpers.switchView(webClient, 'graph');
+        await cpHelpers.switchView(target, 'graph');
         await legacyExtraNextTick();
 
-        assert.containsOnce(webClient, '.o_control_panel .o_graph_measures_list',
+        assert.containsOnce(target, '.o_control_panel .o_graph_measures_list',
             "Measures dropdown is present after reload"
         );
     });

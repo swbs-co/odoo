@@ -322,16 +322,16 @@ QUnit.module("DebugMenu", (hooks) => {
             "partner,1,form": `<form><div class="some_view"/></form>`,
         });
 
-        const webClient = await createWebClient({ serverData, mockRPC });
-        await click(webClient.el.querySelector(".o_debug_manager button"));
-        await click(webClient.el.querySelector(".o_debug_manager .dropdown-item"));
+        const webClient = await createWebClient({ target, serverData, mockRPC });
+        await click(target.querySelector(".o_debug_manager button"));
+        await click(target.querySelector(".o_debug_manager .dropdown-item"));
         await legacyExtraNextTick();
-        assert.containsOnce(webClient, ".modal .o_list_view");
+        assert.containsOnce(target, ".modal .o_list_view");
 
-        await click(webClient.el.querySelector(".modal .o_list_view .o_data_row"));
+        await click(target.querySelector(".modal .o_list_view .o_data_row"));
         await legacyExtraNextTick();
-        assert.containsNone(webClient, ".modal");
-        assert.containsOnce(webClient, ".some_view");
+        assert.containsNone(target, ".modal");
+        assert.containsOnce(target, ".some_view");
     });
 
     QUnit.test("can edit a pivot view", async (assert) => {
@@ -365,14 +365,14 @@ QUnit.module("DebugMenu", (hooks) => {
         };
         serverData.views["ir.ui.view,false,form"] = `<form><field name="id"/></form>`;
 
-        const webClient = await createWebClient({ serverData, mockRPC });
+        const webClient = await createWebClient({ target, serverData, mockRPC });
         await doAction(webClient, 1234);
-        await click(webClient.el.querySelector(".o_debug_manager button"));
-        await click(webClient.el.querySelector(".o_debug_manager .dropdown-item"));
+        await click(target.querySelector(".o_debug_manager button"));
+        await click(target.querySelector(".o_debug_manager .dropdown-item"));
         await legacyExtraNextTick();
-        assert.containsOnce(webClient, ".modal .o_form_view");
+        assert.containsOnce(target, ".modal .o_form_view");
         assert.strictEqual(
-            webClient.el.querySelector(".modal .o_form_view .o_field_widget[name=id]").value,
+            target.querySelector(".modal .o_form_view .o_field_widget[name=id]").value,
             "18"
         );
     });
@@ -401,14 +401,14 @@ QUnit.module("DebugMenu", (hooks) => {
         };
         serverData.views["ir.ui.view,false,form"] = `<form><field name="id"/></form>`;
 
-        const webClient = await createWebClient({ serverData, mockRPC });
+        const webClient = await createWebClient({ target, serverData, mockRPC });
         await doAction(webClient, 1);
-        await click(webClient.el.querySelector(".o_debug_manager button"));
-        await click(webClient.el.querySelector(".o_debug_manager .dropdown-item"));
+        await click(target.querySelector(".o_debug_manager button"));
+        await click(target.querySelector(".o_debug_manager .dropdown-item"));
         await legacyExtraNextTick();
-        assert.containsOnce(webClient, ".modal .o_form_view");
+        assert.containsOnce(target, ".modal .o_form_view");
         assert.strictEqual(
-            webClient.el.querySelector(".modal .o_form_view .o_field_widget[name=id]").value,
+            target.querySelector(".modal .o_form_view .o_field_widget[name=id]").value,
             "293"
         );
     });
@@ -459,16 +459,16 @@ QUnit.module("DebugMenu", (hooks) => {
         serverData.views["partner,false,toy"] = `<toy></toy>`;
         serverData.views["partner,293,search"] = `<search></search>`;
 
-        const webClient = await createWebClient({ serverData, mockRPC });
+        const webClient = await createWebClient({ target, serverData, mockRPC });
         await doAction(webClient, 1);
-        assert.containsOnce(webClient, ".o-toy-view");
+        assert.containsOnce(target, ".o-toy-view");
 
-        await click(webClient.el.querySelector(".o_debug_manager button"));
-        await click(webClient.el.querySelector(".o_debug_manager .dropdown-item"));
+        await click(target.querySelector(".o_debug_manager button"));
+        await click(target.querySelector(".o_debug_manager .dropdown-item"));
         await legacyExtraNextTick();
-        assert.containsOnce(webClient, ".modal .o_form_view");
+        assert.containsOnce(target, ".modal .o_form_view");
         assert.strictEqual(
-            webClient.el.querySelector(".modal .o_form_view .o_field_widget[name=id]").value,
+            target.querySelector(".modal .o_form_view .o_field_widget[name=id]").value,
             "293"
         );
     });
@@ -490,11 +490,11 @@ QUnit.module("DebugMenu", (hooks) => {
 
             const serverData = getActionManagerServerData();
 
-            const webClient = await createWebClient({ serverData, mockRPC });
+            const webClient = await createWebClient({ target, serverData, mockRPC });
             // opens a form view in a dialog without a control panel.
             await doAction(webClient, 5);
-            await click(webClient.el.querySelector(".o_dialog .o_debug_manager button"));
-            assert.containsNone(webClient, ".o_debug_manager .dropdown-item");
+            await click(target.querySelector(".o_dialog .o_debug_manager button"));
+            assert.containsNone(target, ".o_debug_manager .dropdown-item");
         }
     );
 });

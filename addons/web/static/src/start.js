@@ -4,6 +4,7 @@ import { makeEnv, startServices } from "./env";
 import { legacySetupProm } from "./legacy/legacy_setup";
 import { mapLegacyEnvToWowlEnv } from "./legacy/utils";
 import { processTemplates } from "./core/assets";
+import { localization } from "@web/core/l10n/localization";
 import { session } from "@web/session";
 
 const { App, whenReady } = owl;
@@ -56,6 +57,13 @@ export async function startWebClient(Webclient) {
         templates: templates.cloneNode(true),
     });
     const root = await app.mount(document.body);
+    const classList = document.body.classList;
+    if (localization.direction === "rtl") {
+        classList.add("o_rtl");
+    }
+    if (env.services.user.userId === 1) {
+        classList.add("o_is_superuser");
+    }
     // delete odoo.debug; // FIXME: some legacy code rely on this
     odoo.__WOWL_DEBUG__ = { root };
     odoo.isReady = true;

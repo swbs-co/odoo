@@ -20,6 +20,7 @@ const mainComponentRegistry = registry.category("main_components");
 const serviceRegistry = registry.category("services");
 
 let baseConfig;
+let target;
 
 QUnit.module("WebClient", {
     async beforeEach() {
@@ -34,6 +35,7 @@ QUnit.module("WebClient", {
             .add("title", fakeTitleService)
             .add("ui", uiService);
         baseConfig = { activateMockServer: true };
+        target = getFixture();
     },
 });
 
@@ -41,8 +43,8 @@ QUnit.test("can be rendered", async (assert) => {
     assert.expect(1);
     const env = await makeTestEnv(baseConfig);
     const target = getFixture();
-    const webClient = await mount(WebClient, { env, target });
-    assert.containsOnce(webClient.el, "header > nav.o_main_navbar");
+    await mount(WebClient, { env, target });
+    assert.containsOnce(target, "header > nav.o_main_navbar");
 });
 
 QUnit.test("can render a main component", async (assert) => {
@@ -53,26 +55,8 @@ QUnit.test("can render a main component", async (assert) => {
     mainComponentRegistry.add("mycomponent", { Component: MyComponent });
     const env = await makeTestEnv(baseConfig);
     const target = getFixture();
-    const webClient = await mount(WebClient, { env, target });
-    assert.containsOnce(webClient.el, ".chocolate");
-});
-
-QUnit.test("webclient for the superuser", async (assert) => {
-    assert.expect(1);
-    patchWithCleanup(session, { uid: 1 });
-    const env = await makeTestEnv(baseConfig);
-    const target = getFixture();
-    const webClient = await mount(WebClient, { env, target });
-    assert.hasClass(webClient.el, "o_is_superuser");
-});
-
-QUnit.test("webclient for a non superuser", async (assert) => {
-    assert.expect(1);
-    patchWithCleanup(session, { uid: 2 });
-    const env = await makeTestEnv(baseConfig);
-    const target = getFixture();
-    const webClient = await mount(WebClient, { env, target });
-    assert.doesNotHaveClass(webClient.el, "o_is_superuser");
+    await mount(WebClient, { env, target });
+    assert.containsOnce(target, ".chocolate");
 });
 
 QUnit.test("control-click propagation stopped on <a href/>", async (assert) => {
@@ -117,9 +101,9 @@ QUnit.test("control-click propagation stopped on <a href/>", async (assert) => {
     clearRegistryWithCleanup(mainComponentRegistry);
     mainComponentRegistry.add("mycomponent", { Component: MyComponent });
     env = await makeTestEnv(baseConfig);
-    const webClient = await mount(WebClient, { env, target });
+    await mount(WebClient, { env, target });
     assert.verifySteps([]);
-    await triggerEvent(webClient.el, ".MyComponent", "click", { ctrlKey: false });
-    await triggerEvent(webClient.el, ".MyComponent", "click", { ctrlKey: true });
+    await triggerEvent(target, ".MyComponent", "click", { ctrlKey: false });
+    await triggerEvent(target, ".MyComponent", "click", { ctrlKey: true });
     assert.verifySteps(["click"]);
 });

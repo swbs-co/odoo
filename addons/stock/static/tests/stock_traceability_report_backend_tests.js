@@ -8,7 +8,7 @@ odoo.define('stock.stock_traceability_report_backend_tests', function (require) 
     const { patch, unpatch } = require('web.utils');
 
     const { dom: domUtils } = testUtils;
-    const { legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+    const { getFixture, legacyExtraNextTick } = require("@web/../tests/helpers/utils");
     const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 
     /**
@@ -120,7 +120,9 @@ odoo.define('stock.stock_traceability_report_backend_tests', function (require) 
                 },
             };
 
+            const target = getFixture();
             const webClient = await createWebClient({
+                target,
                 serverData,
                 mockRPC: function (route) {
                     if (route === '/web/dataset/call_kw/stock.traceability.report/get_html') {
@@ -132,11 +134,10 @@ odoo.define('stock.stock_traceability_report_backend_tests', function (require) 
             });
 
             await doAction(webClient, 42);
-            await domUtils.click($(webClient.el).find('.o_stock_reports_web_action'));
+            await domUtils.click(target.querySelector('.o_stock_reports_web_action'));
             await legacyExtraNextTick();
-            await domUtils.click($(webClient.el).find('.breadcrumb-item:first'));
+            await domUtils.click(target.querySelector('.breadcrumb-item'));
             await legacyExtraNextTick();
-            webClient.destroy();
 
             assert.verifySteps([
                 'mounted 1',

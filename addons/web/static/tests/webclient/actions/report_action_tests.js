@@ -5,19 +5,21 @@ import { uiService } from "@web/core/ui/ui_service";
 import testUtils from "web.test_utils";
 import ReportClientAction from "report.client_action";
 import { makeFakeNotificationService } from "../../helpers/mock_services";
-import { patchWithCleanup, click } from "../../helpers/utils";
+import { patchWithCleanup, getFixture, click } from "../../helpers/utils";
 import { createWebClient, doAction, getActionManagerServerData } from "./../helpers";
 import { mockDownload } from "@web/../tests/helpers/utils";
 import { clearRegistryWithCleanup } from "../../helpers/mock_env";
 import { session } from "@web/session";
 
 let serverData;
+let target;
 
 const serviceRegistry = registry.category("services");
 
 QUnit.module("ActionManager", (hooks) => {
     hooks.beforeEach(() => {
         serverData = getActionManagerServerData();
+        target = getFixture();
         clearRegistryWithCleanup(registry.category("main_components"));
     });
 
@@ -35,7 +37,7 @@ QUnit.module("ActionManager", (hooks) => {
                 return Promise.resolve("ok");
             }
         };
-        const webClient = await createWebClient({ serverData, mockRPC });
+        const webClient = await createWebClient({ target, serverData, mockRPC });
         await doAction(webClient, 7, { onClose: () => assert.step("on_close") });
         assert.verifySteps([
             "/web/webclient/load_menus",
@@ -57,7 +59,7 @@ QUnit.module("ActionManager", (hooks) => {
                 return Promise.resolve("ok");
             }
         };
-        const webClient = await createWebClient({ serverData, mockRPC });
+        const webClient = await createWebClient({ target, serverData, mockRPC });
         await doAction(webClient, 5, { onClose: () => assert.step("on_close") });
         assert.containsOnce(
             document.body,
@@ -101,7 +103,7 @@ QUnit.module("ActionManager", (hooks) => {
                     return Promise.resolve("upgrade");
                 }
             };
-            const webClient = await createWebClient({ serverData, mockRPC });
+            const webClient = await createWebClient({ target, serverData, mockRPC });
             await doAction(webClient, 7);
             assert.verifySteps([
                 "/web/webclient/load_menus",
@@ -150,14 +152,14 @@ QUnit.module("ActionManager", (hooks) => {
                     this.iframe.setAttribute("src", "about:blank");
                 },
             });
-            const webClient = await createWebClient({ serverData, mockRPC });
+            const webClient = await createWebClient({ target, serverData, mockRPC });
             await doAction(webClient, 7);
             assert.containsOnce(
-                webClient,
+                target,
                 ".o_report_iframe",
                 "should have opened the report client action"
             );
-            assert.containsOnce(webClient, ".o_cp_buttons .o_report_buttons .o_report_print");
+            assert.containsOnce(target, ".o_cp_buttons .o_report_buttons .o_report_print");
             assert.verifySteps([
                 "/web/webclient/load_menus",
                 "/web/action/load",
@@ -204,9 +206,9 @@ QUnit.module("ActionManager", (hooks) => {
                 this.iframe.setAttribute("src", "about:blank");
             },
         });
-        const webClient = await createWebClient({ serverData, mockRPC });
+        const webClient = await createWebClient({ target, serverData, mockRPC });
         await doAction(webClient, 12);
-        assert.containsOnce(webClient, ".o_report_iframe", "should have opened the client action");
+        assert.containsOnce(target, ".o_report_iframe", "should have opened the client action");
         assert.verifySteps([
             "/web/webclient/load_menus",
             "/web/action/load",
@@ -238,7 +240,7 @@ QUnit.module("ActionManager", (hooks) => {
                     return Promise.resolve("ok");
                 }
             };
-            const webClient = await createWebClient({ serverData, mockRPC });
+            const webClient = await createWebClient({ target, serverData, mockRPC });
             const ui = webClient.env.services.ui;
             const onBlock = () => {
                 assert.step("block");
@@ -280,7 +282,7 @@ QUnit.module("ActionManager", (hooks) => {
                 return "ok";
             }
         };
-        const webClient = await createWebClient({ serverData, mockRPC });
+        const webClient = await createWebClient({ target, serverData, mockRPC });
         let customHandlerCalled = false;
         registry.category("ir.actions.report handlers").add("custom_handler", async (action) => {
             if (action.id === 7 && !customHandlerCalled) {
@@ -333,7 +335,7 @@ QUnit.module("ActionManager", (hooks) => {
                 this.iframe.setAttribute("src", "about:blank");
             },
         });
-        const webClient = await createWebClient({ serverData, mockRPC });
+        const webClient = await createWebClient({ target, serverData, mockRPC });
 
         const action = {
             context: {
@@ -352,7 +354,7 @@ QUnit.module("ActionManager", (hooks) => {
         assert.verifySteps([
             "/report/html/ennio.morricone/99?context=%7B%22lang%22%3A%22en%22%2C%22uid%22%3A7%2C%22tz%22%3A%22taht%22%7D",
         ]);
-        await click(webClient.el.querySelector(".o_report_print"));
+        await click(target.querySelector(".o_report_print"));
         assert.verifySteps(["/report/check_wkhtmltopdf", "/report/download"]);
         testUtils.mock.unpatch(ReportClientAction);
     });
@@ -367,7 +369,7 @@ QUnit.module("ActionManager", (hooks) => {
             },
         });
 
-        const webClient = await createWebClient({ serverData });
+        const webClient = await createWebClient({ target, serverData });
 
         await doAction(webClient, 12); // 12 is a html report action in serverData
 
