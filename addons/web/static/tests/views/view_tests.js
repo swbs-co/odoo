@@ -657,7 +657,7 @@ QUnit.module("Views", (hooks) => {
         }
     );
 
-    QUnit.debug("can click on action-bound links -- 1", async (assert) => {
+    QUnit.test("can click on action-bound links -- 1", async (assert) => {
         assert.expect(5);
 
         const expectedAction = {
