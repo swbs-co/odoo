@@ -20,7 +20,7 @@ import {
 } from "../helpers/utils";
 import { Dialog } from "../../src/core/dialog/dialog";
 
-const { Component, xml } = owl;
+const { Component, onMounted, xml } = owl;
 
 let env;
 let target;
@@ -226,9 +226,11 @@ QUnit.skipNXOWL("dialog component crashes", async (assert) => {
 
     const prom = makeDeferred();
     patchWithCleanup(ErrorDialog.prototype, {
-        mounted() {
+        setup() {
             this._super();
-            prom.resolve();
+            onMounted(() => {
+                prom.resolve();
+            });
         },
     });
 
