@@ -21,6 +21,7 @@ odoo.define('web.OwlCompatibilityTests', function (require) {
 
     const {
         Component,
+        onError,
         onMounted,
         onWillDestroy,
         onWillStart,
@@ -98,7 +99,7 @@ odoo.define('web.OwlCompatibilityTests', function (require) {
             assert.strictEqual(parent.el.innerHTML, '<div>Hello World!</div>');
         });
 
-        QUnit.skipNXOWL("sub widget with several arguments (common Adapter)", async function (assert) {
+        QUnit.test("sub widget with several arguments (common Adapter)", async function (assert) {
             assert.expect(1);
 
             const MyWidget = Widget.extend({
@@ -112,24 +113,28 @@ odoo.define('web.OwlCompatibilityTests', function (require) {
                 }
             });
             class Parent extends Component {
-                constructor() {
-                    super(...arguments);
+                setup() {
                     this.MyWidget = MyWidget;
+                    this.error = false;
+                    onError((e) => {
+                        assert.strictEqual(
+                            e.toString(),
+                            `Error: ComponentAdapter has more than 1 argument, 'widgetArgs' must be overriden.`
+                        );
+                        this.error = true;
+                        this.render();
+                    })
                 }
             }
             Parent.template = xml`
                 <div>
-                    <ComponentAdapter Component="MyWidget" a1="'Hello'" a2="'World'"/>
+                    <t t-if="error">Error</t>
+                    <ComponentAdapter t-else="" Component="MyWidget" a1="'Hello'" a2="'World'"/>
                 </div>`;
             Parent.components = { ComponentAdapter };
 
             const target = testUtils.prepareTarget();
-            try {
-                await mount(Parent, { target });
-            } catch (e) {
-                assert.strictEqual(e.toString(),
-                    `Error: ComponentAdapter has more than 1 argument, 'widgetArgs' must be overriden.`);
-            }
+            await mount(Parent, { target });
         });
 
         QUnit.test("sub widget with several arguments (specific Adapter)", async function (assert) {
