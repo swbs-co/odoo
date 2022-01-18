@@ -46,6 +46,7 @@ import { uiService } from "@web/core/ui/ui_service";
 import { ClientActionAdapter, ViewAdapter } from "@web/legacy/action_adapters";
 import { commandService } from "@web/core/commands/command_service";
 import { CustomFavoriteItem } from "@web/search/favorite_menu/custom_favorite_item";
+import { standaloneAdapter } from "web.OwlCompatibility";
 
 const { App, Component, onMounted, xml } = owl;
 
@@ -192,7 +193,7 @@ export function addLegacyMockEnvironment(env, legacyParams = {}) {
     registerCleanup(() => (debouncedField.prototype.DEBOUNCE = initialDebouncedVal));
 
     if (legacyParams.withLegacyMockServer) {
-        const adapter = new ComponentAdapter({ Component: owl.Component });
+        const adapter = standaloneAdapter({ Component: owl.Component });
         adapter.env = legacyEnv;
         const W = Widget.extend({ do_push_state() {} });
         const widget = new W(adapter);

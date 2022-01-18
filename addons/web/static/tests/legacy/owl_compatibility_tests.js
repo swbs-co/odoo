@@ -31,7 +31,6 @@ odoo.define('web.OwlCompatibilityTests', function (require) {
 
     // from Owl internal status enum
     const ISMOUNTED = 3;
-    const ISDESTROYED = 5;
 
     const WidgetAdapter = Widget.extend(WidgetAdapterMixin, {
         destroy() {

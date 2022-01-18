@@ -156,8 +156,6 @@ export class View extends Component {
     }
 
     async willStart() {
-        debugger;
-
         // determine view type
         let ViewClass = viewRegistry.get(this.props.type);
         const type = ViewClass.type;
