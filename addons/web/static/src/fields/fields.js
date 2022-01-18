@@ -104,8 +104,8 @@ class FieldSupportsLegacy extends Field {
 }
 FieldSupportsLegacy.template = xml/* xml */ `<t>
     <t t-if="!isOwlLegacy and !isLegacy" t-call="${Field.template}" />
-    <t t-elif="isOwlLegacy" t-component="FieldComponent" t-props="legacyProps" />
-    <t t-elif="isLegacy" t-component="ComponentAdapter" widgetArgs="widgetArgs" Component="FieldComponent" t-key="renderId" />
+    <FieldComponent t-elif="isOwlLegacy" t-props="legacyProps" />
+    <ComponentAdapter t-elif="isLegacy" widgetArgs="widgetArgs" Component="FieldComponent" t-key="renderId" />
 </t>
 `;
 FieldSupportsLegacy.components = { ComponentAdapter };

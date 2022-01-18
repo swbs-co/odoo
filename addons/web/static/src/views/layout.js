@@ -41,9 +41,7 @@ export class Layout extends Component {
 }
 
 Layout.template = "web.Layout";
-Layout.defaultProps = {
-    className: "",
-};
+Layout.defaultProps = { className: "" };
 Layout.props = {
     className: { type: String, optional: true },
     slots: { type: Object, optional: true },
