@@ -79,7 +79,7 @@ QUnit.module("ActionManager", (hooks) => {
         });
     });
 
-    QUnit.skipNXOWL("initial loading with action id", async (assert) => {
+    QUnit.test("initial loading with action id", async (assert) => {
         assert.expect(4);
         const hash = "#action=1001";
         Object.assign(browser.location, { hash });
@@ -90,13 +90,12 @@ QUnit.module("ActionManager", (hooks) => {
 
         assert.verifySteps(["/web/action/load", "/web/webclient/load_menus"]);
 
-        const wc = await mount(WebClient, { env, target: getFixture() });
-        registerCleanup(() => wc.destroy());
+        await mount(WebClient, { env, target: getFixture() });
 
         assert.verifySteps([]);
     });
 
-    QUnit.skipNXOWL("initial loading with action tag", async (assert) => {
+    QUnit.test("initial loading with action tag", async (assert) => {
         assert.expect(3);
         const hash = "#action=__test__client__action__";
         Object.assign(browser.location, { hash });
@@ -107,8 +106,7 @@ QUnit.module("ActionManager", (hooks) => {
 
         assert.verifySteps(["/web/webclient/load_menus"]);
 
-        const wc = await mount(WebClient, { env, target: getFixture() });
-        registerCleanup(() => wc.destroy());
+        await mount(WebClient, { env, target: getFixture() });
 
         assert.verifySteps([]);
     });
