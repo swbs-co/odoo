@@ -666,7 +666,7 @@ QUnit.module('Views', {
         kanban.destroy();
     });
 
-    QUnit.skipNXOWL('category with parent_field', async function (assert) {
+    QUnit.test('category with parent_field', async function (assert) {
         assert.expect(33);
 
         this.data.company.records.push({id: 40, name: 'child company 1', parent_id: 5});
