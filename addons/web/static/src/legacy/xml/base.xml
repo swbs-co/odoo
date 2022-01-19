@@ -245,14 +245,14 @@
 
 <t t-name="web.OwlDialog" owl="1">
     <t t-portal="'body'">
-        <div class="o_dialog" t-on-focus="_onFocus" t-on-click="_onClick" t-on-dialog-closed="_onDialogClosed">
+        <div class="o_dialog" t-on-focus="_onFocus" t-on-click="_onClick" t-on-dialog-closed="_onDialogClosed" t-ref="dialog">
             <div role="dialog" class="modal"
                 tabindex="-1"
                 t-att-class="{ o_technical_modal: props.technical, o_modal_full: props.fullscreen }"
                 t-att-data-backdrop="'' + props.backdrop"
                 t-ref="modal"
-                t-on-close_dialog.stop="()=>_close"
-                t-on-click="()=>_onBackdropClick"
+                t-on-close_dialog.stop.bind="_close"
+                t-on-click.bind="_onBackdropClick"
                 >
                 <div class="modal-dialog" t-att-class="size">
                     <div class="modal-content" t-att-class="props.contentClass">
@@ -261,14 +261,14 @@
                                 <t t-esc="props.title"/>
                                 <span t-if="props.subtitle" class="o_subtitle text-muted small" t-esc="props.subtitle"/>
                             </h4>
-                            <button type="button" class="close" aria-label="Close" tabindex="-1" t-on-click="()=>_close">×</button>
+                            <button type="button" class="close" aria-label="Close" tabindex="-1" t-on-click.bind="_close">×</button>
                         </header>
                         <main class="modal-body">
                             <t t-slot="default"/>
                         </main>
                         <footer t-if="props.renderFooter" class="modal-footer" t-ref="modal-footer">
                             <t t-slot="buttons">
-                                <button class="btn btn-primary" t-on-click.prevent="()=>_close">
+                                <button class="btn btn-primary" t-on-click.prevent.bind="_close">
                                     <t>Ok</t>
                                 </button>
                             </t>
