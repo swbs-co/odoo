@@ -4,7 +4,7 @@ const GeneratePriceList = require('product.generate_pricelist').GeneratePriceLis
 const testUtils = require('web.test_utils');
 
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
-const { getFixture } = require("@web/../tests/helpers/utils");
+const { getFixture, patchWithCleanup  } = require("@web/../tests/helpers/utils");
 
 let serverData;
 let target;
@@ -41,9 +41,8 @@ QUnit.module('Product Pricelist', {
     QUnit.test('Pricelist Client Action', async function (assert) {
         assert.expect(21);
 
-        const self = this;
         let Qty = [1, 5, 10]; // default quantities
-        testUtils.mock.patch(GeneratePriceList, {
+        patchWithCleanup(GeneratePriceList.prototype, {
             _onFieldChanged: function (event) {
                 assert.step('field_changed');
                 return this._super.apply(this, arguments);
@@ -60,6 +59,7 @@ QUnit.module('Product Pricelist', {
             }
         };
 
+        const target = getFixture();
         const webClient = await createWebClient({ target, serverData, mockRPC });
         await doAction(webClient, {
             id: 1,
@@ -133,8 +133,6 @@ QUnit.module('Product Pricelist', {
             'qty_changed',
             'qty_changed'
         ]);
-
-        testUtils.mock.unpatch(GeneratePriceList);
     });
 }
 
