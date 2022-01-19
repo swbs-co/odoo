@@ -162,7 +162,7 @@
             t-att-aria-expanded="state.open ? 'true' : 'false'"
             tabindex="-1"
             t-on-click="() => { state.open = !state.open }"
-            t-on-keydown.bind="_onButtonKeydown"
+            t-on-keydown="_onButtonKeydown"
             t-att-title="props.hotkeyTitle"
             t-att-data-hotkey="props.hotkey"
             >
@@ -186,7 +186,7 @@
 </t>
 
 <t t-name="web.DropdownMenuItem" owl="1">
-    <li class="o_menu_item" role="menuitem" t-on-keydown.bind="_onKeydown">
+    <li class="o_menu_item" role="menuitem" t-on-keydown="_onKeydown">
         <t t-if="canBeOpened">
             <a class="o_menu_item_parent dropdown-item d-flex align-items-center justify-content-between"
                 t-att-class="{ selected: props.isActive }"
@@ -251,8 +251,8 @@
                 t-att-class="{ o_technical_modal: props.technical, o_modal_full: props.fullscreen }"
                 t-att-data-backdrop="'' + props.backdrop"
                 t-ref="modal"
-                t-on-close_dialog.stop.bind="_close"
-                t-on-click.bind="_onBackdropClick"
+                t-on-close_dialog.stop="_close"
+                t-on-click="_onBackdropClick"
                 >
                 <div class="modal-dialog" t-att-class="size">
                     <div class="modal-content" t-att-class="props.contentClass">
@@ -261,14 +261,14 @@
                                 <t t-esc="props.title"/>
                                 <span t-if="props.subtitle" class="o_subtitle text-muted small" t-esc="props.subtitle"/>
                             </h4>
-                            <button type="button" class="close" aria-label="Close" tabindex="-1" t-on-click.bind="_close">×</button>
+                            <button type="button" class="close" aria-label="Close" tabindex="-1" t-on-click="_close">×</button>
                         </header>
                         <main class="modal-body">
                             <t t-slot="default"/>
                         </main>
                         <footer t-if="props.renderFooter" class="modal-footer" t-ref="modal-footer">
                             <t t-slot="buttons">
-                                <button class="btn btn-primary" t-on-click.prevent.bind="_close">
+                                <button class="btn btn-primary" t-on-click.prevent="_close">
                                     <t>Ok</t>
                                 </button>
                             </t>
@@ -403,7 +403,7 @@
 </t>
 
 <t t-name="web.ActionMenus" owl="1">
-    <div class="o_cp_action_menus" t-on-item-selected.stop.bind="_onItemSelected">
+    <div class="o_cp_action_menus" t-on-item-selected.stop="_onItemSelected">
         <DropdownMenu t-if="printItems.length"
             title="env._t('Print')"
             items="printItems"
