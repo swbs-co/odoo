@@ -3706,7 +3706,7 @@
                 }
             }
             if (stopped) {
-                if (isFirstRound && fiber) {
+                if (isFirstRound && fiber && fiber.node.fiber) {
                     fiber.root.counter--;
                 }
                 return true;
