@@ -58,7 +58,7 @@ QUnit.test("Simple rendering with a single dialog", async (assert) => {
     assert.expect(4);
     class CustomDialog extends Dialog {}
     CustomDialog.title = "Welcome";
-    pseudoWebClient = await mount(PseudoWebClient, { env, target });
+    await mount(PseudoWebClient, { env, target });
     assert.containsNone(target, ".o_dialog_container .o_dialog");
     env.services.dialog.add(CustomDialog);
     await nextTick();
@@ -74,7 +74,7 @@ QUnit.test("Simple rendering and close a single dialog", async (assert) => {
     class CustomDialog extends Dialog {}
     CustomDialog.title = "Welcome";
 
-    pseudoWebClient = await mount(PseudoWebClient, { env, target });
+    await mount(PseudoWebClient, { env, target });
     assert.containsNone(target, ".o_dialog_container .o_dialog");
 
     const removeDialog = env.services.dialog.add(CustomDialog);
