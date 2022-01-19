@@ -10,9 +10,6 @@ import { session } from "@web/session";
 export const localizationService = {
     dependencies: ["user"],
     start: async (env, { user }) => {
-        // add "data-toolip" to the list of translatable attributes in owl templates
-        // owl.config.translatableAttributes.push("data-tooltip"); // FIXME NXOWL
-
         const cacheHashes = session.cache_hashes || {};
         const translationsHash = cacheHashes.translations || new Date().getTime().toString();
         const lang = user.lang || null;

@@ -5,6 +5,7 @@ import { legacySetupProm } from "./legacy/legacy_setup";
 import { mapLegacyEnvToWowlEnv } from "./legacy/utils";
 import { processTemplates } from "./core/assets";
 import { localization } from "@web/core/l10n/localization";
+import { _t } from "@web/core/l10n/translation";
 import { session } from "@web/session";
 
 const { App, whenReady } = owl;
@@ -55,6 +56,8 @@ export async function startWebClient(Webclient) {
         },
         dev: env.debug,
         templates: templates.cloneNode(true),
+        translatableAttributes: ["label", "title", "placeholder", "alt", "data-tooltip"],
+        translateFn: _t,
     });
     const root = await app.mount(document.body);
     const classList = document.body.classList;
