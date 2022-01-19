@@ -5,11 +5,17 @@ odoo.define('stock.stock_traceability_report_backend_tests', function (require) 
     const dom = require('web.dom');
     const StockReportGeneric = require('stock.stock_report_generic');
     const testUtils = require('web.test_utils');
-    const { patch, unpatch } = require('web.utils');
 
     const { dom: domUtils } = testUtils;
-    const { getFixture, legacyExtraNextTick } = require("@web/../tests/helpers/utils");
+    const {
+        destroy,
+        getFixture,
+        legacyExtraNextTick,
+        patchWithCleanup,
+    } = require("@web/../tests/helpers/utils");
     const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
+
+    const { onMounted, onWillUnmount } = owl;
 
     /**
      * Helper function to instantiate a stock report action.
@@ -80,17 +86,17 @@ odoo.define('stock.stock_traceability_report_backend_tests', function (require) 
 
             let mountCount = 0;
 
-            patch(ControlPanel.prototype, 'test.ControlPanel', {
-                mounted() {
-                    mountCount = mountCount + 1;
-                    this.__uniqueId = mountCount;
-                    assert.step(`mounted ${this.__uniqueId}`);
-                    this.__superMounted = this._super.bind(this);
-                    this.__superMounted(...arguments);
-                },
-                willUnmount() {
-                    assert.step(`willUnmount ${this.__uniqueId}`);
-                    this.__superMounted(...arguments);
+            patchWithCleanup(ControlPanel.prototype, {
+                setup() {
+                    this._super();
+                    onMounted(() => {
+                        mountCount = mountCount + 1;
+                        this.__uniqueId = mountCount;
+                        assert.step(`mounted ${this.__uniqueId}`);
+                    });
+                    onWillUnmount(() => {
+                        assert.step(`willUnmount ${this.__uniqueId}`);
+                    });
                 },
             });
             const serverData = {
@@ -139,6 +145,8 @@ odoo.define('stock.stock_traceability_report_backend_tests', function (require) 
             await domUtils.click(target.querySelector('.breadcrumb-item'));
             await legacyExtraNextTick();
 
+            destroy(webClient);
+
             assert.verifySteps([
                 'mounted 1',
                 'willUnmount 1',
@@ -147,8 +155,6 @@ odoo.define('stock.stock_traceability_report_backend_tests', function (require) 
                 'mounted 3',
                 'willUnmount 3',
             ]);
-
-            unpatch(ControlPanel.prototype, 'test.ControlPanel');
         });
     });
 });
