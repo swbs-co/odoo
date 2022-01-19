@@ -11,7 +11,7 @@ import { ViewNotFoundError } from "../webclient/actions/action_service";
 import { cleanDomFromBootstrap, wrapSuccessOrFail, useLegacyRefs } from "./utils";
 import { mapDoActionOptionAPI } from "./backend_utils";
 
-const { Component, useEffect, useExternalListener, useComponent, xml } = owl;
+const { Component, status, useEffect, useExternalListener, useComponent, xml } = owl;
 
 const warningDialogBodyTemplate = xml`<t t-esc="props.message"/>`;
 
@@ -313,7 +313,7 @@ export class ViewAdapter extends ActionAdapter {
         } else {
             const view = new this.props.View(this.props.viewInfo, this.props.viewParams);
             this.widget = await view.getController(this);
-            if (this.__owl__.status === 2 /** NXOWL CHECK **/ /* DESTROYED */) {
+            if (status(this) === "destroyed") {
                 // the component might have been destroyed meanwhile, but if so, `this.widget` wasn't
                 // destroyed by OwlCompatibility layer as it wasn't set yet, so destroy it now
                 if (!this.actionService.__legacy__isActionInStack(this.actionId)) {

@@ -1,7 +1,7 @@
 odoo.define('web.Popover', function (require) {
     'use strict';
 
-    const { Component, useRef, useState } = owl;
+    const { Component, status, useRef, useState } = owl;
 
     /**
      * Popover
@@ -229,7 +229,7 @@ odoo.define('web.Popover', function (require) {
          * @param {Event} ev
          */
         _onResizeWindow(ev) {
-            if (this.__owl__.status === 2 /** NXOWL CHECK **/ /* destroyed */) {
+            if (status(this) === "destroyed") {
                 return;
             }
             this._compute();
@@ -243,7 +243,7 @@ odoo.define('web.Popover', function (require) {
          * @param {Event} ev
          */
         _onScrollDocument(ev) {
-            if (this.__owl__.status === 2 /** NXOWL CHECK **/ /* destroyed */) {
+            if (status(this) === "destroyed") {
                 return;
             }
             this._compute();

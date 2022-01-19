@@ -2,7 +2,7 @@
 
 import { SERVICES_METADATA } from "@web/env";
 
-const { useComponent, useEffect, useRef } = owl;
+const { status, useComponent, useEffect, useRef } = owl;
 
 /**
  * This file contains various custom hooks.
@@ -161,11 +161,11 @@ export function useListener(eventName, querySelector, handler, options = {}) {
 
 function _protectMethod(component, caller, fn) {
     return async (...args) => {
-        if (component.__owl__.status === 2 /** NXOWL CHECK **/ /* DESTROYED */) {
+        if (status(component) === "destroyed") {
             throw new Error("Component is destroyed");
         }
         const result = await fn.call(caller, ...args);
-        return component.__owl__.status === 2 /** NXOWL CHECK **/ ? new Promise(() => {}) : result;
+        return status(component) === "destroyed" ? new Promise(() => {}) : result;
     };
 }
 
