@@ -274,7 +274,6 @@ odoo.define('web.owl_dialog_tests', function (require) {
             assert.containsNone(document.body, '.o_legacy_dialog');
 
             destroy(parent);
-            await testUtils.nextTick();
 
             assert.containsNone(document.body, '.modal');
             // dialog 1 is closed through the removal of its parent => no callback
