@@ -24,7 +24,6 @@ const { Component, onMounted, xml } = owl;
 
 let env;
 let target;
-let pseudoWebClient;
 const serviceRegistry = registry.category("services");
 const mainComponentRegistry = registry.category("main_components");
 
@@ -101,7 +100,7 @@ QUnit.test("rendering with two dialogs", async (assert) => {
             this.title = this.props.title;
         }
     }
-    pseudoWebClient = await mount(PseudoWebClient, { env, target });
+    await mount(PseudoWebClient, { env, target });
     assert.containsNone(target, ".o_dialog_container .o_dialog");
     env.services.dialog.add(CustomDialog, { title: "Hello" });
     await nextTick();
@@ -127,7 +126,7 @@ QUnit.test("multiple dialogs can become the UI active element", async (assert) =
             this.title = this.props.title;
         }
     }
-    pseudoWebClient = await mount(PseudoWebClient, { env, target });
+    await mount(PseudoWebClient, { env, target });
 
     env.services.dialog.add(CustomDialog, { title: "Hello" });
     await nextTick();
@@ -172,7 +171,7 @@ QUnit.test("Interactions between multiple dialogs", async (assert) => {
             this.title = this.props.title;
         }
     }
-    pseudoWebClient = await mount(PseudoWebClient, { env, target });
+    await mount(PseudoWebClient, { env, target });
 
     env.services.dialog.add(CustomDialog, { title: "Hello" });
     await nextTick();
@@ -213,7 +212,7 @@ QUnit.test("Interactions between multiple dialogs", async (assert) => {
     assert.containsOnce(target, ".o_dialog_container");
 });
 
-QUnit.skipNXOWL("dialog component crashes", async (assert) => {
+QUnit.test("dialog component crashes", async (assert) => {
     assert.expect(4);
 
     class FailingDialog extends Dialog {
@@ -252,12 +251,12 @@ QUnit.skipNXOWL("dialog component crashes", async (assert) => {
     serviceRegistry.add("error", errorService);
     serviceRegistry.add("localization", makeFakeLocalizationService());
 
-    pseudoWebClient = await mount(PseudoWebClient, { env, target });
+    await mount(PseudoWebClient, { env, target });
 
     env.services.dialog.add(FailingDialog);
     await prom;
 
     assert.verifySteps(["error"]);
-    assert.containsOnce(pseudoWebClient, ".modal");
-    assert.containsOnce(pseudoWebClient, ".modal .o_dialog_error");
+    assert.containsOnce(target, ".modal");
+    assert.containsOnce(target, ".modal .o_dialog_error");
 });
