@@ -33,7 +33,8 @@ const mainComponents = registry.category("main_components");
  * @returns {Promise<Component>}
  */
 async function makeParent(Child, options = {}) {
-    const fixture = getFixture();
+    const { templates } = options;
+    const target = getFixture();
 
     // add the popover service to the registry -> will add the PopoverContainer
     // to the mainComponentRegistry
@@ -65,7 +66,7 @@ async function makeParent(Child, options = {}) {
         clearInterval: options.mockClearInterval || (() => {}),
     });
 
-    return await mount(Parent, { env, target: fixture });
+    return mount(Parent, { env, target, templates });
 }
 
 QUnit.module("Tooltip hook", () => {
@@ -213,13 +214,15 @@ QUnit.module("Tooltip hook", () => {
         assert.hasClass(parent.el.querySelector(".o_popover"), "o-popper-position--lm");
     });
 
-    QUnit.skipNXOWL("tooltip with a template, no info", async (assert) => {
+    QUnit.test("tooltip with a template, no info", async (assert) => {
         class MyComponent extends Component {}
         MyComponent.template = xml`
             <button data-tooltip-template="my_tooltip_template">Action</button>
         `;
-        const parent = await makeParent(MyComponent);
-        parent.env.app.addTemplate("my_tooltip_template", "<i>tooltip</i>"); // NXOWL
+        const templates = {
+            my_tooltip_template: "<i>tooltip</i>",
+        };
+        const parent = await makeParent(MyComponent, { templates });
 
         assert.containsNone(parent, ".o_popover_container .o-tooltip");
         parent.el.querySelector("button").dispatchEvent(new Event("mouseenter"));
@@ -228,7 +231,7 @@ QUnit.module("Tooltip hook", () => {
         assert.strictEqual(parent.el.querySelector(".o-tooltip").innerHTML, "<i>tooltip</i>");
     });
 
-    QUnit.skipNXOWL("tooltip with a template and info", async (assert) => {
+    QUnit.test("tooltip with a template and info", async (assert) => {
         class MyComponent extends Component {
             get info() {
                 return JSON.stringify({ x: 3, y: "abc" });
@@ -241,16 +244,15 @@ QUnit.module("Tooltip hook", () => {
                 Action
             </button>
         `;
-        const parent = await makeParent(MyComponent);
-        parent.env.app.addTemplate(
-            "my_tooltip_template",
-            `
+        const templates = {
+            my_tooltip_template: `
                 <ul>
                     <li>X: <t t-esc="info.x"/></li>
                     <li>Y: <t t-esc="info.y"/></li>
                 </ul>
-            `
-        ); // NXOWL
+            `,
+        };
+        const parent = await makeParent(MyComponent, { templates });
 
         assert.containsNone(parent, ".o_popover_container .o-tooltip");
         parent.el.querySelector("button").dispatchEvent(new Event("mouseenter"));
