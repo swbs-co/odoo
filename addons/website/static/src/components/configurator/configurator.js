@@ -13,7 +13,7 @@ import {useService} from "@web/core/utils/hooks";
 const {Component, Store, mount, QWeb} = owl;
 const {useDispatch, useStore, useGetters, useRef} = owl;
 const {Router, RouteComponent} = owl.router;
-const {whenReady} = owl;
+const { whenReady } = owl;
 
 const WEBSITE_TYPES = {
     1: {id: 1, label: _lt("a business website"), name: 'business'},
