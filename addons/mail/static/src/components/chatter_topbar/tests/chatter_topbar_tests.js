@@ -185,7 +185,7 @@ QUnit.test('attachment loading is delayed', async function (assert) {
     );
 });
 
-QUnit.test('attachment counter while loading attachments', async function (assert) {
+QUnit.skipNXOWL('attachment counter while loading attachments', async function (assert) {
     assert.expect(4);
 
     this.data['res.partner'].records.push({ id: 100 });
@@ -226,7 +226,7 @@ QUnit.test('attachment counter while loading attachments', async function (asser
     );
 });
 
-QUnit.test('attachment counter transition when attachments become loaded)', async function (assert) {
+QUnit.skipNXOWL('attachment counter transition when attachments become loaded)', async function (assert) {
     assert.expect(7);
 
     this.data['res.partner'].records.push({ id: 100 });

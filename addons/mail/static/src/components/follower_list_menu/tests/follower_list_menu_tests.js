@@ -39,7 +39,7 @@ QUnit.module('follower_list_menu_tests.js', {
     },
 });
 
-QUnit.test('base rendering not editable', async function (assert) {
+QUnit.skipNXOWL('base rendering not editable', async function (assert) {
     assert.expect(5);
 
     await this.start();
@@ -76,7 +76,7 @@ QUnit.test('base rendering not editable', async function (assert) {
     );
 });
 
-QUnit.test('base rendering editable', async function (assert) {
+QUnit.skipNXOWL('base rendering editable', async function (assert) {
     assert.expect(5);
 
     await this.start();
@@ -116,7 +116,7 @@ QUnit.test('base rendering editable', async function (assert) {
     );
 });
 
-QUnit.test('click on "add followers" button', async function (assert) {
+QUnit.skipNXOWL('click on "add followers" button', async function (assert) {
     assert.expect(15);
 
     const bus = new Bus();
@@ -230,7 +230,7 @@ QUnit.test('click on "add followers" button', async function (assert) {
     );
 });
 
-QUnit.test('click on remove follower', async function (assert) {
+QUnit.skipNXOWL('click on remove follower', async function (assert) {
     assert.expect(6);
 
     const self = this;

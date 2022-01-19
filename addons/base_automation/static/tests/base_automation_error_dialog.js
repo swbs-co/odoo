@@ -49,7 +49,7 @@ QUnit.module("base_automation", {}, function () {
         },
     });
 
-    QUnit.test("Error due to an automated action", async function (assert) {
+    QUnit.skipNXOWL("Error due to an automated action", async function (assert) {
         assert.expect(4);
 
         const error = new RPCError();
@@ -93,7 +93,7 @@ QUnit.module("base_automation", {}, function () {
         assert.containsOnce(dialogContainer, '.modal .o_edit_action_button');
     });
 
-    QUnit.test("Error not due to an automated action", async function (assert) {
+    QUnit.skipNXOWL("Error not due to an automated action", async function (assert) {
         assert.expect(3);
 
         const error = new RPCError();

@@ -36,7 +36,7 @@ QUnit.module('thread_textual_typing_status_tests.js', {
     },
 });
 
-QUnit.test('receive other member typing status "is typing"', async function (assert) {
+QUnit.skipNXOWL('receive other member typing status "is typing"', async function (assert) {
     assert.expect(2);
 
     this.data['res.partner'].records.push({ id: 17, name: 'Demo' });
@@ -76,7 +76,7 @@ QUnit.test('receive other member typing status "is typing"', async function (ass
     );
 });
 
-QUnit.test('receive other member typing status "is typing" then "no longer is typing"', async function (assert) {
+QUnit.skipNXOWL('receive other member typing status "is typing" then "no longer is typing"', async function (assert) {
     assert.expect(3);
 
     this.data['res.partner'].records.push({ id: 17, name: 'Demo' });
@@ -134,7 +134,7 @@ QUnit.test('receive other member typing status "is typing" then "no longer is ty
     );
 });
 
-QUnit.test('assume other member typing status becomes "no longer is typing" after 60 seconds without any updated typing status', async function (assert) {
+QUnit.skipNXOWL('assume other member typing status becomes "no longer is typing" after 60 seconds without any updated typing status', async function (assert) {
     assert.expect(3);
 
     this.data['res.partner'].records.push({ id: 17, name: 'Demo' });
@@ -183,7 +183,7 @@ QUnit.test('assume other member typing status becomes "no longer is typing" afte
     );
 });
 
-QUnit.test ('other member typing status "is typing" refreshes 60 seconds timer of assuming no longer typing', async function (assert) {
+QUnit.skipNXOWL ('other member typing status "is typing" refreshes 60 seconds timer of assuming no longer typing', async function (assert) {
     assert.expect(4);
 
     this.data['res.partner'].records.push({ id: 17, name: 'Demo' });
@@ -251,7 +251,7 @@ QUnit.test ('other member typing status "is typing" refreshes 60 seconds timer o
     );
 });
 
-QUnit.test('receive several other members typing status "is typing"', async function (assert) {
+QUnit.skipNXOWL('receive several other members typing status "is typing"', async function (assert) {
     assert.expect(6);
 
     this.data['res.partner'].records.push(

@@ -40,7 +40,7 @@ QUnit.module('follower_subtype_tests.js', {
     },
 });
 
-QUnit.test('simplest layout of a followed subtype', async function (assert) {
+QUnit.skipNXOWL('simplest layout of a followed subtype', async function (assert) {
     assert.expect(5);
 
     await this.start();
@@ -100,7 +100,7 @@ QUnit.test('simplest layout of a followed subtype', async function (assert) {
     );
 });
 
-QUnit.test('simplest layout of a not followed subtype', async function (assert) {
+QUnit.skipNXOWL('simplest layout of a not followed subtype', async function (assert) {
     assert.expect(5);
 
     await this.start();
@@ -157,7 +157,7 @@ QUnit.test('simplest layout of a not followed subtype', async function (assert) 
     );
 });
 
-QUnit.test('toggle follower subtype checkbox', async function (assert) {
+QUnit.skipNXOWL('toggle follower subtype checkbox', async function (assert) {
     assert.expect(5);
 
     await this.start();

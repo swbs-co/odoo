@@ -28,7 +28,7 @@ QUnit.module('discuss_sidebar_category_item_tests.js', {
     },
 });
 
-QUnit.test('livechat - avatar: should have a smiley face avatar for an anonymous livechat item', async function (assert) {
+QUnit.skipNXOWL('livechat - avatar: should have a smiley face avatar for an anonymous livechat item', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -60,7 +60,7 @@ QUnit.test('livechat - avatar: should have a smiley face avatar for an anonymous
     );
 });
 
-QUnit.test('livechat - avatar: should have a partner profile picture for a livechat item linked with a partner', async function (assert) {
+QUnit.skipNXOWL('livechat - avatar: should have a partner profile picture for a livechat item linked with a partner', async function (assert) {
     assert.expect(2);
 
     this.data['res.partner'].records.push({

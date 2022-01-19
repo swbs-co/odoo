@@ -33,7 +33,7 @@ QUnit.module('messaging_menu_tests.js', {
     },
 });
 
-QUnit.test('[technical] messaging not created then becomes created', async function (assert) {
+QUnit.skipNXOWL('[technical] messaging not created then becomes created', async function (assert) {
     /**
      * Creation of messaging in env is async due to generation of models being
      * async. Generation of models is async because it requires parsing of all
@@ -65,7 +65,7 @@ QUnit.test('[technical] messaging not created then becomes created', async funct
     );
 });
 
-QUnit.test('messaging not initialized', async function (assert) {
+QUnit.skipNXOWL('messaging not initialized', async function (assert) {
     assert.expect(2);
 
     const { createMessagingMenuComponent } = await this.start({
@@ -93,7 +93,7 @@ QUnit.test('messaging not initialized', async function (assert) {
     );
 });
 
-QUnit.test('messaging becomes initialized', async function (assert) {
+QUnit.skipNXOWL('messaging becomes initialized', async function (assert) {
     assert.expect(2);
 
     const messagingInitializedProm = makeTestPromise();
@@ -124,7 +124,7 @@ QUnit.test('messaging becomes initialized', async function (assert) {
     );
 });
 
-QUnit.test('basic rendering', async function (assert) {
+QUnit.skipNXOWL('basic rendering', async function (assert) {
     assert.expect(21);
 
     const { createMessagingMenuComponent } = await this.start();
@@ -249,7 +249,7 @@ QUnit.test('basic rendering', async function (assert) {
     );
 });
 
-QUnit.test('counter is taking into account failure notification', async function (assert) {
+QUnit.skipNXOWL('counter is taking into account failure notification', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -282,7 +282,7 @@ QUnit.test('counter is taking into account failure notification', async function
     );
 });
 
-QUnit.test('switch tab', async function (assert) {
+QUnit.skipNXOWL('switch tab', async function (assert) {
     assert.expect(15);
 
     const { createMessagingMenuComponent } = await this.start();
@@ -390,7 +390,7 @@ QUnit.test('switch tab', async function (assert) {
     );
 });
 
-QUnit.test('new message', async function (assert) {
+QUnit.skipNXOWL('new message', async function (assert) {
     assert.expect(3);
 
     const { createMessagingMenuComponent } = await this.start({
@@ -420,7 +420,7 @@ QUnit.test('new message', async function (assert) {
     );
 });
 
-QUnit.test('no new message when discuss is open', async function (assert) {
+QUnit.skipNXOWL('no new message when discuss is open', async function (assert) {
     assert.expect(3);
 
     const { createMessagingMenuComponent } = await this.start({
@@ -455,7 +455,7 @@ QUnit.test('no new message when discuss is open', async function (assert) {
     );
 });
 
-QUnit.test('channel preview: basic rendering', async function (assert) {
+QUnit.skipNXOWL('channel preview: basic rendering', async function (assert) {
     assert.expect(9);
 
     this.data['res.partner'].records.push({
@@ -554,7 +554,7 @@ QUnit.test('channel preview: basic rendering', async function (assert) {
     );
 });
 
-QUnit.test('filtered previews', async function (assert) {
+QUnit.skipNXOWL('filtered previews', async function (assert) {
     assert.expect(12);
 
     // chat and channel expected to be found in the menu
@@ -719,7 +719,7 @@ QUnit.test('filtered previews', async function (assert) {
     );
 });
 
-QUnit.test('open chat window from preview', async function (assert) {
+QUnit.skipNXOWL('open chat window from preview', async function (assert) {
     assert.expect(1);
 
     // channel expected to be found in the menu, only its existence matters, data are irrelevant
@@ -742,7 +742,7 @@ QUnit.test('open chat window from preview', async function (assert) {
     );
 });
 
-QUnit.test('no code injection in message body preview', async function (assert) {
+QUnit.skipNXOWL('no code injection in message body preview', async function (assert) {
     assert.expect(5);
 
     this.data['mail.channel'].records.push({ id: 11 });
@@ -785,7 +785,7 @@ QUnit.test('no code injection in message body preview', async function (assert) 
     );
 });
 
-QUnit.test('no code injection in message body preview from sanitized message', async function (assert) {
+QUnit.skipNXOWL('no code injection in message body preview from sanitized message', async function (assert) {
     assert.expect(5);
 
     this.data['mail.channel'].records.push({ id: 11 });
@@ -828,7 +828,7 @@ QUnit.test('no code injection in message body preview from sanitized message', a
     );
 });
 
-QUnit.test('<br/> tags in message body preview are transformed in spaces', async function (assert) {
+QUnit.skipNXOWL('<br/> tags in message body preview are transformed in spaces', async function (assert) {
     assert.expect(4);
 
     this.data['mail.channel'].records.push({ id: 11 });
@@ -865,7 +865,7 @@ QUnit.test('<br/> tags in message body preview are transformed in spaces', async
     );
 });
 
-QUnit.test('rendering with OdooBot has a request (default)', async function (assert) {
+QUnit.skipNXOWL('rendering with OdooBot has a request (default)', async function (assert) {
     assert.expect(4);
 
     const { createMessagingMenuComponent } = await this.start({
@@ -904,7 +904,7 @@ QUnit.test('rendering with OdooBot has a request (default)', async function (ass
     );
 });
 
-QUnit.test('rendering without OdooBot has a request (denied)', async function (assert) {
+QUnit.skipNXOWL('rendering without OdooBot has a request (denied)', async function (assert) {
     assert.expect(2);
 
     const { createMessagingMenuComponent } = await this.start({
@@ -934,7 +934,7 @@ QUnit.test('rendering without OdooBot has a request (denied)', async function (a
     );
 });
 
-QUnit.test('rendering without OdooBot has a request (accepted)', async function (assert) {
+QUnit.skipNXOWL('rendering without OdooBot has a request (accepted)', async function (assert) {
     assert.expect(2);
 
     const { createMessagingMenuComponent } = await this.start({
@@ -964,7 +964,7 @@ QUnit.test('rendering without OdooBot has a request (accepted)', async function 
     );
 });
 
-QUnit.test('respond to notification prompt (denied)', async function (assert) {
+QUnit.skipNXOWL('respond to notification prompt (denied)', async function (assert) {
     assert.expect(4);
 
     const { createMessagingMenuComponent } = await this.start({
@@ -1017,7 +1017,7 @@ QUnit.test('respond to notification prompt (denied)', async function (assert) {
     );
 });
 
-QUnit.test('Group chat should be displayed inside the chat section of the messaging menu', async function (assert) {
+QUnit.skipNXOWL('Group chat should be displayed inside the chat section of the messaging menu', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({

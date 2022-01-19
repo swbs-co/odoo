@@ -28,7 +28,7 @@ QUnit.module('discuss_tests.js', {
     },
 });
 
-QUnit.test('rendering of visitor banner', async function (assert) {
+QUnit.skipNXOWL('rendering of visitor banner', async function (assert) {
     assert.expect(13);
 
     this.data['res.country'].records.push({
@@ -125,7 +125,7 @@ QUnit.test('rendering of visitor banner', async function (assert) {
     );
 });
 
-QUnit.test('livechat with non-logged visitor should show visitor banner', async function (assert) {
+QUnit.skipNXOWL('livechat with non-logged visitor should show visitor banner', async function (assert) {
     assert.expect(1);
 
     this.data['res.country'].records.push({
@@ -162,7 +162,7 @@ QUnit.test('livechat with non-logged visitor should show visitor banner', async 
     );
 });
 
-QUnit.test('livechat with logged visitor should show visitor banner', async function (assert) {
+QUnit.skipNXOWL('livechat with logged visitor should show visitor banner', async function (assert) {
     assert.expect(2);
 
     this.data['res.country'].records.push({
@@ -209,7 +209,7 @@ QUnit.test('livechat with logged visitor should show visitor banner', async func
     );
 });
 
-QUnit.test('livechat without visitor should not show visitor banner', async function (assert) {
+QUnit.skipNXOWL('livechat without visitor should not show visitor banner', async function (assert) {
     assert.expect(2);
 
     this.data['res.partner'].records.push({ id: 11 });
@@ -238,7 +238,7 @@ QUnit.test('livechat without visitor should not show visitor banner', async func
     );
 });
 
-QUnit.test('non-livechat channel should not show visitor banner', async function (assert) {
+QUnit.skipNXOWL('non-livechat channel should not show visitor banner', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({ id: 11, name: "General" });

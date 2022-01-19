@@ -317,7 +317,7 @@ QUnit.test("clicking anchor when multi levels scrollables", async (assert) => {
     );
 });
 
-QUnit.test("Simple scroll to HTML elements", async (assert) => {
+QUnit.skipNXOWL("Simple scroll to HTML elements", async (assert) => {
     assert.expect(6);
     const scrollableParent = document.createElement("div");
     scrollableParent.style.overflow = "scroll";

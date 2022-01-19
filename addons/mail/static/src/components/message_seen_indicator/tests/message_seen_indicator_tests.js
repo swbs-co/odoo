@@ -39,7 +39,7 @@ QUnit.module('message_seen_indicator_tests.js', {
     },
 });
 
-QUnit.test('rendering when just one has received the message', async function (assert) {
+QUnit.skipNXOWL('rendering when just one has received the message', async function (assert) {
     assert.expect(3);
 
     await this.start();
@@ -83,7 +83,7 @@ QUnit.test('rendering when just one has received the message', async function (a
     );
 });
 
-QUnit.test('rendering when everyone have received the message', async function (assert) {
+QUnit.skipNXOWL('rendering when everyone have received the message', async function (assert) {
     assert.expect(3);
 
     await this.start();
@@ -128,7 +128,7 @@ QUnit.test('rendering when everyone have received the message', async function (
     );
 });
 
-QUnit.test('rendering when just one has seen the message', async function (assert) {
+QUnit.skipNXOWL('rendering when just one has seen the message', async function (assert) {
     assert.expect(3);
 
     await this.start();
@@ -175,7 +175,7 @@ QUnit.test('rendering when just one has seen the message', async function (asser
     );
 });
 
-QUnit.test('rendering when just one has seen & received the message', async function (assert) {
+QUnit.skipNXOWL('rendering when just one has seen & received the message', async function (assert) {
     assert.expect(3);
 
     await this.start();
@@ -221,7 +221,7 @@ QUnit.test('rendering when just one has seen & received the message', async func
     );
 });
 
-QUnit.test('rendering when just everyone has seen the message', async function (assert) {
+QUnit.skipNXOWL('rendering when just everyone has seen the message', async function (assert) {
     assert.expect(3);
 
     await this.start();

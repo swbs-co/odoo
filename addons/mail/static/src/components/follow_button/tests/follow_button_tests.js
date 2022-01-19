@@ -36,7 +36,7 @@ QUnit.module('follow_button_tests.js', {
     },
 });
 
-QUnit.test('base rendering not editable', async function (assert) {
+QUnit.skipNXOWL('base rendering not editable', async function (assert) {
     assert.expect(3);
 
     await this.start();
@@ -61,7 +61,7 @@ QUnit.test('base rendering not editable', async function (assert) {
     );
 });
 
-QUnit.test('base rendering editable', async function (assert) {
+QUnit.skipNXOWL('base rendering editable', async function (assert) {
     assert.expect(3);
 
     await this.start();
@@ -86,7 +86,7 @@ QUnit.test('base rendering editable', async function (assert) {
     );
 });
 
-QUnit.test('hover following button', async function (assert) {
+QUnit.skipNXOWL('hover following button', async function (assert) {
     assert.expect(8);
 
     this.data['res.partner'].records.push({ id: 100, message_follower_ids: [1] });
@@ -154,7 +154,7 @@ QUnit.test('hover following button', async function (assert) {
     );
 });
 
-QUnit.test('click on "follow" button', async function (assert) {
+QUnit.skipNXOWL('click on "follow" button', async function (assert) {
     assert.expect(7);
 
     this.data['res.partner'].records.push({ id: 100, message_follower_ids: [1] });
@@ -211,7 +211,7 @@ QUnit.test('click on "follow" button', async function (assert) {
     );
 });
 
-QUnit.test('click on "unfollow" button', async function (assert) {
+QUnit.skipNXOWL('click on "unfollow" button', async function (assert) {
     assert.expect(7);
 
     this.data['res.partner'].records.push({ id: 100, message_follower_ids: [1] });

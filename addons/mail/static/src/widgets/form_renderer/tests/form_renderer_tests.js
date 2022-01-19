@@ -101,7 +101,7 @@ QUnit.test('[technical] spinner when messaging is not created', async function (
     );
 });
 
-QUnit.test('[technical] keep spinner on transition from messaging non-created to messaging created (and non-initialized)', async function (assert) {
+QUnit.skipNXOWL('[technical] keep spinner on transition from messaging non-created to messaging created (and non-initialized)', async function (assert) {
     /**
      * Creation of messaging in env is async due to generation of models being
      * async. Generation of models is async because it requires parsing of all
@@ -295,7 +295,7 @@ QUnit.test('basic chatter rendering', async function (assert) {
     );
 });
 
-QUnit.test('basic chatter rendering without followers', async function (assert) {
+QUnit.skipNXOWL('basic chatter rendering without followers', async function (assert) {
     assert.expect(6);
 
     this.data['res.partner'].records.push({ display_name: "second partner", id: 12 });
@@ -350,7 +350,7 @@ QUnit.test('basic chatter rendering without followers', async function (assert) 
     );
 });
 
-QUnit.test('basic chatter rendering without activities', async function (assert) {
+QUnit.skipNXOWL('basic chatter rendering without activities', async function (assert) {
     assert.expect(6);
 
     this.data['res.partner'].records.push({ display_name: "second partner", id: 12 });
@@ -460,7 +460,7 @@ QUnit.test('basic chatter rendering without messages', async function (assert) {
     );
 });
 
-QUnit.test('chatter updating', async function (assert) {
+QUnit.skipNXOWL('chatter updating', async function (assert) {
     assert.expect(1);
 
     this.data['mail.message'].records.push({ body: "not empty", model: 'res.partner', res_id: 12 });
@@ -520,7 +520,7 @@ QUnit.test('chatter updating', async function (assert) {
     );
 });
 
-QUnit.test('chatter should become enabled when creation done', async function (assert) {
+QUnit.skipNXOWL('chatter should become enabled when creation done', async function (assert) {
     assert.expect(10);
 
     await this.createView({
@@ -595,7 +595,7 @@ QUnit.test('chatter should become enabled when creation done', async function (a
     );
 });
 
-QUnit.test('read more/less links are not duplicated when switching from read to edit mode', async function (assert) {
+QUnit.skipNXOWL('read more/less links are not duplicated when switching from read to edit mode', async function (assert) {
     assert.expect(5);
 
     this.data['mail.message'].records.push({
@@ -684,7 +684,7 @@ QUnit.test('read more/less links are not duplicated when switching from read to 
     );
 });
 
-QUnit.test('read more links becomes read less after being clicked', async function (assert) {
+QUnit.skipNXOWL('read more links becomes read less after being clicked', async function (assert) {
     assert.expect(6);
 
     this.data['mail.message'].records = [{
@@ -870,7 +870,7 @@ QUnit.test('Form view not scrolled when switching record', async function (asser
     );
 });
 
-QUnit.test('Attachments that have been unlinked from server should be visually unlinked from record', async function (assert) {
+QUnit.skipNXOWL('Attachments that have been unlinked from server should be visually unlinked from record', async function (assert) {
     // Attachments that have been fetched from a record at certain time and then
     // removed from the server should be reflected on the UI when the current
     // partner accesses this record again.
@@ -939,7 +939,7 @@ QUnit.test('Attachments that have been unlinked from server should be visually u
     );
 });
 
-QUnit.test('chatter just contains "creating a new record" message during the creation of a new record after having displayed a chatter for an existing record', async function (assert) {
+QUnit.skipNXOWL('chatter just contains "creating a new record" message during the creation of a new record after having displayed a chatter for an existing record', async function (assert) {
     assert.expect(2);
 
     this.data['res.partner'].records.push({ id: 12 });

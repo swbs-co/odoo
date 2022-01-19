@@ -35,7 +35,7 @@ QUnit.module('message_tests.js', {
     },
 });
 
-QUnit.test('basic rendering', async function (assert) {
+QUnit.skipNXOWL('basic rendering', async function (assert) {
     assert.expect(12);
 
     const { createMessageComponent } = await this.start();
@@ -110,7 +110,7 @@ QUnit.test('basic rendering', async function (assert) {
     );
 });
 
-QUnit.test('Notification Sent', async function (assert) {
+QUnit.skipNXOWL('Notification Sent', async function (assert) {
     assert.expect(9);
 
     this.data['res.partner'].records.push({ id: 12, name: "Someone", partner_share: true });
@@ -192,7 +192,7 @@ QUnit.test('Notification Sent', async function (assert) {
     );
 });
 
-QUnit.test('Notification Error', async function (assert) {
+QUnit.skipNXOWL('Notification Error', async function (assert) {
     assert.expect(8);
 
     const openResendActionDef = makeDeferred();
@@ -268,7 +268,7 @@ QUnit.test('Notification Error', async function (assert) {
     );
 });
 
-QUnit.test("'channel_fetch' notification received is correctly handled", async function (assert) {
+QUnit.skipNXOWL("'channel_fetch' notification received is correctly handled", async function (assert) {
     assert.expect(3);
 
     this.data['res.partner'].records.push({
@@ -333,7 +333,7 @@ QUnit.test("'channel_fetch' notification received is correctly handled", async f
     );
 });
 
-QUnit.test("'channel_seen' notification received is correctly handled", async function (assert) {
+QUnit.skipNXOWL("'channel_seen' notification received is correctly handled", async function (assert) {
     assert.expect(3);
 
     this.data['res.partner'].records.push({
@@ -397,7 +397,7 @@ QUnit.test("'channel_seen' notification received is correctly handled", async fu
     );
 });
 
-QUnit.test("'channel_fetch' notification then 'channel_seen' received  are correctly handled", async function (assert) {
+QUnit.skipNXOWL("'channel_fetch' notification then 'channel_seen' received  are correctly handled", async function (assert) {
     assert.expect(4);
 
     this.data['res.partner'].records.push({
@@ -478,7 +478,7 @@ QUnit.test("'channel_fetch' notification then 'channel_seen' received  are corre
     );
 });
 
-QUnit.test('do not show messaging seen indicator if not authored by me', async function (assert) {
+QUnit.skipNXOWL('do not show messaging seen indicator if not authored by me', async function (assert) {
     assert.expect(2);
 
     const { createThreadViewComponent } = await this.start();
@@ -526,7 +526,7 @@ QUnit.test('do not show messaging seen indicator if not authored by me', async f
     );
 });
 
-QUnit.test('do not show messaging seen indicator if before last seen by all message', async function (assert) {
+QUnit.skipNXOWL('do not show messaging seen indicator if before last seen by all message', async function (assert) {
     assert.expect(3);
 
     await this.start();
@@ -593,7 +593,7 @@ QUnit.test('do not show messaging seen indicator if before last seen by all mess
     );
 });
 
-QUnit.test('only show messaging seen indicator if authored by me, after last seen by all message', async function (assert) {
+QUnit.skipNXOWL('only show messaging seen indicator if authored by me, after last seen by all message', async function (assert) {
     assert.expect(3);
 
     const { createThreadViewComponent } = await this.start();
@@ -651,7 +651,7 @@ QUnit.test('only show messaging seen indicator if authored by me, after last see
     );
 });
 
-QUnit.test('allow attachment delete on authored message', async function (assert) {
+QUnit.skipNXOWL('allow attachment delete on authored message', async function (assert) {
     assert.expect(5);
 
     const { createMessageComponent } = await this.start();
@@ -701,7 +701,7 @@ QUnit.test('allow attachment delete on authored message', async function (assert
     );
 });
 
-QUnit.test('prevent attachment delete on non-authored message', async function (assert) {
+QUnit.skipNXOWL('prevent attachment delete on non-authored message', async function (assert) {
     assert.expect(2);
 
     const { createMessageComponent } = await this.start();
@@ -730,7 +730,7 @@ QUnit.test('prevent attachment delete on non-authored message', async function (
     );
 });
 
-QUnit.test('subtype description should be displayed if it is different than body', async function (assert) {
+QUnit.skipNXOWL('subtype description should be displayed if it is different than body', async function (assert) {
     assert.expect(2);
 
     const { createMessageComponent } = await this.start();
@@ -752,7 +752,7 @@ QUnit.test('subtype description should be displayed if it is different than body
     );
 });
 
-QUnit.test('subtype description should not be displayed if it is similar to body', async function (assert) {
+QUnit.skipNXOWL('subtype description should not be displayed if it is similar to body', async function (assert) {
     assert.expect(2);
 
     const { createMessageComponent } = await this.start();
@@ -774,7 +774,7 @@ QUnit.test('subtype description should not be displayed if it is similar to body
     );
 });
 
-QUnit.test('data-oe-id & data-oe-model link redirection on click', async function (assert) {
+QUnit.skipNXOWL('data-oe-id & data-oe-model link redirection on click', async function (assert) {
     assert.expect(7);
 
     const bus = new Bus();
@@ -820,7 +820,7 @@ QUnit.test('data-oe-id & data-oe-model link redirection on click', async functio
     );
 });
 
-QUnit.test('chat with author should be opened after clicking on his avatar', async function (assert) {
+QUnit.skipNXOWL('chat with author should be opened after clicking on his avatar', async function (assert) {
     assert.expect(4);
 
     this.data['res.partner'].records.push({ id: 10 });
@@ -859,7 +859,7 @@ QUnit.test('chat with author should be opened after clicking on his avatar', asy
     );
 });
 
-QUnit.test('chat with author should be opened after clicking on his im status icon', async function (assert) {
+QUnit.skipNXOWL('chat with author should be opened after clicking on his im status icon', async function (assert) {
     assert.expect(4);
 
     this.data['res.partner'].records.push({ id: 10 });
@@ -898,7 +898,7 @@ QUnit.test('chat with author should be opened after clicking on his im status ic
     );
 });
 
-QUnit.test('open chat with author on avatar click should be disabled when currently chatting with the author', async function (assert) {
+QUnit.skipNXOWL('open chat with author on avatar click should be disabled when currently chatting with the author', async function (assert) {
     assert.expect(3);
 
     this.data['mail.channel'].records.push({
@@ -947,7 +947,7 @@ QUnit.test('open chat with author on avatar click should be disabled when curren
     );
 });
 
-QUnit.test('basic rendering of tracking value (float type)', async function (assert) {
+QUnit.skipNXOWL('basic rendering of tracking value (float type)', async function (assert) {
     assert.expect(8);
 
     const { createMessageComponent } = await this.start();
@@ -1004,7 +1004,7 @@ QUnit.test('basic rendering of tracking value (float type)', async function (ass
     );
 });
 
-QUnit.test('rendering of tracked field of type integer: from non-0 to 0', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type integer: from non-0 to 0', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1026,7 +1026,7 @@ QUnit.test('rendering of tracked field of type integer: from non-0 to 0', async 
     );
 });
 
-QUnit.test('rendering of tracked field of type integer: from 0 to non-0', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type integer: from 0 to non-0', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1048,7 +1048,7 @@ QUnit.test('rendering of tracked field of type integer: from 0 to non-0', async 
     );
 });
 
-QUnit.test('rendering of tracked field of type float: from non-0 to 0', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type float: from non-0 to 0', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1070,7 +1070,7 @@ QUnit.test('rendering of tracked field of type float: from non-0 to 0', async fu
     );
 });
 
-QUnit.test('rendering of tracked field of type float: from 0 to non-0', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type float: from 0 to non-0', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1092,7 +1092,7 @@ QUnit.test('rendering of tracked field of type float: from 0 to non-0', async fu
     );
 });
 
-QUnit.test('rendering of tracked field of type monetary: from non-0 to 0', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type monetary: from non-0 to 0', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1114,7 +1114,7 @@ QUnit.test('rendering of tracked field of type monetary: from non-0 to 0', async
     );
 });
 
-QUnit.test('rendering of tracked field of type monetary: from 0 to non-0', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type monetary: from 0 to non-0', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1136,7 +1136,7 @@ QUnit.test('rendering of tracked field of type monetary: from 0 to non-0', async
     );
 });
 
-QUnit.test('rendering of tracked field of type boolean: from true to false', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type boolean: from true to false', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1158,7 +1158,7 @@ QUnit.test('rendering of tracked field of type boolean: from true to false', asy
     );
 });
 
-QUnit.test('rendering of tracked field of type boolean: from false to true', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type boolean: from false to true', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1180,7 +1180,7 @@ QUnit.test('rendering of tracked field of type boolean: from false to true', asy
     );
 });
 
-QUnit.test('rendering of tracked field of type char: from a string to empty string', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type char: from a string to empty string', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1202,7 +1202,7 @@ QUnit.test('rendering of tracked field of type char: from a string to empty stri
     );
 });
 
-QUnit.test('rendering of tracked field of type char: from empty string to a string', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type char: from empty string to a string', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1224,7 +1224,7 @@ QUnit.test('rendering of tracked field of type char: from empty string to a stri
     );
 });
 
-QUnit.test('rendering of tracked field of type date: from no date to a set date', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type date: from no date to a set date', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1246,7 +1246,7 @@ QUnit.test('rendering of tracked field of type date: from no date to a set date'
     );
 });
 
-QUnit.test('rendering of tracked field of type date: from a set date to no date', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type date: from a set date to no date', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1268,7 +1268,7 @@ QUnit.test('rendering of tracked field of type date: from a set date to no date'
     );
 });
 
-QUnit.test('rendering of tracked field of type datetime: from no date and time to a set date and time', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type datetime: from no date and time to a set date and time', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1290,7 +1290,7 @@ QUnit.test('rendering of tracked field of type datetime: from no date and time t
     );
 });
 
-QUnit.test('rendering of tracked field of type datetime: from a set date and time to no date and time', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type datetime: from a set date and time to no date and time', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1312,7 +1312,7 @@ QUnit.test('rendering of tracked field of type datetime: from a set date and tim
     );
 });
 
-QUnit.test('rendering of tracked field of type text: from some text to empty', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type text: from some text to empty', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1334,7 +1334,7 @@ QUnit.test('rendering of tracked field of type text: from some text to empty', a
     );
 });
 
-QUnit.test('rendering of tracked field of type text: from empty to some text', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type text: from empty to some text', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1356,7 +1356,7 @@ QUnit.test('rendering of tracked field of type text: from empty to some text', a
     );
 });
 
-QUnit.test('rendering of tracked field of type selection: from a selection to no selection', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type selection: from a selection to no selection', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1378,7 +1378,7 @@ QUnit.test('rendering of tracked field of type selection: from a selection to no
     );
 });
 
-QUnit.test('rendering of tracked field of type selection: from no selection to a selection', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type selection: from no selection to a selection', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1400,7 +1400,7 @@ QUnit.test('rendering of tracked field of type selection: from no selection to a
     );
 });
 
-QUnit.test('rendering of tracked field of type many2one: from having a related record to no related record', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type many2one: from having a related record to no related record', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1422,7 +1422,7 @@ QUnit.test('rendering of tracked field of type many2one: from having a related r
     );
 });
 
-QUnit.test('rendering of tracked field of type many2one: from no related record to having a related record', async function (assert) {
+QUnit.skipNXOWL('rendering of tracked field of type many2one: from no related record to having a related record', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1444,7 +1444,7 @@ QUnit.test('rendering of tracked field of type many2one: from no related record 
     );
 });
 
-QUnit.test('basic rendering of tracking value (monetary type)', async function (assert) {
+QUnit.skipNXOWL('basic rendering of tracking value (monetary type)', async function (assert) {
     assert.expect(8);
 
     const { createMessageComponent } = await this.start({
@@ -1509,7 +1509,7 @@ QUnit.test('basic rendering of tracking value (monetary type)', async function (
     );
 });
 
-QUnit.test('message should not be considered as "clicked" after clicking on its author name', async function (assert) {
+QUnit.skipNXOWL('message should not be considered as "clicked" after clicking on its author name', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1528,7 +1528,7 @@ QUnit.test('message should not be considered as "clicked" after clicking on its 
     );
 });
 
-QUnit.test('message should not be considered as "clicked" after clicking on its author avatar', async function (assert) {
+QUnit.skipNXOWL('message should not be considered as "clicked" after clicking on its author avatar', async function (assert) {
     assert.expect(1);
 
     const { createMessageComponent } = await this.start();
@@ -1547,7 +1547,7 @@ QUnit.test('message should not be considered as "clicked" after clicking on its 
     );
 });
 
-QUnit.test('message should not be considered as "clicked" after clicking on notification failure icon', async function (assert) {
+QUnit.skipNXOWL('message should not be considered as "clicked" after clicking on notification failure icon', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 10 });

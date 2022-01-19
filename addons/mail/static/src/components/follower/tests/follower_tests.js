@@ -39,7 +39,7 @@ QUnit.module('follower_tests.js', {
     },
 });
 
-QUnit.test('base rendering not editable', async function (assert) {
+QUnit.skipNXOWL('base rendering not editable', async function (assert) {
     assert.expect(5);
 
     await this.start();
@@ -86,7 +86,7 @@ QUnit.test('base rendering not editable', async function (assert) {
     );
 });
 
-QUnit.test('base rendering editable', async function (assert) {
+QUnit.skipNXOWL('base rendering editable', async function (assert) {
     assert.expect(6);
 
     await this.start();
@@ -137,7 +137,7 @@ QUnit.test('base rendering editable', async function (assert) {
     );
 });
 
-QUnit.test('click on partner follower details', async function (assert) {
+QUnit.skipNXOWL('click on partner follower details', async function (assert) {
     assert.expect(7);
 
     const openFormDef = makeDeferred();
@@ -200,7 +200,7 @@ QUnit.test('click on partner follower details', async function (assert) {
     );
 });
 
-QUnit.test('click on edit follower', async function (assert) {
+QUnit.skipNXOWL('click on edit follower', async function (assert) {
     assert.expect(5);
 
     this.data['res.partner'].records.push({ id: 100, message_follower_ids: [2] });
@@ -250,7 +250,7 @@ QUnit.test('click on edit follower', async function (assert) {
     );
 });
 
-QUnit.test('edit follower and close subtype dialog', async function (assert) {
+QUnit.skipNXOWL('edit follower and close subtype dialog', async function (assert) {
     assert.expect(6);
 
     this.data['res.partner'].records.push({ id: 100 });

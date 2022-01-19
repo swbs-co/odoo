@@ -24,7 +24,7 @@ QUnit.module('notification_list_tests.js', {
     },
 });
 
-QUnit.test('marked as read thread notifications are ordered by last message date', async function (assert) {
+QUnit.skipNXOWL('marked as read thread notifications are ordered by last message date', async function (assert) {
     assert.expect(3);
 
     this.data['mail.channel'].records.push(
@@ -66,7 +66,7 @@ QUnit.test('marked as read thread notifications are ordered by last message date
     );
 });
 
-QUnit.test('thread notifications are re-ordered on receiving a new message', async function (assert) {
+QUnit.skipNXOWL('thread notifications are re-ordered on receiving a new message', async function (assert) {
     assert.expect(4);
 
     this.data['mail.channel'].records.push(

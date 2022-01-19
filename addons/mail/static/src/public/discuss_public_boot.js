@@ -27,7 +27,7 @@ import * as legacySession from 'web.session';
 // owl.Component.env = legacyEnv;
 
 (async function boot() {
-    await owl.utils.whenReady();
+    await owl.whenReady();
     owl.config.mode = owl.Component.env.isDebug() ? 'dev' : 'prod';
     AbstractService.prototype.deployServices(owl.Component.env);
     const serviceRegistry = registry.category('services');

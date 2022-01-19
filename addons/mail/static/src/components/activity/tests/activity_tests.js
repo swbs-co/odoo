@@ -26,7 +26,7 @@ QUnit.module('activity_tests.js', {
     },
 });
 
-QUnit.test('activity simplest layout', async function (assert) {
+QUnit.skipNXOWL('activity simplest layout', async function (assert) {
     assert.expect(12);
 
     this.data['res.partner'].records.push({
@@ -105,7 +105,7 @@ QUnit.test('activity simplest layout', async function (assert) {
     );
 });
 
-QUnit.test('activity with note layout', async function (assert) {
+QUnit.skipNXOWL('activity with note layout', async function (assert) {
     assert.expect(3);
 
     this.data['res.partner'].records.push({
@@ -865,7 +865,7 @@ QUnit.test('activity click on mark as done', async function (assert) {
     );
 });
 
-QUnit.test('activity mark as done popover should focus feedback input on open [REQUIRE FOCUS]', async function (assert) {
+QUnit.skipNXOWL('activity mark as done popover should focus feedback input on open [REQUIRE FOCUS]', async function (assert) {
     assert.expect(3);
 
     this.data['res.partner'].records.push({
@@ -1216,7 +1216,7 @@ QUnit.test('activity mark done popover click on discard', async function (assert
     );
 });
 
-QUnit.test('data-oe-id & data-oe-model link redirection on click', async function (assert) {
+QUnit.skipNXOWL('data-oe-id & data-oe-model link redirection on click', async function (assert) {
     assert.expect(7);
 
     const bus = new Bus();

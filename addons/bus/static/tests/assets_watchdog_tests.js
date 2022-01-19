@@ -36,7 +36,7 @@ QUnit.module("Bus Assets WatchDog", (hooks) => {
         });
     });
 
-    QUnit.test("can listen on bus and displays notifications in DOM", async (assert) => {
+    QUnit.skipNXOWL("can listen on bus and displays notifications in DOM", async (assert) => {
         assert.expect(4);
 
         let pollNumber = 0;

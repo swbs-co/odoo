@@ -32,7 +32,7 @@ QUnit.module('message_tests.js', {
     },
 });
 
-QUnit.test('Sent', async function (assert) {
+QUnit.skipNXOWL('Sent', async function (assert) {
     assert.expect(8);
 
     this.data['res.partner'].records.push({ id: 12, name: "Someone", partner_share: true });
@@ -108,7 +108,7 @@ QUnit.test('Sent', async function (assert) {
     );
 });
 
-QUnit.test('Canceled', async function (assert) {
+QUnit.skipNXOWL('Canceled', async function (assert) {
     assert.expect(8);
 
     this.data['res.partner'].records.push({ id: 12, name: "Someone", partner_share: true });
@@ -184,7 +184,7 @@ QUnit.test('Canceled', async function (assert) {
     );
 });
 
-QUnit.test('Pending', async function (assert) {
+QUnit.skipNXOWL('Pending', async function (assert) {
     assert.expect(8);
 
     this.data['res.partner'].records.push({ id: 12, name: "Someone", partner_share: true });

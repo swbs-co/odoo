@@ -35,7 +35,7 @@ QUnit.module('partner_im_status_icon_tests.js', {
     },
 });
 
-QUnit.test('initially online', async function (assert) {
+QUnit.skipNXOWL('initially online', async function (assert) {
     assert.expect(3);
 
     await this.start();
@@ -62,7 +62,7 @@ QUnit.test('initially online', async function (assert) {
     );
 });
 
-QUnit.test('initially offline', async function (assert) {
+QUnit.skipNXOWL('initially offline', async function (assert) {
     assert.expect(1);
 
     await this.start();
@@ -79,7 +79,7 @@ QUnit.test('initially offline', async function (assert) {
     );
 });
 
-QUnit.test('initially away', async function (assert) {
+QUnit.skipNXOWL('initially away', async function (assert) {
     assert.expect(1);
 
     await this.start();
@@ -96,7 +96,7 @@ QUnit.test('initially away', async function (assert) {
     );
 });
 
-QUnit.test('change icon on change partner im_status', async function (assert) {
+QUnit.skipNXOWL('change icon on change partner im_status', async function (assert) {
     assert.expect(4);
 
     await this.start();

@@ -309,7 +309,7 @@ QUnit.test('clicking on the delete attachment button multiple times should do th
     );
 });
 
-QUnit.test('[technical] does not crash when the viewer is closed before image load', async function (assert) {
+QUnit.skipNXOWL('[technical] does not crash when the viewer is closed before image load', async function (assert) {
     /**
      * When images are displayed using `src` attribute for the 1st time, it fetches the resource.
      * In this case, images are actually displayed (fully fetched and rendered on screen) when

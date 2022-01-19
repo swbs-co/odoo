@@ -13,7 +13,7 @@ import {useService} from "@web/core/utils/hooks";
 const {Component, Store, mount, QWeb} = owl;
 const {useDispatch, useStore, useGetters, useRef} = owl;
 const {Router, RouteComponent} = owl.router;
-const {whenReady} = owl.utils;
+const {whenReady} = owl;
 
 const WEBSITE_TYPES = {
     1: {id: 1, label: _lt("a business website"), name: 'business'},
@@ -672,8 +672,8 @@ async function makeEnvironment() {
     });
     await session.is_bound;
     const qweb = new QWeb({translateFn: _t});
-    const loaderTemplate = await owl.utils.loadFile('/website/static/src/xml/theme_preview.xml');
-    const configuratorTemplates = await owl.utils.loadFile('/website/static/src/components/configurator/configurator.xml');
+    const loaderTemplate = await owl.loadFile('/website/static/src/xml/theme_preview.xml');
+    const configuratorTemplates = await owl.loadFile('/website/static/src/components/configurator/configurator.xml');
     qweb.addTemplates(loaderTemplate);
     qweb.addTemplates(configuratorTemplates);
 

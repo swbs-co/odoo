@@ -832,7 +832,7 @@ odoo.define("board.dashboard_tests", function (require) {
         }
     );
 
-    QUnit.test("save actions to dashboard", async function (assert) {
+    QUnit.skipNXOWL("save actions to dashboard", async function (assert) {
         assert.expect(6);
 
         testUtils.mock.patch(ListController, {
@@ -910,7 +910,7 @@ odoo.define("board.dashboard_tests", function (require) {
         testUtils.mock.unpatch(ListController);
     });
 
-    QUnit.test("save two searches to dashboard", async function (assert) {
+    QUnit.skipNXOWL("save two searches to dashboard", async function (assert) {
         // the second search saved should not be influenced by the first
         assert.expect(2);
 
@@ -982,7 +982,7 @@ odoo.define("board.dashboard_tests", function (require) {
         );
     });
 
-    QUnit.test("save a action domain to dashboard", async function (assert) {
+    QUnit.skipNXOWL("save a action domain to dashboard", async function (assert) {
         // View domains are to be added to the dashboard domain
         assert.expect(1);
 
@@ -1206,7 +1206,7 @@ odoo.define("board.dashboard_tests", function (require) {
         form.destroy();
     });
 
-    QUnit.test(
+    QUnit.skipNXOWL(
         "correctly save the time ranges of a reporting view in comparison mode",
         async function (assert) {
             assert.expect(1);
@@ -1277,7 +1277,7 @@ odoo.define("board.dashboard_tests", function (require) {
         }
     );
 
-    QUnit.test("Add a view to dashboard (key nav)", async function (assert) {
+    QUnit.skipNXOWL("Add a view to dashboard (key nav)", async function (assert) {
         assert.expect(2);
 
         serverData.views = {
@@ -1381,7 +1381,7 @@ odoo.define("board.dashboard_tests", function (require) {
         }
     );
 
-    QUnit.test("Add a view with dynamic domain", async function (assert) {
+    QUnit.skipNXOWL("Add a view with dynamic domain", async function (assert) {
         assert.expect(1);
 
         serverData.views = {

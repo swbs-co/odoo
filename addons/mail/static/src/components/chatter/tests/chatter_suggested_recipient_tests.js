@@ -36,7 +36,7 @@ QUnit.module('chatter_suggested_recipients_tests.js', {
     },
 });
 
-QUnit.test("suggest recipient on 'Send message' composer", async function (assert) {
+QUnit.skipNXOWL("suggest recipient on 'Send message' composer", async function (assert) {
     assert.expect(1);
 
     this.data['res.partner'].records.push({
@@ -66,7 +66,7 @@ QUnit.test("suggest recipient on 'Send message' composer", async function (asser
     );
 });
 
-QUnit.test("with 3 or less suggested recipients: no 'show more' button", async function (assert) {
+QUnit.skipNXOWL("with 3 or less suggested recipients: no 'show more' button", async function (assert) {
     assert.expect(1);
 
     this.data['res.partner'].records.push({
@@ -126,7 +126,7 @@ QUnit.test("display reason for suggested recipient on mouse over", async functio
     );
 });
 
-QUnit.test("suggested recipient without partner are unchecked by default", async function (assert) {
+QUnit.skipNXOWL("suggested recipient without partner are unchecked by default", async function (assert) {
     assert.expect(1);
 
     this.data['res.fake'].records.push({

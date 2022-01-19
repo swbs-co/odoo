@@ -36,7 +36,7 @@ QUnit.module('thread_icon_tests.js', {
     },
 });
 
-QUnit.test('chat: correspondent is typing', async function (assert) {
+QUnit.skipNXOWL('chat: correspondent is typing', async function (assert) {
     assert.expect(5);
 
     this.data['res.partner'].records.push({

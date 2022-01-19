@@ -2,7 +2,7 @@ odoo.define('point_of_sale.Chrome', function(require) {
     'use strict';
 
     const { useState, useRef, useContext, useExternalListener } = owl;
-    const { debounce } = owl.utils;
+    // const { debounce } = owl.utils; // NXOWL
     const { loadCSS } = require('web.ajax');
     const { useListener } = require('web.custom_hooks');
     const { BarcodeEvents } = require('barcodes.BarcodeEvents');

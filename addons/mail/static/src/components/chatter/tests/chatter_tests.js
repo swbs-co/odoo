@@ -37,7 +37,7 @@ QUnit.module('chatter_tests.js', {
     },
 });
 
-QUnit.test('base rendering when chatter has no attachment', async function (assert) {
+QUnit.skipNXOWL('base rendering when chatter has no attachment', async function (assert) {
     assert.expect(6);
 
     this.data['res.partner'].records.push({ id: 100 });
@@ -340,7 +340,7 @@ QUnit.test('composer show/hide on log note/send message [REQUIRE FOCUS]', async 
     );
 });
 
-QUnit.test('should display subject when subject is not the same as the thread name', async function (assert) {
+QUnit.skipNXOWL('should display subject when subject is not the same as the thread name', async function (assert) {
     assert.expect(2);
 
     this.data['res.partner'].records.push({ id: 100 });

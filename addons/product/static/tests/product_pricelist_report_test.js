@@ -36,7 +36,7 @@ QUnit.module('Product Pricelist', {
             serverData = { models: this.data };
         },
 }, function () {
-    QUnit.test('Pricelist Client Action', async function (assert) {
+    QUnit.skipNXOWL('Pricelist Client Action', async function (assert) {
         assert.expect(21);
 
         const self = this;

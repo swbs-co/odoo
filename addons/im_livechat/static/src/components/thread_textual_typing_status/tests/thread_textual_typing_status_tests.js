@@ -35,7 +35,7 @@ QUnit.module('thread_textual_typing_status_tests.js', {
     },
 });
 
-QUnit.test('receive visitor typing status "is typing"', async function (assert) {
+QUnit.skipNXOWL('receive visitor typing status "is typing"', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({

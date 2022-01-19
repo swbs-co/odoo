@@ -24,7 +24,7 @@ QUnit.module('thread_preview_tests.js', {
     },
 });
 
-QUnit.test('mark as read', async function (assert) {
+QUnit.skipNXOWL('mark as read', async function (assert) {
     assert.expect(8);
     this.data['mail.channel'].records.push({
         id: 11,
