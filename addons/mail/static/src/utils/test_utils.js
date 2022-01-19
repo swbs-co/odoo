@@ -21,6 +21,7 @@ import AbstractStorageService from 'web.AbstractStorageService';
 import RamStorage from 'web.RamStorage';
 import {
     createView,
+    getFixture,
     makeTestPromise,
     mock,
 } from 'web.test_utils';
@@ -570,6 +571,8 @@ function getOpenDiscuss({ afterNextRender, discussWidget }) {
  *   the res_id to use in createView.
  * @param {Object} [param0.services]
  * @param {Object} [param0.session]
+ * @param {Element} [param0.target] if provided, the component will be mounted inside
+ *   that element (only used if `params0.hasWebClient` is true)
  * @param {Object} [param0.View] makes only sense when `param0.hasView` is set:
  *   the View class to use in createView.
  * @param {Object} [param0.viewOptions] makes only sense when `param0.hasView`
@@ -614,6 +617,7 @@ async function start(param0 = {}) {
         hasView = false,
         loadingBaseDelayDuration = 0,
         messagingBeforeCreationDeferred = Promise.resolve(),
+        target = getFixture(),
         waitUntilEvent,
         waitUntilMessagingCondition = 'initialized',
     } = param0;
@@ -627,6 +631,7 @@ async function start(param0 = {}) {
     delete param0.hasDiscuss;
     delete param0.hasTimeControl;
     delete param0.hasView;
+    delete param0.target;
     if (hasChatWindow) {
         callbacks = _useChatWindow(callbacks, { afterNextRender });
     }
@@ -778,7 +783,7 @@ async function start(param0 = {}) {
         legacyParams.withLegacyMockServer = true;
         legacyParams.env = env;
 
-        widget = await createWebClient({ serverData, mockRPC, legacyParams });
+        widget = await createWebClient({ target, serverData, mockRPC, legacyParams });
 
         legacyPatch(widget, {
             destroy() {
