@@ -4,7 +4,7 @@
         <table class="o_dow_widget">
             <thead>
                 <tr>
-                    <th t-foreach="widget.labels" t-as="label">
+                    <th t-foreach="widget.labels" t-as="label" t-key="label_index">
                         <t t-esc="label"/>
                     </th>
                 </tr>
