@@ -5,9 +5,16 @@ import { escape } from '@web/core/utils/strings';
 
 import Dialog from 'web.OwlDialog';
 
-const { Component } = owl;
+const { Component, useRef } = owl;
 
 export class AttachmentDeleteConfirmDialog extends Component {
+
+    /**
+     * @override
+     */
+    setup() {
+        this.dialogAPI = {}
+    }
 
     //--------------------------------------------------------------------------
     // Public
@@ -45,7 +52,7 @@ export class AttachmentDeleteConfirmDialog extends Component {
      * @private
      */
     _onClickCancel() {
-        this.root.comp._close();
+        this.dialogAPI.close();
     }
 
     /**
@@ -53,7 +60,7 @@ export class AttachmentDeleteConfirmDialog extends Component {
      */
     async _onClickOk() {
         await this.attachment.remove();
-        this.root.comp._close();
+        this.dialogAPI.close();
         if (this.props.onAttachmentRemoved) {
             this.props.onAttachmentRemoved({
                 attachmentLocalId: this.props.attachmentLocalId,

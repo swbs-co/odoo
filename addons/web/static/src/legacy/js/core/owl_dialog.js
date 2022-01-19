@@ -40,6 +40,9 @@ odoo.define('web.OwlDialog', function (require) {
             this.modalRef = useRef('modal');
             this.dialogRef = useRef('dialog');
             this.footerRef = useRef('modal-footer');
+            if (this.props.dialogAPI) {
+                this.props.dialogAPI.close = this._close.bind(this);
+            }
 
             onMounted(() => {
                 this.constructor.display(this);
@@ -267,6 +270,7 @@ odoo.define('web.OwlDialog', function (require) {
         subtitle: { type: String, optional: 1 },
         technical: Boolean,
         title: String,
+        dialogAPI: { type: Object, optional: 1 },
     };
     Dialog.template = 'web.OwlDialog';
 
