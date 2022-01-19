@@ -30,6 +30,8 @@ odoo.define("web/static/src/js/views/graph/graph_renderer", function (require) {
             this.canvasRef = useRef("canvas");
             this.containerRef = useRef("container");
 
+            this.tooltipItemId = 1;
+
             useEffect(() => {
                 this._renderChart();
             });
@@ -607,8 +609,8 @@ odoo.define("web/static/src/js/views/graph/graph_renderer", function (require) {
         _getTooltipItemContent(item, data) {
             const { comparisonFieldIndex } = this.props;
             const dataset = data.datasets[item.datasetIndex];
-            const id = item.index;
-            let label = data.labels[item.index];
+            const index = item.index;
+            let label = data.labels[index];
             let value;
             let boxColor;
             let percentage;
@@ -616,15 +618,15 @@ odoo.define("web/static/src/js/views/graph/graph_renderer", function (require) {
                 if (label === this.noDataLabel) {
                     value = this._formatValue(0);
                 } else {
-                    value = this._formatValue(dataset.data[item.index]);
+                    value = this._formatValue(dataset.data[index]);
                     const totalData = dataset.data.reduce((a, b) => a + b, 0);
-                    percentage = totalData && ((dataset.data[item.index] * 100) / totalData).toFixed(2);
+                    percentage = totalData && ((dataset.data[index] * 100) / totalData).toFixed(2);
                 }
                 label = this._relabelling(label, comparisonFieldIndex, dataset.originIndex);
                 if (this.props.origins.length > 1) {
                     label = `${dataset.label}/${label}`;
                 }
-                boxColor = dataset.backgroundColor[item.index];
+                boxColor = dataset.backgroundColor[index];
             } else {
                 label = this._relabelling(label, comparisonFieldIndex, dataset.originIndex);
                 if (
@@ -638,7 +640,7 @@ odoo.define("web/static/src/js/views/graph/graph_renderer", function (require) {
                     dataset.backgroundColor :
                     dataset.borderColor;
             }
-            return { id, label, value, boxColor, percentage };
+            return { id: this.tooltipItemId++, label, value, boxColor, percentage };
         }
 
         /**

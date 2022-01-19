@@ -48,6 +48,8 @@ export class GraphRenderer extends Component {
         this.tooltip = null;
         this.legendTooltip = null;
 
+        this.tooltipItemId = 1;
+
         useAssets({ jsLibs: ["/web/static/lib/Chart/Chart.js"] });
 
         useEffect(() => this.renderChart());
@@ -450,10 +452,10 @@ export class GraphRenderer extends Component {
         const sortedDataPoints = sortBy(tooltipModel.dataPoints, "yLabel", "desc");
         const items = [];
         for (const item of sortedDataPoints) {
-            const id = item.index;
+            const index = item.index;
             const dataset = data.datasets[item.datasetIndex];
-            let label = dataset.trueLabels[id];
-            let value = this.formatValue(dataset.data[id], allIntegers);
+            let label = dataset.trueLabels[index];
+            let value = this.formatValue(dataset.data[index], allIntegers);
             let boxColor;
             let percentage;
             if (mode === "pie") {
@@ -463,7 +465,7 @@ export class GraphRenderer extends Component {
                 if (domains.length > 1) {
                     label = `${dataset.label} / ${label}`;
                 }
-                boxColor = dataset.backgroundColor[id];
+                boxColor = dataset.backgroundColor[index];
                 const totalData = dataset.data.reduce((a, b) => a + b, 0);
                 percentage = totalData && ((dataset.data[item.index] * 100) / totalData).toFixed(2);
             } else {
@@ -472,7 +474,7 @@ export class GraphRenderer extends Component {
                 }
                 boxColor = mode === "bar" ? dataset.backgroundColor : dataset.borderColor;
             }
-            items.push({ id, label, value, boxColor, percentage });
+            items.push({ id: this.tooltipItemId++, label, value, boxColor, percentage });
         }
         return items;
     }
