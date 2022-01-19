@@ -271,6 +271,14 @@ odoo.define('web.OwlDialog', function (require) {
         technical: Boolean,
         title: String,
         dialogAPI: { type: Object, optional: 1 },
+        slots: {
+            type: Object,
+            optional: 1,
+            shape: {
+                default: { optional: true },
+                buttons: { optional: true },
+            },
+        },
     };
     Dialog.template = 'web.OwlDialog';
 

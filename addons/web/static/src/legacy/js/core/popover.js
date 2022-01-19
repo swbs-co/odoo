@@ -342,6 +342,14 @@ odoo.define('web.Popover', function (require) {
         },
         title: { type: String, optional: true },
         titleAttribute: { type: String, optional: true },
+        slots: {
+            type: Object,
+            optional: 1,
+            shape: {
+                default: { optional: true },
+                opened: { optional: true },
+            },
+        },
     };
 
     owl.Component._components.Popover = Popover;

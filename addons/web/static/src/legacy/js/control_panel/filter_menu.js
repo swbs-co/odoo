@@ -52,7 +52,13 @@ odoo.define('web.FilterMenu', function (require) {
     }
 
     FilterMenu.components = { CustomFilterItem };
-    FilterMenu.props = { fields: Object };
+    FilterMenu.defaultProps = {
+        class: "",
+    };
+    FilterMenu.props = {
+        fields: Object,
+        class: { String, optional: true },
+    };
     FilterMenu.template = "web.legacy.FilterMenu";
 
     return FilterMenu;

@@ -28,4 +28,11 @@ Popover.props = {
         validate: (p) => ["top", "bottom", "left", "right"].includes(p),
     },
     target: HTMLElement,
+    slots: {
+        type: Object,
+        optional: true,
+        shape: {
+            default: { optional: true },
+        },
+    },
 };

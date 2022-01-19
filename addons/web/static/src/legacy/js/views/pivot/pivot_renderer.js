@@ -80,6 +80,7 @@
         fields: Object,
         hasSearchArchGroupBys: Boolean,
         searchModel: true,
+        onGroupbyMenuSelection: Function,
     };
 
     /**
