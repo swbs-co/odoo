@@ -1646,6 +1646,548 @@
         return stopped;
     };
 
+    // Maps fibers to thrown errors
+    const fibersInError = new WeakMap();
+    const nodeErrorHandlers = new WeakMap();
+    function _handleError(node, error, isFirstRound = false) {
+        if (!node) {
+            return false;
+        }
+        const fiber = node.fiber;
+        if (fiber) {
+            fibersInError.set(fiber, error);
+        }
+        const errorHandlers = nodeErrorHandlers.get(node);
+        if (errorHandlers) {
+            let stopped = false;
+            // execute in the opposite order
+            for (let i = errorHandlers.length - 1; i >= 0; i--) {
+                try {
+                    errorHandlers[i](error);
+                    stopped = true;
+                    break;
+                }
+                catch (e) {
+                    error = e;
+                }
+            }
+            if (stopped) {
+                if (isFirstRound && fiber && fiber.node.fiber) {
+                    fiber.root.counter--;
+                }
+                return true;
+            }
+        }
+        return _handleError(node.parent, error);
+    }
+    function handleError(params) {
+        const error = params.error;
+        const node = "node" in params ? params.node : params.fiber.node;
+        const fiber = "fiber" in params ? params.fiber : node.fiber;
+        // resets the fibers on components if possible. This is important so that
+        // new renderings can be properly included in the initial one, if any.
+        let current = fiber;
+        do {
+            current.node.fiber = current;
+            current = current.parent;
+        } while (current);
+        fibersInError.set(fiber.root, error);
+        const handled = _handleError(node, error, true);
+        if (!handled) {
+            console.warn(`[Owl] Unhandled error. Destroying the root component`);
+            try {
+                node.app.destroy();
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+    }
+
+    function makeChildFiber(node, parent) {
+        let current = node.fiber;
+        if (current) {
+            let root = parent.root;
+            cancelFibers(root, current.children);
+            current.root = null;
+        }
+        return new Fiber(node, parent);
+    }
+    function makeRootFiber(node) {
+        let current = node.fiber;
+        if (current) {
+            let root = current.root;
+            root.counter -= cancelFibers(root, current.children);
+            current.children = [];
+            root.counter++;
+            current.bdom = null;
+            if (fibersInError.has(current)) {
+                fibersInError.delete(current);
+                fibersInError.delete(root);
+                current.appliedToDom = false;
+            }
+            return current;
+        }
+        const fiber = new RootFiber(node, null);
+        if (node.willPatch.length) {
+            fiber.willPatch.push(fiber);
+        }
+        if (node.patched.length) {
+            fiber.patched.push(fiber);
+        }
+        return fiber;
+    }
+    /**
+     * @returns number of not-yet rendered fibers cancelled
+     */
+    function cancelFibers(root, fibers) {
+        let result = 0;
+        for (let fiber of fibers) {
+            fiber.node.fiber = null;
+            fiber.root = root;
+            if (!fiber.bdom) {
+                result++;
+            }
+            result += cancelFibers(root, fiber.children);
+        }
+        return result;
+    }
+    class Fiber {
+        constructor(node, parent) {
+            this.bdom = null;
+            this.children = [];
+            this.appliedToDom = false;
+            this.node = node;
+            this.parent = parent;
+            if (parent) {
+                const root = parent.root;
+                root.counter++;
+                this.root = root;
+                parent.children.push(this);
+            }
+            else {
+                this.root = this;
+            }
+        }
+    }
+    class RootFiber extends Fiber {
+        constructor() {
+            super(...arguments);
+            this.counter = 1;
+            // only add stuff in this if they have registered some hooks
+            this.willPatch = [];
+            this.patched = [];
+            this.mounted = [];
+            // A fiber is typically locked when it is completing and the patch has not, or is being applied.
+            // i.e.: render triggered in onWillUnmount or in willPatch will be delayed
+            this.locked = false;
+        }
+        complete() {
+            const node = this.node;
+            this.locked = true;
+            let current = undefined;
+            try {
+                // Step 1: calling all willPatch lifecycle hooks
+                for (current of this.willPatch) {
+                    // because of the asynchronous nature of the rendering, some parts of the
+                    // UI may have been rendered, then deleted in a followup rendering, and we
+                    // do not want to call onWillPatch in that case.
+                    let node = current.node;
+                    if (node.fiber === current) {
+                        const component = node.component;
+                        for (let cb of node.willPatch) {
+                            cb.call(component);
+                        }
+                    }
+                }
+                current = undefined;
+                // Step 2: patching the dom
+                node.patch();
+                this.locked = false;
+                // Step 4: calling all mounted lifecycle hooks
+                let mountedFibers = this.mounted;
+                while ((current = mountedFibers.pop())) {
+                    current = current;
+                    if (current.appliedToDom) {
+                        for (let cb of current.node.mounted) {
+                            cb();
+                        }
+                    }
+                }
+                // Step 5: calling all patched hooks
+                let patchedFibers = this.patched;
+                while ((current = patchedFibers.pop())) {
+                    current = current;
+                    if (current.appliedToDom) {
+                        for (let cb of current.node.patched) {
+                            cb();
+                        }
+                    }
+                }
+            }
+            catch (e) {
+                this.locked = false;
+                handleError({ fiber: current || this, error: e });
+            }
+        }
+    }
+    class MountFiber extends RootFiber {
+        constructor(node, target, options = {}) {
+            super(node, null);
+            this.target = target;
+            this.position = options.position || "last-child";
+        }
+        complete() {
+            let current = this;
+            try {
+                const node = this.node;
+                if (node.bdom) {
+                    // this is a complicated situation: if we mount a fiber with an existing
+                    // bdom, this means that this same fiber was already completed, mounted,
+                    // but a crash occurred in some mounted hook. Then, it was handled and
+                    // the new rendering is being applied.
+                    node.updateDom();
+                }
+                else {
+                    node.bdom = this.bdom;
+                    if (this.position === "last-child" || this.target.childNodes.length === 0) {
+                        mount$1(node.bdom, this.target);
+                    }
+                    else {
+                        const firstChild = this.target.childNodes[0];
+                        mount$1(node.bdom, this.target, firstChild);
+                    }
+                }
+                // unregistering the fiber before mounted since it can do another render
+                // and that the current rendering is obviously completed
+                node.fiber = null;
+                node.status = 1 /* MOUNTED */;
+                this.appliedToDom = true;
+                let mountedFibers = this.mounted;
+                while ((current = mountedFibers.pop())) {
+                    if (current.appliedToDom) {
+                        for (let cb of current.node.mounted) {
+                            cb();
+                        }
+                    }
+                }
+            }
+            catch (e) {
+                handleError({ fiber: current, error: e });
+            }
+        }
+    }
+
+    let currentNode = null;
+    function getCurrent() {
+        return currentNode;
+    }
+    function useComponent() {
+        return currentNode.component;
+    }
+    function component(name, props, key, ctx, parent) {
+        let node = ctx.children[key];
+        let isDynamic = typeof name !== "string";
+        if (node) {
+            if (node.status < 1 /* MOUNTED */) {
+                node.destroy();
+                node = undefined;
+            }
+            else if (node.status === 2 /* DESTROYED */) {
+                node = undefined;
+            }
+        }
+        if (isDynamic && node && node.component.constructor !== name) {
+            node = undefined;
+        }
+        const parentFiber = ctx.fiber;
+        if (node) {
+            node.updateAndRender(props, parentFiber);
+        }
+        else {
+            // new component
+            let C;
+            if (isDynamic) {
+                C = name;
+            }
+            else {
+                C = parent.constructor.components[name];
+                if (!C) {
+                    throw new Error(`Cannot find the definition of component "${name}"`);
+                }
+            }
+            node = new ComponentNode(C, props, ctx.app, ctx);
+            ctx.children[key] = node;
+            const fiber = makeChildFiber(node, parentFiber);
+            node.initiateRender(fiber);
+        }
+        return node;
+    }
+    class ComponentNode {
+        constructor(C, props, app, parent) {
+            this.fiber = null;
+            this.bdom = null;
+            this.status = 0 /* NEW */;
+            this.children = Object.create(null);
+            this.refs = {};
+            this.willStart = [];
+            this.willUpdateProps = [];
+            this.willUnmount = [];
+            this.mounted = [];
+            this.willPatch = [];
+            this.patched = [];
+            this.willDestroy = [];
+            currentNode = this;
+            this.app = app;
+            this.parent = parent || null;
+            this.level = parent ? parent.level + 1 : 0;
+            applyDefaultProps(props, C);
+            const env = (parent && parent.childEnv) || app.env;
+            this.childEnv = env;
+            this.component = new C(props, env, this);
+            this.renderFn = app.getTemplate(C.template).bind(this.component, this.component, this);
+            this.component.setup();
+        }
+        mountComponent(target, options) {
+            const fiber = new MountFiber(this, target, options);
+            this.app.scheduler.addFiber(fiber);
+            this.initiateRender(fiber);
+        }
+        async initiateRender(fiber) {
+            this.fiber = fiber;
+            if (this.mounted.length) {
+                fiber.root.mounted.push(fiber);
+            }
+            const component = this.component;
+            try {
+                await Promise.all(this.willStart.map((f) => f.call(component)));
+            }
+            catch (e) {
+                handleError({ node: this, error: e });
+                return;
+            }
+            if (this.status === 0 /* NEW */ && this.fiber === fiber) {
+                this._render(fiber);
+            }
+        }
+        async render() {
+            let current = this.fiber;
+            if (current && current.root.locked) {
+                await Promise.resolve();
+                // situation may have changed after the microtask tick
+                current = this.fiber;
+            }
+            if (current && !current.bdom && !fibersInError.has(current)) {
+                return;
+            }
+            if (!this.bdom && !current) {
+                return;
+            }
+            const fiber = makeRootFiber(this);
+            this.fiber = fiber;
+            this.app.scheduler.addFiber(fiber);
+            await Promise.resolve();
+            if (this.status === 2 /* DESTROYED */) {
+                return;
+            }
+            // We only want to actually render the component if the following two
+            // conditions are true:
+            // * this.fiber: it could be null, in which case the render has been cancelled
+            // * (current || !fiber.parent): if current is not null, this means that the
+            //   render function was called when a render was already occurring. In this
+            //   case, the pending rendering was cancelled, and the fiber needs to be
+            //   rendered to complete the work.  If current is null, we check that the
+            //   fiber has no parent.  If that is the case, the fiber was downgraded from
+            //   a root fiber to a child fiber in the previous microtick, because it was
+            //   embedded in a rendering coming from above, so the fiber will be rendered
+            //   in the next microtick anyway, so we should not render it again.
+            if (this.fiber === fiber && (current || !fiber.parent)) {
+                this._render(fiber);
+            }
+        }
+        _render(fiber) {
+            try {
+                fiber.bdom = this.renderFn();
+                fiber.root.counter--;
+            }
+            catch (e) {
+                handleError({ node: this, error: e });
+            }
+        }
+        destroy() {
+            let shouldRemove = this.status === 1 /* MOUNTED */;
+            this._destroy();
+            if (shouldRemove) {
+                this.bdom.remove();
+            }
+        }
+        _destroy() {
+            const component = this.component;
+            if (this.status === 1 /* MOUNTED */) {
+                for (let cb of this.willUnmount) {
+                    cb.call(component);
+                }
+            }
+            for (let child of Object.values(this.children)) {
+                child._destroy();
+            }
+            for (let cb of this.willDestroy) {
+                cb.call(component);
+            }
+            this.status = 2 /* DESTROYED */;
+        }
+        async updateAndRender(props, parentFiber) {
+            // update
+            const fiber = makeChildFiber(this, parentFiber);
+            this.fiber = fiber;
+            const component = this.component;
+            applyDefaultProps(props, component.constructor);
+            const prom = Promise.all(this.willUpdateProps.map((f) => f.call(component, props)));
+            await prom;
+            if (fiber !== this.fiber) {
+                return;
+            }
+            component.props = props;
+            this._render(fiber);
+            const parentRoot = parentFiber.root;
+            if (this.willPatch.length) {
+                parentRoot.willPatch.push(fiber);
+            }
+            if (this.patched.length) {
+                parentRoot.patched.push(fiber);
+            }
+        }
+        /**
+         * Finds a child that has dom that is not yet updated, and update it. This
+         * method is meant to be used only in the context of repatching the dom after
+         * a mounted hook failed and was handled.
+         */
+        updateDom() {
+            if (!this.fiber) {
+                return;
+            }
+            if (this.bdom === this.fiber.bdom) {
+                // If the error was handled by some child component, we need to find it to
+                // apply its change
+                for (let k in this.children) {
+                    const child = this.children[k];
+                    child.updateDom();
+                }
+            }
+            else {
+                // if we get here, this is the component that handled the error and rerendered
+                // itself, so we can simply patch the dom
+                this.bdom.patch(this.fiber.bdom, false);
+                this.fiber.appliedToDom = true;
+                this.fiber = null;
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Block DOM methods
+        // ---------------------------------------------------------------------------
+        firstNode() {
+            const bdom = this.bdom;
+            return bdom ? bdom.firstNode() : undefined;
+        }
+        mount(parent, anchor) {
+            const bdom = this.fiber.bdom;
+            this.bdom = bdom;
+            bdom.mount(parent, anchor);
+            this.status = 1 /* MOUNTED */;
+            this.fiber.appliedToDom = true;
+            this.fiber = null;
+        }
+        moveBefore(other, afterNode) {
+            this.bdom.moveBefore(other ? other.bdom : null, afterNode);
+        }
+        patch() {
+            const hasChildren = Object.keys(this.children).length > 0;
+            this.bdom.patch(this.fiber.bdom, hasChildren);
+            if (hasChildren) {
+                this.cleanOutdatedChildren();
+            }
+            this.fiber.appliedToDom = true;
+            this.fiber = null;
+        }
+        beforeRemove() {
+            this._destroy();
+        }
+        remove() {
+            this.bdom.remove();
+        }
+        cleanOutdatedChildren() {
+            const children = this.children;
+            for (const key in children) {
+                const node = children[key];
+                const status = node.status;
+                if (status !== 1 /* MOUNTED */) {
+                    delete children[key];
+                    if (status !== 2 /* DESTROYED */) {
+                        node.destroy();
+                    }
+                }
+            }
+        }
+    }
+
+    // -----------------------------------------------------------------------------
+    //  hooks
+    // -----------------------------------------------------------------------------
+    function onWillStart(fn) {
+        const node = getCurrent();
+        node.willStart.push(fn.bind(node.component));
+    }
+    function onWillUpdateProps(fn) {
+        const node = getCurrent();
+        node.willUpdateProps.push(fn.bind(node.component));
+    }
+    function onMounted(fn) {
+        const node = getCurrent();
+        node.mounted.push(fn.bind(node.component));
+    }
+    function onWillPatch(fn) {
+        const node = getCurrent();
+        node.willPatch.unshift(fn.bind(node.component));
+    }
+    function onPatched(fn) {
+        const node = getCurrent();
+        node.patched.push(fn.bind(node.component));
+    }
+    function onWillUnmount(fn) {
+        const node = getCurrent();
+        node.willUnmount.unshift(fn.bind(node.component));
+    }
+    function onWillDestroy(fn) {
+        const node = getCurrent();
+        node.willDestroy.push(fn.bind(node.component));
+    }
+    function onWillRender(fn) {
+        const node = getCurrent();
+        const renderFn = node.renderFn;
+        node.renderFn = () => {
+            fn.call(node.component);
+            return renderFn();
+        };
+    }
+    function onRendered(fn) {
+        const node = getCurrent();
+        const renderFn = node.renderFn;
+        node.renderFn = () => {
+            const result = renderFn();
+            fn.call(node.component);
+            return result;
+        };
+    }
+    function onError(callback) {
+        const node = getCurrent();
+        let handlers = nodeErrorHandlers.get(node);
+        if (!handlers) {
+            handlers = [];
+            nodeErrorHandlers.set(node, handlers);
+        }
+        handlers.push(callback.bind(node.component));
+    }
+
     /**
      * Owl QWeb Expression Parser
      *
@@ -1943,6 +2485,7 @@
     // using a non-html document so that <inner/outer>HTML serializes as XML instead
     // of HTML (as we will parse it as xml later)
     const xmlDoc = document.implementation.createDocument(null, null, null);
+    const MODS = new Set(["stop", "capture", "prevent", "self", "synthetic"]);
     // -----------------------------------------------------------------------------
     // BlockDescription
     // -----------------------------------------------------------------------------
@@ -2343,7 +2886,12 @@
             const modifiers = rawEvent
                 .split(".")
                 .slice(1)
-                .map((m) => `"${m}"`);
+                .map((m) => {
+                if (!MODS.has(m)) {
+                    throw new Error(`Unknown event modifier: '${m}'`);
+                }
+                return `"${m}"`;
+            });
             let modifiersCode = "";
             if (modifiers.length) {
                 modifiersCode = `${modifiers.join(",")}, `;
@@ -2830,6 +3378,9 @@
                         this.helpers.add("bind");
                         propName = name;
                         propValue = `bind(ctx, ${propValue})`;
+                    }
+                    else {
+                        throw new Error("Invalid prop suffix");
                     }
                 }
                 propName = /^[a-z_]+$/i.test(propName) ? propName : `'${propName}'`;
@@ -3680,490 +4231,6 @@
         return new Function("bdom, helpers", code);
     }
 
-    // Maps fibers to thrown errors
-    const fibersInError = new WeakMap();
-    const nodeErrorHandlers = new WeakMap();
-    function _handleError(node, error, isFirstRound = false) {
-        if (!node) {
-            return false;
-        }
-        const fiber = node.fiber;
-        if (fiber) {
-            fibersInError.set(fiber, error);
-        }
-        const errorHandlers = nodeErrorHandlers.get(node);
-        if (errorHandlers) {
-            let stopped = false;
-            // execute in the opposite order
-            for (let i = errorHandlers.length - 1; i >= 0; i--) {
-                try {
-                    errorHandlers[i](error);
-                    stopped = true;
-                    break;
-                }
-                catch (e) {
-                    error = e;
-                }
-            }
-            if (stopped) {
-                if (isFirstRound && fiber && fiber.node.fiber) {
-                    fiber.root.counter--;
-                }
-                return true;
-            }
-        }
-        return _handleError(node.parent, error);
-    }
-    function handleError(params) {
-        const error = params.error;
-        const node = "node" in params ? params.node : params.fiber.node;
-        const fiber = "fiber" in params ? params.fiber : node.fiber;
-        // resets the fibers on components if possible. This is important so that
-        // new renderings can be properly included in the initial one, if any.
-        let current = fiber;
-        do {
-            current.node.fiber = current;
-            current = current.parent;
-        } while (current);
-        fibersInError.set(fiber.root, error);
-        const handled = _handleError(node, error, true);
-        if (!handled) {
-            console.warn(`[Owl] Unhandled error. Destroying the root component`);
-            try {
-                node.app.destroy();
-            }
-            catch (e) {
-                console.error(e);
-            }
-        }
-    }
-
-    function makeChildFiber(node, parent) {
-        let current = node.fiber;
-        if (current) {
-            let root = parent.root;
-            cancelFibers(root, current.children);
-            current.root = null;
-        }
-        return new Fiber(node, parent);
-    }
-    function makeRootFiber(node) {
-        let current = node.fiber;
-        if (current) {
-            let root = current.root;
-            root.counter -= cancelFibers(root, current.children);
-            current.children = [];
-            root.counter++;
-            current.bdom = null;
-            if (fibersInError.has(current)) {
-                fibersInError.delete(current);
-                fibersInError.delete(root);
-                current.appliedToDom = false;
-            }
-            return current;
-        }
-        const fiber = new RootFiber(node, null);
-        if (node.willPatch.length) {
-            fiber.willPatch.push(fiber);
-        }
-        if (node.patched.length) {
-            fiber.patched.push(fiber);
-        }
-        return fiber;
-    }
-    /**
-     * @returns number of not-yet rendered fibers cancelled
-     */
-    function cancelFibers(root, fibers) {
-        let result = 0;
-        for (let fiber of fibers) {
-            fiber.node.fiber = null;
-            fiber.root = root;
-            if (!fiber.bdom) {
-                result++;
-            }
-            result += cancelFibers(root, fiber.children);
-        }
-        return result;
-    }
-    class Fiber {
-        constructor(node, parent) {
-            this.bdom = null;
-            this.children = [];
-            this.appliedToDom = false;
-            this.node = node;
-            this.parent = parent;
-            if (parent) {
-                const root = parent.root;
-                root.counter++;
-                this.root = root;
-                parent.children.push(this);
-            }
-            else {
-                this.root = this;
-            }
-        }
-    }
-    class RootFiber extends Fiber {
-        constructor() {
-            super(...arguments);
-            this.counter = 1;
-            // only add stuff in this if they have registered some hooks
-            this.willPatch = [];
-            this.patched = [];
-            this.mounted = [];
-            // A fiber is typically locked when it is completing and the patch has not, or is being applied.
-            // i.e.: render triggered in onWillUnmount or in willPatch will be delayed
-            this.locked = false;
-        }
-        complete() {
-            const node = this.node;
-            this.locked = true;
-            let current = undefined;
-            try {
-                // Step 1: calling all willPatch lifecycle hooks
-                for (current of this.willPatch) {
-                    // because of the asynchronous nature of the rendering, some parts of the
-                    // UI may have been rendered, then deleted in a followup rendering, and we
-                    // do not want to call onWillPatch in that case.
-                    let node = current.node;
-                    if (node.fiber === current) {
-                        const component = node.component;
-                        for (let cb of node.willPatch) {
-                            cb.call(component);
-                        }
-                    }
-                }
-                current = undefined;
-                // Step 2: patching the dom
-                node.patch();
-                this.locked = false;
-                // Step 4: calling all mounted lifecycle hooks
-                let mountedFibers = this.mounted;
-                while ((current = mountedFibers.pop())) {
-                    current = current;
-                    if (current.appliedToDom) {
-                        for (let cb of current.node.mounted) {
-                            cb();
-                        }
-                    }
-                }
-                // Step 5: calling all patched hooks
-                let patchedFibers = this.patched;
-                while ((current = patchedFibers.pop())) {
-                    current = current;
-                    if (current.appliedToDom) {
-                        for (let cb of current.node.patched) {
-                            cb();
-                        }
-                    }
-                }
-            }
-            catch (e) {
-                this.locked = false;
-                handleError({ fiber: current || this, error: e });
-            }
-        }
-    }
-    class MountFiber extends RootFiber {
-        constructor(node, target, options = {}) {
-            super(node, null);
-            this.target = target;
-            this.position = options.position || "last-child";
-        }
-        complete() {
-            let current = this;
-            try {
-                const node = this.node;
-                if (node.bdom) {
-                    // this is a complicated situation: if we mount a fiber with an existing
-                    // bdom, this means that this same fiber was already completed, mounted,
-                    // but a crash occurred in some mounted hook. Then, it was handled and
-                    // the new rendering is being applied.
-                    node.updateDom();
-                }
-                else {
-                    node.bdom = this.bdom;
-                    if (this.position === "last-child" || this.target.childNodes.length === 0) {
-                        mount$1(node.bdom, this.target);
-                    }
-                    else {
-                        const firstChild = this.target.childNodes[0];
-                        mount$1(node.bdom, this.target, firstChild);
-                    }
-                }
-                // unregistering the fiber before mounted since it can do another render
-                // and that the current rendering is obviously completed
-                node.fiber = null;
-                node.status = 1 /* MOUNTED */;
-                this.appliedToDom = true;
-                let mountedFibers = this.mounted;
-                while ((current = mountedFibers.pop())) {
-                    if (current.appliedToDom) {
-                        for (let cb of current.node.mounted) {
-                            cb();
-                        }
-                    }
-                }
-            }
-            catch (e) {
-                handleError({ fiber: current, error: e });
-            }
-        }
-    }
-
-    let currentNode = null;
-    function getCurrent() {
-        return currentNode;
-    }
-    function useComponent() {
-        return currentNode.component;
-    }
-    function component(name, props, key, ctx, parent) {
-        let node = ctx.children[key];
-        let isDynamic = typeof name !== "string";
-        if (node) {
-            if (node.status < 1 /* MOUNTED */) {
-                node.destroy();
-                node = undefined;
-            }
-            else if (node.status === 2 /* DESTROYED */) {
-                node = undefined;
-            }
-        }
-        if (isDynamic && node && node.component.constructor !== name) {
-            node = undefined;
-        }
-        const parentFiber = ctx.fiber;
-        if (node) {
-            node.updateAndRender(props, parentFiber);
-        }
-        else {
-            // new component
-            let C;
-            if (isDynamic) {
-                C = name;
-            }
-            else {
-                C = parent.constructor.components[name];
-                if (!C) {
-                    throw new Error(`Cannot find the definition of component "${name}"`);
-                }
-            }
-            node = new ComponentNode(C, props, ctx.app, ctx);
-            ctx.children[key] = node;
-            const fiber = makeChildFiber(node, parentFiber);
-            node.initiateRender(fiber);
-        }
-        return node;
-    }
-    class ComponentNode {
-        constructor(C, props, app, parent) {
-            this.fiber = null;
-            this.bdom = null;
-            this.status = 0 /* NEW */;
-            this.children = Object.create(null);
-            this.refs = {};
-            this.willStart = [];
-            this.willUpdateProps = [];
-            this.willUnmount = [];
-            this.mounted = [];
-            this.willPatch = [];
-            this.patched = [];
-            this.willDestroy = [];
-            currentNode = this;
-            this.app = app;
-            this.parent = parent || null;
-            this.level = parent ? parent.level + 1 : 0;
-            applyDefaultProps(props, C);
-            const env = (parent && parent.childEnv) || app.env;
-            this.childEnv = env;
-            this.component = new C(props, env, this);
-            this.renderFn = app.getTemplate(C.template).bind(this.component, this.component, this);
-            this.component.setup();
-        }
-        mountComponent(target, options) {
-            const fiber = new MountFiber(this, target, options);
-            this.app.scheduler.addFiber(fiber);
-            this.initiateRender(fiber);
-        }
-        async initiateRender(fiber) {
-            this.fiber = fiber;
-            if (this.mounted.length) {
-                fiber.root.mounted.push(fiber);
-            }
-            const component = this.component;
-            try {
-                await Promise.all(this.willStart.map((f) => f.call(component)));
-            }
-            catch (e) {
-                handleError({ node: this, error: e });
-                return;
-            }
-            if (this.status === 0 /* NEW */ && this.fiber === fiber) {
-                this._render(fiber);
-            }
-        }
-        async render() {
-            let current = this.fiber;
-            if (current && current.root.locked) {
-                await Promise.resolve();
-                // situation may have changed after the microtask tick
-                current = this.fiber;
-            }
-            if (current && !current.bdom && !fibersInError.has(current)) {
-                return;
-            }
-            if (!this.bdom && !current) {
-                return;
-            }
-            const fiber = makeRootFiber(this);
-            this.fiber = fiber;
-            this.app.scheduler.addFiber(fiber);
-            await Promise.resolve();
-            if (this.status === 2 /* DESTROYED */) {
-                return;
-            }
-            // We only want to actually render the component if the following two
-            // conditions are true:
-            // * this.fiber: it could be null, in which case the render has been cancelled
-            // * (current || !fiber.parent): if current is not null, this means that the
-            //   render function was called when a render was already occurring. In this
-            //   case, the pending rendering was cancelled, and the fiber needs to be
-            //   rendered to complete the work.  If current is null, we check that the
-            //   fiber has no parent.  If that is the case, the fiber was downgraded from
-            //   a root fiber to a child fiber in the previous microtick, because it was
-            //   embedded in a rendering coming from above, so the fiber will be rendered
-            //   in the next microtick anyway, so we should not render it again.
-            if (this.fiber === fiber && (current || !fiber.parent)) {
-                this._render(fiber);
-            }
-        }
-        _render(fiber) {
-            try {
-                fiber.bdom = this.renderFn();
-                fiber.root.counter--;
-            }
-            catch (e) {
-                handleError({ node: this, error: e });
-            }
-        }
-        destroy() {
-            let shouldRemove = this.status === 1 /* MOUNTED */;
-            this._destroy();
-            if (shouldRemove) {
-                this.bdom.remove();
-            }
-        }
-        _destroy() {
-            const component = this.component;
-            if (this.status === 1 /* MOUNTED */) {
-                for (let cb of this.willUnmount) {
-                    cb.call(component);
-                }
-            }
-            for (let child of Object.values(this.children)) {
-                child._destroy();
-            }
-            for (let cb of this.willDestroy) {
-                cb.call(component);
-            }
-            this.status = 2 /* DESTROYED */;
-        }
-        async updateAndRender(props, parentFiber) {
-            // update
-            const fiber = makeChildFiber(this, parentFiber);
-            this.fiber = fiber;
-            const component = this.component;
-            applyDefaultProps(props, component.constructor);
-            const prom = Promise.all(this.willUpdateProps.map((f) => f.call(component, props)));
-            await prom;
-            if (fiber !== this.fiber) {
-                return;
-            }
-            component.props = props;
-            this._render(fiber);
-            const parentRoot = parentFiber.root;
-            if (this.willPatch.length) {
-                parentRoot.willPatch.push(fiber);
-            }
-            if (this.patched.length) {
-                parentRoot.patched.push(fiber);
-            }
-        }
-        /**
-         * Finds a child that has dom that is not yet updated, and update it. This
-         * method is meant to be used only in the context of repatching the dom after
-         * a mounted hook failed and was handled.
-         */
-        updateDom() {
-            if (!this.fiber) {
-                return;
-            }
-            if (this.bdom === this.fiber.bdom) {
-                // If the error was handled by some child component, we need to find it to
-                // apply its change
-                for (let k in this.children) {
-                    const child = this.children[k];
-                    child.updateDom();
-                }
-            }
-            else {
-                // if we get here, this is the component that handled the error and rerendered
-                // itself, so we can simply patch the dom
-                this.bdom.patch(this.fiber.bdom, false);
-                this.fiber.appliedToDom = true;
-                this.fiber = null;
-            }
-        }
-        // ---------------------------------------------------------------------------
-        // Block DOM methods
-        // ---------------------------------------------------------------------------
-        firstNode() {
-            const bdom = this.bdom;
-            return bdom ? bdom.firstNode() : undefined;
-        }
-        mount(parent, anchor) {
-            const bdom = this.fiber.bdom;
-            this.bdom = bdom;
-            bdom.mount(parent, anchor);
-            this.status = 1 /* MOUNTED */;
-            this.fiber.appliedToDom = true;
-            this.fiber = null;
-        }
-        moveBefore(other, afterNode) {
-            this.bdom.moveBefore(other ? other.bdom : null, afterNode);
-        }
-        patch() {
-            const hasChildren = Object.keys(this.children).length > 0;
-            this.bdom.patch(this.fiber.bdom, hasChildren);
-            if (hasChildren) {
-                this.cleanOutdatedChildren();
-            }
-            this.fiber.appliedToDom = true;
-            this.fiber = null;
-        }
-        beforeRemove() {
-            this._destroy();
-        }
-        remove() {
-            this.bdom.remove();
-        }
-        cleanOutdatedChildren() {
-            const children = this.children;
-            for (const key in children) {
-                const node = children[key];
-                const status = node.status;
-                if (status !== 1 /* MOUNTED */) {
-                    delete children[key];
-                    if (status !== 2 /* DESTROYED */) {
-                        node.destroy();
-                    }
-                }
-            }
-        }
-    }
-
     const bdom = { text, createBlock, list, multi, html, toggler, component, comment };
     const globalTemplates = {};
     function parseXML(xml) {
@@ -4311,9 +4378,11 @@
             this.realBDom.beforeRemove();
         }
         remove() {
-            super.remove();
-            this.realBDom.remove();
-            this.realBDom = null;
+            if (this.realBDom) {
+                super.remove();
+                this.realBDom.remove();
+                this.realBDom = null;
+            }
         }
         patch(other) {
             super.patch(other);
@@ -4331,10 +4400,9 @@
             const node = this.__owl__;
             const renderFn = node.renderFn;
             node.renderFn = () => new VPortal(this.props.target, renderFn());
-            onWillUnmount(async () => {
-                await Promise.resolve();
-                if (node.bdom && node.bdom.realBDom) {
-                    node.bdom.realBDom.remove();
+            onWillUnmount(() => {
+                if (node.bdom) {
+                    node.bdom.remove();
                 }
             });
         }
@@ -4530,64 +4598,6 @@ See https://github.com/odoo/owl/blob/master/doc/reference/config.md#mode for mor
             }
         }
         return true;
-    }
-
-    // -----------------------------------------------------------------------------
-    //  hooks
-    // -----------------------------------------------------------------------------
-    function onWillStart(fn) {
-        const node = getCurrent();
-        node.willStart.push(fn.bind(node.component));
-    }
-    function onWillUpdateProps(fn) {
-        const node = getCurrent();
-        node.willUpdateProps.push(fn.bind(node.component));
-    }
-    function onMounted(fn) {
-        const node = getCurrent();
-        node.mounted.push(fn.bind(node.component));
-    }
-    function onWillPatch(fn) {
-        const node = getCurrent();
-        node.willPatch.unshift(fn.bind(node.component));
-    }
-    function onPatched(fn) {
-        const node = getCurrent();
-        node.patched.push(fn.bind(node.component));
-    }
-    function onWillUnmount(fn) {
-        const node = getCurrent();
-        node.willUnmount.unshift(fn.bind(node.component));
-    }
-    function onWillDestroy(fn) {
-        const node = getCurrent();
-        node.willDestroy.push(fn.bind(node.component));
-    }
-    function onWillRender(fn) {
-        const node = getCurrent();
-        const renderFn = node.renderFn;
-        node.renderFn = () => {
-            fn.call(node.component);
-            return renderFn();
-        };
-    }
-    function onRendered(fn) {
-        const node = getCurrent();
-        const renderFn = node.renderFn;
-        node.renderFn = () => {
-            const result = renderFn();
-            fn.call(node.component);
-            return result;
-        };
-    }
-    function onError(callback) {
-        const node = getCurrent();
-        let handlers = nodeErrorHandlers.get(node);
-        if (!handlers) {
-            handlers = [];
-            nodeErrorHandlers.set(node, handlers);
-        }
-        handlers.push(callback.bind(node.component));
     }
 
     // Allows to get the target of a Reactive (used for making a new Reactive from the underlying object)
@@ -4960,8 +4970,8 @@ See https://github.com/odoo/owl/blob/master/doc/reference/config.md#mode for mor
 
 
     __info__.version = '2.0.0-alpha1';
-    __info__.date = '2022-01-19T08:25:04.365Z';
-    __info__.hash = 'dbee8f5';
+    __info__.date = '2022-01-19T13:14:49.380Z';
+    __info__.hash = 'dfc090b';
     __info__.url = 'https://github.com/odoo/owl';
 
 
