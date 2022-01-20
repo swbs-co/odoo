@@ -528,9 +528,22 @@ odoo.define('web.OwlCompatibility', function (require) {
 
             this.Component = Component;
 
+            const env = owl.Component.env;
             const appConfig = {
-                env: owl.Component.env,
+                env: {
+                    ...env,
+                    renderToString(template, context) {
+                        const div = document.createElement("div");
+                        const templateFn = app.getTemplate(template);
+                        const bdom = templateFn(context);
+                        owl.blockDom.mount(bdom, div);
+                        return div.innerHTML;
+                    },
+                },
                 templates: window.__ODOO_TEMPLATES__,
+                dev: env.isDebug(),
+                translatableAttributes: ["label", "title", "placeholder", "alt", "data-tooltip"],
+                translateFn: env._t,
             };
             const app = new App(null, appConfig);
             this.app = app;
