@@ -8,6 +8,7 @@ import {
     nextAnimationFrame,
     start,
 } from '@mail/utils/test_utils';
+import { nextTick } from '@web/../tests/helpers/utils';
 
 import { makeTestPromise } from 'web.test_utils';
 
@@ -24,6 +25,7 @@ QUnit.module('chatter_topbar_tests.js', {
                 props,
                 target: this.widget.el,
             });
+            // await nextTick();
         };
 
         this.start = async params => {
@@ -185,9 +187,7 @@ QUnit.test('attachment loading is delayed', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('attachment counter while loading attachments', async function (assert) {
-    assert.expect(4);
-
+QUnit.test('attachment counter while loading attachments', async function (assert) {
     this.data['res.partner'].records.push({ id: 100 });
     await this.start({
         async mockRPC(route) {
@@ -214,6 +214,10 @@ QUnit.skipNXOWL('attachment counter while loading attachments', async function (
         1,
         "should have an attachments button in chatter menu"
     );
+
+    // TODO review for Seb
+    await nextTick();
+
     assert.strictEqual(
         document.querySelectorAll(`.o_ChatterTopbar_buttonAttachmentsCountLoader`).length,
         1,
@@ -226,7 +230,7 @@ QUnit.skipNXOWL('attachment counter while loading attachments', async function (
     );
 });
 
-QUnit.skipNXOWL('attachment counter transition when attachments become loaded)', async function (assert) {
+QUnit.test('attachment counter transition when attachments become loaded)', async function (assert) {
     assert.expect(7);
 
     this.data['res.partner'].records.push({ id: 100 });
@@ -257,6 +261,10 @@ QUnit.skipNXOWL('attachment counter transition when attachments become loaded)',
         1,
         "should have an attachments button in chatter menu"
     );
+
+    // TODO review for Seb
+    await nextTick();
+
     assert.strictEqual(
         document.querySelectorAll(`.o_ChatterTopbar_buttonAttachmentsCountLoader`).length,
         1,
