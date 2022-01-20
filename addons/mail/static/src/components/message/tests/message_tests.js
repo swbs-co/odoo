@@ -110,7 +110,7 @@ QUnit.test('basic rendering', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('Notification Sent', async function (assert) {
+QUnit.test('Notification Sent', async function (assert) {
     assert.expect(9);
 
     this.data['res.partner'].records.push({ id: 12, name: "Someone", partner_share: true });
