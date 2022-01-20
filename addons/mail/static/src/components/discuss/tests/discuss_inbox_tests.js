@@ -32,7 +32,7 @@ QUnit.module('discuss_inbox_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('reply: discard on pressing escape', async function (assert) {
+QUnit.test('reply: discard on pressing escape', async function (assert) {
     assert.expect(9);
 
     // partner expected to be found by mention
@@ -158,7 +158,7 @@ QUnit.skipNXOWL('reply: discard on pressing escape', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('reply: discard on discard button click', async function (assert) {
+QUnit.test('reply: discard on discard button click', async function (assert) {
     assert.expect(4);
 
     this.data['mail.message'].records.push({
@@ -219,7 +219,7 @@ QUnit.skipNXOWL('reply: discard on discard button click', async function (assert
     );
 });
 
-QUnit.skipNXOWL('reply: discard on reply button toggle', async function (assert) {
+QUnit.test('reply: discard on reply button toggle', async function (assert) {
     assert.expect(3);
 
     this.data['mail.message'].records.push({
@@ -274,7 +274,7 @@ QUnit.skipNXOWL('reply: discard on reply button toggle', async function (assert)
     );
 });
 
-QUnit.skipNXOWL('reply: discard on click away', async function (assert) {
+QUnit.test('reply: discard on click away', async function (assert) {
     assert.expect(7);
 
     this.data['mail.message'].records.push({
@@ -361,7 +361,7 @@ QUnit.skipNXOWL('reply: discard on click away', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('"reply to" composer should log note if message replied to is a note', async function (assert) {
+QUnit.test('"reply to" composer should log note if message replied to is a note', async function (assert) {
     assert.expect(6);
 
     this.data['mail.message'].records.push({
@@ -433,7 +433,7 @@ QUnit.skipNXOWL('"reply to" composer should log note if message replied to is a 
     assert.verifySteps(['/mail/message/post']);
 });
 
-QUnit.skipNXOWL('"reply to" composer should send message if message replied to is not a note', async function (assert) {
+QUnit.test('"reply to" composer should send message if message replied to is not a note', async function (assert) {
     assert.expect(6);
 
     this.data['mail.message'].records.push({
@@ -505,7 +505,7 @@ QUnit.skipNXOWL('"reply to" composer should send message if message replied to i
     assert.verifySteps(['/mail/message/post']);
 });
 
-QUnit.skipNXOWL('error notifications should not be shown in Inbox', async function (assert) {
+QUnit.test('error notifications should not be shown in Inbox', async function (assert) {
     assert.expect(3);
 
     this.data['mail.message'].records.push({
@@ -540,7 +540,7 @@ QUnit.skipNXOWL('error notifications should not be shown in Inbox', async functi
     );
 });
 
-QUnit.skipNXOWL('show subject of message in Inbox', async function (assert) {
+QUnit.test('show subject of message in Inbox', async function (assert) {
     assert.expect(3);
 
     this.data['mail.message'].records.push({
@@ -587,7 +587,7 @@ QUnit.skipNXOWL('show subject of message in Inbox', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('show subject of message in history', async function (assert) {
+QUnit.test('show subject of message in history', async function (assert) {
     assert.expect(3);
 
     this.data['mail.message'].records.push({
@@ -639,7 +639,7 @@ QUnit.skipNXOWL('show subject of message in history', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('click on (non-channel/non-partner) origin thread link should redirect to form view', async function (assert) {
+QUnit.test('click on (non-channel/non-partner) origin thread link should redirect to form view', async function (assert) {
     assert.expect(9);
 
     const bus = new Bus();
@@ -721,7 +721,7 @@ QUnit.skipNXOWL('click on (non-channel/non-partner) origin thread link should re
     assert.verifySteps(['do-action'], "should have made an action on click on origin thread (to open form view)");
 });
 
-QUnit.skipNXOWL('subject should not be shown when subject is the same as the thread name', async function (assert) {
+QUnit.test('subject should not be shown when subject is the same as the thread name', async function (assert) {
     assert.expect(1);
 
     this.data['mail.message'].records.push({
@@ -762,7 +762,7 @@ QUnit.skipNXOWL('subject should not be shown when subject is the same as the thr
     );
 });
 
-QUnit.skipNXOWL('subject should not be shown when subject is the same as the thread name and both have the same prefix', async function (assert) {
+QUnit.test('subject should not be shown when subject is the same as the thread name and both have the same prefix', async function (assert) {
     assert.expect(1);
 
     this.data['mail.message'].records.push({
@@ -803,7 +803,7 @@ QUnit.skipNXOWL('subject should not be shown when subject is the same as the thr
     );
 });
 
-QUnit.skipNXOWL('subject should not be shown when subject differs from thread name only by the "Re:" prefix', async function (assert) {
+QUnit.test('subject should not be shown when subject differs from thread name only by the "Re:" prefix', async function (assert) {
     assert.expect(1);
 
     this.data['mail.message'].records.push({
@@ -844,7 +844,7 @@ QUnit.skipNXOWL('subject should not be shown when subject differs from thread na
     );
 });
 
-QUnit.skipNXOWL('subject should not be shown when subject differs from thread name only by the "Fw:" and "Re:" prefix', async function (assert) {
+QUnit.test('subject should not be shown when subject differs from thread name only by the "Fw:" and "Re:" prefix', async function (assert) {
     assert.expect(1);
 
     this.data['mail.message'].records.push({
@@ -885,7 +885,7 @@ QUnit.skipNXOWL('subject should not be shown when subject differs from thread na
     );
 });
 
-QUnit.skipNXOWL('subject should be shown when the thread name has an extra prefix compared to subject', async function (assert) {
+QUnit.test('subject should be shown when the thread name has an extra prefix compared to subject', async function (assert) {
     assert.expect(1);
 
     this.data['mail.message'].records.push({
@@ -926,7 +926,7 @@ QUnit.skipNXOWL('subject should be shown when the thread name has an extra prefi
     );
 });
 
-QUnit.skipNXOWL('subject should not be shown when subject differs from thread name only by the "fw:" prefix and both contain another common prefix', async function (assert) {
+QUnit.test('subject should not be shown when subject differs from thread name only by the "fw:" prefix and both contain another common prefix', async function (assert) {
     assert.expect(1);
 
     this.data['mail.message'].records.push({
@@ -967,7 +967,7 @@ QUnit.skipNXOWL('subject should not be shown when subject differs from thread na
     );
 });
 
-QUnit.skipNXOWL('subject should not be shown when subject differs from thread name only by the "Re: Re:" prefix', async function (assert) {
+QUnit.test('subject should not be shown when subject differs from thread name only by the "Re: Re:" prefix', async function (assert) {
     assert.expect(1);
 
     this.data['mail.message'].records.push({

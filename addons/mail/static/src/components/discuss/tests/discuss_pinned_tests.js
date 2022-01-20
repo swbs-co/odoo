@@ -29,7 +29,7 @@ QUnit.module('discuss_pinned_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('sidebar: pinned channel 1: init with one pinned channel', async function (assert) {
+QUnit.test('sidebar: pinned channel 1: init with one pinned channel', async function (assert) {
     assert.expect(2);
 
     // channel that is expected to be found in the sidebar
@@ -53,7 +53,7 @@ QUnit.skipNXOWL('sidebar: pinned channel 1: init with one pinned channel', async
     );
 });
 
-QUnit.skipNXOWL('sidebar: pinned channel 2: open pinned channel', async function (assert) {
+QUnit.test('sidebar: pinned channel 2: open pinned channel', async function (assert) {
     assert.expect(1);
 
     // channel that is expected to be found in the sidebar
@@ -77,7 +77,7 @@ QUnit.skipNXOWL('sidebar: pinned channel 2: open pinned channel', async function
     );
 });
 
-QUnit.skipNXOWL('sidebar: pinned channel 3: open channel and leave it', async function (assert) {
+QUnit.test('sidebar: pinned channel 3: open channel and leave it', async function (assert) {
     assert.expect(6);
 
     // channel that is expected to be found in the sidebar
@@ -130,7 +130,7 @@ QUnit.skipNXOWL('sidebar: pinned channel 3: open channel and leave it', async fu
     );
 });
 
-QUnit.skipNXOWL('sidebar: unpin channel from bus', async function (assert) {
+QUnit.test('sidebar: unpin channel from bus', async function (assert) {
     assert.expect(5);
 
     // channel that is expected to be found in the sidebar
@@ -190,7 +190,7 @@ QUnit.skipNXOWL('sidebar: unpin channel from bus', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('[technical] sidebar: channel group_based_subscription: mandatorily pinned', async function (assert) {
+QUnit.test('[technical] sidebar: channel group_based_subscription: mandatorily pinned', async function (assert) {
     assert.expect(2);
 
     // FIXME: The following is admittedly odd.

@@ -29,7 +29,7 @@ QUnit.module('channel_invitation_form_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('should display the channel invitation form after clicking on the invite button of a chat', async function (assert) {
+QUnit.test('should display the channel invitation form after clicking on the invite button of a chat', async function (assert) {
     assert.expect(1);
 
     this.data['res.partner'].records.push({
@@ -61,7 +61,7 @@ QUnit.skipNXOWL('should display the channel invitation form after clicking on th
     );
 });
 
-QUnit.skipNXOWL('should be able to search for a new user to invite from an existing chat', async function (assert) {
+QUnit.test('should be able to search for a new user to invite from an existing chat', async function (assert) {
     assert.expect(1);
 
     this.data['res.partner'].records.push({
@@ -102,7 +102,7 @@ QUnit.skipNXOWL('should be able to search for a new user to invite from an exist
     );
 });
 
-QUnit.skipNXOWL('should be able to create a new group chat from an existing chat', async function (assert) {
+QUnit.test('should be able to create a new group chat from an existing chat', async function (assert) {
     assert.expect(1);
 
     this.data['res.partner'].records.push({

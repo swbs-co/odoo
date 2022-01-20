@@ -25,7 +25,7 @@ QUnit.module('discuss_message_edit_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('click on message edit button should open edit composer', async function (assert) {
+QUnit.test('click on message edit button should open edit composer', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 20 });

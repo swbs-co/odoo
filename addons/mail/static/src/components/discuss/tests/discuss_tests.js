@@ -41,7 +41,7 @@ QUnit.module('discuss_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('messaging not created', async function (assert) {
+QUnit.test('messaging not created', async function (assert) {
     assert.expect(1);
 
     const messagingBeforeCreationDeferred = makeTestPromise();
@@ -53,7 +53,7 @@ QUnit.skipNXOWL('messaging not created', async function (assert) {
     messagingBeforeCreationDeferred.resolve();
 });
 
-QUnit.skipNXOWL('discuss should be marked as opened if the component is already rendered and messaging becomes created afterwards', async function (assert) {
+QUnit.test('discuss should be marked as opened if the component is already rendered and messaging becomes created afterwards', async function (assert) {
     assert.expect(1);
 
     const messagingBeforeCreationDeferred = makeTestPromise();
@@ -69,7 +69,7 @@ QUnit.skipNXOWL('discuss should be marked as opened if the component is already 
     );
 });
 
-QUnit.skipNXOWL('discuss should be marked as closed when the component is unmounted', async function (assert) {
+QUnit.test('discuss should be marked as closed when the component is unmounted', async function (assert) {
     assert.expect(1);
 
     const { widget } = await this.start();
@@ -81,7 +81,7 @@ QUnit.skipNXOWL('discuss should be marked as closed when the component is unmoun
     );
 });
 
-QUnit.skipNXOWL('messaging not initialized', async function (assert) {
+QUnit.test('messaging not initialized', async function (assert) {
     assert.expect(1);
 
     await this.start({
@@ -101,7 +101,7 @@ QUnit.skipNXOWL('messaging not initialized', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('messaging becomes initialized', async function (assert) {
+QUnit.test('messaging becomes initialized', async function (assert) {
     assert.expect(2);
 
     const messagingInitializedProm = makeTestPromise();
@@ -130,7 +130,7 @@ QUnit.skipNXOWL('messaging becomes initialized', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('basic rendering', async function (assert) {
+QUnit.test('basic rendering', async function (assert) {
     assert.expect(4);
 
     await this.start();
@@ -155,7 +155,7 @@ QUnit.skipNXOWL('basic rendering', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('basic rendering: sidebar', async function (assert) {
+QUnit.test('basic rendering: sidebar', async function (assert) {
     assert.expect(18);
 
     await this.start();
@@ -272,7 +272,7 @@ QUnit.skipNXOWL('basic rendering: sidebar', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('sidebar: basic mailbox rendering', async function (assert) {
+QUnit.test('sidebar: basic mailbox rendering', async function (assert) {
     assert.expect(5);
 
     await this.start();
@@ -314,7 +314,7 @@ QUnit.skipNXOWL('sidebar: basic mailbox rendering', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('sidebar: default active inbox', async function (assert) {
+QUnit.test('sidebar: default active inbox', async function (assert) {
     assert.expect(1);
 
     await this.start();
@@ -330,7 +330,7 @@ QUnit.skipNXOWL('sidebar: default active inbox', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('sidebar: change item', async function (assert) {
+QUnit.test('sidebar: change item', async function (assert) {
     assert.expect(4);
 
     await this.start();
@@ -375,7 +375,7 @@ QUnit.skipNXOWL('sidebar: change item', async function (assert) {
         "starred mailbox should become active");
 });
 
-QUnit.skipNXOWL('sidebar: inbox with counter', async function (assert) {
+QUnit.test('sidebar: inbox with counter', async function (assert) {
     assert.expect(2);
 
     // notification expected to be counted at init_messaging
@@ -434,7 +434,7 @@ QUnit.skipNXOWL('sidebar: add channel', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('sidebar: basic channel rendering', async function (assert) {
+QUnit.test('sidebar: basic channel rendering', async function (assert) {
     assert.expect(12);
 
     // channel expected to be found in the sidebar,
@@ -513,7 +513,7 @@ QUnit.skipNXOWL('sidebar: basic channel rendering', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('sidebar: channel rendering with needaction counter', async function (assert) {
+QUnit.test('sidebar: channel rendering with needaction counter', async function (assert) {
     assert.expect(5);
 
     // channel expected to be found in the sidebar
@@ -560,7 +560,7 @@ QUnit.skipNXOWL('sidebar: channel rendering with needaction counter', async func
     );
 });
 
-QUnit.skipNXOWL('sidebar: public/private channel rendering', async function (assert) {
+QUnit.test('sidebar: public/private channel rendering', async function (assert) {
     assert.expect(5);
 
     // channels that are expected to be found in the sidebar (one public, one private)
@@ -630,7 +630,7 @@ QUnit.skipNXOWL('sidebar: public/private channel rendering', async function (ass
     );
 });
 
-QUnit.skipNXOWL('sidebar: basic chat rendering', async function (assert) {
+QUnit.test('sidebar: basic chat rendering', async function (assert) {
     assert.expect(9);
 
     // expected correspondent, with a random unique id that will be used to link
@@ -695,7 +695,7 @@ QUnit.skipNXOWL('sidebar: basic chat rendering', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('sidebar: chat rendering with unread counter', async function (assert) {
+QUnit.test('sidebar: chat rendering with unread counter', async function (assert) {
     assert.expect(4);
 
     // chat expected to be found in the sidebar
@@ -729,7 +729,7 @@ QUnit.skipNXOWL('sidebar: chat rendering with unread counter', async function (a
     );
 });
 
-QUnit.skipNXOWL('sidebar: chat im_status rendering', async function (assert) {
+QUnit.test('sidebar: chat im_status rendering', async function (assert) {
     assert.expect(7);
 
     // expected correspondent, with a random unique id that will be used to link
@@ -849,7 +849,7 @@ QUnit.skipNXOWL('sidebar: chat im_status rendering', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('sidebar: chat custom name', async function (assert) {
+QUnit.test('sidebar: chat custom name', async function (assert) {
     assert.expect(1);
 
     // expected correspondent, with a random unique id that will be used to link
@@ -871,7 +871,7 @@ QUnit.skipNXOWL('sidebar: chat custom name', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('default thread rendering', async function (assert) {
+QUnit.test('default thread rendering', async function (assert) {
     assert.expect(16);
 
     // channel expected to be found in the sidebar,
@@ -1031,7 +1031,7 @@ QUnit.skipNXOWL('default thread rendering', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('initially load messages from inbox', async function (assert) {
+QUnit.test('initially load messages from inbox', async function (assert) {
     assert.expect(3);
 
     await this.start({
@@ -1050,7 +1050,7 @@ QUnit.skipNXOWL('initially load messages from inbox', async function (assert) {
     assert.verifySteps(['/mail/channel/messages']);
 });
 
-QUnit.skipNXOWL('default select thread in discuss params', async function (assert) {
+QUnit.test('default select thread in discuss params', async function (assert) {
     assert.expect(1);
 
     await this.start({
@@ -1070,7 +1070,7 @@ QUnit.skipNXOWL('default select thread in discuss params', async function (asser
     );
 });
 
-QUnit.skipNXOWL('auto-select thread in discuss context', async function (assert) {
+QUnit.test('auto-select thread in discuss context', async function (assert) {
     assert.expect(1);
 
     await this.start({
@@ -1090,7 +1090,7 @@ QUnit.skipNXOWL('auto-select thread in discuss context', async function (assert)
     );
 });
 
-QUnit.skipNXOWL('load single message from channel initially', async function (assert) {
+QUnit.test('load single message from channel initially', async function (assert) {
     assert.expect(6);
 
     // channel expected to be rendered, with a random unique id that will be referenced in the test
@@ -1151,7 +1151,7 @@ QUnit.skipNXOWL('load single message from channel initially', async function (as
     );
 });
 
-QUnit.skipNXOWL('open channel from active_id as channel id', async function (assert) {
+QUnit.test('open channel from active_id as channel id', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -1173,7 +1173,7 @@ QUnit.skipNXOWL('open channel from active_id as channel id', async function (ass
     );
 });
 
-QUnit.skipNXOWL('basic rendering of message', async function (assert) {
+QUnit.test('basic rendering of message', async function (assert) {
     // AKU TODO: should be in message-only tests
     assert.expect(15);
 
@@ -1284,7 +1284,7 @@ QUnit.skipNXOWL('basic rendering of message', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('should not be able to reply to temporary/transient messages', async function (assert) {
+QUnit.test('should not be able to reply to temporary/transient messages', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -1312,7 +1312,7 @@ QUnit.skipNXOWL('should not be able to reply to temporary/transient messages', a
     );
 });
 
-QUnit.skipNXOWL('basic rendering of squashed message', async function (assert) {
+QUnit.test('basic rendering of squashed message', async function (assert) {
     // messages are squashed when "close", e.g. less than 1 minute has elapsed
     // from messages of same author and same thread. Note that this should
     // be working in non-mailboxes
@@ -1427,7 +1427,7 @@ QUnit.skipNXOWL('basic rendering of squashed message', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('inbox messages are never squashed', async function (assert) {
+QUnit.test('inbox messages are never squashed', async function (assert) {
     assert.expect(3);
 
     // partner to be set as author, with a random unique id that will be used to link message
@@ -1514,7 +1514,7 @@ QUnit.skipNXOWL('inbox messages are never squashed', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('load all messages from channel initially, less than fetch limit (29 < 30)', async function (assert) {
+QUnit.test('load all messages from channel initially, less than fetch limit (29 < 30)', async function (assert) {
     // AKU TODO: thread specific test
     assert.expect(5);
 
@@ -1573,7 +1573,7 @@ QUnit.skipNXOWL('load all messages from channel initially, less than fetch limit
     );
 });
 
-QUnit.skipNXOWL('load more messages from channel', async function (assert) {
+QUnit.test('load more messages from channel', async function (assert) {
     // AKU: thread specific test
     assert.expect(6);
 
@@ -1646,7 +1646,7 @@ QUnit.skipNXOWL('load more messages from channel', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('auto-scroll to bottom of thread', async function (assert) {
+QUnit.test('auto-scroll to bottom of thread', async function (assert) {
     // AKU TODO: thread specific test
     assert.expect(2);
 
@@ -1694,7 +1694,7 @@ QUnit.skipNXOWL('auto-scroll to bottom of thread', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('load more messages from channel (auto-load on scroll)', async function (assert) {
+QUnit.test('load more messages from channel (auto-load on scroll)', async function (assert) {
     // AKU TODO: thread specific test
     assert.expect(3);
 
@@ -1762,7 +1762,7 @@ QUnit.skipNXOWL('load more messages from channel (auto-load on scroll)', async f
     );
 });
 
-QUnit.skipNXOWL('new messages separator [REQUIRE FOCUS]', async function (assert) {
+QUnit.test('new messages separator [REQUIRE FOCUS]', async function (assert) {
     // this test requires several messages so that the last message is not
     // visible. This is necessary in order to display 'new messages' and not
     // remove from DOM right away from seeing last message.
@@ -1899,7 +1899,7 @@ QUnit.skipNXOWL('new messages separator [REQUIRE FOCUS]', async function (assert
     );
 });
 
-QUnit.skipNXOWL('restore thread scroll position', async function (assert) {
+QUnit.test('restore thread scroll position', async function (assert) {
     assert.expect(6);
     // channels expected to be rendered, with random unique id that will be referenced in the test
     this.data['mail.channel'].records.push(
@@ -2069,7 +2069,7 @@ QUnit.skipNXOWL('restore thread scroll position', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('redirect to author (open chat)', async function (assert) {
+QUnit.test('redirect to author (open chat)', async function (assert) {
     assert.expect(7);
 
     // expected correspondent, with a random unique id that will be used to link
@@ -2180,7 +2180,7 @@ QUnit.skipNXOWL('redirect to author (open chat)', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('sidebar quick search', async function (assert) {
+QUnit.test('sidebar quick search', async function (assert) {
     // feature enables at 20 or more channels
     assert.expect(6);
 
@@ -2246,7 +2246,7 @@ QUnit.skipNXOWL('sidebar quick search', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('basic top bar rendering', async function (assert) {
+QUnit.test('basic top bar rendering', async function (assert) {
     assert.expect(8);
 
     // channel expected to be found in the sidebar
@@ -2318,7 +2318,7 @@ QUnit.skipNXOWL('basic top bar rendering', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('inbox: mark all messages as read', async function (assert) {
+QUnit.test('inbox: mark all messages as read', async function (assert) {
     assert.expect(8);
 
     // channel expected to be found in the sidebar,
@@ -2425,7 +2425,7 @@ QUnit.skipNXOWL('inbox: mark all messages as read', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('starred: unstar all', async function (assert) {
+QUnit.test('starred: unstar all', async function (assert) {
     assert.expect(6);
 
     // messages expected to be starred
@@ -2484,7 +2484,7 @@ QUnit.skipNXOWL('starred: unstar all', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('toggle_star message', async function (assert) {
+QUnit.test('toggle_star message', async function (assert) {
     assert.expect(16);
 
     // channel expected to be initially rendered
@@ -2588,7 +2588,7 @@ QUnit.skipNXOWL('toggle_star message', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('composer state: text save and restore', async function (assert) {
+QUnit.test('composer state: text save and restore', async function (assert) {
     assert.expect(2);
 
     // channels expected to be found in the sidebar,
@@ -2640,7 +2640,7 @@ QUnit.skipNXOWL('composer state: text save and restore', async function (assert)
     );
 });
 
-QUnit.skipNXOWL('composer state: attachments save and restore', async function (assert) {
+QUnit.test('composer state: attachments save and restore', async function (assert) {
     assert.expect(6);
 
     // channels expected to be found in the sidebar
@@ -2736,7 +2736,7 @@ QUnit.skipNXOWL('composer state: attachments save and restore', async function (
     );
 });
 
-QUnit.skipNXOWL('post a simple message', async function (assert) {
+QUnit.test('post a simple message', async function (assert) {
     assert.expect(16);
 
     // channel expected to be found in the sidebar
@@ -2842,7 +2842,7 @@ QUnit.skipNXOWL('post a simple message', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('post message on channel with "Enter" keyboard shortcut', async function (assert) {
+QUnit.test('post message on channel with "Enter" keyboard shortcut', async function (assert) {
     assert.expect(2);
 
     // channel expected to be found in the sidebar
@@ -2877,7 +2877,7 @@ QUnit.skipNXOWL('post message on channel with "Enter" keyboard shortcut', async 
     );
 });
 
-QUnit.skipNXOWL('do not post message on channel with "SHIFT-Enter" keyboard shortcut', async function (assert) {
+QUnit.test('do not post message on channel with "SHIFT-Enter" keyboard shortcut', async function (assert) {
     // Note that test doesn't assert SHIFT-Enter makes a newline, because this
     // default browser cannot be simulated with just dispatching
     // programmatically crafted events...
@@ -2913,7 +2913,7 @@ QUnit.skipNXOWL('do not post message on channel with "SHIFT-Enter" keyboard shor
         "should still not have any message in channel after pressing 'Shift-Enter' in text input of composer"
     );
 });
-QUnit.skipNXOWL('rendering of inbox message', async function (assert) {
+QUnit.test('rendering of inbox message', async function (assert) {
     // AKU TODO: kinda message specific test
     assert.expect(8);
 
@@ -2989,7 +2989,7 @@ QUnit.skipNXOWL('rendering of inbox message', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('mark channel as seen on last message visible [REQUIRE FOCUS]', async function (assert) {
+QUnit.test('mark channel as seen on last message visible [REQUIRE FOCUS]', async function (assert) {
     assert.expect(3);
 
     // channel expected to be found in the sidebar, with the expected message_unread_counter
@@ -3060,7 +3060,7 @@ QUnit.skipNXOWL('mark channel as seen on last message visible [REQUIRE FOCUS]', 
     );
 });
 
-QUnit.skipNXOWL('receive new needaction messages', async function (assert) {
+QUnit.test('receive new needaction messages', async function (assert) {
     assert.expect(12);
 
     await this.start();
@@ -3186,7 +3186,7 @@ QUnit.skipNXOWL('receive new needaction messages', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('reply to message from inbox (message linked to document)', async function (assert) {
+QUnit.test('reply to message from inbox (message linked to document)', async function (assert) {
     assert.expect(19);
 
     // message that is expected to be found in Inbox
@@ -3314,7 +3314,7 @@ QUnit.skipNXOWL('reply to message from inbox (message linked to document)', asyn
     );
 });
 
-QUnit.skipNXOWL('messages marked as read move to "History" mailbox', async function (assert) {
+QUnit.test('messages marked as read move to "History" mailbox', async function (assert) {
     assert.expect(10);
 
     // channel expected to be found in the sidebar
@@ -3440,7 +3440,7 @@ QUnit.skipNXOWL('messages marked as read move to "History" mailbox', async funct
     );
 });
 
-QUnit.skipNXOWL('mark a single message as read should only move this message to "History" mailbox', async function (assert) {
+QUnit.test('mark a single message as read should only move this message to "History" mailbox', async function (assert) {
     assert.expect(9);
 
     this.data['mail.message'].records.push(
@@ -3569,7 +3569,7 @@ QUnit.skipNXOWL('mark a single message as read should only move this message to 
     );
 });
 
-QUnit.skipNXOWL('all messages in "Inbox" in "History" after marked all as read', async function (assert) {
+QUnit.test('all messages in "Inbox" in "History" after marked all as read', async function (assert) {
     assert.expect(2);
 
     const messageOffset = 200;
@@ -3657,7 +3657,7 @@ QUnit.skipNXOWL('all messages in "Inbox" in "History" after marked all as read',
     );
 });
 
-QUnit.skipNXOWL('receive new chat message: out of odoo focus (notification, channel)', async function (assert) {
+QUnit.test('receive new chat message: out of odoo focus (notification, channel)', async function (assert) {
     assert.expect(4);
 
     // channel expected to be found in the sidebar
@@ -3699,7 +3699,7 @@ QUnit.skipNXOWL('receive new chat message: out of odoo focus (notification, chan
     assert.verifySteps(['set_title_part']);
 });
 
-QUnit.skipNXOWL('receive new chat message: out of odoo focus (notification, chat)', async function (assert) {
+QUnit.test('receive new chat message: out of odoo focus (notification, chat)', async function (assert) {
     assert.expect(4);
 
     // chat expected to be found in the sidebar with the proper channel_type
@@ -3741,7 +3741,7 @@ QUnit.skipNXOWL('receive new chat message: out of odoo focus (notification, chat
     assert.verifySteps(['set_title_part']);
 });
 
-QUnit.skipNXOWL('receive new chat messages: out of odoo focus (tab title)', async function (assert) {
+QUnit.test('receive new chat messages: out of odoo focus (tab title)', async function (assert) {
     assert.expect(12);
 
     let step = 0;
@@ -3828,7 +3828,7 @@ QUnit.skipNXOWL('receive new chat messages: out of odoo focus (tab title)', asyn
     assert.verifySteps(['set_title_part']);
 });
 
-QUnit.skipNXOWL('auto-focus composer on opening thread', async function (assert) {
+QUnit.test('auto-focus composer on opening thread', async function (assert) {
     assert.expect(14);
 
     // expected correspondent, with a random unique id that will be used to link
@@ -3941,7 +3941,7 @@ QUnit.skipNXOWL('auto-focus composer on opening thread', async function (assert)
     );
 });
 
-QUnit.skipNXOWL('mark channel as seen if last message is visible when switching channels when the previous channel had a more recent last message than the current channel [REQUIRE FOCUS]', async function (assert) {
+QUnit.test('mark channel as seen if last message is visible when switching channels when the previous channel had a more recent last message than the current channel [REQUIRE FOCUS]', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push(
@@ -4012,7 +4012,7 @@ QUnit.skipNXOWL('mark channel as seen if last message is visible when switching 
     );
 });
 
-QUnit.skipNXOWL('warning on send with shortcut when attempting to post message with still-uploading attachments', async function (assert) {
+QUnit.test('warning on send with shortcut when attempting to post message with still-uploading attachments', async function (assert) {
     assert.expect(7);
 
     this.data['mail.channel'].records.push({ id: 10 });
@@ -4085,7 +4085,7 @@ QUnit.skipNXOWL('warning on send with shortcut when attempting to post message w
     );
 });
 
-QUnit.skipNXOWL('send message only once when enter is pressed twice quickly', async function (assert) {
+QUnit.test('send message only once when enter is pressed twice quickly', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({ id: 20 });

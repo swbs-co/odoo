@@ -31,7 +31,7 @@ QUnit.module('discuss_sidebar_category_item_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('channel - avatar: should have correct avatar', async function (assert) {
+QUnit.test('channel - avatar: should have correct avatar', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -63,7 +63,7 @@ QUnit.skipNXOWL('channel - avatar: should have correct avatar', async function (
 
 });
 
-QUnit.skipNXOWL('channel - avatar: should update avatar url from bus', async function (assert) {
+QUnit.test('channel - avatar: should update avatar url from bus', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -108,7 +108,7 @@ QUnit.skipNXOWL('channel - avatar: should update avatar url from bus', async fun
     );
 });
 
-QUnit.skipNXOWL('chat - avatar: should have correct avatar', async function (assert) {
+QUnit.test('chat - avatar: should have correct avatar', async function (assert) {
     assert.expect(2);
 
     this.data['res.partner'].records.push({ id: 15, name: "Demo", im_status: 'offline' });
@@ -141,7 +141,7 @@ QUnit.skipNXOWL('chat - avatar: should have correct avatar', async function (ass
     );
 });
 
-QUnit.skipNXOWL('chat - sorting: should be sorted by last activity time', async function (assert) {
+QUnit.test('chat - sorting: should be sorted by last activity time', async function (assert) {
     assert.expect(6);
 
     this.data['mail.channel'].records.push({

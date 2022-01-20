@@ -29,7 +29,7 @@ QUnit.module('discuss_sidebar_category_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('channel - counter: should not have a counter if the category is unfolded and without needaction messages', async function (assert) {
+QUnit.test('channel - counter: should not have a counter if the category is unfolded and without needaction messages', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -42,7 +42,7 @@ QUnit.skipNXOWL('channel - counter: should not have a counter if the category is
     );
 });
 
-QUnit.skipNXOWL('channel - counter: should not have a counter if the category is unfolded and with needaction messagens', async function (assert) {
+QUnit.test('channel - counter: should not have a counter if the category is unfolded and with needaction messagens', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push(
@@ -75,7 +75,7 @@ QUnit.skipNXOWL('channel - counter: should not have a counter if the category is
     );
 });
 
-QUnit.skipNXOWL('channel - counter: should not have a counter if category is folded and without needaction messages', async function (assert) {
+QUnit.test('channel - counter: should not have a counter if category is folded and without needaction messages', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -93,7 +93,7 @@ QUnit.skipNXOWL('channel - counter: should not have a counter if category is fol
     );
 });
 
-QUnit.skipNXOWL('channel - counter: should have correct value of needaction threads if category is folded and with needaction messages', async function (assert) {
+QUnit.test('channel - counter: should have correct value of needaction threads if category is folded and with needaction messages', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push(
@@ -131,7 +131,7 @@ QUnit.skipNXOWL('channel - counter: should have correct value of needaction thre
     );
 });
 
-QUnit.skipNXOWL('channel - command: should have view command when category is unfolded', async function (assert) {
+QUnit.test('channel - command: should have view command when category is unfolded', async function (assert) {
     assert.expect(1);
 
     await this.start();
@@ -143,7 +143,7 @@ QUnit.skipNXOWL('channel - command: should have view command when category is un
     );
 });
 
-QUnit.skipNXOWL('channel - command: should have view command when category is folded', async function (assert) {
+QUnit.test('channel - command: should have view command when category is folded', async function (assert) {
     assert.expect(1);
 
     this.data['res.users.settings'].records.push({
@@ -162,7 +162,7 @@ QUnit.skipNXOWL('channel - command: should have view command when category is fo
     );
 });
 
-QUnit.skipNXOWL('channel - command: should have add command when category is unfolded', async function (assert) {
+QUnit.test('channel - command: should have add command when category is unfolded', async function (assert) {
     assert.expect(1);
 
     await this.start();
@@ -174,7 +174,7 @@ QUnit.skipNXOWL('channel - command: should have add command when category is unf
     );
 });
 
-QUnit.skipNXOWL('channel - command: should not have add command when category is folded', async function (assert) {
+QUnit.test('channel - command: should not have add command when category is folded', async function (assert) {
     assert.expect(1);
 
     this.data['res.users.settings'].records.push({
@@ -190,7 +190,7 @@ QUnit.skipNXOWL('channel - command: should not have add command when category is
     );
 });
 
-QUnit.skipNXOWL('channel - states: close manually by clicking the title', async function (assert) {
+QUnit.test('channel - states: close manually by clicking the title', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -215,7 +215,7 @@ QUnit.skipNXOWL('channel - states: close manually by clicking the title', async 
     );
 });
 
-QUnit.skipNXOWL('channel - states: open manually by clicking the title', async function (assert) {
+QUnit.test('channel - states: open manually by clicking the title', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -240,7 +240,7 @@ QUnit.skipNXOWL('channel - states: open manually by clicking the title', async f
     );
 });
 
-QUnit.skipNXOWL('channel - states: close should update the value on the server', async function (assert) {
+QUnit.test('channel - states: close should update the value on the server', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -277,7 +277,7 @@ QUnit.skipNXOWL('channel - states: close should update the value on the server',
     );
 });
 
-QUnit.skipNXOWL('channel - states: open should update the value on the server', async function (assert) {
+QUnit.test('channel - states: open should update the value on the server', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -314,7 +314,7 @@ QUnit.skipNXOWL('channel - states: open should update the value on the server', 
     );
 });
 
-QUnit.skipNXOWL('channel - states: close from the bus', async function (assert) {
+QUnit.test('channel - states: close from the bus', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -344,7 +344,7 @@ QUnit.skipNXOWL('channel - states: close from the bus', async function (assert) 
     );
 });
 
-QUnit.skipNXOWL('channel - states: open from the bus', async function (assert) {
+QUnit.test('channel - states: open from the bus', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -374,7 +374,7 @@ QUnit.skipNXOWL('channel - states: open from the bus', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('channel - states: the active category item should be visble even if the category is closed', async function (assert) {
+QUnit.test('channel - states: the active category item should be visble even if the category is closed', async function (assert) {
     assert.expect(4);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -434,7 +434,7 @@ QUnit.skipNXOWL('channel - states: the active category item should be visble eve
     );
 });
 
-QUnit.skipNXOWL('chat - counter: should not have a counter if the category is unfolded and without unread messages', async function (assert) {
+QUnit.test('chat - counter: should not have a counter if the category is unfolded and without unread messages', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -452,7 +452,7 @@ QUnit.skipNXOWL('chat - counter: should not have a counter if the category is un
     );
 });
 
-QUnit.skipNXOWL('chat - counter: should not have a counter if the category is unfolded and with unread messagens', async function (assert) {
+QUnit.test('chat - counter: should not have a counter if the category is unfolded and with unread messagens', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -469,7 +469,7 @@ QUnit.skipNXOWL('chat - counter: should not have a counter if the category is un
     );
 });
 
-QUnit.skipNXOWL('chat - counter: should not have a counter if category is folded and without unread messages', async function (assert) {
+QUnit.test('chat - counter: should not have a counter if category is folded and without unread messages', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -491,7 +491,7 @@ QUnit.skipNXOWL('chat - counter: should not have a counter if category is folded
     );
 });
 
-QUnit.skipNXOWL('chat - counter: should have correct value of unread threads if category is folded and with unread messages', async function (assert) {
+QUnit.test('chat - counter: should have correct value of unread threads if category is folded and with unread messages', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -517,7 +517,7 @@ QUnit.skipNXOWL('chat - counter: should have correct value of unread threads if 
     );
 });
 
-QUnit.skipNXOWL('chat - command: should have add command when category is unfolded', async function (assert) {
+QUnit.test('chat - command: should have add command when category is unfolded', async function (assert) {
     assert.expect(1);
 
     await this.start();
@@ -528,7 +528,7 @@ QUnit.skipNXOWL('chat - command: should have add command when category is unfold
     );
 });
 
-QUnit.skipNXOWL('chat - command: should not have add command when category is folded', async function (assert) {
+QUnit.test('chat - command: should not have add command when category is folded', async function (assert) {
     assert.expect(1);
 
     this.data['res.users.settings'].records.push({
@@ -544,7 +544,7 @@ QUnit.skipNXOWL('chat - command: should not have add command when category is fo
     );
 });
 
-QUnit.skipNXOWL('chat - states: close manually by clicking the title', async function (assert) {
+QUnit.test('chat - states: close manually by clicking the title', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -574,7 +574,7 @@ QUnit.skipNXOWL('chat - states: close manually by clicking the title', async fun
     );
 });
 
-QUnit.skipNXOWL('chat - states: open manually by clicking the title', async function (assert) {
+QUnit.test('chat - states: open manually by clicking the title', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -604,7 +604,7 @@ QUnit.skipNXOWL('chat - states: open manually by clicking the title', async func
     );
 });
 
-QUnit.skipNXOWL('chat - states: close should call update server data', async function (assert) {
+QUnit.test('chat - states: close should call update server data', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -641,7 +641,7 @@ QUnit.skipNXOWL('chat - states: close should call update server data', async fun
     );
 });
 
-QUnit.skipNXOWL('chat - states: open should call update server data', async function (assert) {
+QUnit.test('chat - states: open should call update server data', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -678,7 +678,7 @@ QUnit.skipNXOWL('chat - states: open should call update server data', async func
     );
 });
 
-QUnit.skipNXOWL('chat - states: close from the bus', async function (assert) {
+QUnit.test('chat - states: close from the bus', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -713,7 +713,7 @@ QUnit.skipNXOWL('chat - states: close from the bus', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('chat - states: open from the bus', async function (assert) {
+QUnit.test('chat - states: open from the bus', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -748,7 +748,7 @@ QUnit.skipNXOWL('chat - states: open from the bus', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('chat - states: the active category item should be visble even if the category is closed', async function (assert) {
+QUnit.test('chat - states: the active category item should be visble even if the category is closed', async function (assert) {
     assert.expect(4);
 
     this.data['mail.channel'].records.push({

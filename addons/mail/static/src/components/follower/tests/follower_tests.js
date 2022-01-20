@@ -39,7 +39,7 @@ QUnit.module('follower_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('base rendering not editable', async function (assert) {
+QUnit.test('base rendering not editable', async function (assert) {
     assert.expect(5);
 
     await this.start();
@@ -86,7 +86,7 @@ QUnit.skipNXOWL('base rendering not editable', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('base rendering editable', async function (assert) {
+QUnit.test('base rendering editable', async function (assert) {
     assert.expect(6);
 
     await this.start();
@@ -137,7 +137,7 @@ QUnit.skipNXOWL('base rendering editable', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('click on partner follower details', async function (assert) {
+QUnit.test('click on partner follower details', async function (assert) {
     assert.expect(7);
 
     const openFormDef = makeDeferred();

@@ -1883,7 +1883,7 @@ QUnit.test('failure on loading messages should display error', async function (a
     );
 });
 
-QUnit.skipNXOWL('failure on loading messages should prompt retry button', async function (assert) {
+QUnit.test('failure on loading messages should prompt retry button', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({

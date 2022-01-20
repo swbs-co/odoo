@@ -420,7 +420,7 @@ QUnit.skipNXOWL('new message', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('no new message when discuss is open', async function (assert) {
+QUnit.test('no new message when discuss is open', async function (assert) {
     assert.expect(3);
 
     const { createMessagingMenuComponent } = await this.start({

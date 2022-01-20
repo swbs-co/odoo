@@ -27,7 +27,7 @@ QUnit.module('file_uploader_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('no conflicts between file uploaders', async function (assert) {
+QUnit.test('no conflicts between file uploaders', async function (assert) {
     assert.expect(2);
 
     this.data['res.partner'].records.push({ id: 100 }, { id: 101 });

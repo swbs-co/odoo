@@ -39,7 +39,7 @@ QUnit.module('chat_window_manager_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('[technical] messaging not created', async function (assert) {
+QUnit.test('[technical] messaging not created', async function (assert) {
     /**
      * Creation of messaging in env is async due to generation of models being
      * async. Generation of models is async because it requires parsing of all
@@ -72,7 +72,7 @@ QUnit.skipNXOWL('[technical] messaging not created', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('initial mount', async function (assert) {
+QUnit.test('initial mount', async function (assert) {
     assert.expect(1);
 
     await this.start();
@@ -83,7 +83,7 @@ QUnit.skipNXOWL('initial mount', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('chat window new message: basic rendering', async function (assert) {
+QUnit.test('chat window new message: basic rendering', async function (assert) {
     assert.expect(10);
 
     const { createMessagingMenuComponent } = await this.start();
@@ -168,7 +168,7 @@ QUnit.skipNXOWL('chat window new message: focused on open [REQUIRE FOCUS]', asyn
     );
 });
 
-QUnit.skipNXOWL('chat window new message: close', async function (assert) {
+QUnit.test('chat window new message: close', async function (assert) {
     assert.expect(1);
 
     const { createMessagingMenuComponent } = await this.start();
@@ -189,7 +189,7 @@ QUnit.skipNXOWL('chat window new message: close', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('chat window new message: fold', async function (assert) {
+QUnit.test('chat window new message: fold', async function (assert) {
     assert.expect(6);
 
     const { createMessagingMenuComponent } = await this.start();
@@ -456,7 +456,7 @@ QUnit.skipNXOWL('new message autocomplete should automatically select first resu
     );
 });
 
-QUnit.skipNXOWL('chat window: basic rendering', async function (assert) {
+QUnit.test('chat window: basic rendering', async function (assert) {
     assert.expect(14);
 
     // channel that is expected to be found in the messaging menu
@@ -547,7 +547,7 @@ QUnit.skipNXOWL('chat window: basic rendering', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('chat window: fold', async function (assert) {
+QUnit.test('chat window: fold', async function (assert) {
     assert.expect(9);
 
     // channel that is expected to be found in the messaging menu
@@ -602,7 +602,7 @@ QUnit.skipNXOWL('chat window: fold', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('chat window: open / close', async function (assert) {
+QUnit.test('chat window: open / close', async function (assert) {
     assert.expect(10);
 
     // channel that is expected to be found in the messaging menu
@@ -664,7 +664,7 @@ QUnit.skipNXOWL('chat window: open / close', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('Mobile: opening a chat window should not update channel state on the server', async function (assert) {
+QUnit.test('Mobile: opening a chat window should not update channel state on the server', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -698,7 +698,7 @@ QUnit.skipNXOWL('Mobile: opening a chat window should not update channel state o
     );
 });
 
-QUnit.skipNXOWL('Mobile: closing a chat window should not update channel state on the server', async function (assert) {
+QUnit.test('Mobile: closing a chat window should not update channel state on the server', async function (assert) {
     assert.expect(3);
 
     this.data['mail.channel'].records.push({
@@ -739,7 +739,7 @@ QUnit.skipNXOWL('Mobile: closing a chat window should not update channel state o
     );
 });
 
-QUnit.skipNXOWL("Mobile: chat window shouldn't open automatically after receiving a new message", async function (assert) {
+QUnit.test("Mobile: chat window shouldn't open automatically after receiving a new message", async function (assert) {
     assert.expect(1);
 
     this.data['res.partner'].records.push({ id: 10, name: "Demo" });
@@ -782,7 +782,7 @@ QUnit.skipNXOWL("Mobile: chat window shouldn't open automatically after receivin
     );
 });
 
-QUnit.skipNXOWL('chat window: close on ESCAPE', async function (assert) {
+QUnit.test('chat window: close on ESCAPE', async function (assert) {
     assert.expect(10);
 
     // expected partner to be found by mention during the test
@@ -868,7 +868,7 @@ QUnit.skipNXOWL('chat window: close on ESCAPE', async function (assert) {
     assert.verifySteps(['rpc:channel_fold/closed']);
 });
 
-QUnit.skipNXOWL('focus next visible chat window when closing current chat window with ESCAPE [REQUIRE FOCUS]', async function (assert) {
+QUnit.test('focus next visible chat window when closing current chat window with ESCAPE [REQUIRE FOCUS]', async function (assert) {
     /**
      * computation uses following info:
      * ([mocked] global window width: @see `mail/static/src/utils/test_utils.js:start()` method)
@@ -924,7 +924,7 @@ QUnit.skipNXOWL('focus next visible chat window when closing current chat window
     );
 });
 
-QUnit.skipNXOWL('chat window: composer state conservation on toggle discuss', async function (assert) {
+QUnit.test('chat window: composer state conservation on toggle discuss', async function (assert) {
     assert.expect(6);
 
     // channel that is expected to be found in the messaging menu
@@ -994,7 +994,7 @@ QUnit.skipNXOWL('chat window: composer state conservation on toggle discuss', as
     );
 });
 
-QUnit.skipNXOWL('chat window: scroll conservation on toggle discuss', async function (assert) {
+QUnit.test('chat window: scroll conservation on toggle discuss', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -1062,7 +1062,7 @@ QUnit.skipNXOWL('chat window: scroll conservation on toggle discuss', async func
     );
 });
 
-QUnit.skipNXOWL('open 2 different chat windows: enough screen width [REQUIRE FOCUS]', async function (assert) {
+QUnit.test('open 2 different chat windows: enough screen width [REQUIRE FOCUS]', async function (assert) {
     /**
      * computation uses following info:
      * ([mocked] global window width: @see `mail/static/src/utils/test_utils.js:start()` method)
@@ -1195,7 +1195,7 @@ QUnit.skipNXOWL('open 2 different chat windows: enough screen width [REQUIRE FOC
     );
 });
 
-QUnit.skipNXOWL('open 2 chat windows: check shift operations are available', async function (assert) {
+QUnit.test('open 2 chat windows: check shift operations are available', async function (assert) {
     assert.expect(9);
 
     // 2 channels are expected to be found in the messaging menu
@@ -1280,7 +1280,7 @@ QUnit.skipNXOWL('open 2 chat windows: check shift operations are available', asy
     );
 });
 
-QUnit.skipNXOWL('open 2 folded chat windows: check shift operations are available', async function (assert) {
+QUnit.test('open 2 folded chat windows: check shift operations are available', async function (assert) {
     /**
      * computation uses following info:
      * ([mocked] global window width: 900px)
@@ -1406,7 +1406,7 @@ QUnit.skipNXOWL('open 2 folded chat windows: check shift operations are availabl
     );
 });
 
-QUnit.skipNXOWL('open 3 different chat windows: not enough screen width', async function (assert) {
+QUnit.test('open 3 different chat windows: not enough screen width', async function (assert) {
     /**
      * computation uses following info:
      * ([mocked] global window width: 900px)
@@ -1564,7 +1564,7 @@ QUnit.skipNXOWL('open 3 different chat windows: not enough screen width', async 
     );
 });
 
-QUnit.skipNXOWL('chat window: switch on TAB', async function (assert) {
+QUnit.test('chat window: switch on TAB', async function (assert) {
     assert.expect(10);
 
     // 2 channels are expected to be found in the messaging menu
@@ -1665,7 +1665,7 @@ QUnit.skipNXOWL('chat window: switch on TAB', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('chat window: TAB cycle with 3 open chat windows [REQUIRE FOCUS]', async function (assert) {
+QUnit.test('chat window: TAB cycle with 3 open chat windows [REQUIRE FOCUS]', async function (assert) {
     /**
      * InnerWith computation uses following info:
      * ([mocked] global window width: @see `mail/static/src/utils/test_utils.js:start()` method)
@@ -1766,7 +1766,7 @@ QUnit.skipNXOWL('chat window: TAB cycle with 3 open chat windows [REQUIRE FOCUS]
     );
 });
 
-QUnit.skipNXOWL('chat window with a thread: keep scroll position in message list on folded', async function (assert) {
+QUnit.test('chat window with a thread: keep scroll position in message list on folded', async function (assert) {
     assert.expect(3);
 
     // channel that is expected to be found in the messaging menu
@@ -1848,7 +1848,7 @@ QUnit.skipNXOWL('chat window with a thread: keep scroll position in message list
     );
 });
 
-QUnit.skipNXOWL('chat window should scroll to the newly posted message just after posting it', async function (assert) {
+QUnit.test('chat window should scroll to the newly posted message just after posting it', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -1886,7 +1886,7 @@ QUnit.skipNXOWL('chat window should scroll to the newly posted message just afte
     );
 });
 
-QUnit.skipNXOWL('chat window: post message on non-mailing channel with "CTRL-Enter" keyboard shortcut for small screen size', async function (assert) {
+QUnit.test('chat window: post message on non-mailing channel with "CTRL-Enter" keyboard shortcut for small screen size', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -1922,7 +1922,7 @@ QUnit.skipNXOWL('chat window: post message on non-mailing channel with "CTRL-Ent
     );
 });
 
-QUnit.skipNXOWL('chat window with a thread: keep scroll position in message list on toggle discuss when folded', async function (assert) {
+QUnit.test('chat window with a thread: keep scroll position in message list on toggle discuss when folded', async function (assert) {
     assert.expect(2);
 
     // channel that is expected to be found in the messaging menu
@@ -1993,7 +1993,7 @@ QUnit.skipNXOWL('chat window with a thread: keep scroll position in message list
     );
 });
 
-QUnit.skipNXOWL('chat window with a thread: keep scroll position in message list on toggle discuss when folded', async function (assert) {
+QUnit.test('chat window with a thread: keep scroll position in message list on toggle discuss when folded', async function (assert) {
     assert.expect(2);
 
     // channel that is expected to be found in the messaging menu
@@ -2064,7 +2064,7 @@ QUnit.skipNXOWL('chat window with a thread: keep scroll position in message list
     );
 });
 
-QUnit.skipNXOWL('chat window does not fetch messages if hidden', async function (assert) {
+QUnit.test('chat window does not fetch messages if hidden', async function (assert) {
     /**
      * computation uses following info:
      * ([mocked] global window width: 900px)
@@ -2180,7 +2180,7 @@ QUnit.skipNXOWL('chat window does not fetch messages if hidden', async function 
     );
 });
 
-QUnit.skipNXOWL('new message separator is shown in a chat window of a chat on receiving new message if there is a history of conversation', async function (assert) {
+QUnit.test('new message separator is shown in a chat window of a chat on receiving new message if there is a history of conversation', async function (assert) {
     assert.expect(3);
 
     this.data['res.partner'].records.push({ id: 10, name: "Demo" });
@@ -2235,7 +2235,7 @@ QUnit.skipNXOWL('new message separator is shown in a chat window of a chat on re
     );
 });
 
-QUnit.skipNXOWL('new message separator is not shown in a chat window of a chat on receiving new message if there is no history of conversation', async function (assert) {
+QUnit.test('new message separator is not shown in a chat window of a chat on receiving new message if there is no history of conversation', async function (assert) {
     assert.expect(1);
 
     this.data['res.partner'].records.push({ id: 10, name: "Demo" });
@@ -2270,7 +2270,7 @@ QUnit.skipNXOWL('new message separator is not shown in a chat window of a chat o
     );
 });
 
-QUnit.skipNXOWL('focusing a chat window of a chat should make new message separator disappear [REQUIRE FOCUS]', async function (assert) {
+QUnit.test('focusing a chat window of a chat should make new message separator disappear [REQUIRE FOCUS]', async function (assert) {
     assert.expect(2);
 
     this.data['res.partner'].records.push({ id: 10, name: "Demo" });
@@ -2332,7 +2332,7 @@ QUnit.skipNXOWL('focusing a chat window of a chat should make new message separa
     );
 });
 
-QUnit.skipNXOWL('Textual representations of shift previous/next operations are correctly mapped to left/right in LTR locale', async function (assert) {
+QUnit.test('Textual representations of shift previous/next operations are correctly mapped to left/right in LTR locale', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push(
@@ -2353,7 +2353,7 @@ QUnit.skipNXOWL('Textual representations of shift previous/next operations are c
     );
 });
 
-QUnit.skipNXOWL('Textual representations of shift previous/next operations are correctly mapped to right/left in RTL locale', async function (assert) {
+QUnit.test('Textual representations of shift previous/next operations are correctly mapped to right/left in RTL locale', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push(
@@ -2390,7 +2390,7 @@ QUnit.skipNXOWL('Textual representations of shift previous/next operations are c
     );
 });
 
-QUnit.skipNXOWL('chat window should open when receiving a new DM', async function (assert) {
+QUnit.test('chat window should open when receiving a new DM', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -2427,7 +2427,7 @@ QUnit.skipNXOWL('chat window should open when receiving a new DM', async functio
     );
 });
 
-QUnit.skipNXOWL('chat window should remain folded when new message is received', async function (assert) {
+QUnit.test('chat window should remain folded when new message is received', async function (assert) {
     assert.expect(1);
 
     this.data['res.partner'].records.push({ id: 10, name: "Demo" });
