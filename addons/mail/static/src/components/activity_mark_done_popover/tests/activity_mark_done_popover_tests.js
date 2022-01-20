@@ -25,7 +25,7 @@ QUnit.module('activity_mark_done_popover_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('activity mark done popover simplest layout', async function (assert) {
+QUnit.test('activity mark done popover simplest layout', async function (assert) {
     assert.expect(6);
 
     this.data['res.partner'].records.push({
@@ -78,7 +78,7 @@ QUnit.skipNXOWL('activity mark done popover simplest layout', async function (as
     );
 });
 
-QUnit.skipNXOWL('activity with force next mark done popover simplest layout', async function (assert) {
+QUnit.test('activity with force next mark done popover simplest layout', async function (assert) {
     assert.expect(6);
 
     this.data['res.partner'].records.push({
@@ -176,7 +176,7 @@ QUnit.test('activity mark done popover mark done without feedback', async functi
     );
 });
 
-QUnit.skipNXOWL('activity mark done popover mark done with feedback', async function (assert) {
+QUnit.test('activity mark done popover mark done with feedback', async function (assert) {
     assert.expect(7);
 
     this.data['res.partner'].records.push({
@@ -224,7 +224,7 @@ QUnit.skipNXOWL('activity mark done popover mark done with feedback', async func
     );
 });
 
-QUnit.skipNXOWL('activity mark done popover mark done and schedule next', async function (assert) {
+QUnit.test('activity mark done popover mark done and schedule next', async function (assert) {
     assert.expect(6);
 
     const bus = new Bus();

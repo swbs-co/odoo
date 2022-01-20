@@ -38,7 +38,7 @@ registerModel({
                 data2.id = data.id;
             }
             if ('note' in data) {
-                data2.note = markup(data.note);
+                data2.note = data.note && markup(data.note);
             }
             if ('state' in data) {
                 data2.state = data.state;
