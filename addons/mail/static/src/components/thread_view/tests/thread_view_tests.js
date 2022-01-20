@@ -8,6 +8,7 @@ import {
     dragenterFiles,
     start,
 } from '@mail/utils/test_utils';
+import { nextTick } from '@web/../tests/helpers/utils';
 
 QUnit.module('mail', {}, function () {
 QUnit.module('components', {}, function () {
@@ -1918,7 +1919,7 @@ QUnit.test('failure on loading messages should prompt retry button', async funct
     );
 });
 
-QUnit.skipNXOWL('failure on loading more messages should not alter message list display', async function (assert) {
+QUnit.test('failure on loading more messages should not alter message list display', async function (assert) {
     assert.expect(1);
 
     // first call needs to be successful as it is the initial loading of messages
@@ -1961,6 +1962,10 @@ QUnit.skipNXOWL('failure on loading more messages should not alter message list 
     await createThreadViewComponent(threadViewer.threadView, undefined, { waitUntilMessagesLoaded: false });
 
     messageFetchShouldFail = true;
+
+    // TODO review for Seb
+    await nextTick();
+
     await afterNextRender(() => document.querySelector('.o_MessageList_loadMore').click());
     assert.containsN(
         document.body,
@@ -1970,7 +1975,7 @@ QUnit.skipNXOWL('failure on loading more messages should not alter message list 
     );
 });
 
-QUnit.skipNXOWL('failure on loading more messages should display error and prompt retry button', async function (assert) {
+QUnit.test('failure on loading more messages should display error and prompt retry button', async function (assert) {
     assert.expect(3);
 
     // first call needs to be successful as it is the initial loading of messages
@@ -2013,6 +2018,10 @@ QUnit.skipNXOWL('failure on loading more messages should display error and promp
     await createThreadViewComponent(threadViewer.threadView, undefined, { waitUntilMessagesLoaded: false });
 
     messageFetchShouldFail = true;
+
+    // TODO review for Seb
+    await nextTick();
+
     await afterNextRender(() => document.querySelector('.o_MessageList_loadMore').click());
     assert.containsOnce(
         document.body,
