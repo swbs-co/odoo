@@ -18,6 +18,8 @@ import { DialogContainer } from "@web/core/dialog/dialog_container";
 import { getFixture } from "@web/../tests/helpers/utils";
 import { nextTick } from "@web/../tests/helpers/utils";
 
+const { onMounted } = owl;
+
 const serviceRegistry = registry.category("services");
 
 QUnit.module("base_automation", {}, function () {
@@ -49,7 +51,7 @@ QUnit.module("base_automation", {}, function () {
         },
     });
 
-    QUnit.skipNXOWL("Error due to an automated action", async function (assert) {
+    QUnit.test("Error due to an automated action", async function (assert) {
         assert.expect(4);
 
         const error = new RPCError();
@@ -79,7 +81,7 @@ QUnit.module("base_automation", {}, function () {
 
         const env = await makeTestEnv();
         const { Component: Container, props } = registry.category("main_components").get("DialogContainer");
-        const dialogContainer = await owl.mount(Container, { target: getFixture(), env, props });
+        const dialogContainer = await owl.mount(Container, getFixture(), { env, props });
 
         const errorEvent = new PromiseRejectionEvent("error", { reason: {
             message: error,
@@ -93,7 +95,7 @@ QUnit.module("base_automation", {}, function () {
         assert.containsOnce(dialogContainer, '.modal .o_edit_action_button');
     });
 
-    QUnit.skipNXOWL("Error not due to an automated action", async function (assert) {
+    QUnit.test("Error not due to an automated action", async function (assert) {
         assert.expect(3);
 
         const error = new RPCError();
@@ -106,15 +108,15 @@ QUnit.module("base_automation", {}, function () {
         });
 
         patchWithCleanup(DialogContainer.prototype, {
-            mounted() {
+            setup() {
                 this._super();
-                this.el.classList.add("o_dialog_container");
+                onMounted(() => this.el.classList.add("o_dialog_container"));
             }
         });
 
         const env = await makeTestEnv();
         const { Component: Container, props } = registry.category("main_components").get("DialogContainer");
-        const dialogContainer = await owl.mount(Container, { target: getFixture(), env, props });
+        const dialogContainer = await owl.mount(Container, getFixture(), { env, props });
 
         const errorEvent = new PromiseRejectionEvent("error", { reason: {
             message: error,
