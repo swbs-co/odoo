@@ -721,7 +721,7 @@ QUnit.test('new messages separator on posting message', async function (assert) 
     );
 });
 
-QUnit.skipNXOWL('basic rendering of canceled notification', async function (assert) {
+QUnit.test('basic rendering of canceled notification', async function (assert) {
     assert.expect(8);
 
     this.data['mail.channel'].records.push({ id: 11 });
