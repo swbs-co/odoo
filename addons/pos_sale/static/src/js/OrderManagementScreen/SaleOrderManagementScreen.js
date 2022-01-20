@@ -3,7 +3,6 @@ odoo.define('pos_sale.SaleOrderManagementScreen', function (require) {
 
     const { sprintf } = require('web.utils');
     const { parse } = require('web.field_utils');
-    const { useContext } = owl;
     const { useListener } = require('web.custom_hooks');
     const ControlButtonsMixin = require('point_of_sale.ControlButtonsMixin');
     const NumberBuffer = require('point_of_sale.NumberBuffer');
@@ -23,6 +22,7 @@ odoo.define('pos_sale.SaleOrderManagementScreen', function (require) {
             useListener('search', this._onSearch);
 
             SaleOrderFetcher.setComponent(this);
+            // NXOWL no more Context/useContext
             this.orderManagementContext = useContext(contexts.orderManagement);
         }
         mounted() {

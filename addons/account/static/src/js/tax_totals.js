@@ -94,7 +94,7 @@ class TaxGroupComponent extends Component {
         });
     }
 }
-TaxGroupComponent.props = ['taxGroup', 'allowTaxEdition', 'record'];
+TaxGroupComponent.props = ['taxGroup', 'allowTaxEdition', 'record', 'onChangeTaxGroup'];
 TaxGroupComponent.template = 'account.TaxGroupComponent';
 
 /**

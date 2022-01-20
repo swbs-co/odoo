@@ -1,7 +1,6 @@
 odoo.define('point_of_sale.ClientListScreen', function(require) {
     'use strict';
 
-    const { debounce } = owl.utils;
     const PosComponent = require('point_of_sale.PosComponent');
     const Registries = require('point_of_sale.Registries');
     const { useListener } = require('web.custom_hooks');
@@ -22,8 +21,7 @@ odoo.define('point_of_sale.ClientListScreen', function(require) {
      * @props client - originally selected client
      */
     class ClientListScreen extends PosComponent {
-        constructor() {
-            super(...arguments);
+        setup() {
             useListener('click-save', () => this.env.bus.trigger('save-customer'));
             useListener('click-edit', () => this.editClient());
             useListener('save-changes', this.saveChanges);
@@ -45,7 +43,8 @@ odoo.define('point_of_sale.ClientListScreen', function(require) {
                     }
                 },
             };
-            this.updateClientList = debounce(this.updateClientList, 70);
+            // NXOWL remove debounce
+            //this.updateClientList = debounce(this.updateClientList, 70);
         }
         // Lifecycle hooks
         back() {

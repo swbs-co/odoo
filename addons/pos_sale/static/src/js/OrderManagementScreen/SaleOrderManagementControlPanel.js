@@ -1,7 +1,6 @@
 odoo.define('pos_sale.SaleOrderManagementControlPanel', function (require) {
     'use strict';
 
-    const { useContext } = owl;
     const { useAutofocus, useListener } = require('web.custom_hooks');
     const PosComponent = require('point_of_sale.PosComponent');
     const Registries = require('point_of_sale.Registries');
@@ -27,10 +26,10 @@ odoo.define('pos_sale.SaleOrderManagementControlPanel', function (require) {
      * @emits search
      */
     class SaleOrderManagementControlPanel extends PosComponent {
-        constructor() {
-            super(...arguments);
+        setup() {
             // We are using context because we want the `searchString` to be alive
             // even if this component is destroyed (unmounted).
+            // NXOWL no more Context/useContext
             this.orderManagementContext = useContext(contexts.orderManagement);
             useListener('clear-search', this._onClearSearch);
             useAutofocus({ selector: 'input' });

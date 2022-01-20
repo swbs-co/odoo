@@ -1,9 +1,7 @@
 odoo.define('point_of_sale.NumberBuffer', function(require) {
     'use strict';
 
-    const { Component } = owl;
-    const { EventBus } = owl.core;
-    const { onMounted, onWillUnmount, useExternalListener } = owl;
+    const { Component, onMounted, onWillUnmount, useExternalListener, EventBus } = owl;
     const { useListener } = require('web.custom_hooks');
     const { parse } = require('web.field_utils');
     const { BarcodeEvents } = require('barcodes.BarcodeEvents');
