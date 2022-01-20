@@ -22,7 +22,7 @@ odoo.define('google_drive.gdrive_integration', function (require) {
 
         QUnit.module('Google Drive ActionMenus');
 
-        QUnit.skipNXOWL('rendering of the google drive attachments in action menus', async function (assert) {
+        QUnit.test('rendering of the google drive attachments in action menus', async function (assert) {
             assert.expect(3);
 
             const form = await testUtils.createView({
@@ -95,7 +95,7 @@ odoo.define('google_drive.gdrive_integration', function (require) {
             form.destroy();
         });
 
-        QUnit.skipNXOWL('click on the google drive attachments after switching records', async function (assert) {
+        QUnit.test('click on the google drive attachments after switching records', async function (assert) {
             assert.expect(4);
 
             let currentRecordId = 1;
