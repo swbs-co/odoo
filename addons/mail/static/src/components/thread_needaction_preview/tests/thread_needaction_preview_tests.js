@@ -27,7 +27,7 @@ QUnit.module('thread_needaction_preview_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('mark as read', async function (assert) {
+QUnit.test('mark as read', async function (assert) {
     assert.expect(5);
 
     this.data['mail.message'].records.push({
@@ -89,7 +89,7 @@ QUnit.skipNXOWL('mark as read', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('click on preview should mark as read and open the thread', async function (assert) {
+QUnit.test('click on preview should mark as read and open the thread', async function (assert) {
     assert.expect(6);
 
     this.data['mail.message'].records.push({
@@ -156,7 +156,7 @@ QUnit.skipNXOWL('click on preview should mark as read and open the thread', asyn
     );
 });
 
-QUnit.skipNXOWL('click on expand from chat window should close the chat window and open the form view', async function (assert) {
+QUnit.test('click on expand from chat window should close the chat window and open the form view', async function (assert) {
     assert.expect(8);
 
     const bus = new Bus();
@@ -232,7 +232,7 @@ QUnit.skipNXOWL('click on expand from chat window should close the chat window a
     );
 });
 
-QUnit.skipNXOWL('[technical] opening a non-channel chat window should not call channel_fold', async function (assert) {
+QUnit.test('[technical] opening a non-channel chat window should not call channel_fold', async function (assert) {
     // channel_fold should not be called when opening non-channels in chat
     // window, because there is no server sync of fold state for them.
     assert.expect(3);
@@ -292,7 +292,7 @@ QUnit.skipNXOWL('[technical] opening a non-channel chat window should not call c
     );
 });
 
-QUnit.skipNXOWL('preview should display last needaction message preview even if there is a more recent message that is not needaction in the thread', async function (assert) {
+QUnit.test('preview should display last needaction message preview even if there is a more recent message that is not needaction in the thread', async function (assert) {
     assert.expect(2);
 
     this.data['res.partner'].records.push({
@@ -343,7 +343,7 @@ QUnit.skipNXOWL('preview should display last needaction message preview even if 
     );
 });
 
-QUnit.skipNXOWL('chat window header should not have unread counter for non-channel thread', async function (assert) {
+QUnit.test('chat window header should not have unread counter for non-channel thread', async function (assert) {
     assert.expect(2);
 
     this.data['res.partner'].records.push({ id: 11 });

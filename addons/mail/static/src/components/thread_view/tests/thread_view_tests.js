@@ -31,7 +31,7 @@ QUnit.module('thread_view_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('dragover files on thread with composer', async function (assert) {
+QUnit.test('dragover files on thread with composer', async function (assert) {
     assert.expect(1);
 
     this.data['res.partner'].records.push(
@@ -73,7 +73,7 @@ QUnit.skipNXOWL('dragover files on thread with composer', async function (assert
     );
 });
 
-QUnit.skipNXOWL('message list desc order', async function (assert) {
+QUnit.test('message list desc order', async function (assert) {
     assert.expect(5);
 
     for (let i = 0; i <= 60; i++) {
@@ -172,7 +172,7 @@ QUnit.skipNXOWL('message list desc order', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('message list asc order', async function (assert) {
+QUnit.test('message list asc order', async function (assert) {
     assert.expect(5);
 
     for (let i = 0; i <= 60; i++) {
@@ -269,7 +269,7 @@ QUnit.skipNXOWL('message list asc order', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('mark channel as fetched when a new message is loaded and as seen when focusing composer [REQUIRE FOCUS]', async function (assert) {
+QUnit.test('mark channel as fetched when a new message is loaded and as seen when focusing composer [REQUIRE FOCUS]', async function (assert) {
     assert.expect(7);
 
     this.data['res.partner'].records.push({
@@ -354,7 +354,7 @@ QUnit.skipNXOWL('mark channel as fetched when a new message is loaded and as see
     );
 });
 
-QUnit.skipNXOWL('mark channel as fetched and seen when a new message is loaded if composer is focused [REQUIRE FOCUS]', async function (assert) {
+QUnit.test('mark channel as fetched and seen when a new message is loaded if composer is focused [REQUIRE FOCUS]', async function (assert) {
     assert.expect(3);
 
     this.data['res.partner'].records.push({
@@ -420,7 +420,7 @@ QUnit.skipNXOWL('mark channel as fetched and seen when a new message is loaded i
     );
 });
 
-QUnit.skipNXOWL('show message subject when subject is not the same as the thread name', async function (assert) {
+QUnit.test('show message subject when subject is not the same as the thread name', async function (assert) {
     assert.expect(3);
 
     this.data['mail.channel'].records.push({
@@ -464,7 +464,7 @@ QUnit.skipNXOWL('show message subject when subject is not the same as the thread
     );
 });
 
-QUnit.skipNXOWL('do not show message subject when subject is the same as the thread name', async function (assert) {
+QUnit.test('do not show message subject when subject is the same as the thread name', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -498,7 +498,7 @@ QUnit.skipNXOWL('do not show message subject when subject is the same as the thr
     );
 });
 
-QUnit.skipNXOWL('[technical] new messages separator on posting message', async function (assert) {
+QUnit.test('[technical] new messages separator on posting message', async function (assert) {
     // technical as we need to remove focus from text input to avoid `set_last_seen_message` call
     assert.expect(4);
 
@@ -560,7 +560,7 @@ QUnit.skipNXOWL('[technical] new messages separator on posting message', async f
     );
 });
 
-QUnit.skipNXOWL('new messages separator on receiving new message [REQUIRE FOCUS]', async function (assert) {
+QUnit.test('new messages separator on receiving new message [REQUIRE FOCUS]', async function (assert) {
     assert.expect(6);
 
     this.data['res.partner'].records.push({
@@ -671,7 +671,7 @@ QUnit.skipNXOWL('new messages separator on receiving new message [REQUIRE FOCUS]
     );
 });
 
-QUnit.skipNXOWL('new messages separator on posting message', async function (assert) {
+QUnit.test('new messages separator on posting message', async function (assert) {
     assert.expect(4);
 
     this.data['mail.channel'].records = [{
@@ -812,7 +812,7 @@ QUnit.skipNXOWL('basic rendering of canceled notification', async function (asse
     );
 });
 
-QUnit.skipNXOWL('should scroll to bottom on receiving new message if the list is initially scrolled to bottom (asc order)', async function (assert) {
+QUnit.test('should scroll to bottom on receiving new message if the list is initially scrolled to bottom (asc order)', async function (assert) {
     assert.expect(2);
 
     // Needed partner & user to allow simulation of message reception
@@ -885,7 +885,7 @@ QUnit.skipNXOWL('should scroll to bottom on receiving new message if the list is
     );
 });
 
-QUnit.skipNXOWL('should not scroll on receiving new message if the list is initially scrolled anywhere else than bottom (asc order)', async function (assert) {
+QUnit.test('should not scroll on receiving new message if the list is initially scrolled anywhere else than bottom (asc order)', async function (assert) {
     assert.expect(3);
 
     // Needed partner & user to allow simulation of message reception
@@ -969,7 +969,7 @@ QUnit.skipNXOWL('should not scroll on receiving new message if the list is initi
     );
 });
 
-QUnit.skipNXOWL("delete all attachments of message without content should no longer display the message", async function (assert) {
+QUnit.test("delete all attachments of message without content should no longer display the message", async function (assert) {
     assert.expect(2);
 
     this.data['ir.attachment'].records.push({
@@ -1028,7 +1028,7 @@ QUnit.skipNXOWL("delete all attachments of message without content should no lon
     );
 });
 
-QUnit.skipNXOWL('delete all attachments of a message with some text content should still keep it displayed', async function (assert) {
+QUnit.test('delete all attachments of a message with some text content should still keep it displayed', async function (assert) {
     assert.expect(2);
 
     this.data['ir.attachment'].records.push({
@@ -1088,7 +1088,7 @@ QUnit.skipNXOWL('delete all attachments of a message with some text content shou
     );
 });
 
-QUnit.skipNXOWL('delete all attachments of a message with tracking fields should still keep it displayed', async function (assert) {
+QUnit.test('delete all attachments of a message with tracking fields should still keep it displayed', async function (assert) {
     assert.expect(2);
 
     this.data['ir.attachment'].records.push({
@@ -1155,7 +1155,7 @@ QUnit.skipNXOWL('delete all attachments of a message with tracking fields should
     );
 });
 
-QUnit.skipNXOWL('Post a message containing an email address followed by a mention on another line', async function (assert) {
+QUnit.test('Post a message containing an email address followed by a mention on another line', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 11 });
@@ -1199,7 +1199,7 @@ QUnit.skipNXOWL('Post a message containing an email address followed by a mentio
     );
 });
 
-QUnit.skipNXOWL(`Mention a partner with special character (e.g. apostrophe ')`, async function (assert) {
+QUnit.test(`Mention a partner with special character (e.g. apostrophe ')`, async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 11 });
@@ -1242,7 +1242,7 @@ QUnit.skipNXOWL(`Mention a partner with special character (e.g. apostrophe ')`, 
     );
 });
 
-QUnit.skipNXOWL('mention 2 different partners that have the same name', async function (assert) {
+QUnit.test('mention 2 different partners that have the same name', async function (assert) {
     assert.expect(3);
 
     this.data['mail.channel'].records.push({ id: 11 });
@@ -1303,7 +1303,7 @@ QUnit.skipNXOWL('mention 2 different partners that have the same name', async fu
     );
 });
 
-QUnit.skipNXOWL('mention a channel with space in the name', async function (assert) {
+QUnit.test('mention a channel with space in the name', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -1348,7 +1348,7 @@ QUnit.skipNXOWL('mention a channel with space in the name', async function (asse
     );
 });
 
-QUnit.skipNXOWL('mention a channel with "&" in the name', async function (assert) {
+QUnit.test('mention a channel with "&" in the name', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -1393,7 +1393,7 @@ QUnit.skipNXOWL('mention a channel with "&" in the name', async function (assert
     );
 });
 
-QUnit.skipNXOWL('mention a channel on a second line when the first line contains #', async function (assert) {
+QUnit.test('mention a channel on a second line when the first line contains #', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -1438,7 +1438,7 @@ QUnit.skipNXOWL('mention a channel on a second line when the first line contains
     );
 });
 
-QUnit.skipNXOWL('mention a channel when replacing the space after the mention by another char', async function (assert) {
+QUnit.test('mention a channel when replacing the space after the mention by another char', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -1492,7 +1492,7 @@ QUnit.skipNXOWL('mention a channel when replacing the space after the mention by
     );
 });
 
-QUnit.skipNXOWL('mention 2 different channels that have the same name', async function (assert) {
+QUnit.test('mention 2 different channels that have the same name', async function (assert) {
     assert.expect(3);
 
     this.data['mail.channel'].records.push(
@@ -1552,7 +1552,7 @@ QUnit.skipNXOWL('mention 2 different channels that have the same name', async fu
     );
 });
 
-QUnit.skipNXOWL('show empty placeholder when thread contains no message', async function (assert) {
+QUnit.test('show empty placeholder when thread contains no message', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({ id: 11 });
@@ -1591,7 +1591,7 @@ QUnit.skipNXOWL('show empty placeholder when thread contains no message', async 
     );
 });
 
-QUnit.skipNXOWL('show empty placeholder when thread contains only empty messages', async function (assert) {
+QUnit.test('show empty placeholder when thread contains only empty messages', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({ id: 11 });
@@ -1637,7 +1637,7 @@ QUnit.skipNXOWL('show empty placeholder when thread contains only empty messages
     );
 });
 
-QUnit.skipNXOWL('message with subtype should be displayed (and not considered as empty)', async function (assert) {
+QUnit.test('message with subtype should be displayed (and not considered as empty)', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({ id: 11 });
@@ -1688,7 +1688,7 @@ QUnit.skipNXOWL('message with subtype should be displayed (and not considered as
     );
 });
 
-QUnit.skipNXOWL('[technical] message list with a full page of empty messages should show load more if there are other messages', async function (assert) {
+QUnit.test('[technical] message list with a full page of empty messages should show load more if there are other messages', async function (assert) {
     // Technical assumptions :
     // - /mail/channel/messages fetching exactly 30 messages,
     // - empty messages not being displayed
@@ -1746,7 +1746,7 @@ QUnit.skipNXOWL('[technical] message list with a full page of empty messages sho
     );
 });
 
-QUnit.skipNXOWL('first unseen message should be directly preceded by the new message separator if there is a transient message just before it while composer is not focused [REQUIRE FOCUS]', async function (assert) {
+QUnit.test('first unseen message should be directly preceded by the new message separator if there is a transient message just before it while composer is not focused [REQUIRE FOCUS]', async function (assert) {
     // The goal of removing the focus is to ensure the thread is not marked as seen automatically.
     // Indeed that would trigger set_last_seen_message no matter what, which is already covered by other tests.
     // The goal of this test is to cover the conditions specific to transient messages,
@@ -1821,7 +1821,7 @@ QUnit.skipNXOWL('first unseen message should be directly preceded by the new mes
     );
 });
 
-QUnit.skipNXOWL('composer should be focused automatically after clicking on the send button [REQUIRE FOCUS]', async function (assert) {
+QUnit.test('composer should be focused automatically after clicking on the send button [REQUIRE FOCUS]', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({ id: 20 });
@@ -1848,7 +1848,7 @@ QUnit.skipNXOWL('composer should be focused automatically after clicking on the 
     );
 });
 
-QUnit.skipNXOWL('failure on loading messages should display error', async function (assert) {
+QUnit.test('failure on loading messages should display error', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -2090,7 +2090,7 @@ QUnit.skipNXOWL('Retry loading more messages on failed load more messages should
     });
 });
 
-QUnit.skipNXOWL("highlight the message mentioning the current user inside the channel", async function (assert) {
+QUnit.test("highlight the message mentioning the current user inside the channel", async function (assert) {
     assert.expect(1);
 
     this.data['res.partner'].records.push({
@@ -2130,7 +2130,7 @@ QUnit.skipNXOWL("highlight the message mentioning the current user inside the ch
     );
 });
 
-QUnit.skipNXOWL("not highlighting the message if not mentioning the current user inside the channel", async function (assert) {
+QUnit.test("not highlighting the message if not mentioning the current user inside the channel", async function (assert) {
     assert.expect(1);
 
     this.data['res.partner'].records.push({
