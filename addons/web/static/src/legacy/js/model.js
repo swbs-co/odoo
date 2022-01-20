@@ -451,7 +451,7 @@ odoo.define("web.Model", function (require) {
         const model = component.env[modelName];
         if (!(model instanceof Model)) {
             throw new Error(`No Model found when connecting '${
-                component.name
+                component.constructor.name
                 }'`);
         }
 
