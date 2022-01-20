@@ -42,7 +42,7 @@ QUnit.module('Views', function (hooks) {
 
     QUnit.module("hrTimesheetGraphView");
 
-    QUnit.skipNXOWL('the timesheet graph view data are not multiplied by a factor that is company related (factor = 1)', async function (assert) {
+    QUnit.test('the timesheet graph view data are not multiplied by a factor that is company related (factor = 1)', async function (assert) {
         assert.expect(1);
 
         patchWithCleanup(session.user_companies.allowed_companies[1], {
@@ -59,7 +59,7 @@ QUnit.module('Views', function (hooks) {
         assert.deepEqual(renderedData, [8], 'The timesheet graph view is taking the timesheet_uom_factor into account (factor === 1)');
     });
 
-    QUnit.skipNXOWL('the timesheet graph view data are multiplied by a factor that is company related (factor !== 1)', async function (assert) {
+    QUnit.test('the timesheet graph view data are multiplied by a factor that is company related (factor !== 1)', async function (assert) {
         assert.expect(1);
 
         patchWithCleanup(session.user_companies.allowed_companies[1], {
