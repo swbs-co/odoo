@@ -23,9 +23,7 @@ odoo.define('web.CustomFileInput', function (require) {
          * @param {string} [props.multi_upload=false] Whether the input should allow
          *      to upload multiple files at once.
          */
-        constructor() {
-            super(...arguments);
-
+        setup() {
             this.fileInputRef = useRef('file-input');
         }
 
@@ -42,7 +40,7 @@ odoo.define('web.CustomFileInput', function (require) {
          * @private
          */
         async _onFileInputChange() {
-            const { action, model, id } = this.props;
+            const { action, model, id, onUpload } = this.props;
             const params = {
                 csrf_token: odoo.csrf_token,
                 ufile: [...this.fileInputRef.el.files],
@@ -58,7 +56,9 @@ odoo.define('web.CustomFileInput', function (require) {
             if (parsedFileData.error) {
                 throw new Error(parsedFileData.error);
             }
-            this.trigger('uploaded', { files: parsedFileData });
+            if (onUpload) {
+                onUpload(parsedFileData);
+            }
         }
 
         /**
@@ -75,11 +75,13 @@ odoo.define('web.CustomFileInput', function (require) {
         multi_upload: false,
     };
     CustomFileInput.props = {
-        accepted_file_extensions: { type: String, optional: 1 },
-        action: { type: String, optional: 1 },
-        id: { type: Number, optional: 1 },
-        model: { type: String, optional: 1 },
-        multi_upload: { type: Boolean, optional: 1 },
+        accepted_file_extensions: { type: String, optional: true },
+        action: { type: String, optional: true },
+        id: { type: Number, optional: true },
+        model: { type: String, optional: true },
+        multi_upload: { type: Boolean, optional: true },
+        slots: { type: Object, optional: true },
+        onUpload: { type: Function, optional: true },
     };
     CustomFileInput.template = 'web.CustomFileInput';
 
