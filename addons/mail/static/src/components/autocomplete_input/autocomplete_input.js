@@ -146,6 +146,7 @@ Object.assign(AutocompleteInput, {
         isFocusOnMount: false,
         isHtml: false,
         placeholder: '',
+        onFocusin: () => {},
     },
     props: {
         customClass: {

@@ -31,7 +31,7 @@ QUnit.module('discuss_sidebar_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('sidebar find shows channels matching search term', async function (assert) {
+QUnit.test('sidebar find shows channels matching search term', async function (assert) {
     assert.expect(3);
 
     this.data['mail.channel'].records.push({
@@ -83,7 +83,7 @@ QUnit.skipNXOWL('sidebar find shows channels matching search term', async functi
     );
 });
 
-QUnit.skipNXOWL('sidebar find shows channels matching search term even when user is member', async function (assert) {
+QUnit.test('sidebar find shows channels matching search term even when user is member', async function (assert) {
     assert.expect(3);
 
     this.data['mail.channel'].records.push({

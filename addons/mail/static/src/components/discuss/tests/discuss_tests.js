@@ -403,7 +403,7 @@ QUnit.test('sidebar: inbox with counter', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('sidebar: add channel', async function (assert) {
+QUnit.test('sidebar: add channel', async function (assert) {
     assert.expect(3);
 
     await this.start();
