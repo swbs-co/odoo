@@ -26,7 +26,6 @@ QUnit.module("Bus Assets WatchDog", (hooks) => {
         legacyServicesRegistry.add("local_storage", LocalStorageService);
 
         serviceRegistry.add("assetsWatchdog", assetsWatchdogService);
-
         patchWithCleanup(browser, {
             setTimeout: (fn) => fn(),
             clearTimeout: () => {},
@@ -34,9 +33,11 @@ QUnit.module("Bus Assets WatchDog", (hooks) => {
                 reload: () => assert.step("reloadPage"),
             },
         });
+
+        target = getFixture();
     });
 
-    QUnit.skipNXOWL("can listen on bus and displays notifications in DOM", async (assert) => {
+    QUnit.test("can listen on bus and displays notifications in DOM", async (assert) => {
         assert.expect(4);
 
         let pollNumber = 0;
