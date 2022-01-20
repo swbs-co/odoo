@@ -29,7 +29,7 @@ QUnit.module('messaging_menu_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('livechats should be in "chat" filter', async function (assert) {
+QUnit.test('livechats should be in "chat" filter', async function (assert) {
     assert.expect(7);
 
     this.data['mail.channel'].records.push({

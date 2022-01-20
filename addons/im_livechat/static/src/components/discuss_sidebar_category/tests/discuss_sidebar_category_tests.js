@@ -29,7 +29,7 @@ QUnit.module('discuss_sidebar_category_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('livechat - counter: should not have a counter if the category is unfolded and without unread messages', async function (assert) {
+QUnit.test('livechat - counter: should not have a counter if the category is unfolded and without unread messages', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -47,7 +47,7 @@ QUnit.skipNXOWL('livechat - counter: should not have a counter if the category i
     );
 });
 
-QUnit.skipNXOWL('livechat - counter: should not have a counter if the category is unfolded and with unread messages', async function (assert) {
+QUnit.test('livechat - counter: should not have a counter if the category is unfolded and with unread messages', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -66,7 +66,7 @@ QUnit.skipNXOWL('livechat - counter: should not have a counter if the category i
     );
 });
 
-QUnit.skipNXOWL('livechat - counter: should not have a counter if category is folded and without unread messages', async function (assert) {
+QUnit.test('livechat - counter: should not have a counter if category is folded and without unread messages', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -89,7 +89,7 @@ QUnit.skipNXOWL('livechat - counter: should not have a counter if category is fo
     );
 });
 
-QUnit.skipNXOWL('livechat - counter: should have correct value of unread threads if category is folded and with unread messages', async function (assert) {
+QUnit.test('livechat - counter: should have correct value of unread threads if category is folded and with unread messages', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push({
@@ -113,7 +113,7 @@ QUnit.skipNXOWL('livechat - counter: should have correct value of unread threads
     );
 });
 
-QUnit.skipNXOWL('livechat - states: close manually by clicking the title', async function (assert) {
+QUnit.test('livechat - states: close manually by clicking the title', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -158,7 +158,7 @@ QUnit.skipNXOWL('livechat - states: close manually by clicking the title', async
     );
 });
 
-QUnit.skipNXOWL('livechat - states: open manually by clicking the title', async function (assert) {
+QUnit.test('livechat - states: open manually by clicking the title', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -203,7 +203,7 @@ QUnit.skipNXOWL('livechat - states: open manually by clicking the title', async 
     );
 });
 
-QUnit.skipNXOWL('livechat - states: close should update the value on the server', async function (assert) {
+QUnit.test('livechat - states: close should update the value on the server', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -249,7 +249,7 @@ QUnit.skipNXOWL('livechat - states: close should update the value on the server'
     );
 });
 
-QUnit.skipNXOWL('livechat - states: open should update the value on the server', async function (assert) {
+QUnit.test('livechat - states: open should update the value on the server', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -295,7 +295,7 @@ QUnit.skipNXOWL('livechat - states: open should update the value on the server',
     );
 });
 
-QUnit.skipNXOWL('livechat - states: close from the bus', async function (assert) {
+QUnit.test('livechat - states: close from the bus', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -337,7 +337,7 @@ QUnit.skipNXOWL('livechat - states: close from the bus', async function (assert)
     );
 });
 
-QUnit.skipNXOWL('livechat - states: open from the bus', async function (assert) {
+QUnit.test('livechat - states: open from the bus', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -384,7 +384,7 @@ QUnit.skipNXOWL('livechat - states: open from the bus', async function (assert) 
 });
 
 
-QUnit.skipNXOWL('livechat - states: category item should be invisible if the catgory is closed', async function (assert) {
+QUnit.test('livechat - states: category item should be invisible if the catgory is closed', async function (assert) {
     assert.expect(2);
 
     this.data['mail.channel'].records.push({
@@ -425,7 +425,7 @@ QUnit.skipNXOWL('livechat - states: category item should be invisible if the cat
     );
 });
 
-QUnit.skipNXOWL('livechat - states: the active category item should be visble even if the category is closed', async function (assert) {
+QUnit.test('livechat - states: the active category item should be visble even if the category is closed', async function (assert) {
     assert.expect(3);
 
     this.data['mail.channel'].records.push({
