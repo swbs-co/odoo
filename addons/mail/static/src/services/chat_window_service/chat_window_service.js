@@ -20,9 +20,9 @@ export const ChatWindowService = AbstractService.extend({
      * @private
      */
     destroy() {
-        if (this.component) {
-            this.component.destroy();
-            this.component = undefined;
+        if (this.app) {
+            this.app.destroy();
+            this.app = undefined;
         }
     },
 
@@ -47,17 +47,17 @@ export const ChatWindowService = AbstractService.extend({
      * @private
      */
     async _mount() {
-        if (this.component) {
-            this.component.destroy();
-            this.component = undefined;
+        if (this.app) {
+            this.app.destroy();
+            this.app = undefined;
         }
         const ChatWindowManagerComponent = getMessagingComponent("ChatWindowManager");
-        const app = new App(ChatWindowManagerComponent, {
+        this.app = new App(ChatWindowManagerComponent, {
             env: owl.Component.env,
             templates: window.__ODOO_TEMPLATES__,
         });
         const parentNode = this._getParentNode();
-        this.component = await app.mount(parentNode);
+        await this.app.mount(parentNode);
     },
 
     //--------------------------------------------------------------------------

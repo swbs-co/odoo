@@ -32,7 +32,7 @@ QUnit.module('discuss_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('livechat in the sidebar: basic rendering', async function (assert) {
+QUnit.test('livechat in the sidebar: basic rendering', async function (assert) {
     assert.expect(5);
 
     this.data['mail.channel'].records.push({
@@ -75,7 +75,7 @@ QUnit.skipNXOWL('livechat in the sidebar: basic rendering', async function (asse
     );
 });
 
-QUnit.skipNXOWL('livechat in the sidebar: existing user with country', async function (assert) {
+QUnit.test('livechat in the sidebar: existing user with country', async function (assert) {
     assert.expect(3);
 
     this.data['res.country'].records.push({
@@ -112,7 +112,7 @@ QUnit.skipNXOWL('livechat in the sidebar: existing user with country', async fun
     );
 });
 
-QUnit.skipNXOWL('do not add livechat in the sidebar on visitor opening his chat', async function (assert) {
+QUnit.test('do not add livechat in the sidebar on visitor opening his chat', async function (assert) {
     assert.expect(2);
 
     const currentUser = this.data['res.users'].records.find(user =>
@@ -148,7 +148,7 @@ QUnit.skipNXOWL('do not add livechat in the sidebar on visitor opening his chat'
     );
 });
 
-QUnit.skipNXOWL('do not add livechat in the sidebar on visitor typing', async function (assert) {
+QUnit.test('do not add livechat in the sidebar on visitor typing', async function (assert) {
     assert.expect(2);
 
     const currentUser = this.data['res.users'].records.find(user =>
@@ -194,7 +194,7 @@ QUnit.skipNXOWL('do not add livechat in the sidebar on visitor typing', async fu
     );
 });
 
-QUnit.skipNXOWL('add livechat in the sidebar on visitor sending first message', async function (assert) {
+QUnit.test('add livechat in the sidebar on visitor sending first message', async function (assert) {
     assert.expect(4);
 
     const currentUser = this.data['res.users'].records.find(user =>
@@ -256,7 +256,7 @@ QUnit.skipNXOWL('add livechat in the sidebar on visitor sending first message', 
     );
 });
 
-QUnit.skipNXOWL('livechats are sorted by last activity time in the sidebar: most recent at the top', async function (assert) {
+QUnit.test('livechats are sorted by last activity time in the sidebar: most recent at the top', async function (assert) {
     assert.expect(6);
 
     this.data['mail.channel'].records.push(
@@ -326,7 +326,7 @@ QUnit.skipNXOWL('livechats are sorted by last activity time in the sidebar: most
     );
 });
 
-QUnit.skipNXOWL('invite button should be present on livechat', async function (assert) {
+QUnit.test('invite button should be present on livechat', async function (assert) {
     assert.expect(1);
 
     this.data['mail.channel'].records.push(

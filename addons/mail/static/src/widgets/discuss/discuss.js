@@ -27,7 +27,7 @@ export const DiscussWidget = AbstractAction.extend({
         this.discuss = undefined;
         this.options = options;
 
-        this.component = undefined;
+        this.app = undefined;
 
         this._lastPushStateActiveThread = null;
         this.env = Component.env;
@@ -45,9 +45,9 @@ export const DiscussWidget = AbstractAction.extend({
      * @override {web.AbstractAction}
      */
     destroy() {
-        if (this.component) {
-            this.component.destroy();
-            this.component = undefined;
+        if (this.app) {
+            this.app.destroy();
+            this.app = undefined;
         }
         if (this.$buttons) {
             this.$buttons.off().remove();
@@ -59,7 +59,7 @@ export const DiscussWidget = AbstractAction.extend({
      */
     async on_attach_callback() {
         this._super(...arguments);
-        if (this.component) {
+        if (this.app) {
             // prevent twice call to on_attach_callback (FIXME)
             return;
         }
@@ -85,21 +85,21 @@ export const DiscussWidget = AbstractAction.extend({
         );
 
         const DiscussComponent = getMessagingComponent("Discuss");
-        const app = new App(DiscussComponent, {
+        this.app = new App(DiscussComponent, {
             env: owl.Component.env,
             templates: window.__ODOO_TEMPLATES__,
         });
-        this.component = await app.mount(this.el);
+        await this.app.mount(this.el);
     },
     /**
      * @override {web.AbstractAction}
      */
     on_detach_callback() {
         this._super(...arguments);
-        if (this.component) {
-            this.component.destroy();
+        if (this.app) {
+            this.app.destroy();
         }
-        this.component = undefined;
+        this.app = undefined;
         this.el.removeEventListener(
             'o-push-state-action-manager',
             this._pushStateActionManagerEventListener
