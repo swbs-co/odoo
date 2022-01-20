@@ -47,8 +47,8 @@
                             select="_onAutocompleteSelect"
                             source="_onAutocompleteSource"
                             onFocusin="chatWindow.onFocusInNewMessageFormInput"
+                            inputRef="_inputRef"
                         />
-                            <!-- NXOWL t-ref="input" -->
                     </div>
                 </t>
             </t>

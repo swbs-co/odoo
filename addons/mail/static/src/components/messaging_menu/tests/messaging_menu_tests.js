@@ -390,14 +390,13 @@ QUnit.test('switch tab', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('new message', async function (assert) {
+QUnit.test('new message', async function (assert) {
     assert.expect(3);
 
     const { createMessagingMenuComponent } = await this.start({
         hasChatWindow: true,
     });
     await createMessagingMenuComponent();
-
     await afterNextRender(() =>
         document.querySelector(`.o_MessagingMenu_toggler`).click()
     );
