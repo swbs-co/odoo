@@ -35,7 +35,7 @@ QUnit.module('thread_icon_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('livechat: public website visitor is typing', async function (assert) {
+QUnit.test('livechat: public website visitor is typing', async function (assert) {
     assert.expect(4);
 
     this.data['mail.channel'].records.push({
