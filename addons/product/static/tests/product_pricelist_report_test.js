@@ -7,6 +7,7 @@ const { createWebClient, doAction } = require('@web/../tests/webclient/helpers')
 const { getFixture } = require("@web/../tests/helpers/utils");
 
 let serverData;
+let target;
 
 QUnit.module('Product Pricelist', {
     beforeEach: function () {
@@ -34,9 +35,10 @@ QUnit.module('Product Pricelist', {
                 }
             };
             serverData = { models: this.data };
+            target = getFixture();
         },
 }, function () {
-    QUnit.skipNXOWL('Pricelist Client Action', async function (assert) {
+    QUnit.test('Pricelist Client Action', async function (assert) {
         assert.expect(21);
 
         const self = this;
