@@ -8,6 +8,7 @@ import {
     nextAnimationFrame,
     start,
 } from '@mail/utils/test_utils';
+import { nextTick } from '@web/../tests/helpers/utils';
 
 QUnit.module('mail', {}, function () {
 QUnit.module('components', {}, function () {
@@ -37,7 +38,7 @@ QUnit.module('chatter_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('base rendering when chatter has no attachment', async function (assert) {
+QUnit.test('base rendering when chatter has no attachment', async function (assert) {
     assert.expect(6);
 
     this.data['res.partner'].records.push({ id: 100 });
@@ -83,6 +84,10 @@ QUnit.skipNXOWL('base rendering when chatter has no attachment', async function 
         }).localId,
         "thread should have the right thread local id"
     );
+    
+    // TODO review for Seb
+    await nextTick();
+
     assert.strictEqual(
         document.querySelectorAll(`.o_Message`).length,
         30,
@@ -340,7 +345,7 @@ QUnit.test('composer show/hide on log note/send message [REQUIRE FOCUS]', async 
     );
 });
 
-QUnit.skipNXOWL('should display subject when subject is not the same as the thread name', async function (assert) {
+QUnit.test('should display subject when subject is not the same as the thread name', async function (assert) {
     assert.expect(2);
 
     this.data['res.partner'].records.push({ id: 100 });
@@ -362,6 +367,9 @@ QUnit.skipNXOWL('should display subject when subject is not the same as the thre
         threadModel: 'res.partner',
     });
     await this.createChatterComponent({ chatter });
+
+    // TODO review for Seb
+    await nextTick();
 
     assert.containsOnce(
         document.body,
