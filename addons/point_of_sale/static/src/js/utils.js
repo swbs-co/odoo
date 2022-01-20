@@ -1,7 +1,7 @@
 odoo.define('point_of_sale.utils', function (require) {
     'use strict';
 
-    const { EventBus } = owl.core;
+    const { EventBus } = owl;
     const { ConnectionAbortedError, ConnectionLostError } = require('@web/core/network/rpc_service');
 
     function getFileAsText(file) {
