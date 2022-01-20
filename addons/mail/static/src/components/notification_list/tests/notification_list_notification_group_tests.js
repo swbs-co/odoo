@@ -26,7 +26,7 @@ QUnit.module('notification_list_notification_group_tests.js', {
     },
 });
 
-QUnit.skipNXOWL('notification group basic layout', async function (assert) {
+QUnit.test('notification group basic layout', async function (assert) {
     assert.expect(10);
 
     // message that is expected to have a failure
@@ -97,7 +97,7 @@ QUnit.skipNXOWL('notification group basic layout', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('mark as read', async function (assert) {
+QUnit.test('mark as read', async function (assert) {
     assert.expect(6);
 
     // message that is expected to have a failure
@@ -148,7 +148,7 @@ QUnit.skipNXOWL('mark as read', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('grouped notifications by document', async function (assert) {
+QUnit.test('grouped notifications by document', async function (assert) {
     // If some failures linked to a document refers to a same document, a single
     // notification should group all those failures.
     assert.expect(5);
@@ -219,7 +219,7 @@ QUnit.skipNXOWL('grouped notifications by document', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('grouped notifications by document model', async function (assert) {
+QUnit.test('grouped notifications by document model', async function (assert) {
     // If all failures linked to a document model refers to different documents,
     // a single notification should group all failures that are linked to this
     // document model.
@@ -323,7 +323,7 @@ QUnit.skipNXOWL('grouped notifications by document model', async function (asser
     );
 });
 
-QUnit.skipNXOWL('different mail.channel are not grouped', async function (assert) {
+QUnit.test('different mail.channel are not grouped', async function (assert) {
     // `mail.channel` is a special case where notifications are not grouped when
     // they are linked to different channels, even though the model is the same.
     assert.expect(6);
@@ -401,7 +401,7 @@ QUnit.skipNXOWL('different mail.channel are not grouped', async function (assert
     );
 });
 
-QUnit.skipNXOWL('multiple grouped notifications by document model, sorted by the most recent message of each group', async function (assert) {
+QUnit.test('multiple grouped notifications by document model, sorted by the most recent message of each group', async function (assert) {
     assert.expect(9);
 
     this.data['mail.message'].records.push(
@@ -487,7 +487,7 @@ QUnit.skipNXOWL('multiple grouped notifications by document model, sorted by the
     );
 });
 
-QUnit.skipNXOWL('non-failure notifications are ignored', async function (assert) {
+QUnit.test('non-failure notifications are ignored', async function (assert) {
     assert.expect(1);
 
     this.data['mail.message'].records.push(

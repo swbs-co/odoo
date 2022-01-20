@@ -101,7 +101,7 @@ QUnit.test('[technical] spinner when messaging is not created', async function (
     );
 });
 
-QUnit.skipNXOWL('[technical] keep spinner on transition from messaging non-created to messaging created (and non-initialized)', async function (assert) {
+QUnit.test('[technical] keep spinner on transition from messaging non-created to messaging created (and non-initialized)', async function (assert) {
     /**
      * Creation of messaging in env is async due to generation of models being
      * async. Generation of models is async because it requires parsing of all
@@ -295,7 +295,7 @@ QUnit.test('basic chatter rendering', async function (assert) {
     );
 });
 
-QUnit.skipNXOWL('basic chatter rendering without followers', async function (assert) {
+QUnit.test('basic chatter rendering without followers', async function (assert) {
     assert.expect(6);
 
     this.data['res.partner'].records.push({ display_name: "second partner", id: 12 });
@@ -350,7 +350,7 @@ QUnit.skipNXOWL('basic chatter rendering without followers', async function (ass
     );
 });
 
-QUnit.skipNXOWL('basic chatter rendering without activities', async function (assert) {
+QUnit.test('basic chatter rendering without activities', async function (assert) {
     assert.expect(6);
 
     this.data['res.partner'].records.push({ display_name: "second partner", id: 12 });
