@@ -16,6 +16,7 @@ const { whenReady, loadFile } = owl;
 patch(owl.App.prototype, "TestOwlApp", {
     setup() {
         this.isBuilt = true;
+        this.dev = true;
     },
     destroy() {
         if (!this.destroyed) {
@@ -32,10 +33,6 @@ patch(owl.App.prototype, "TestOwlApp", {
         return this._super(...arguments);
     },
 });
-
-// FIXME NXOWL
-// owl.config.enableTransitions = false;
-// owl.QWeb.dev = true;
 
 function stringifyObjectValues(obj, properties) {
     let res = "";
