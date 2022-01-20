@@ -117,7 +117,7 @@ odoo.define('web.OwlCompatibility', function (require) {
             let widgetIsAttached = false;
             const insertWidget = () => {
                 this.removeEl();
-                if (!this.widget) {
+                if (!this.widget || !this.widget.el) {
                     return;
                 }
                 const node = this.__owl__.firstNode();
