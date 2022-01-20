@@ -7,6 +7,7 @@ const { onWillStart, onWillUpdateProps } = owl;
 
 export class ProjectControlPanel extends ControlPanel {
     setup() {
+        super.setup();
         this.orm = useService("orm");
         this.user = useService("user");
         const { active_id, show_project_update } = this.env.searchModel.globalContext;

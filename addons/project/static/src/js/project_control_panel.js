@@ -8,6 +8,7 @@ const { onWillStart, onWillUpdateProps } = owl;
 export class ProjectControlPanel extends ControlPanel {
 
     setup() {
+        super.setup();
         this.show_project_update = this.props.view.type === "form" || this.props.action.context.show_project_update;
         this.project_id = this.show_project_update ? this.props.action.context.active_id : false;
 
