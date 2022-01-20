@@ -97,7 +97,7 @@
 
                     <t t-if="activityView.activity.note">
                         <div class="o_Activity_note">
-                            <t t-raw="activityView.activity.note"/>
+                            <t t-out="activityView.activity.note"/>
                         </div>
                     </t>
 

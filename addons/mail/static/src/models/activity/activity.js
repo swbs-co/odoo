@@ -4,6 +4,8 @@ import { registerModel } from '@mail/model/model_core';
 import { attr, many2many, many2one, one2many } from '@mail/model/model_field';
 import { clear, insert, unlink, unlinkAll } from '@mail/model/model_field_command';
 
+const { markup } = owl;
+
 registerModel({
     name: 'Activity',
     identifyingFields: ['id'],
@@ -36,7 +38,7 @@ registerModel({
                 data2.id = data.id;
             }
             if ('note' in data) {
-                data2.note = data.note;
+                data2.note = markup(data.note);
             }
             if ('state' in data) {
                 data2.state = data.state;
@@ -225,7 +227,8 @@ registerModel({
          * @returns {string|undefined}
          */
         _computeNote() {
-            if (this.note === '<p><br></p>') {
+            // valueOf because note is a markup object
+            if (this.note.valueOf() === '<p><br></p>') {
                 return clear();
             }
             return this.note;
