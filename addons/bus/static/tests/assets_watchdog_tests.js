@@ -18,6 +18,7 @@ const serviceRegistry = registry.category("services");
 
 QUnit.module("Bus Assets WatchDog", (hooks) => {
     let legacyServicesRegistry;
+    let target;
     hooks.beforeEach((assert) => {
         legacyServicesRegistry = new legacyRegistry();
         legacyServicesRegistry.add("bus_service", BusService);
@@ -53,8 +54,6 @@ QUnit.module("Bus Assets WatchDog", (hooks) => {
                 }];
             }
         };
-
-        const target = getFixture();
 
         await createWebClient({
             target,
