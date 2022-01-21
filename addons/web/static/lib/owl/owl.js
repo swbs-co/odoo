@@ -5015,3 +5015,4 @@ See https://github.com/odoo/owl/blob/master/doc/reference/config.md#mode for mor
 
 
 })(this.owl = this.owl || {});
+  
