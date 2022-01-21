@@ -1397,6 +1397,29 @@
         return result;
     }
 
+    /**
+     * Creates a batched version of a callback so that all calls to it in the same
+     * microtick will only call the original callback once.
+     *
+     * @param callback the callback to batch
+     * @returns a batched version of the original callback
+     */
+    function batched(callback) {
+        let called = false;
+        return async () => {
+            // This await blocks all calls to the callback here, then releases them sequentially
+            // in the next microtick. This line decides the granularity of the batch.
+            await Promise.resolve();
+            if (!called) {
+                called = true;
+                callback();
+                // wait for all calls in this microtick to fall through before resetting "called"
+                // so that only the first call to the batched function calls the original callback
+                await Promise.resolve();
+                called = false;
+            }
+        };
+    }
     class EventBus extends EventTarget {
         trigger(name, payload) {
             this.dispatchEvent(new CustomEvent(name, { detail: payload }));
@@ -1434,6 +1457,184 @@
         return new Markup(value);
     }
 
+    // Allows to get the target of a Reactive (used for making a new Reactive from the underlying object)
+    const TARGET = Symbol("Target");
+    // Special key to subscribe to, to be notified of key creation/deletion
+    const KEYCHANGES = Symbol("Key changes");
+    /**
+     * Checks whether a given value can be made into a reactive object.
+     *
+     * @param value the value to check
+     * @returns whether the value can be made reactive
+     */
+    function canBeMadeReactive(value) {
+        return (typeof value === "object" &&
+            value !== null &&
+            !(value instanceof Date) &&
+            !(value instanceof Promise) &&
+            !(value instanceof String) &&
+            !(value instanceof EventTarget) &&
+            !(value instanceof Number));
+    }
+    const targetToKeysToCallbacks = new WeakMap();
+    /**
+     * Observes a given key on a target with an callback. The callback will be
+     * called when the given key changes on the target.
+     *
+     * @param target the target whose key should be observed
+     * @param key the key to observe (or Symbol(KEYCHANGES) for key creation
+     *  or deletion)
+     * @param callback the function to call when the key changes
+     */
+    function observeTargetKey(target, key, callback) {
+        if (!targetToKeysToCallbacks.get(target)) {
+            targetToKeysToCallbacks.set(target, new Map());
+        }
+        const keyToCallbacks = targetToKeysToCallbacks.get(target);
+        if (!keyToCallbacks.get(key)) {
+            keyToCallbacks.set(key, new Set());
+        }
+        keyToCallbacks.get(key).add(callback);
+        if (!callbacksToTargets.has(callback)) {
+            callbacksToTargets.set(callback, new Set());
+        }
+        callbacksToTargets.get(callback).add(target);
+    }
+    /**
+     * Notify Reactives that are observing a given target that a key has changed on
+     * the target.
+     *
+     * @param target target whose Reactives should be notified that the target was
+     *  changed.
+     * @param key the key that changed (or Symbol `KEYCHANGES` if a key was created
+     *   or deleted)
+     */
+    function notifyReactives(target, key) {
+        const keyToCallbacks = targetToKeysToCallbacks.get(target);
+        if (!keyToCallbacks) {
+            return;
+        }
+        const callbacks = keyToCallbacks.get(key);
+        if (!callbacks) {
+            return;
+        }
+        // Loop on copy because clearReactivesForCallback will modify the set in place
+        for (const callback of [...callbacks]) {
+            clearReactivesForCallback(callback);
+            callback();
+        }
+    }
+    const callbacksToTargets = new WeakMap();
+    /**
+     * Clears all subscriptions of the Reactives associated with a given callback.
+     *
+     * @param callback the callback for which the reactives need to be cleared
+     */
+    function clearReactivesForCallback(callback) {
+        const targetsToClear = callbacksToTargets.get(callback);
+        if (!targetsToClear) {
+            return;
+        }
+        for (const target of targetsToClear) {
+            const observedKeys = targetToKeysToCallbacks.get(target);
+            if (!observedKeys) {
+                continue;
+            }
+            for (const callbacks of observedKeys.values()) {
+                callbacks.delete(callback);
+            }
+        }
+        targetsToClear.clear();
+    }
+    const reactiveCache = new WeakMap();
+    /**
+     * Creates a reactive proxy for an object. Reading data on the reactive object
+     * subscribes to changes to the data. Writing data on the object will cause the
+     * notify callback to be called if there are suscriptions to that data. Nested
+     * objects and arrays are automatically made reactive as well.
+     *
+     * Whenever you are notified of a change, all subscriptions are cleared, and if
+     * you would like to be notified of any further changes, you should go read
+     * the underlying data again. We assume that if you don't go read it again after
+     * being notified, it means that you are no longer interested in that data.
+     *
+     * Subscriptions:
+     * + Reading a property on an object will subscribe you to changes in the value
+     *    of that property.
+     * + Accessing an object keys (eg with Object.keys or with `for..in`) will
+     *    subscribe you to the creation/deletion of keys. Checking the presence of a
+     *    key on the object with 'in' has the same effect.
+     * - getOwnPropertyDescriptor does not currently subscribe you to the property.
+     *    This is a choice that was made because changing a key's value will trigger
+     *    this trap and we do not want to subscribe by writes. This also means that
+     *    Object.hasOwnProperty doesn't subscribe as it goes through this trap.
+     *
+     * @param target the object for which to create a reactive proxy
+     * @param callback the function to call when an observed property of the
+     *  reactive has changed
+     * @returns a proxy that tracks changes to it
+     */
+    function reactive(target, callback = () => { }) {
+        if (!canBeMadeReactive(target)) {
+            throw new Error(`Cannot make the given value reactive`);
+        }
+        const originalTarget = target[TARGET];
+        if (originalTarget) {
+            return reactive(originalTarget, callback);
+        }
+        if (!reactiveCache.has(target)) {
+            reactiveCache.set(target, new Map());
+        }
+        const reactivesForTarget = reactiveCache.get(target);
+        if (!reactivesForTarget.has(callback)) {
+            const proxy = new Proxy(target, {
+                get(target, key, proxy) {
+                    if (key === TARGET) {
+                        return target;
+                    }
+                    observeTargetKey(target, key, callback);
+                    const value = Reflect.get(target, key, proxy);
+                    if (!canBeMadeReactive(value)) {
+                        return value;
+                    }
+                    return reactive(value, callback);
+                },
+                set(target, key, value, proxy) {
+                    const isNewKey = !Object.hasOwnProperty.call(target, key);
+                    const originalValue = Reflect.get(target, key, proxy);
+                    const ret = Reflect.set(target, key, value, proxy);
+                    if (isNewKey) {
+                        notifyReactives(target, KEYCHANGES);
+                    }
+                    // While Array length may trigger the set trap, it's not actually set by this
+                    // method but is updated behind the scenes, and the trap is not called with the
+                    // new value. We disable the "same-value-optimization" for it because of that.
+                    if (originalValue !== value || (Array.isArray(target) && key === "length")) {
+                        notifyReactives(target, key);
+                    }
+                    return ret;
+                },
+                deleteProperty(target, key) {
+                    const ret = Reflect.deleteProperty(target, key);
+                    notifyReactives(target, KEYCHANGES);
+                    notifyReactives(target, key);
+                    return ret;
+                },
+                ownKeys(target) {
+                    observeTargetKey(target, KEYCHANGES, callback);
+                    return Reflect.ownKeys(target);
+                },
+                has(target, key) {
+                    // TODO: this observes all key changes instead of only the presence of the argument key
+                    observeTargetKey(target, KEYCHANGES, callback);
+                    return Reflect.has(target, key);
+                },
+            });
+            reactivesForTarget.set(callback, proxy);
+        }
+        return reactivesForTarget.get(callback);
+    }
+
     /**
      * This file contains utility functions that will be injected in each template,
      * to perform various useful tasks in the compiled code.
@@ -1443,7 +1644,8 @@
     }
     function callSlot(ctx, parent, key, name, dynamic, extra, defaultContent) {
         key = key + "__slot_" + name;
-        const slots = (ctx.props && ctx.props.slots) || {};
+        const nonReactiveProps = ctx.props && ctx.props[TARGET];
+        const slots = nonReactiveProps ? nonReactiveProps.slots || {} : {};
         const { __render, __ctx, __scope } = slots[name] || {};
         const slotScope = Object.create(__ctx || {});
         if (__scope) {
@@ -1638,9 +1840,13 @@
         // We check this rather than data[0] being truthy (or typeof function) so that it crashes
         // as expected when there is a handler expression that evaluates to a falsy value
         if (Object.hasOwnProperty.call(data, 0)) {
+            const handler = data[0];
+            if (typeof handler !== "function") {
+                throw new Error(`Invalid handler (expected a function, received: '${handler}')`);
+            }
             let node = data[1] ? data[1].__owl__ : null;
             if (node ? node.status === 1 /* MOUNTED */ : true) {
-                data[0].call(node ? node.component : null, ev);
+                handler.call(node ? node.component : null, ev);
             }
         }
         return stopped;
@@ -1713,7 +1919,7 @@
         }
         return new Fiber(node, parent);
     }
-    function makeRootFiber(node) {
+    function makeRootFiber(node, force) {
         let current = node.fiber;
         if (current) {
             let root = current.root;
@@ -1721,6 +1927,7 @@
             current.children = [];
             root.counter++;
             current.bdom = null;
+            current.force = force;
             if (fibersInError.has(current)) {
                 fibersInError.delete(current);
                 fibersInError.delete(root);
@@ -1735,6 +1942,7 @@
         if (node.patched.length) {
             fiber.patched.push(fiber);
         }
+        fiber.force = force;
         return fiber;
     }
     /**
@@ -1757,9 +1965,11 @@
             this.bdom = null;
             this.children = [];
             this.appliedToDom = false;
+            this.force = false;
             this.node = node;
             this.parent = parent;
             if (parent) {
+                this.force = parent.force;
                 const root = parent.root;
                 root.counter++;
                 this.root = root;
@@ -1802,7 +2012,7 @@
                 }
                 current = undefined;
                 // Step 2: patching the dom
-                node.patch();
+                node._patch();
                 this.locked = false;
                 // Step 4: calling all mounted lifecycle hooks
                 let mountedFibers = this.mounted;
@@ -1885,6 +2095,39 @@
     function useComponent() {
         return currentNode.component;
     }
+    // -----------------------------------------------------------------------------
+    // Integration with reactivity system (useState)
+    // -----------------------------------------------------------------------------
+    const batchedRenderFunctions = new WeakMap();
+    /**
+     * Creates a reactive object that will be observed by the current component.
+     * Reading data from the returned object (eg during rendering) will cause the
+     * component to subscribe to that data and be rerendered when it changes.
+     *
+     * @param state the state to observe
+     * @returns a reactive object that will cause the component to re-render on
+     *  relevant changes
+     * @see reactive
+     */
+    function useState(state) {
+        const node = currentNode;
+        let render = batchedRenderFunctions.get(node);
+        if (!render) {
+            render = batched(node.render.bind(node));
+            batchedRenderFunctions.set(node, render);
+            // manual implementation of onWillUnmount to break cyclic dependency
+            node.willUnmount.unshift(clearReactivesForCallback.bind(null, render));
+        }
+        return reactive(state, render);
+    }
+    function arePropsDifferent(props1, props2) {
+        for (let k in props1) {
+            if (props1[k] !== props2[k]) {
+                return true;
+            }
+        }
+        return Object.keys(props1).length !== Object.keys(props2).length;
+    }
     function component(name, props, key, ctx, parent) {
         let node = ctx.children[key];
         let isDynamic = typeof name !== "string";
@@ -1902,7 +2145,10 @@
         }
         const parentFiber = ctx.fiber;
         if (node) {
-            node.updateAndRender(props, parentFiber);
+            const currentProps = node.component.props[TARGET];
+            if (parentFiber.force || arePropsDifferent(currentProps, props)) {
+                node.updateAndRender(props, parentFiber);
+            }
         }
         else {
             // new component
@@ -1944,6 +2190,7 @@
             applyDefaultProps(props, C);
             const env = (parent && parent.childEnv) || app.env;
             this.childEnv = env;
+            props = useState(props);
             this.component = new C(props, env, this);
             this.renderFn = app.getTemplate(C.template).bind(this.component, this.component, this);
             this.component.setup();
@@ -1970,7 +2217,7 @@
                 this._render(fiber);
             }
         }
-        async render() {
+        async render(force = false) {
             let current = this.fiber;
             if (current && current.root.locked) {
                 await Promise.resolve();
@@ -1978,12 +2225,14 @@
                 current = this.fiber;
             }
             if (current && !current.bdom && !fibersInError.has(current)) {
-                return;
+                if (current.force || force === false) {
+                    return;
+                }
             }
             if (!this.bdom && !current) {
                 return;
             }
-            const fiber = makeRootFiber(this);
+            const fiber = makeRootFiber(this, force);
             this.fiber = fiber;
             this.app.scheduler.addFiber(fiber);
             await Promise.resolve();
@@ -2042,6 +2291,8 @@
             this.fiber = fiber;
             const component = this.component;
             applyDefaultProps(props, component.constructor);
+            currentNode = this;
+            props = useState(props);
             const prom = Promise.all(this.willUpdateProps.map((f) => f.call(component, props)));
             await prom;
             if (fiber !== this.fiber) {
@@ -2101,6 +2352,14 @@
             this.bdom.moveBefore(other ? other.bdom : null, afterNode);
         }
         patch() {
+            if (this.fiber && this.fiber.parent) {
+                // we only patch here renderings coming from above. renderings initiated
+                // by the component will be patched independently in the appropriate
+                // fiber.complete
+                this._patch();
+            }
+        }
+        _patch() {
             const hasChildren = Object.keys(this.children).length > 0;
             this.bdom.patch(this.fiber.bdom, hasChildren);
             if (hasChildren) {
@@ -2555,6 +2814,7 @@
             forceNewBlock: true,
             translate: parentCtx.translate,
             tKeyExpr: null,
+            nameSpace: parentCtx.nameSpace,
         }, params);
     }
     class CodeTarget {
@@ -2903,7 +3163,7 @@
             const isNewBlock = !block || forceNewBlock || ast.dynamicTag !== null;
             let codeIdx = this.target.code.length;
             if (isNewBlock) {
-                if (ast.dynamicTag && ctx.block) {
+                if ((ast.dynamicTag || ctx.tKeyExpr) && ctx.block) {
                     this.insertAnchor(ctx.block);
                 }
                 block = this.createBlock(block, "block", ctx);
@@ -2916,9 +3176,10 @@
             }
             // attributes
             const attrs = {};
-            if (ast.ns) {
+            const nameSpace = ast.ns || ctx.nameSpace;
+            if (nameSpace && isNewBlock) {
                 // specific namespace uri
-                attrs["block-ns"] = ast.ns;
+                attrs["block-ns"] = nameSpace;
             }
             for (let key in ast.attrs) {
                 if (key.startsWith("t-attf")) {
@@ -3019,6 +3280,7 @@
                         forceNewBlock: false,
                         isLast: ctx.isLast && i === children.length - 1,
                         tKeyExpr: ctx.tKeyExpr,
+                        nameSpace,
                     });
                     this.compileAST(child, subCtx);
                 }
@@ -3424,12 +3686,7 @@
             const propStr = `{${props.join(",")}}`;
             let propString = propStr;
             if (ast.dynamicProps) {
-                if (!props.length) {
-                    propString = `${compileExpr(ast.dynamicProps)}`;
-                }
-                else {
-                    propString = `Object.assign({}, ${compileExpr(ast.dynamicProps)}, ${propStr})`;
-                }
+                propString = `Object.assign({}, ${compileExpr(ast.dynamicProps)}${props.length ? ", " + propStr : ""})`;
             }
             let propVar;
             if ((slotDef && (ast.dynamicProps || hasSlotsProp)) || this.dev) {
@@ -4345,8 +4602,8 @@
             this.__owl__ = node;
         }
         setup() { }
-        render() {
-            this.__owl__.render();
+        render(force = false) {
+            this.__owl__.render(force);
         }
     }
     Component.template = "";
@@ -4419,10 +4676,10 @@
     //  Scheduler
     // -----------------------------------------------------------------------------
     class Scheduler {
-        constructor(requestAnimationFrame) {
+        constructor() {
             this.tasks = new Set();
             this.isRunning = false;
-            this.requestAnimationFrame = requestAnimationFrame;
+            this.requestAnimationFrame = Scheduler.requestAnimationFrame;
         }
         start() {
             this.isRunning = true;
@@ -4476,6 +4733,9 @@
             });
         }
     }
+    // capture the value of requestAnimationFrame as soon as possible, to avoid
+    // interactions with other code, such as test frameworks that override them
+    Scheduler.requestAnimationFrame = window.requestAnimationFrame.bind(window);
 
     const DEV_MSG = `Owl is running in 'dev' mode.
 
@@ -4484,7 +4744,7 @@ See https://github.com/odoo/owl/blob/master/doc/reference/config.md#mode for mor
     class App extends TemplateSet {
         constructor(Root, config = {}) {
             super(config);
-            this.scheduler = new Scheduler(window.requestAnimationFrame.bind(window));
+            this.scheduler = new Scheduler();
             this.root = null;
             this.Root = Root;
             if (config.dev) {
@@ -4598,227 +4858,6 @@ See https://github.com/odoo/owl/blob/master/doc/reference/config.md#mode for mor
             }
         }
         return true;
-    }
-
-    // Allows to get the target of a Reactive (used for making a new Reactive from the underlying object)
-    const TARGET = Symbol("Target");
-    // Special key to subscribe to, to be notified of key creation/deletion
-    const KEYCHANGES = Symbol("Key changes");
-    /**
-     * Checks whether a given value can be made into a reactive object.
-     *
-     * @param value the value to check
-     * @returns whether the value can be made reactive
-     */
-    function canBeMadeReactive(value) {
-        return (typeof value === "object" &&
-            value !== null &&
-            !(value instanceof Date) &&
-            !(value instanceof Promise) &&
-            !(value instanceof String) &&
-            !(value instanceof Number));
-    }
-    const targetToKeysToCallbacks = new WeakMap();
-    /**
-     * Observes a given key on a target with an callback. The callback will be
-     * called when the given key changes on the target.
-     *
-     * @param target the target whose key should be observed
-     * @param key the key to observe (or Symbol(KEYCHANGES) for key creation
-     *  or deletion)
-     * @param callback the function to call when the key changes
-     */
-    function observeTargetKey(target, key, callback) {
-        if (!targetToKeysToCallbacks.get(target)) {
-            targetToKeysToCallbacks.set(target, new Map());
-        }
-        const keyToCallbacks = targetToKeysToCallbacks.get(target);
-        if (!keyToCallbacks.get(key)) {
-            keyToCallbacks.set(key, new Set());
-        }
-        keyToCallbacks.get(key).add(callback);
-        if (!callbacksToTargets.has(callback)) {
-            callbacksToTargets.set(callback, new Set());
-        }
-        callbacksToTargets.get(callback).add(target);
-    }
-    /**
-     * Notify Reactives that are observing a given target that a key has changed on
-     * the target.
-     *
-     * @param target target whose Reactives should be notified that the target was
-     *  changed.
-     * @param key the key that changed (or Symbol `KEYCHANGES` if a key was created
-     *   or deleted)
-     */
-    function notifyReactives(target, key) {
-        const keyToCallbacks = targetToKeysToCallbacks.get(target);
-        if (!keyToCallbacks) {
-            return;
-        }
-        const callbacks = keyToCallbacks.get(key);
-        if (!callbacks) {
-            return;
-        }
-        // Loop on copy because clearReactivesForCallback will modify the set in place
-        for (const callback of [...callbacks]) {
-            clearReactivesForCallback(callback);
-            callback();
-        }
-    }
-    const callbacksToTargets = new WeakMap();
-    /**
-     * Clears all subscriptions of the Reactives associated with a given callback.
-     *
-     * @param callback the callback for which the reactives need to be cleared
-     */
-    function clearReactivesForCallback(callback) {
-        const targetsToClear = callbacksToTargets.get(callback);
-        if (!targetsToClear) {
-            return;
-        }
-        for (const target of targetsToClear) {
-            const observedKeys = targetToKeysToCallbacks.get(target);
-            if (!observedKeys) {
-                continue;
-            }
-            for (const callbacks of observedKeys.values()) {
-                callbacks.delete(callback);
-            }
-        }
-        targetsToClear.clear();
-    }
-    const reactiveCache = new WeakMap();
-    /**
-     * Creates a reactive proxy for an object. Reading data on the reactive object
-     * subscribes to changes to the data. Writing data on the object will cause the
-     * notify callback to be called if there are suscriptions to that data. Nested
-     * objects and arrays are automatically made reactive as well.
-     *
-     * Whenever you are notified of a change, all subscriptions are cleared, and if
-     * you would like to be notified of any further changes, you should go read
-     * the underlying data again. We assume that if you don't go read it again after
-     * being notified, it means that you are no longer interested in that data.
-     *
-     * Subscriptions:
-     * + Reading a property on an object will subscribe you to changes in the value
-     *    of that property.
-     * + Accessing an object keys (eg with Object.keys or with `for..in`) will
-     *    subscribe you to the creation/deletion of keys. Checking the presence of a
-     *    key on the object with 'in' has the same effect.
-     * - getOwnPropertyDescriptor does not currently subscribe you to the property.
-     *    This is a choice that was made because changing a key's value will trigger
-     *    this trap and we do not want to subscribe by writes. This also means that
-     *    Object.hasOwnProperty doesn't subscribe as it goes through this trap.
-     *
-     * @param target the object for which to create a reactive proxy
-     * @param callback the function to call when an observed property of the
-     *  reactive has changed
-     * @returns a proxy that tracks changes to it
-     */
-    function reactive(target, callback = () => { }) {
-        if (!canBeMadeReactive(target)) {
-            throw new Error(`Cannot make the given value reactive`);
-        }
-        const originalTarget = target[TARGET];
-        if (originalTarget) {
-            return reactive(originalTarget, callback);
-        }
-        if (!reactiveCache.has(target)) {
-            reactiveCache.set(target, new Map());
-        }
-        const reactivesForTarget = reactiveCache.get(target);
-        if (!reactivesForTarget.has(callback)) {
-            const proxy = new Proxy(target, {
-                get(target, key, proxy) {
-                    if (key === TARGET) {
-                        return target;
-                    }
-                    observeTargetKey(target, key, callback);
-                    const value = Reflect.get(target, key, proxy);
-                    if (!canBeMadeReactive(value)) {
-                        return value;
-                    }
-                    return reactive(value, callback);
-                },
-                set(target, key, value, proxy) {
-                    const isNewKey = !Object.hasOwnProperty.call(target, key);
-                    const originalValue = Reflect.get(target, key, proxy);
-                    const ret = Reflect.set(target, key, value, proxy);
-                    if (isNewKey) {
-                        notifyReactives(target, KEYCHANGES);
-                    }
-                    // While Array length may trigger the set trap, it's not actually set by this
-                    // method but is updated behind the scenes, and the trap is not called with the
-                    // new value. We disable the "same-value-optimization" for it because of that.
-                    if (originalValue !== value || (Array.isArray(target) && key === "length")) {
-                        notifyReactives(target, key);
-                    }
-                    return ret;
-                },
-                deleteProperty(target, key) {
-                    const ret = Reflect.deleteProperty(target, key);
-                    notifyReactives(target, KEYCHANGES);
-                    notifyReactives(target, key);
-                    return ret;
-                },
-                ownKeys(target) {
-                    observeTargetKey(target, KEYCHANGES, callback);
-                    return Reflect.ownKeys(target);
-                },
-                has(target, key) {
-                    // TODO: this observes all key changes instead of only the presence of the argument key
-                    observeTargetKey(target, KEYCHANGES, callback);
-                    return Reflect.has(target, key);
-                },
-            });
-            reactivesForTarget.set(callback, proxy);
-        }
-        return reactivesForTarget.get(callback);
-    }
-    /**
-     * Creates a batched version of a callback so that all calls to it in the same
-     * microtick will only call the original callback once.
-     *
-     * @param callback the callback to batch
-     * @returns a batched version of the original callback
-     */
-    function batched(callback) {
-        let called = false;
-        return async () => {
-            // This await blocks all calls to the callback here, then releases them sequentially
-            // in the next microtick. This line decides the granularity of the batch.
-            await Promise.resolve();
-            if (!called) {
-                called = true;
-                callback();
-                // wait for all calls in this microtick to fall through before resetting "called"
-                // so that only the first call to the batched function calls the original callback
-                await Promise.resolve();
-                called = false;
-            }
-        };
-    }
-    const batchedRenderFunctions = new WeakMap();
-    /**
-     * Creates a reactive object that will be observed by the current component.
-     * Reading data from the returned object (eg during rendering) will cause the
-     * component to subscribe to that data and be rerendered when it changes.
-     *
-     * @param state the state to observe
-     * @returns a reactive object that will cause the component to re-render on
-     *  relevant changes
-     * @see reactive
-     */
-    function useState(state) {
-        const node = getCurrent();
-        if (!batchedRenderFunctions.has(node)) {
-            batchedRenderFunctions.set(node, batched(() => node.render()));
-            onWillUnmount(() => clearReactivesForCallback(render));
-        }
-        const render = batchedRenderFunctions.get(node);
-        const reactiveState = reactive(state, render);
-        return reactiveState;
     }
 
     // -----------------------------------------------------------------------------
@@ -4970,8 +5009,8 @@ See https://github.com/odoo/owl/blob/master/doc/reference/config.md#mode for mor
 
 
     __info__.version = '2.0.0-alpha1';
-    __info__.date = '2022-01-19T13:14:49.380Z';
-    __info__.hash = 'dfc090b';
+    __info__.date = '2022-01-21T10:29:01.069Z';
+    __info__.hash = '9ef046b';
     __info__.url = 'https://github.com/odoo/owl';
 
 
