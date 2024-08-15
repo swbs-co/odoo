@@ -935,7 +935,9 @@ class BaseAutomation(models.Model):
             context = dict(self._context)
             if automation.filter_domain:
                 domain = safe_eval.safe_eval(automation.filter_domain, eval_context)
+            print(domain)
             records = self.env[automation.model_name].with_context(context).search(domain)
+            print(records)
 
             def get_record_dt(record):
                 # determine when automation should occur for the records
@@ -967,7 +969,9 @@ class BaseAutomation(models.Model):
                         )
                     is_process_to_run = past_last_run[calendar.id] <= fields.Datetime.to_datetime(record_dt) < past_now[calendar.id]
                 else:
+                    print(111, last_run , self._check_delay(automation, record, record_dt) , now)
                     is_process_to_run = last_run <= self._check_delay(automation, record, record_dt) < now
+                    print(222, is_process_to_run)
                 if is_process_to_run:
                     try:
                         automation._process(record)
