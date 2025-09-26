@@ -100,10 +100,11 @@ class ResPartnerBank(models.Model):
     country_code = fields.Char(related='partner_id.country_code', string="Country Code")
     note = fields.Text('Notes')
     color = fields.Integer(compute='_compute_color')
+    reference = fields.Char('Reference', help='Use this field to disambiguate between bank accounts.')
 
     _unique_number = models.Constraint(
-        'unique(sanitized_acc_number, partner_id)',
-        "The combination Account Number/Partner must be unique.",
+        'unique(sanitized_acc_number, partner_id, clearing_number)',
+        "The combination of account number, account holder and clearing number must be unique.",
     )
 
     @api.depends('acc_number')
@@ -134,10 +135,17 @@ class ResPartnerBank(models.Model):
         """
         return 'bank'
 
-    @api.depends('acc_number', 'bank_id')
+    @api.depends('acc_number', 'bank_id', 'reference')
     def _compute_display_name(self):
         for acc in self:
-            acc.display_name = f'{acc.acc_number} - {acc.bank_id.name}' if acc.bank_id else acc.acc_number
+            name = acc.acc_number
+            if acc.bank_id:
+                name += f" - {acc.bank_id.name}"
+
+            if acc.reference:
+                name += f" ({acc.reference})"
+
+            acc.display_name = name
 
     @api.depends('allow_out_payment')
     def _compute_color(self):

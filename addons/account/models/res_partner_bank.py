@@ -65,7 +65,7 @@ class ResPartnerBank(models.Model):
                 if not self.env.user.has_group('account.group_validate_bank_account'):
                     raise ValidationError(_('You do not have the right to trust or un-trust a bank account.'))
 
-    @api.depends('acc_number')
+    @api.depends('acc_number', 'clearing_number')
     def _compute_duplicate_bank_partner_ids(self):
         id2duplicates = dict(self.env.execute_query(SQL(
             """
@@ -73,6 +73,7 @@ class ResPartnerBank(models.Model):
                        ARRAY_AGG(other.partner_id)
                   FROM res_partner_bank this
              LEFT JOIN res_partner_bank other ON this.acc_number = other.acc_number
+                                             AND COALESCE(this.clearing_number, '') = COALESCE(other.clearing_number, '')
                                              AND this.id != other.id
                  WHERE this.id = ANY(%(ids)s)
                  AND other.partner_id IS NOT NULL
@@ -368,8 +369,4 @@ class ResPartnerBank(models.Model):
         if self.env.context.get('display_account_trust'):
             for acc in self:
                 trusted_label = _('trusted') if acc.allow_out_payment else _('untrusted')
-                if acc.bank_id:
-                    name = f'{acc.acc_number} - {acc.bank_id.name} ({trusted_label})'
-                else:
-                    name = f'{acc.acc_number} ({trusted_label})'
-                acc.display_name = name
+                acc.display_name += f' ({trusted_label})'

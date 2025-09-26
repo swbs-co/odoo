@@ -87,6 +87,7 @@
                             <field name="clearing_number"/>
                             <field name="partner_id"/>
                             <field name="bank_id"/>
+                            <field name="reference"/>
                         </group>
                         <group>
                             <field name="allow_out_payment" widget="boolean_toggle"/>
